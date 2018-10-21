@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="menu-form" >
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+
+                <ul class="sidebar-menu">
+                    <li>
+                        <h:commandLink action="avmenug">
+                            <i class="fa fa-windows"></i> <span>MENU PRINCIPAL</span> 
+                        </h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink action="accompte">
+                            <i class="fa fa-home"></i> <span>ACCUEIL</span> <!--small class="label pull-right bg-green">Hot</small-->
+                        </h:commandLink>
+                    </li>
+                    <li class="treeview" jsf:rendered="#{sec:areAllGranted('ACCESS_CONFIGURATION')}">
+                        <a>
+                            <i class="fa fa-cogs"></i>
+                            <span>Configuration</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><h:commandLink  action="parametragetauxprime" > <i class="fa fa-circle-o"></i>Taux de prime  </h:commandLink></li>
+                        </ul>
+                    </li>
+
+                    <!--  DEBUT BRANCHE !-->
+                    <li class="treeview">
+                        <a>
+                            <i class="fa fa-asterisk"></i>
+                            <span>Les branches</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_AUTO')}" value="Assurance auto" action="acauto"  /></li>                                       
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VOYAGE')}" value="Assurance voyage" action="acvoyage"   /></li> 
+                            <li > <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VIE')}" value="Assurance crédit" action="acvie"   /></li>
+                        </ul>
+                    </li>
+
+                    <!--  FIN BRANCHE !-->
+
+
+                    <li class="treeview" jsf:rendered="#{sec:areAllGranted('ACCESS_OPERATION')}">
+                        <a><i class="fa fa-exchange"></i><span>Operations</span> <i class="fa fa-angle-left pull-right"></i></a>
+                        <ul class="treeview-menu">              
+
+                            <li ><h:commandLink action="comptesouscription" > <i class="fa fa-circle-o"></i> Souscription  </h:commandLink></li>                   
+                            <li ><h:commandLink action="#" > <i class="fa fa-circle-o"></i> Renouvellement  </h:commandLink></li>   
+                            <li ><h:commandLink action="#" > <i class="fa fa-circle-o"></i> Traitement compagnie  </h:commandLink></li> 
+                            <li><h:commandLink action="#" >  <i class="fa fa-circle-o"></i> Etat sur les Opérations </h:commandLink></li>
+                           
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+    </h:form>
+</ui:composition>

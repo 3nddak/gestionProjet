@@ -1,0 +1,419 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:composition>
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['demande.gestion']}"></p:outputLabel></legend>
+            </fieldset>
+           
+                <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4 " id="espace_message">
+                    <div class="panel">
+                        <div class="panel-heading bg-purple3">
+
+                            <p:panel rendered="false" toggleable="true" collapsed="true" header="#{msg['recherche.titre']}">
+                                <h:form  class="form-horizontal" id="recherche">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <h:outputLabel for="pays"  value="Pays" class="pull-left text-left"/>    
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{espaceCompagnieBean.paysSelected}" >                                          
+                                                    <f:selectItem itemLabel="Tous les pays" itemDisabled="false" />
+                                                    <f:selectItems var="pays" value="#{espaceCompagnieBean.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <h:outputLabel for="compagnie"  value="Compagnie" class="pull-left text-left"/>                              
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <h:selectOneMenu id="compagnie" value="#{espaceCompagnieBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                                    <f:selectItem itemLabel="Tous les Compagnies" itemDisabled="false" />
+                                                    <f:selectItems value="#{espaceCompagnieBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                                                </h:selectOneMenu>
+                                            </div> 
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <h:outputLabel for="courtier"  value="Courtier"/>   
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <h:selectOneMenu id="courtier"  converter="entityConverter" value="#{espaceCompagnieBean.courtierSelected}" class="form-control" >                                          
+                                                    <f:selectItem itemLabel="Type tiers" itemDisabled="false" />
+                                                    <f:selectItems var="courtier" value="#{espaceCompagnieBean.listCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <h:outputLabel for="pv"  value="Point de vente" class="pull-left text-left"/>                          
+                                            </div>  
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <h:selectOneMenu id="pv"  value="#{espaceCompagnieBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                                    <f:selectItem itemLabel="Point de vente" itemDisabled="false" />
+                                                    <f:selectItems var="pv" value="#{espaceCompagnieBean.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <h:outputLabel for="gt"  value="Guichet" class="pull-left text-left"/>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <h:selectOneMenu id="gt"  value="#{espaceCompagnieBean.guichetSelected}"  converter="entityConverter" class="form-control" >                                          
+                                                    <f:selectItem itemLabel="Guichets" itemDisabled="false" />
+                                                    <f:selectItems var="guichet" value="#{espaceCompagnieBean.listGuichet}" itemLabel="#{guichet.designation}" itemValue="#{guichet}" />            
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <p:outputLabel for="mask" value="DATE DEBUT" />
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <p:calendar id="mask"  pattern="dd-MM-yyyy" class="form-control" mask="true" value="#{espaceCompagnieBean.dateDebut}" >
+                                                </p:calendar>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <p:outputLabel for="mask" value="DATE FIN" />
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <p:calendar id="mask2"   pattern="dd-MM-yyyy" class="form-control" mask="true" value="#{espaceCompagnieBean.dateFin}">
+                                                </p:calendar>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <p:commandButton value="#{msg['btn.rechercher']}" update="message1:facture,@form" class="btn-imprimer btn btn-xs pull-right" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{espaceCompagnieBean.trier()}"  />
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </h:form>
+                            </p:panel>
+
+                        </div>
+                        <h:form  class="form-horizontal" id="message1">
+                     
+                                <div class="panel-heading bg-purple3"> 
+                                    <p:outputLabel class="police_label" value="Messages"></p:outputLabel>
+                                </div>
+                                <p:dataScroller id="facture" value="#{espaceCompagnieBean.listAssuranceNonTraitees}" var="facture" chunkSize="10" style="padding:0px;margin: 0px; " class="list-group">
+                                    <div class="table-responsive">
+                                        <f:facet name="loader">
+                                            <p:commandButton type="button" class="btn btn-primary" value="Plus" style="color: white;background:#337ab7; " icon="fa fa-triangle" />
+                                        </f:facet>
+                                        <p:fieldset style="margin-bottom:5px"> 
+                                            <p:commandLink class="col-lg-12 mataille list-group-item lien_liste" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  style="text-align:left; margin: 0px;padding:0px " action="#{espaceCompagnieBean.detailFacture()}" update="detail,text,recherche" >
+                                                <p:outputLabel class="col-md-12"  value="#{facture.dateDuPret}" />
+                                                <p:graphicImage class="img-circle col-md-3" library="img" name="/mail.png" width="20"/>
+                                                <p:outputLabel class="col-md-9" value="#{facture.courtier.abbreviation}"/>
+                                                <f:setPropertyActionListener value="#{facture}" target="#{espaceCompagnieBean.selectedAssurance}" />  
+                                            </p:commandLink>
+                                        </p:fieldset> 
+                                    </div>
+                                </p:dataScroller>
+                            
+                        </h:form>
+                        <h:form id="f">
+                            <p:remoteCommand name="newProposition"    process="f" partialSubmit="true"  actionListener ="#{espaceCompagnieBean.init()}"  update="message1:facture" autoRun="false"/> 
+                        </h:form>
+
+
+                    </div>
+
+                </div>
+                <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8 well-lg" id="espace_detail">
+                    <div class="panel">
+                        <h:form  class="form-horizontal " id="detail">
+                            <div class="panel-heading bg-purple3">  
+                                <h:outputLabel class="police_label" value="SOCIETE DE COURTAGE" ></h:outputLabel>
+                            </div>
+
+                            <div class="panel-body"> 
+
+                                <div class="row">
+
+                                    <p:fieldset  legend="VOIR LES REFERENCES DU CLIENT" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+
+                                        <p:panelGrid columns="6" class="table">
+                                            <h:outputLabel value="Souscripteur"/>
+                                            <h:outputText value="#{espaceCompagnieBean.client.nom} #{espaceCompagnieBean.client.prenom}"/>
+                                            <h:outputLabel value="Date de naissance"/>
+                                            <h:outputText value="#{espaceCompagnieBean.client.dateNaissance}"/>
+                                            <h:outputLabel value="Téléphone"/>
+                                            <h:outputText  value="#{espaceCompagnieBean.client.telephoneMobile}"/>
+                                            <h:outputLabel value="Adresse"/>
+                                            <h:outputText  value="#{espaceCompagnieBean.client.adresse}"/>
+                                        </p:panelGrid>
+
+                                    </p:fieldset>
+                                    <p:fieldset  legend="VOIR LE TYPE D'OPERATIONS" toggleable="true" collapsed="false"  toggleSpeed="500"  style="margin-bottom:20px">                                              
+                                        <p:panelGrid columns="6" class="table">
+                                            <p:outputLabel for="datedebut" value="Date debut :"/>
+                                            <h:outputText id="datedebut" value="#{espaceCompagnieBean.selectedAssurance.dateDuPret}"/>
+                                            <p:outputLabel for="periode" value="Periode (Mois) :"/>
+                                            <h:outputText id="periode" value="#{espaceCompagnieBean.selectedAssurance.dureePret} "/>
+                                            <p:outputLabel for="mp" value="Montant du pret :"/>
+                                            <h:outputText id="mp" value="#{espaceCompagnieBean.selectedAssurance.montantPret}">
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                            <p:outputLabel for="typedepret" value="Type de prêt :"/>
+                                            <h:outputText id="typedepret" value="#{espaceCompagnieBean.selectedAssurance.typeDePret}"/>
+                                            <p:outputLabel for="tauxdepret" value="Taux du prêt :"/>
+                                            <h:outputText id="tauxdepret" value="#{espaceCompagnieBean.selectedAssurance.tauxDuPret}"/>
+                                        </p:panelGrid>
+
+                                    </p:fieldset>
+                                    <p:fieldset  legend="Réponses aux Questions" toggleable="true" collapsed="false"  toggleSpeed="500"  style="margin-bottom:20px">                                              
+                                        <!--fieldset><legend class="titre_entete text-left text-capitalize small" ></legend>
+                                            <c:forEach items="#{espaceCompagnieBean.selectedAssurance.listQuestionResponseAsVie}" var="q" >
+                                                <p:outputPanel id="ll#{espaceCompagnieBean.selectedAssurance.client.hashCode()}#{q.id()}" rendered="#{q.questionAsVie.booleanQuestion}">
+
+                                                    <h:outputLabel id="l#{espaceCompagnieBean.selectedAssurance.client.hashCode()}#{q.id()}" >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                                    <p:outputLabel value="" ><i class="#{q.response} fa fa-check text-green"/><i class="#{!q.response} text-red fa fa-close"/></p:outputLabel>
+                                                    
+                                                    <p:outputLabel id="c#{espaceCompagnieBean.selectedAssurance.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" value="#{q.questionSecondaire()}" />
+
+                                                    <p:outputLabel id="d#{espaceCompagnieBean.selectedAssurance.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" class="form-control" value="#{q.precisions}" />
+                                                </p:outputPanel>
+
+                                                <p:outputPanel rendered="#{!q.questionAsVie.booleanQuestion}">
+                                                    <h:outputLabel >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                                    <p:outputLabel  class="form-control" value="#{q.precisions}" />
+                                                </p:outputPanel>
+
+                                            </c:forEach>
+                                        </fieldset-->
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-condensed table-striped">
+                                                <thead class="text-center bg-gray text-uppercase text-purple text-bold ">
+                                                    <tr>
+                                                        <td class="">Numéro</td>
+                                                        <td class="col-lg-4 col-md-4 col-sm-6 col-xs-12">Questions 1</td>
+                                                        <td class="col-lg-2 col-md-2 col-sm-6 col-xs-12">Réponses 1</td> 
+                                                        <td class="col-lg-4 col-md-4 col-sm-6 col-xs-12">Questions 2</td>
+                                                        <td class="col-lg-2 col-md-2 col-sm-6 col-xs-12">Réponses 2</td> 
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                       <c:forEach items="#{espaceCompagnieBean.selectedAssurance.listQuestionResponseAsVie}" var="q" >
+                                                        <tr jsf:id="ll#{espaceCompagnieBean.selectedAssurance.client.hashCode()}#{q.id()}" jsf:rendered="#{q.questionAsVie.booleanQuestion}">
+                                                            <td class="">
+                                                                <h:outputLabel id="n#{espaceCompagnieBean.selectedAssurance.client.hashCode()}#{q.id()}" >#{q.questionAsVie.getNumber()}</h:outputLabel>
+                                                            </td>
+                                                            <td class="">
+                                                                <h:outputLabel id="l#{espaceCompagnieBean.selectedAssurance.client.hashCode()}#{q.id()}" >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <p:outputLabel value="" ><i class="#{q.response} fa fa-check text-green"/><i class="#{!q.response} text-red fa fa-close"/></p:outputLabel>
+                                                            </td>
+                                                            <td class="">
+                                                                <p:outputLabel id="c#{espaceCompagnieBean.selectedAssurance.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" value="#{q.questionSecondaire()}" />
+                                                            </td>
+                                                            <td>
+                                                                <p:outputLabel id="d#{espaceCompagnieBean.selectedAssurance.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" class="form-control" value="#{q.precisions}" />
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr jsf:rendered="#{!q.questionAsVie.booleanQuestion}">
+                                                            <td> 
+                                                                <h:outputLabel >#{q.questionAsVie.getNumber()}</h:outputLabel>
+                                                            </td>
+                                                            <td> 
+                                                                <h:outputLabel >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                                            </td> 
+                                                            <td class="text-center">
+                                                                <p:outputLabel  class="form-control" value="#{q.precisions}" />
+                                                            </td> 
+                                                            <td></td> 
+                                                            <td></td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+
+                                            </table>
+                                        </div> 
+
+                                    </p:fieldset>
+                                    <p:fieldset  legend="VOIR LES CONDITIONS GENERALES " toggleable="true" collapsed="false"  toggleSpeed="500"  style="margin-bottom:20px">                                              
+                                        <p:dataTable class="table_label table-responsive" var="condition" id="cd" rows="10" value="#{espaceCompagnieBean.selectedAssurance.listConditionGenerale}"
+                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     paginator="true" paginatorPosition="bottom" 
+                                                     rowsPerPageTemplate="10,20,30,40,50"  emptyMessage="#{msg[tableau.vide]}" >
+                                            <p:column headerText="Condition Generale">
+                                                <p:outputLabel value="#{condition.designation}" />
+                                            </p:column>
+                                            <p:column headerText="verification">
+                                                <p:outputLabel value="" ><i class="#{condition.isVerifier} fa fa-check text-green"/><i class="#{!condition.isVerifier} text-red fa fa-close"/></p:outputLabel>
+                                            </p:column>
+                                        </p:dataTable> 
+
+                                    </p:fieldset>
+
+                                </div> 
+
+                            </div>
+
+                            <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                                <h:form>
+                                    <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{factureCourtierBean.comptabilite()}" />
+                                    <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </h:form>
+                            </p:confirmDialog>
+                        </h:form>
+                        <h:form id="text" class="form-horizontal">
+                            <p:panel id="calculTotal">
+                                <!--p:panelGrid columns="2"  layout="grid"-->
+                                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12" >
+                                    <div class="panel panel-border-none" >
+                                        <p:outputLabel class="form-control bg-purple3" value="Prime nette:" for="ps"></p:outputLabel>
+                                    </div>
+                                    <div class="panel panel-border-none" >
+                                        <p:outputLabel  class="form-control bg-purple3" value="Accessoire:" for="acc"/>
+                                    </div>
+                                    <div class="panel panel-border-none" >
+                                        <p:outputLabel  class="form-control bg-purple3" value="Reduction:" for="red"/>
+                                    </div>
+                                    <div class="panel panel-border-none" >
+                                        <p:outputLabel  class="form-control bg-purple3" value="Majoration:" for="maj"/>
+                                    </div>
+                                    <div class="panel panel-border-none" >
+                                        <p:outputLabel  class="form-control bg-purple3" value="Remise:" for="accrr"/>
+                                    </div>
+                                    <div class="panel panel-border-none" >
+                                        <p:outputLabel class="form-control bg-purple3" value=" Taxe:" for="tes"/>
+                                    </div>
+                                    <div class="panel panel-border-none" >
+                                        <p:outputLabel class="form-control bg-purple3" value="Prime TTC:" for="pttc"/>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12" >
+                                    <div class="panel panel-border-none" >
+                                        <p:outputLabel id="ps" class="text-right form-control"  value="#{espaceCompagnieBean.selectedAssurance.prixNette}"> 
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:outputLabel>
+                                    </div>
+                                    <div class="panel panel-border-none" >
+                                        <p:inputText id="acc" class="text-right form-control" value="#{espaceCompagnieBean.selectedAssurance.accessoire}">
+                                            <p:ajax event="keyup" update="pttc"  />
+                                            <pe:keyFilter  mask="num" />
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:inputText>
+                                    </div>
+                                    <div class="panel panel-border-none" >
+                                        <div class="row panel-border-none">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <p:inputText class="form-control" id="red" value="#{espaceCompagnieBean.selectedAssurance.reduction}">
+                                                    <p:ajax event="keyup" update="pttc,redx,tes" />
+                                                    <pe:keyFilter  mask="num"  />
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </p:inputText>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <h:outputText class="form-control" id="redx"  value="#{espaceCompagnieBean.selectedAssurance.valeurReduction()}" >
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </h:outputText>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <p:selectBooleanCheckbox  itemLabel="En%"  class="pull-right"  id="somm" value="#{espaceCompagnieBean.selectedAssurance.reductionEnPourcentage}" >
+                                                    <p:ajax update="tes,redx,pttc" />
+                                                </p:selectBooleanCheckbox>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel panel-border-none" >
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <p:inputText id="maj" class="form-control" value="#{espaceCompagnieBean.selectedAssurance.majoration}">
+                                                    <p:ajax event="keyup" update="pttc,redl,tes" />
+                                                    <pe:keyFilter  mask="num"  />
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </p:inputText>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <h:outputText id="redl" class="form-control" value="#{espaceCompagnieBean.selectedAssurance.valeurMajoration()}" 
+                                                              >
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </h:outputText>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <p:selectBooleanCheckbox class="pull-right" id="sommm" itemLabel="En%" value="#{espaceCompagnieBean.selectedAssurance.majorationEnPourcentage}" 
+                                                                         >
+                                                    <p:ajax update="redl,tes,pttc" />
+                                                </p:selectBooleanCheckbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-border-none" >
+                                        <p:inputText id="accrr" class="text-right form-control" value="#{espaceCompagnieBean.selectedAssurance.remise}">
+                                            <p:ajax event="keyup" update="pttc"  />
+                                            <pe:keyFilter  mask="num" />
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:inputText>
+                                    </div>
+                                    <div class="panel panel-border-none" >
+                                        <p:inputText id="tes" class="text-right form-control" value="#{espaceCompagnieBean.selectedAssurance.taxe}">
+                                            <p:ajax event="keyup" update="pttc"  />
+                                            <pe:keyFilter  mask="num" />
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:inputText>
+                                    </div>
+                                    <div class="panel panel-border-none" >
+                                        <p:outputLabel id="pttc" class="text-right form-control"  value="#{espaceCompagnieBean.selectedAssurance.primeTTC}">
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:outputLabel>
+                                    </div>
+                                </div>
+                                <div class="btn-toolbar" >
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <p:commandButton rendered="#{(espaceCompagnieBean.selectedAssurance.idFacture==null)?false:true}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" value="Rejeter"  action="#{espaceCompagnieBean.annuler()}" class="btn-danger btn"  icon="fa fa-trash" update="@form,message1,detail,vvv" />
+                                        <p:commandButton rendered="#{(espaceCompagnieBean.selectedAssurance.idFacture==null)?false:true}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  class="btn-success btn pull-right" icon="fa fa-shopping-card" value="Valider" action="#{espaceCompagnieBean.enregistrer()}" update="@form,message1,detail,vvv">  
+                                            <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert"  />
+                                        </p:commandButton>
+                                    </div>
+                                    <p:growl for="somekey" id="vvv"  />
+                                </div>
+                            </p:panel>
+                        </h:form>
+
+                        <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                            <h:form>
+                                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  />
+                                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </h:form>
+                        </p:confirmDialog>
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                            <h:graphicImage library="images" name="ajax-loader.gif" />
+                        </p:dialog>
+                    </div>
+                </div>
+           
+        </div>
+
+    </ui:composition> 
+</html>
+

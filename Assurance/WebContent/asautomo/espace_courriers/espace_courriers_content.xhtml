@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+
+            <div class="panel">
+                <h:form  id="formliste">
+                    <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>   
+                    <div class="panel-heading"> 
+
+                        <fieldset>
+                            <legend class="police_label text-center"><p:outputLabel value="#{allMessageBean.titre}"></p:outputLabel></legend>
+
+                        </fieldset>
+
+                    </div>
+                    <br/> 
+                    <p:panel id="t6" header="Recherche" toggleable="true" collapsed="true" >
+                        <div class="form-group">
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pays"  value="Pays" class="pull-left text-left"/>                              
+                                <h:selectOneMenu id="pays"   class="form-control"   converter="entityConverter" value="#{allMessageBean.listerParametreByUserService.paysSelect}" >                                          
+                                    <f:selectItem itemLabel="Tous les pays" itemDisabled="false" />
+                                    <f:selectItems var="pays" value="#{allMessageBean.listerParametreByUserService.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                                    <p:ajax listener="#{allMessageBean.listerParametreByUserService.trierPrametresByPays()}" update="t6" />
+                                </h:selectOneMenu>
+
+                            </div>
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="compagnie"  value="Compagnie" class="pull-left text-left"/>                              
+                                <h:selectOneMenu id="compagnie" value="#{allMessageBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                    <f:selectItem itemLabel="Tous les Compagnies" itemDisabled="false" />
+                                    <f:selectItems value="#{allMessageBean.listerParametreByUserService.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                                </h:selectOneMenu>
+
+
+                            </div>
+                        </div>
+                        <p:spacer/>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="courtier"  value="Courtier" class="pull-left text-left"/>                               
+                                <h:selectOneMenu id="courtier"  converter="entityConverter" value="#{allMessageBean.courtierSelected}" class="form-control" >                                          
+                                    <f:selectItem itemLabel="Type tiers" itemDisabled="false" />
+                                    <f:selectItems var="courtier" value="#{allMessageBean.listerParametreByUserService.listCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                                </h:selectOneMenu>
+
+
+                            </div>
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pv"  value="Point de vente" class="pull-left text-left"/>                          
+                                <h:selectOneMenu id="pv"  value="#{allMessageBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                    <f:selectItem itemLabel="Point de vente" itemDisabled="false" />
+                                    <f:selectItems var="pv" value="#{allMessageBean.listerParametreByUserService.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                                </h:selectOneMenu>
+
+
+                            </div>
+                        </div>
+                        <p:spacer/>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="gt"  value="Guichet" class="pull-left text-left"/>                            
+                                <h:selectOneMenu id="gt"  value="#{allMessageBean.guichetSelected}"  converter="entityConverter" class="form-control" >                                          
+                                    <f:selectItem itemLabel="Guichets" itemDisabled="false" />
+                                    <f:selectItems var="guichet" value="#{allMessageBean.listerParametreByUserService.listGuichet}" itemLabel="#{guichet.designation}" itemValue="#{guichet}" />            
+
+                                </h:selectOneMenu>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+
+                                    <p:outputLabel for="mask" value="DATE DEBUT:" />
+                                    <p:calendar id="mask"  pattern="dd-MM-yyyy" mask="true" value="#{allMessageBean.dateDebut}" >
+                                    </p:calendar>
+                                </div>
+
+                                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                    <p:outputLabel for="mask" value="DATE FIN:" />
+                                    <p:calendar id="mask2"   pattern="dd-MM-yyyy" mask="true" value="#{allMessageBean.dateFin}">
+                                    </p:calendar>
+                                </div>
+                            </div>
+                        </div>
+                        <p:spacer/>
+                        <div class="form-group">
+                            <p:commandButton value="Rechercher" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{allMessageBean.rechercheAvance()}"  update="facture" />
+                        </div>
+                    </p:panel>
+                    <p:panel  header="#{allMessageBean.titre}" toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                        <div class="table-responsive">
+                            <p:dataTable id="facture" editable="true" editMode="cell"
+                                         resizableColumns="true"
+                                         class="table table-condensed" 
+                                         paginator="true" rows="20" emptyMessage="#{msg['tableau.vide']}"  paginatorPosition="bottom" value="#{allMessageBean.listFacture}" var="facture"    style="padding:0px;margin: 0px; ">
+
+                                <p:column headerText="Numéro Attestation" filterBy="#{facture.pin}" class="col-lg-1 col-md-1">
+                                   <p:outputLabel id="K" value="#{facture.pin}" />
+                                </p:column>
+                                <p:column headerText="Numero Police"  class="col-md-1 col-lg-1"  filterBy="#{facture.objetVoiture.numeroPolice}"  >
+                                    <h:outputText rendered="#{facture.affichePolice}" value="#{facture.objetVoiture.numeroPolice}" />
+                                </p:column>
+                                <p:column headerText="Date debut" class="col-lg-1 col-md-1"   >
+                                    <h:outputText value="#{facture.formatDate(facture.dateDebut)}" />
+                                </p:column>
+                                <p:column headerText="date fin"  class="col-lg-1 col-md-1"  >
+                                    <h:outputText value="#{facture.formatDate(facture.dateFin)}" />
+                                </p:column>
+                                <p:column class="col-md-2 col-lg-2"  headerText="Code transaction " filterBy="#{facture.codeFactureCourtier}">
+                                    <h:outputText value="#{facture.codeFactureCourtier}" rendered="#{facture.afficheCode}"/>
+                                </p:column>
+
+                                <p:column headerText="Compagnie"   filterBy="#{facture.compagnie.abbreviation}" class="col-lg-1 col-md-1">
+                                    <h:outputText value="#{facture.compagnie.abbreviation}" />
+                                </p:column>
+                                <p:column headerText="Courtier"  filterBy="#{facture.courtier.abbreviation}" class="col-lg-1 col-md-1">
+                                    <h:outputText value="#{facture.courtier.abbreviation}" />
+                                </p:column>
+
+                                <p:column  headerText="Nom du client"  filterBy="#{facture.objetVoiture.client.nom}" class="col-lg-1 col-md-1"  >
+                                    <h:outputText value="#{facture.objetVoiture.client.nom}" />
+                                </p:column>
+
+                                <p:column  headerText="categorie"  filterBy="#{facture.objetVoiture.categorie.libelle}" class="col-lg-1 col-md-1" > 
+                                    <h:outputText value="#{facture.objetVoiture.categorie.libelle}" />
+                                </p:column>
+
+                                <p:column filterBy="#{facture.primeTtc}" headerText="PrimeTTC" class="col-lg-1 col-md-1"  >
+                                    <p:outputLabel value="#{facture.arrondireFormat2(facture.primeTtc)}" />
+                                </p:column>
+                                <p:column headerText="actions" class="col-lg-2 col-md-2"  >
+                                    <div class="btn-toolbar"> 
+
+                                        <p:commandLink   title="Reçu" class=" btn btn-xs btn-imprimer" ajax="false" target="/rapport"   action="#{allMessageBean.doGetA()}" >
+                                            <i class="fa fa-print"/>
+                                            <f:setPropertyActionListener target="#{allMessageBean.factureSelect}" value="#{facture}" />
+                                        </p:commandLink>
+
+                                        <p:commandLink title="détail" class=" btn btn-xs btn-success"  update="detail"  oncomplete="PF('showdetail').show()"  >
+                                            <i class="fa fa-search-plus"/>
+                                            <f:setPropertyActionListener target="#{allMessageBean.factureSelect}" value="#{facture}" />
+                                        </p:commandLink>
+
+                                        <p:commandLink title="Modifier" rendered="#{allMessageBean.render}"  action="#{factureCompagnieBean.selectFacture()}" class="btn-xs btn btn-primary"  update="dett"  oncomplete="PF('modifier').show()"  >
+                                            <f:setPropertyActionListener target="#{factureCompagnieBean.idFct}" value="#{facture.idFacture}" />
+                                            <i class="fa fa-edit"/>
+                                        </p:commandLink>
+
+                                        <p:commandLink disabled="#{!facture.numAttestationAvailable}" title="#{msg['btn.email']}" actionListener="#{allMessageBean.initt()}" class=" btn-xs btn btn-imprimer" oncomplete="PF('mailTo').show()"  update="mailto" >
+                                            <i class="fa fa-at"/>
+                                            <f:setPropertyActionListener target="#{allMessageBean.factureSelect}" value="#{facture}" />
+                                        </p:commandLink>
+                                         
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </p:panel>
+
+                </h:form>
+                <p:dialog widgetVar="mailTo" header="Envoyer un E-mail" resizable="false">
+                    <h:form id="mailto" class="form-horizontal">
+                        <div class="table-responsive">
+                            <p:growl for="somekey" id="jjf"/>
+
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="destinataire" value="#{msg['message.destinataire']}" class="col-md-3 col-sm-4 control-label"/>
+                            <div class="col-md-9 col-sm-8">
+                                <h:inputText id="destinataire" value="#{allMessageBean.adresseRecepteur}" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="objet" value="#{msg['message.objet']}" class="col-md-3 col-sm-4"/>
+                            <div class="col-md-9 col-sm-8">
+                                <p:inputText id="objet" value="#{allMessageBean.objet}" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="message" value="#{msg['message.titre']} " class="col-md-3 col-sm-4 control-label"/>
+                            <div class="col-md-9 col-sm-8">
+                                <p:inputTextarea id="message" value="#{allMessageBean.message}" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:commandButton   class="btn-danger btn btn-xs pull-left" icon="fa fa-close" oncomplete="PF('mailTo').hide()" value="#{msg['btn.annuller']}"/> 
+                                <p:commandButton update="mailto:jjf" timeout="30000"   icon="fa fa-send" onstart="PF('mailTo').hide()"  actionListener="#{allMessageBean.sendEmail()}" class="btn-success btn btn-xs pull-right"  value="#{msg['btn.envoyer']}"/> 
+                            </div>
+                        </div>
+
+                    </h:form>   
+                </p:dialog>
+                <p:dialog id="dett" widgetVar="modifier" modal="true" width="800" height="400" resizable="false" >
+                    <ui:include src="modification.xhtml"/>
+                </p:dialog>
+                <p:dialog widgetVar="showdetail" modal="true" width="800" height="400" id="sss" resizable="false" >
+                    <ui:include src="detail.xhtml"/>
+                </p:dialog>
+                <p:dialog widgetVar="editNumAttestation" modal="true" width="250" height="150" id="editPin" resizable="false" >
+                    <ui:include src="modification_numero.xhtml"/>
+                </p:dialog>
+
+            </div>
+
+
+        </div>
+
+
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+
+
+
+    </ui:composition> 
+
+</html>
+

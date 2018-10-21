@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+ <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <fieldset> 
+            <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['control.contrat.transfert']}"></p:outputLabel></legend>
+        </fieldset>
+        <div id="liste" class="row">
+                        
+               <div class="panel">
+                    <h:form  id="formliste">
+                        <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>
+                        <div class="panel-body">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12 ">
+                                    <h:outputLabel  for="filtreR" value="#{msg['control.etat']}" class="pull-left " />
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-12 ">
+                                    <h:selectOneRadio   id="filtreR" value="#{controlBean.etatReception}" class="pull-left" >
+                                        <f:selectItem  itemLabel="#{msg['control.etat.nontransfere']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{msg['control.etat.transfere']}" itemValue="1" />
+                                        <p:ajax listener="#{controlBean.filtreTransfert()}" update="facture,msgs" />
+                                    </h:selectOneRadio> 
+                                </div>
+                            </div>
+                            <!--p:spacer width="90" /-->
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                            <p:outputPanel id="devise">
+                                <p:fieldset legend="#{msg['control.contrat.liste']}" >
+
+                                    <p:dataTable id="facture" paginator="true" rowKey="#{facture.idFacture}" rows="4" emptyMessage="#{msg['tableau.vide']}"  paginatorPosition="bottom" value="#{controlBean.allFacture}" var="facture" scrollable="true"   style="padding:0px;margin: 0px; ">
+
+                                        <p:column headerText="#{msg['tableau.numeropolice']}"  filterBy="#{facture.objetVoiture.numeroPolice}" class="col-md-2" >
+                                            <h:outputText value="#{facture.objetVoiture.numeroPolice}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['control.transaction.courtier']}" filterBy="#{facture.codeFactureCourtier}" class="col-md-2" >
+                                            <h:outputText value="#{facture.codeFactureCourtier}" />
+                                        </p:column>
+
+                                        <p:column headerText="#{msg['control.pdr.choisi']}"   filterBy="#{facture.pointDeRetrait.libelle}" class="col-md-2">
+                                            <h:outputText value="#{facture.pointDeRetrait.libelle}" />
+                                        </p:column>
+                                        <p:column  headerText="#{msg['control.client.nom']}"  filterBy="#{facture.objetVoiture.client.nom}" class="col-md-2"  >
+                                            <h:outputText value="#{facture.objetVoiture.client.nom}" />
+                                        </p:column>
+
+                                        <p:column  headerText="#{msg['control.categorie']}"  filterBy="#{facture.objetVoiture.categorie.libelle}" > 
+                                            <h:outputText value="#{facture.objetVoiture.categorie.libelle}" />
+                                        </p:column>
+
+                                        <p:column filterBy="#{facture.primeTtc}" headerText="#{msg['control.prime.ttc']}"  >
+                                            <p:outputLabel value="#{facture.primeTtc}" />
+                                        </p:column>
+                                        <p:column headerText="Actions">
+                                            <p:commandLink rendered="#{controlBean.renderButtonForAdd}" title="#{msg['control.pdr.envoyer']}" update="ajout,dispatcher" action="#{controlBean.loadPointRetraitForSave}" class=" btn-sm btn-sm sm glyphicon glyphicon-forward" oncomplete="PF('ajout').show()"  >
+                                                <f:setPropertyActionListener value="#{facture}" target="#{controlBean.factureToForward}" />
+                                                <p:ajax listener="#{controlBean.filtrePointRetrait}" update="ajout" />
+                                            </p:commandLink>
+                                            <p:commandLink rendered="#{controlBean.renderButtonForUpdate}" title="#{msg['control.pdr.changer']}" update="modifier,dispatcherUpdate" action="#{controlBean.loadPointRetraitForUpdate}" class=" btn-sm btn-sm sm glyphicon glyphicon-edit" oncomplete="PF('modifier').show()"  >
+                                                <f:setPropertyActionListener value="#{facture}" target="#{controlBean.factureToForwardUpdate}" />
+                                                <f:setPropertyActionListener value="#{facture.pointDeRetrait}" target="#{controlBean.pointDeRetraitToUseForUpdate}" />
+                                                <p:ajax listener="#{controlBean.filtrePointRetrait}" update="modifier,dispatcherUpdate" />
+                                            </p:commandLink>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:fieldset>
+                            </p:outputPanel>
+                                </div>
+                        </div>
+                    </h:form>
+
+                    <p:dialog  header="Changement de point de retrait" showEffect="fade"  widgetVar="modifier" modal="true" width="800" minHeight="500" resizable="false">
+                        <ui:include src="control_modifier.xhtml"/>
+                    </p:dialog>
+
+                    <p:dialog  header="Affectation" showEffect="fade"  widgetVar="ajout" modal="true" width="800" minHeight="500" resizable="false">
+                        <ui:include src="control_ajout.xhtml"/>
+                    </p:dialog>
+                    <h:form>
+
+                        <p:confirmDialog id="confirmation" message="#{msg['supprimer.message']}"
+                                         header="#{msg['titre.operation.suppression']}" severity="alert" 
+                                         widgetVar="supprimer">
+
+
+                            <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                            <p:commandButton value="#{msg['supprimer.oui']}"    oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+                        </p:confirmDialog>
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+
+    </ui:composition> 
+
+</html>
+

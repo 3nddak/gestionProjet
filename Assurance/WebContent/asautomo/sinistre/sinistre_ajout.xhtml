@@ -1,0 +1,88 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      >
+    <ui:composition>
+         <div class="panel">
+              <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+           
+                <div class="panel-body">
+                    <div class="form-group">
+                        <h:outputLabel for="dti"  value="#{msg['sinistre.dateIncident']}" class=""/>                              
+                        <p:calendar id="dti" class="form-control" requiredMessage="#{msg['sinistre.dateIncident.requiredMessage']}" required="=true" value="#{sinistreAsAutoBean.sinistreAsAuto.dateIncident}" pattern="dd/MM/yyyy" mindate="#{sinistreAsAutoBean.dateMin}" maxdate="#{sinistreAsAutoBean.dateMax}" mask="true"/>
+                        <p:message for="dti" />
+                    </div>
+
+                    <div class="form-group">
+                        <h:outputLabel for="nc"  value="#{msg['sinistre.numeroCompte']}" class=""/>                              
+                        <h:inputText class="form-control" id="nc" value="#{sinistreAsAutoBean.sinistreAsAuto.numeroCompte}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:outputLabel for="msg"  value="#{msg['message.titre']}" class="pull-left text-left"/>                              
+                        <h:inputTextarea  id="msg" class="form-control" value="#{sinistreAsAutoBean.sinistreAsAuto.message}"/>
+                    </div>
+                </div>
+            </div>
+       
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <!--div class="panel"-->
+
+                <div class="panel-body">
+                    <div class="form-group">
+                       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                           <h:outputLabel   value="#{msg['sinistre.declarationSinistre']}" /> 
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <p:fileUpload class="text-purple" sizeLimit="5000" label="#{msg['sinistre.declarationSinistre']}"  value="#{sinistreAsAutoBean.fileDeclarationSinistre}" mode="simple"  allowTypes="/(\.|\/)(pdf)$/"  skinSimple="true"/>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h:outputLabel   value="#{msg['sinistre.photoDegats']}" /> 
+                       </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:fileUpload class=" text-purple" label="#{msg['sinistre.photoDegats']}"  value="#{sinistreAsAutoBean.filePhotoDegat}" mode="simple" allowTypes="/(\.|\/)(pdf)$/" skinSimple="true" />
+                    </div>
+                         </div>
+                    <div class="form-group">
+                       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h:outputLabel   value="#{msg['sinistre.devisOuFacture']}"  class=""/> 
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <p:fileUpload class="text-purple" label="#{msg['sinistre.devisOuFacture']}"  value="#{sinistreAsAutoBean.fileDeviFactureReparation}" allowTypes="/(\.|\/)(pdf)$/" mode="simple" skinSimple="true" />
+                    </div>
+                          </div>
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h:outputLabel   value="#{msg['sinistre.quittance']}"  class=""/> 
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <p:fileUpload class="text-purple" label="#{msg['sinistre.quittance']}"  value="#{sinistreAsAutoBean.fileQuitance}" mode="simple" allowTypes="/(\.|\/)(pdf)$/" skinSimple="true"  />
+                    </div>
+                        </div>
+                        
+                    <div class="form-group">
+                       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h:outputLabel   value="#{msg['sinistre.autres']}"  class=""/> 
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <p:fileUpload class="text-purple" label="#{msg['sinistre.autres']}"  value="#{sinistreAsAutoBean.fileAUtre}" mode="simple" allowTypes="/(\.|\/)(pdf)$/" skinSimple="true" />
+                    </div>
+                        </div>
+                       
+                </div>
+            </div>
+              </div>
+        </div>
+    </ui:composition> 
+
+</html>
+

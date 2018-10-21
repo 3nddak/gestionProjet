@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition>
+      <p:panel header="#{msg['message.client.titre']}"  toggleable="true"  collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel for="nom2hhh" value="#{msg['client.souscripteur']} :"/>
+                <h:outputText id="nom2hhh" value="#{objetBean.clientSelected.nom} #{objetBean.nom}"/>
+                <p:outputLabel for="tel2hhh" value="#{msg['client.tel']} :"/>
+                <h:outputText id="tel2hhh" value="#{objetBean.clientSelected.telephoneMobile} #{objetBean.telephoneMobile}"/>
+                <p:outputLabel for="addresse2hhh" value="#{msg['client.adresse']} :"/>
+                <h:outputText id="addresse2hhh" value="#{objetBean.clientSelected.adresse} #{objetBean.adresse}"/>
+                <p:outputLabel for="daten2hhh" value="#{msg['client.datedenaissance']} :"/>
+                <h:outputText id="daten2hhh" value="#{objetBean.clientSelected.dateNaissance}"/>
+
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['titre.categorieGarantieselectionner']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel for="cat2hhh" value="#{msg['client.souscripteur']} :"/>
+                <h:outputText id="cat2hhh" value="#{objetBean.categorie.libelle}"/>
+
+            </p:panelGrid>
+            <p:outputLabel value="#{msg['titre.garantie']} :"/>
+            <p:dataGrid  value="#{objetBean.selectedObjetGuaranties}" var="guarantie" columns="4" layout="grid" class="table"> 
+
+                #{guarantie.symbole}
+            </p:dataGrid>
+        </p:panel>
+        <p:panel header="#{msg['titre.compagnieCourtierChoisie']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+            <p:panelGrid class="table" columns="2">
+
+                <p:outputLabel for="comp2hhh" value="#{msg['titre.compagnie']} :"/>
+                <h:outputText id="comp2hhh" value="#{objetBean.factureChoisie.compagnie.abbreviation}"/>
+                <p:outputLabel for="cour2hhh" value="#{msg['titre.courtier']} :"/>
+                <h:outputText id="cour2hhh" value="#{objetBean.factureChoisie.courtier.abbreviation}"/>
+
+            </p:panelGrid>
+
+
+        </p:panel>
+    </ui:composition> 
+
+</html>
+

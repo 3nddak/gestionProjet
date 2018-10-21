@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <ui:composition>
+        <div class="panel">
+
+            <div class="panel-body">
+                <ui:include src="infos_logement.xhtml"/>
+                <fieldset><legend class="text-uppercase" ><h:outputLabel class="police_label" value="Information sur le logement"/></legend>
+                    <p:growl id="msgslm" globalOnly="true" showDetail="false"/>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.Typelogement']}"  for="tlogement" class=" " /><h:outputLabel value="*" class="etoile_rouge "  />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                            <h:selectOneMenu id="tlogement" value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.typeLogement}"  class="form-control"
+                                             required="true"  requiredMessage="#{msg['Typelogement.requireMessage']}">
+                                <f:selectItem itemLabel="#{msg['titre.Typelogement']}"/> 
+                                <f:selectItems value="#{souscriptionAsMrhBean.typeLogement}" /> 
+                                <p:ajax event="click" update="logementMessage"/> 
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="tlogement" id="logementMessage"/>
+                        </div>
+                    </div> 
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.TypeOccupant']}"  for="toccupant" class=" " /><h:outputLabel value="*" class="etoile_rouge "  />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                            <h:selectOneMenu id="toccupant" value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.typeOccupant}"  class="form-control"
+                                             required="true"  requiredMessage="#{msg['TypeOccupant.requireMessage']}">
+                                <f:selectItem itemLabel="#{msg['titre.TypeOccupant']}"/> 
+                                <f:selectItems value="#{souscriptionAsMrhBean.typeOccupant}" /> 
+                                <p:ajax event="click" update="occupantMessage"/> 
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="toccupant" id="occupantMessage"/>
+                        </div>
+                    </div> 
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.Typeresidence']}"  for="tresidence" class=" " /><h:outputLabel value="*" class="etoile_rouge "  />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                            <h:selectOneMenu id="tresidence" value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.typeResidence}"  class="form-control"
+                                             required="true"  requiredMessage="#{msg['Typeresidence.requireMessage']}">
+                                <f:selectItem itemLabel="#{msg['titre.Typeresidence']}"/> 
+                                <f:selectItems value="#{souscriptionAsMrhBean.typeResidence}" /> 
+                                <p:ajax event="click" update="residenceMessage"/> 
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="tresidence" id="residenceMessage"/>
+                        </div>
+                    </div> 
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.Typeresidence-temps']}"  for="tresidenceTemps" class=" " /><h:outputLabel value="*" class="etoile_rouge "  />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                            <h:selectOneMenu id="tresidenceTemps" value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.typeResidenceTemps}"  class="form-control"
+                                             required="true"  requiredMessage="#{msg['Typeresidence-temp.requireMessage']}">
+                                <f:selectItem itemLabel="#{msg['titre.Typeresidence-temps']}"/> 
+                                <f:selectItems value="#{souscriptionAsMrhBean.typeResidenceTemps}" /> 
+                                <p:ajax event="click" update="residenceTempsMessage"/> 
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="tresidenceTemps" id="residenceTempsMessage"/>
+                        </div>
+                    </div> 
+
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.adresse']}"  for="adresse" class=" " /><h:outputLabel value="*" class="etoile_rouge " />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.adresse}"  id="adresse" styleClass="form-control" placeholder="#{msg['titre.adresse']}"
+                                         required="true"  requiredMessage="#{msg['adresse.requireMessage']}"  
+                                         >
+                                <p:ajax event="keyup" update="adresseMessage"/>
+
+                            </p:inputText>
+
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="adresse" id="adresseMessage"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.Anneedeconstuction']}"  for="anneC" class=" " /><h:outputLabel value="*" class="etoile_rouge " />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.anneeConstruction}"  id="anneC" styleClass="form-control" placeholder="#{msg['titre.Anneedeconstuction']}"
+                                         required="true"  requiredMessage="#{msg['Anneedeconstuction.requireMessage']}"  
+                                         >
+                                <pe:keyFilter for="anneC" mask="num"/>
+                                <p:ajax event="keyup" update="anneCMessage"/>
+
+                            </p:inputText>
+
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="anneC" id="anneCMessage"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.Codepostal']}"  for="codePo" class=" " /><h:outputLabel value="*" class="etoile_rouge " />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.codePostal}"  id="codePo" styleClass="form-control" placeholder="#{msg['titre.Codepostal']}"
+                                         required="true"  requiredMessage="#{msg['Codepostal.requireMessage']}"  
+                                         >
+
+                                <p:ajax event="keyup" update="codePoMessage"/>
+
+                            </p:inputText>
+
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="codePo" id="codePoMessage"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.Commune']}"  for="commune" class=" " />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.commune}"  id="commune" styleClass="form-control" placeholder="#{msg['titre.Commune']}"
+                                         requiredMessage=" #{msg['Commune.requireMessage']}"  
+                                         >
+
+                                <p:ajax event="keyup" update="communeMessage"/>
+
+                            </p:inputText>
+
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="commune" id="communeMessage"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.ville']}"  for="ville" class=" " /><h:outputLabel value="*" class="etoile_rouge " />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.commune}"  id="ville" styleClass="form-control" placeholder="#{msg['titre.ville']}"
+                                         required="true"  requiredMessage="#{msg['ville.requireMessage']}"  
+                                         >
+
+                                <p:ajax event="keyup" update="villeMessage"/>
+
+                            </p:inputText>
+
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="ville" id="villeMessage"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.Autresoccupants']}"  for="autreO" class=" " />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.autresOccupant}"  id="autreO" styleClass="form-control" placeholder="#{msg['titre.Autresoccupants']}"
+
+                                         >
+
+                                <p:ajax event="keyup" update="autreOMessage"/>
+
+                            </p:inputText>
+
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="autreO" id="autreOMessage"/>
+                        </div>
+                    </div>
+
+                </fieldset>   
+            </div> 
+        </div>
+    </ui:composition>
+</html>

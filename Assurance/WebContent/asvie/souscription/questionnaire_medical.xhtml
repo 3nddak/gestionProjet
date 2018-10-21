@@ -1,0 +1,841 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <ui:include src="infos_client.xhtml"/>
+        <p:outputPanel id="questionnaireForm"  >
+            <!--p:panel header="Répondre aux questions"-->
+            <div class="panel">
+                <div class="panel-heading bg-purple"><h3 class="panel-title">#{msg['titre.reponsesAuxQuestions']}</h3> </div>
+                <div class="panel-body">
+                    <!--div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <td>Numéro</td><td>Question</td> <td>Reponse</td> <td>Précision</td>
+                            </thead>
+                            <tr>
+                                <td>1</td>
+                                <td>Veuillez indiquer votre taille :</td>
+                                <td>
+                                    <p:inputText id="q27" class="form-control" value="#{souscriptionBean.questions.question_27.reponse}" >
+                                        <p:ajax update="" />
+                                    </p:inputText>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Veuillez indiquer votre poids :</td>
+                                <td>
+                                    <p:inputText id="q28" class="form-control" value="#{souscriptionBean.questions.question_28.reponse}" >
+                                        <p:ajax update=""  />
+                                    </p:inputText>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Y a-t-il dans votre famille un antécédent de maladie
+                                    cardiaque, vasculaire, neurologique, psychiatrique, de
+                                    cancer ou de diabète ?</td>
+                                <td><p:selectBooleanCheckbox id="q2"  value="#{souscriptionBean.questions.question_2.question}" >
+                                        <p:ajax update="lq2,rq2"  />
+                                    </p:selectBooleanCheckbox></td>
+                                <td>
+                                    <p:outputLabel id="lq2" value="Précisez :*" class="text-red #{souscriptionBean.questions.question_2.question}"/>
+                                    <p:outputPanel id="rq2" >
+                                        <p:inputText  rendered="#{souscriptionBean.questions.question_2.question}" required="#{souscriptionBean.questions.question_2.question}" class="form-control" value="#{souscriptionBean.questions.question_2.reponse}"  >
+                                            <p:ajax event="keyup" update="lq2" />
+                                            <p:ajax update="lq2" />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Suivez-vous actuellement un traitement ?</td>
+                                <td> <p:selectBooleanCheckbox id="q3"  value="#{souscriptionBean.questions.question_3.question}" >
+                                        <p:ajax update="lq3,rq3"  />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq3" value="Le(s) quel(s) - Depuis quand et pourquoi ?*" class="text-red #{souscriptionBean.questions.question_3.question}"/>
+
+                                    <p:outputPanel id="rq3" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_3.question}" required="#{souscriptionBean.questions.question_3.question}" class="form-control" value="#{souscriptionBean.questions.question_3.reponse}" >
+                                            <p:ajax event="keyup" update="lq3" />
+                                            <p:ajax update="lq3" />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>
+                                    Souffrez-vous ou avez-vous été atteint d’une maladie de
+                                    l’appareil digestif, cardio-vasculaire, respiratoire, du système
+                                    nerveux, de l’appareil génito-urinaire, d’une maladie endocri-
+                                    nienne ou métabolique, neuropsychique, des os et des
+                                    articulations ou de toute autre maladie non citée ci-dessus ?
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q4" value="#{souscriptionBean.questions.question_4.question}" >
+                                        <p:ajax update="lq4,rq4" />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq4" value="Précisez :*" class="text-red #{souscriptionBean.questions.question_4.question}" />
+
+                                    <p:outputPanel id="rq4" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_4.question}" required="#{souscriptionBean.questions.question_4.question}" disabled="false" class="form-control" value="#{souscriptionBean.questions.question_4.reponse}" >
+                                            <p:ajax event="keyup" update="lq4" />
+                                            <p:ajax update="lq4" />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Consommez-vous des boissons alcoolisées quotidiennement (bière, vin, apéritif) ?</td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q5"  value="#{souscriptionBean.questions.question_5.question}" >
+                                        <p:ajax update="lq5,rq5" />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq5" value="Quantités journalières :*" class="text-red #{souscriptionBean.questions.question_5.question}"/>
+
+                                    <p:outputPanel id="rq5" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_5.question}" required="#{souscriptionBean.questions.question_5.question}" class="form-control" value="#{souscriptionBean.questions.question_5.reponse}" >
+                                            <p:ajax event="keyup" update="lq5" />
+                                            <p:ajax update="lq5"/>
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Etes-vous fumeur ?</td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q6"  value="#{souscriptionBean.questions.question_6.question}" >
+                                        <p:ajax update=""  />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Avez-vous été victime d’accident (d’automobile ou autre) ?</td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q7"  value="#{souscriptionBean.questions.question_7.question}" >
+                                        <p:ajax update="lq7,rq7"  />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq7" value="Précisez dates, séquelles,...*" class="text-red #{souscriptionBean.questions.question_7.question}"/>
+
+                                    <p:outputPanel id="rq7" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_7.question}" required="#{souscriptionBean.questions.question_7.question}" class="form-control" value="#{souscriptionBean.questions.question_7.reponse}" >
+                                            <p:ajax event="keyup" update="lq7" />
+                                            <p:ajax update="lq7" />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>
+                                    Etes-vous titulaire d’une pension d’invalidité ?
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q8"  value="#{souscriptionBean.questions.question_8.question}" >
+                                        <p:ajax update="lq8,rq8" />
+                                    </p:selectBooleanCheckbox> 
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq8" value="d’invalidité (préciser à titre civil depuis quand - motif - taux ou militaire).*" class="text-red #{souscriptionBean.questions.question_8.question}"/> 
+                                    <p:outputPanel id="rq8" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_8.question}" required="#{souscriptionBean.questions.question_8.question}" class="form-control" value="#{souscriptionBean.questions.question_8.reponse}" >
+                                            <p:ajax event="keyup" update="lq8" />
+                                            <p:ajax update="lq8"  />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>
+                                    Une procédure de mise en invalidité est-elle ou va-t-elle être engagée ?
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q9"  value="#{souscriptionBean.questions.question_9.question}" >
+                                        <p:ajax update="" />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>Etes-vous actuellement en arrêt de travail ?</td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q10"  value="#{souscriptionBean.questions.question_10.question}" >
+                                        <p:ajax update="lq10,rq10"/>
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq10" value="Depuis quand - motif - date de
+
+                                                   reprise prévisible ?*" class="text-red #{souscriptionBean.questions.question_10.question}"/>
+
+                                    <p:outputPanel id="rq10" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_10.question}" required="#{souscriptionBean.questions.question_10.question}" class="form-control" value="#{souscriptionBean.questions.question_10.reponse}" >
+                                            <p:ajax event="keyup" update="lq10" />
+                                            <p:ajax update="lq10" />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>
+                                    Durant les 5 dernières années avez-vous dû interrompre
+                                    votre travail pendant plus de 3 semaines consécutives ?
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q11"  value="#{souscriptionBean.questions.question_11.question}" >
+                                        <p:ajax update="lq11,rq11" />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq11" value="Quand - durée de chaque arrêt -motif ?*" class="text-red #{souscriptionBean.questions.question_11.question}"/>
+
+                                    <p:outputPanel id="rq11" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_11.question}" required="#{souscriptionBean.questions.question_11.question}" class="form-control" value="#{souscriptionBean.questions.question_11.reponse}" >
+                                            <p:ajax event="keyup" update="lq11" />
+                                            <p:ajax update="lq11" />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>
+                                    Avez-vous fait des séjours en milieu hospitalier ou suivi un
+                                    traitement spécialisé tel que rayons, chimiothérapie,
+                                    immunothérapie ou cobaltothérapie,... ?
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q12"  value="#{souscriptionBean.questions.question_12.question}" >
+                                        <p:ajax update="lq12,rq12" />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq12" value="Dates - durées - motifs -
+
+                                                   résultats ?*" class="text-red #{souscriptionBean.questions.question_12.question}"/>
+
+                                    <p:outputPanel id="rq12" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_12.question}" required="#{souscriptionBean.questions.question_12.question}" class="form-control" value="#{souscriptionBean.questions.question_12.reponse}" >
+                                            <p:ajax event="keyup" update="lq12" />
+                                            <p:ajax update="lq12" />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>
+                                    Avez-vous subi des transfusions de sang, de dérivés sanguins, des examens médicaux (analyse de sang, d’urine,
+                                    électrocardiogramme, radiographie) ?
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q13"  value="#{souscriptionBean.questions.question_13.question}" >
+                                        <p:ajax update="lq13,rq13" />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq13" value="Dates - durées - motifs - résultats ?*" class="text-red #{souscriptionBean.questions.question_13.question}"/>
+
+                                    <p:outputPanel id="rq13" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_13.question}" required="#{souscriptionBean.questions.question_13.question}" class="form-control" value="#{souscriptionBean.questions.question_13.reponse}" >
+                                            <p:ajax event="keyup" update="lq13" />
+                                            <p:ajax update="lq13" />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td>
+                                    Avez-vous subi un test de dépistage des sérologies,
+                                    en particulier pour les virus des hépatites B et C ou pour
+                                    celui de l’immunodéficience humaine (VIH) dont le résultat
+                                    a été positif ?
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q14"  value="#{souscriptionBean.questions.question_14.question}" >
+                                        <p:ajax update="lq14,rq14" />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq14" value="Dates - durées - motifs -
+
+                                                   résultats ?*" class="text-red #{souscriptionBean.questions.question_14.question}"/>
+
+                                    <p:outputPanel id="rq14" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_14.question}" required="#{souscriptionBean.questions.question_14.question}" class="form-control" value="#{souscriptionBean.questions.question_14.reponse}" >
+                                            <p:ajax event="keyup" update="lq14" />
+                                            <p:ajax update="lq14"  />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>16</td>
+                                <td>
+                                    Avez-vous fait des séjours en milieu hospitalier ou suivi un
+                                    traitement spécialisé tel que rayons, chimiothérapie,
+                                    immunothérapie ou cobaltothérapie,... ?
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q15"  value="#{souscriptionBean.questions.question_15.question}" >
+                                        <p:ajax update="lq15,rq15" />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq15" value="Test(s), résultat(s) et date(s) :*" class="text-red #{souscriptionBean.questions.question_15.question}"/>
+
+                                    <p:outputPanel id="rq15" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_15.question}" required="#{souscriptionBean.questions.question_15.question}" class="form-control" value="#{souscriptionBean.questions.question_15.reponse}" >
+                                            <p:ajax event="keyup" update="lq15" />
+                                            <p:ajax update="lq15" />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td>Devez-vous être hospitalisé prochainement ou subir des 
+                                    examens médicaux ?</td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q16"  value="#{souscriptionBean.questions.question_16.question}" >
+                                        <p:ajax update="lq16,rq16" />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq16" value="Quand - pour quel(s) motif(s) ?*" class="text-red #{souscriptionBean.questions.question_16.question}"/>
+
+                                    <p:outputPanel id="rq16" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_16.question}" required="#{souscriptionBean.questions.question_16.question}" class="form-control" value="#{souscriptionBean.questions.question_16.reponse}" >
+                                            <p:ajax event="keyup" update="lq16" />
+                                            <p:ajax update="lq16"/>
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>18</td>
+                                <td>Devez-vous subir une intervention chirurgicale ?</td>
+                                <td> <p:selectBooleanCheckbox id="q17"  value="#{souscriptionBean.questions.question_17.question}" >
+                                        <p:ajax update="lq17,rq17" />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq17" value="Quand - pour quel(s) motif(s) ?*" class="text-red #{souscriptionBean.questions.question_17.question}"/>
+
+                                    <p:outputPanel id="rq17" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_17.question}" required="#{souscriptionBean.questions.question_17.question}" class="form-control" value="#{souscriptionBean.questions.question_17.reponse}" >
+                                            <p:ajax event="keyup" update="lq17" />
+                                            <p:ajax update="lq17" />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>19</td>
+                                <td>Grossesse et accouchement antérieurs, compliqués :</td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q18"  value="#{souscriptionBean.questions.question_18.question}" >
+                                        <p:ajax update="lq18,rq18"/>
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq18" value="Précisez : (dates ....)*" class="text-red #{souscriptionBean.questions.question_18.question}"/>
+
+                                    <p:outputPanel id="rq18" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_18.question}" required="#{souscriptionBean.questions.question_18.question}" class="form-control" value="#{souscriptionBean.questions.question_18.reponse}" >
+                                            <p:ajax event="keyup" update="lq18" />
+                                            <p:ajax update="lq18"/>
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>20</td>
+                                <td> Grossesse en cours :</td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q19"  value="#{souscriptionBean.questions.question_19.question}" >
+                                        <p:ajax update="lq19,rq19"/>
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq19" value="Précisez : (dates ....)*" class="text-red #{souscriptionBean.questions.question_19.question}"/>
+
+                                    <p:outputPanel id="rq19" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_19.question}" required="#{souscriptionBean.questions.question_19.question}" class="form-control" value="#{souscriptionBean.questions.question_19.reponse}" >
+                                            <p:ajax event="keyup" update="lq19" />
+                                            <p:ajax update="lq19" />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>21</td>
+                                <td>Utilisez-vous une contraception orale ?</td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q20"  value="#{souscriptionBean.questions.question_20.question}" >
+                                        <p:ajax update="lq20,rq20"/>
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq20" value="Précisez : (dates ....)*" class="text-red #{souscriptionBean.questions.question_20.question}"/>
+
+                                    <p:outputPanel id="rq20" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_20.question}" required="#{souscriptionBean.questions.question_20.question}" class="form-control" value="#{souscriptionBean.questions.question_20.reponse}" >
+                                            <p:ajax event="keyup" update="lq20" />
+                                            <p:ajax update="lq20"/>
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>22</td>
+                                <td> 
+                                    Etes-vous actuellement titulaire d’assurances de personnes
+                                    ou avez-vous par ailleurs des propositions en cours ?
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q21"  value="#{souscriptionBean.questions.question_21.question}" >
+                                        <p:ajax update="lq21,rq21"/>
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq21" value="Date - Compagnie garanties -montants :*" class="text-red #{souscriptionBean.questions.question_21.question}"/>
+
+                                    <p:outputPanel id="rq21" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_21.question}" required="#{souscriptionBean.questions.question_21.question}" class="form-control" value="#{souscriptionBean.questions.question_21.reponse}" >
+                                            <p:ajax event="keyup" update="lq21" />
+                                            <p:ajax update="lq21"/>
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>23</td>
+                                <td>
+                                    Avez-vous fait l’objet d’un refus, d’un ajournement, d’une
+                                    restriction, ou d’une surprime pour un précédent contrat
+                                    d’assurances de personnes ?
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q22"  value="#{souscriptionBean.questions.question_22.question}" >
+                                        <p:ajax />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>24</td>
+                                <td>Utilisez-vous en tant que pilote ou passager des engins
+                                    aériens (hors lignes commerciales régulières) ?
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q23"  value="#{souscriptionBean.questions.question_23.question}" >
+                                        <p:ajax />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>25</td>
+                                <td>Utilisez-vous un cycle à moteur ?</td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q24"  value="#{souscriptionBean.questions.question_24.question}" >
+                                        <p:ajax update="lq24,rq24" />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq24" value="Type d’engin :*" class="text-red #{souscriptionBean.questions.question_24.question}"/>
+
+                                    <p:outputPanel id="rq24" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_24.question}" required="#{souscriptionBean.questions.question_24.question}" class="form-control" value="#{souscriptionBean.questions.question_24.reponse}" >
+                                            <p:ajax event="keyup" update="lq24" />
+                                            <p:ajax update="lq24"/>
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>26</td>
+                                <td>Si oui, est-ce en tant que moyen de transport uniquement ?</td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q25"  value="#{souscriptionBean.questions.question_25.question}" >
+                                        <p:ajax update="lq25,rq25"/>
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq25" value="Cylindrée -
+                                                   Kilométrage annuel moyen :*" class="text-red #{souscriptionBean.questions.question_25.question}"/>
+
+                                    <p:outputPanel id="rq25" >
+                                        <p:inputText  rendered="#{souscriptionBean.questions.question_25.question}" required="#{souscriptionBean.questions.question_25.question}" class="form-control" value="#{souscriptionBean.questions.question_25.reponse}" >
+                                            <p:ajax event="keyup" update="lq25" />
+                                            <p:ajax update="lq25"/>
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>27</td>
+                                <td>Pratiquez-vous des sports ?</td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="q26"  value="#{souscriptionBean.questions.question_26.question}" >
+                                        <p:ajax update="lq26,rq26"/>
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                                <td>
+                                    <p:outputLabel id="lq26" value="Si oui lesquels ?*" class="text-red #{souscriptionBean.questions.question_26.question}"/>
+
+                                    <p:outputPanel id="rq26" >
+                                        <p:inputText rendered="#{souscriptionBean.questions.question_26.question}" required="#{souscriptionBean.questions.question_26.question}" class="form-control" value="#{souscriptionBean.questions.question_26.reponse}" >
+                                            <p:ajax event="keyup" update="lq26" />
+                                            <p:ajax update="lq26" />
+                                        </p:inputText>
+                                    </p:outputPanel>
+                                </td>
+                            </tr>
+                        </table>
+                    </div-->
+                    <ol class="">
+
+                        <li class="">#{msg['titre.vie.questionUn']} :</li>
+                        <p:inputText id="q27" class="form-control" value="#{souscriptionBean.questions.question_27.reponse}" >
+                            <p:ajax update="" />
+                        </p:inputText>
+                        <li class="">#{msg['titre.vie.questionDeux']} :</li>
+                        <p:inputText id="q28" class="form-control" value="#{souscriptionBean.questions.question_28.reponse}" >
+                            <p:ajax update=""  />
+                        </p:inputText>
+                        <p:separator/>
+                        <li class="">#{msg['titre.vie.questionTrois']}</li>
+                        <p:selectBooleanCheckbox id="q2"  value="#{souscriptionBean.questions.question_2.question}" >
+                            <p:ajax update="lq2,rq2"  />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq2" value="#{msg['titre.vie.questionTrois.preciser']} :*" class="text-red #{souscriptionBean.questions.question_2.question}"/>
+                        <p:outputPanel id="rq2" >
+                            <p:inputText  rendered="#{souscriptionBean.questions.question_2.question}" required="#{souscriptionBean.questions.question_2.question}" class="form-control" value="#{souscriptionBean.questions.question_2.reponse}"  >
+                                <p:ajax event="keyup" update="lq2" />
+                                <p:ajax update="lq2" />
+                            </p:inputText>
+                        </p:outputPanel>
+
+                        <li class="">#{msg['titre.vie.questionQuatre']}</li>
+
+                        <p:selectBooleanCheckbox id="q3"  value="#{souscriptionBean.questions.question_3.question}" >
+                            <p:ajax update="lq3,rq3"  />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq3" value="#{msg['titre.vie.questionQuatre.preciser']}" class="text-red #{souscriptionBean.questions.question_3.question}"/>
+
+                        <p:outputPanel id="rq3" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_3.question}" required="#{souscriptionBean.questions.question_3.question}" class="form-control" value="#{souscriptionBean.questions.question_3.reponse}" >
+                                <p:ajax event="keyup" update="lq3" />
+                                <p:ajax update="lq3" />
+                            </p:inputText>
+                        </p:outputPanel>
+
+                        <li class="">#{msg['titre.vie.questionCinq']}</li>
+                        <p:selectBooleanCheckbox id="q4" value="#{souscriptionBean.questions.question_4.question}" >
+                            <p:ajax update="lq4,rq4" />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq4" value="#{msg['titre.vie.questionCinq.preciser']}" class="text-red #{souscriptionBean.questions.question_4.question}" />
+
+                        <p:outputPanel id="rq4" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_4.question}" required="#{souscriptionBean.questions.question_4.question}" disabled="false" class="form-control" value="#{souscriptionBean.questions.question_4.reponse}" >
+                                <p:ajax event="keyup" update="lq4" />
+                                <p:ajax update="lq4" />
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionSix']}</li>
+
+                        <p:selectBooleanCheckbox id="q5"  value="#{souscriptionBean.questions.question_5.question}" >
+                            <p:ajax update="lq5,rq5" />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq5" value="#{msg['titre.vie.questionSix.preciser']}" class="text-red #{souscriptionBean.questions.question_5.question}"/>
+
+                        <p:outputPanel id="rq5" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_5.question}" required="#{souscriptionBean.questions.question_5.question}" class="form-control" value="#{souscriptionBean.questions.question_5.reponse}" >
+                                <p:ajax event="keyup" update="lq5" />
+                                <p:ajax update="lq5"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionSept']}</li>
+
+                        <p:selectBooleanCheckbox id="q6"  value="#{souscriptionBean.questions.question_6.question}" >
+                            <p:ajax update=""  />
+                        </p:selectBooleanCheckbox>
+                        <li class="">#{msg['titre.vie.questionHuit']}</li>
+
+                        <p:selectBooleanCheckbox id="q7"  value="#{souscriptionBean.questions.question_7.question}" >
+                            <p:ajax update="lq7,rq7"  />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq7" value="#{msg['titre.vie.questionHuit.preciser']}" class="text-red #{souscriptionBean.questions.question_7.question}"/>
+
+                        <p:outputPanel id="rq7" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_7.question}" required="#{souscriptionBean.questions.question_7.question}" class="form-control" value="#{souscriptionBean.questions.question_7.reponse}" >
+                                <p:ajax event="keyup" update="lq7" />
+                                <p:ajax update="lq7" />
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionNeuf']}</li>
+
+                        <p:selectBooleanCheckbox id="q8"  value="#{souscriptionBean.questions.question_8.question}" >
+                            <p:ajax update="lq8,rq8" />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq8" value=" #{msg['titre.vie.questionNeuf.preciser']} " class="text-red #{souscriptionBean.questions.question_8.question}"/>
+
+                        <p:outputPanel id="rq8" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_8.question}" required="#{souscriptionBean.questions.question_8.question}" class="form-control" value="#{souscriptionBean.questions.question_8.reponse}" >
+                                <p:ajax event="keyup" update="lq8" />
+                                <p:ajax update="lq8"  />
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionDix']}</li>
+
+                        <p:selectBooleanCheckbox id="q9"  value="#{souscriptionBean.questions.question_9.question}" >
+                            <p:ajax update="" />
+                        </p:selectBooleanCheckbox>
+                        <li class="">#{msg['titre.vie.questionOnze']}</li>
+
+                        <p:selectBooleanCheckbox id="q10"  value="#{souscriptionBean.questions.question_10.question}" >
+                            <p:ajax update="lq10,rq10"/>
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq10" value="#{msg['titre.vie.questionOnze.preciser']}" class="text-red #{souscriptionBean.questions.question_10.question}"/>
+
+                        <p:outputPanel id="rq10" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_10.question}" required="#{souscriptionBean.questions.question_10.question}" class="form-control" value="#{souscriptionBean.questions.question_10.reponse}" >
+                                <p:ajax event="keyup" update="lq10" />
+                                <p:ajax update="lq10" />
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class=""> #{msg['titre.vie.questionDouze']} </li>
+
+                        <p:selectBooleanCheckbox id="q11"  value="#{souscriptionBean.questions.question_11.question}" >
+                            <p:ajax update="lq11,rq11" />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq11" value="#{msg['titre.vie.questionDouze.preciser']} " class="text-red #{souscriptionBean.questions.question_11.question}"/>
+
+                        <p:outputPanel id="rq11" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_11.question}" required="#{souscriptionBean.questions.question_11.question}" class="form-control" value="#{souscriptionBean.questions.question_11.reponse}" >
+                                <p:ajax event="keyup" update="lq11" />
+                                <p:ajax update="lq11" />
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionTreize']}</li>
+
+                        <p:selectBooleanCheckbox id="q12"  value="#{souscriptionBean.questions.question_12.question}" >
+                            <p:ajax update="lq12,rq12" />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq12" value="#{msg['titre.vie.questionTreize.preciser']}" class="text-red #{souscriptionBean.questions.question_12.question}"/>
+
+                        <p:outputPanel id="rq12" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_12.question}" required="#{souscriptionBean.questions.question_12.question}" class="form-control" value="#{souscriptionBean.questions.question_12.reponse}" >
+                                <p:ajax event="keyup" update="lq12" />
+                                <p:ajax update="lq12" />
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionQuatorze']}</li>
+
+                        <p:selectBooleanCheckbox id="q13"  value="#{souscriptionBean.questions.question_13.question}" >
+                            <p:ajax update="lq13,rq13" />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq13" value="#{msg['titre.vie.questionQuatorze.preciser']} " class="text-red #{souscriptionBean.questions.question_13.question}"/>
+
+                        <p:outputPanel id="rq13" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_13.question}" required="#{souscriptionBean.questions.question_13.question}" class="form-control" value="#{souscriptionBean.questions.question_13.reponse}" >
+                                <p:ajax event="keyup" update="lq13" />
+                                <p:ajax update="lq13" />
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class=""> #{msg['titre.vie.questionQuinze']}
+                        </li>
+
+                        <p:selectBooleanCheckbox id="q14"  value="#{souscriptionBean.questions.question_14.question}" >
+                            <p:ajax update="lq14,rq14" />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq14" value="#{msg['titre.vie.questionQuinze.preciser']} " class="text-red #{souscriptionBean.questions.question_14.question}"/>
+
+                        <p:outputPanel id="rq14" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_14.question}" required="#{souscriptionBean.questions.question_14.question}" class="form-control" value="#{souscriptionBean.questions.question_14.reponse}" >
+                                <p:ajax event="keyup" update="lq14" />
+                                <p:ajax update="lq14"  />
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionSeize']}</li>
+
+                        <p:selectBooleanCheckbox id="q15"  value="#{souscriptionBean.questions.question_15.question}" >
+                            <p:ajax update="lq15,rq15" />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq15" value="#{msg['titre.vie.questionSeize.preciser']} " class="text-red #{souscriptionBean.questions.question_15.question}"/>
+
+                        <p:outputPanel id="rq15" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_15.question}" required="#{souscriptionBean.questions.question_15.question}" class="form-control" value="#{souscriptionBean.questions.question_15.reponse}" >
+                                <p:ajax event="keyup" update="lq15" />
+                                <p:ajax update="lq15" />
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class=""> #{msg['titre.vie.questionDixSept']}
+                        </li>
+
+                        <p:selectBooleanCheckbox id="q16"  value="#{souscriptionBean.questions.question_16.question}" >
+                            <p:ajax update="lq16,rq16" />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq16" value="#{msg['titre.vie.questionDixSept.preciser']} " class="text-red #{souscriptionBean.questions.question_16.question}"/>
+
+                        <p:outputPanel id="rq16" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_16.question}" required="#{souscriptionBean.questions.question_16.question}" class="form-control" value="#{souscriptionBean.questions.question_16.reponse}" >
+                                <p:ajax event="keyup" update="lq16" />
+                                <p:ajax update="lq16"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionDixHuit']}Devez-vous subir une intervention chirurgicale ?</li>
+
+                        <p:selectBooleanCheckbox id="q17"  value="#{souscriptionBean.questions.question_17.question}" >
+                            <p:ajax update="lq17,rq17" />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq17" value="#{msg['titre.vie.questionDixHuit.preciser']}" class="text-red #{souscriptionBean.questions.question_17.question}"/>
+
+                        <p:outputPanel id="rq17" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_17.question}" required="#{souscriptionBean.questions.question_17.question}" class="form-control" value="#{souscriptionBean.questions.question_17.reponse}" >
+                                <p:ajax event="keyup" update="lq17" />
+                                <p:ajax update="lq17" />
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionDixNeuf']}</li>
+
+                        <p:selectBooleanCheckbox id="q18"  value="#{souscriptionBean.questions.question_18.question}" >
+                            <p:ajax update="lq18,rq18"/>
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq18" value="#{msg['titre.vie.questionDixNeuf.preciser']}" class="text-red #{souscriptionBean.questions.question_18.question}"/>
+
+                        <p:outputPanel id="rq18" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_18.question}" required="#{souscriptionBean.questions.question_18.question}" class="form-control" value="#{souscriptionBean.questions.question_18.reponse}" >
+                                <p:ajax event="keyup" update="lq18" />
+                                <p:ajax update="lq18"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionVingt']} </li>
+
+                        <p:selectBooleanCheckbox id="q19"  value="#{souscriptionBean.questions.question_19.question}" >
+                            <p:ajax update="lq19,rq19"/>
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq19" value="#{msg['titre.vie.questionVingt.preciser']} " class="text-red #{souscriptionBean.questions.question_19.question}"/>
+
+                        <p:outputPanel id="rq19" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_19.question}" required="#{souscriptionBean.questions.question_19.question}" class="form-control" value="#{souscriptionBean.questions.question_19.reponse}" >
+                                <p:ajax event="keyup" update="lq19" />
+                                <p:ajax update="lq19" />
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionVingtUn']} </li>
+
+                        <p:selectBooleanCheckbox id="q20"  value="#{souscriptionBean.questions.question_20.question}" >
+                            <p:ajax update="lq20,rq20"/>
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq20" value="#{msg['titre.vie.questionVingtUn.preciser']} " class="text-red #{souscriptionBean.questions.question_20.question}"/>
+
+                        <p:outputPanel id="rq20" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_20.question}" required="#{souscriptionBean.questions.question_20.question}" class="form-control" value="#{souscriptionBean.questions.question_20.reponse}" >
+                                <p:ajax event="keyup" update="lq20" />
+                                <p:ajax update="lq20"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionVingtDeux']}
+                            </li>
+
+                        <p:selectBooleanCheckbox id="q21"  value="#{souscriptionBean.questions.question_21.question}" >
+                            <p:ajax update="lq21,rq21"/>
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq21" value="#{msg['titre.vie.questionVingtDeux.preciser']} " class="text-red #{souscriptionBean.questions.question_21.question}"/>
+
+                        <p:outputPanel id="rq21" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_21.question}" required="#{souscriptionBean.questions.question_21.question}" class="form-control" value="#{souscriptionBean.questions.question_21.reponse}" >
+                                <p:ajax event="keyup" update="lq21" />
+                                <p:ajax update="lq21"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionVingtTrois']}</li>
+
+                        <p:selectBooleanCheckbox id="q22"  value="#{souscriptionBean.questions.question_22.question}" >
+                            <p:ajax />
+                        </p:selectBooleanCheckbox>
+                        <p:separator/>
+                        <li class=""> #{msg['titre.vie.questionVingtQuatre']}</li>
+
+                        <p:selectBooleanCheckbox id="q23"  value="#{souscriptionBean.questions.question_23.question}" >
+                            <p:ajax />
+                        </p:selectBooleanCheckbox>
+
+                        <li class=""> #{msg['titre.vie.questionVingtCinq']}</li>
+
+                        <p:selectBooleanCheckbox id="q24"  value="#{souscriptionBean.questions.question_24.question}" >
+                            <p:ajax update="lq24,rq24" />
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq24" value="#{msg['titre.vie.questionVingCinq.preciser']}" class="text-red #{souscriptionBean.questions.question_24.question}"/>
+
+                        <p:outputPanel id="rq24" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_24.question}" required="#{souscriptionBean.questions.question_24.question}" class="form-control" value="#{souscriptionBean.questions.question_24.reponse}" >
+                                <p:ajax event="keyup" update="lq24" />
+                                <p:ajax update="lq24"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionVingtSix']}</li>
+
+                        <p:selectBooleanCheckbox id="q25"  value="#{souscriptionBean.questions.question_25.question}" >
+                            <p:ajax update="lq25,rq25"/>
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq25" value=" #{msg['titre.vie.questionVingtSix.preciser']} " class="text-red #{souscriptionBean.questions.question_25.question}"/>
+
+                        <p:outputPanel id="rq25" >
+                            <p:inputText  rendered="#{souscriptionBean.questions.question_25.question}" required="#{souscriptionBean.questions.question_25.question}" class="form-control" value="#{souscriptionBean.questions.question_25.reponse}" >
+                                <p:ajax event="keyup" update="lq25" />
+                                <p:ajax update="lq25"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                        <li class="">#{msg['titre.vie.questionVingtSept']} </li>
+
+                        <p:selectBooleanCheckbox id="q26"  value="#{souscriptionBean.questions.question_26.question}" >
+                            <p:ajax update="lq26,rq26"/>
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel id="lq26" value="#{msg['titre.vie.questionVingtSept.preciser']}" class="text-red #{souscriptionBean.questions.question_26.question}"/>
+
+                        <p:outputPanel id="rq26" >
+                            <p:inputText rendered="#{souscriptionBean.questions.question_26.question}" required="#{souscriptionBean.questions.question_26.question}" class="form-control" value="#{souscriptionBean.questions.question_26.reponse}" >
+                                <p:ajax event="keyup" update="lq26" />
+                                <p:ajax update="lq26" />
+                            </p:inputText>
+                        </p:outputPanel>
+                    </ol>
+                </div>
+            </div>
+            <!--/p:panel-->
+        </p:outputPanel>
+    </ui:composition>
+</html>

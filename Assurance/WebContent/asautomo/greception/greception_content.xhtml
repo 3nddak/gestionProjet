@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="GESTION DES RECEPTIONS"></p:outputLabel></legend>
+            </fieldset>
+
+
+
+            <h:form  id="searchTools" class="form-horizontal">
+                <p:growl id="msgs22"  globalOnly="true"  severity="info,warn"/>
+                <p:panel id="t6" header="Recherche" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                    <div class="panel">
+                        <div class="panel-body"> 
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <h:outputLabel for="pays"  value="Pays" class="pull-left text-left"/>                              
+                                        <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{receptionnaireBeanGuichet.paysSelect}" >                                          
+                                            <f:selectItem itemLabel="Tous" itemDisabled="false" />
+                                            <f:selectItems var="pays" value="#{receptionnaireBeanGuichet.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                                            <p:ajax listener="#{receptionnaireBeanGuichet.trierPrametresByPays()}" update="compagnie,courtier,pv" />
+                                        </h:selectOneMenu>
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <h:outputLabel for="compagnie"  value="Compagnie" class="pull-left text-left"/>                              
+                                        <h:selectOneMenu id="compagnie" value="#{receptionnaireBeanGuichet.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                            <f:selectItem itemLabel="Tous" itemDisabled="false" />
+                                            <f:selectItems value="#{receptionnaireBeanGuichet.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                        </h:selectOneMenu>
+
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <h:outputLabel for="courtier"  value="Courtier" class="pull-left text-left"/>                               
+                                        <h:selectOneMenu id="courtier"  converter="entityConverter" value="#{receptionnaireBeanGuichet.courtierSelected}" class="form-control" >                                          
+                                            <f:selectItem itemLabel="Tous" itemDisabled="false" />
+                                            <f:selectItems var="courtier" value="#{receptionnaireBeanGuichet.listCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                                        </h:selectOneMenu>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <h:outputLabel for="pv"  value="Point de vente" class="pull-left text-left"/>                          
+                                        <h:selectOneMenu id="pv"  value="#{receptionnaireBeanGuichet.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                            <f:selectItem itemLabel="Tous" itemDisabled="false" />
+                                            <f:selectItems var="pv" value="#{receptionnaireBeanGuichet.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                                        </h:selectOneMenu>
+                                    </div>
+
+                                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+
+                                        <p:outputLabel for="mask" class="control-label" value="Date debut" />
+                                        <p:calendar id="mask" class="form-control" pattern="dd-MM-yyyy" mask="true" value="#{receptionnaireBeanGuichet.dateDebutRecherche}" >
+                                        </p:calendar>
+                                    </div>
+
+                                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                        <p:outputLabel for="mask2" class="control-label" value="Date fin" />
+                                        <p:calendar id="mask2" class="form-control" pattern="dd-MM-yyyy" mask="true" value="#{receptionnaireBeanGuichet.dateFinRecherche}">
+                                        </p:calendar>
+
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <h:outputLabel for="etat"  value="Etats" class="pull-left text-left"/>                            
+                                        <h:selectOneMenu id="etat"  value="#{receptionnaireBeanGuichet.etatR}" class="form-control" >                                          
+                                            <f:selectItem itemLabel="Tous" itemDisabled="false" />
+                                            <f:selectItem itemLabel="Non Réceptionné" itemValue="0" />
+                                            <f:selectItem itemLabel="Réceptionné" itemValue="1" />           
+                                        </h:selectOneMenu>
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <h:outputLabel for="numAtt"  value="Numéro d'attestation" class="pull-left text-left"/>
+                                        <p:inputText id="numAtt" value="#{receptionnaireBeanGuichet.numAttestation}" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="btn-toolbar pull-right">
+                                    <p:commandButton value="Rechercher" class="btn btn-purple" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{receptionnaireBeanGuichet.trier()}"  update="formliste,searchTools" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p:panel>
+            </h:form>   
+
+            <h:form  id="formliste" class="form-horizontal">
+                <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>
+
+                <div class="panel">
+                    <div class="panel-body">
+                        <p:outputPanel id="devise">
+
+                            <p:fieldset legend="Liste des Contrats" style="margin-bottom:20px">
+                              
+                                    <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-xs btn-imprimer" actionListener="#{receptionnaireBeanGuichet.printAttestation()}"   > 
+                                        <i class=" glyphicon glyphicon-print"></i>
+                                    </h:commandLink>  
+
+                             
+                                <div class="table-responsive">
+                                    <p:dataTable id="facture" paginator="true" rows="4" emptyMessage="#{msg['tableau.vide']}"  
+                                                 paginatorPosition="bottom" editable="true" editMode="cell" class="table table-striped table-condensed"
+                                                 value="#{receptionnaireBeanGuichet.listFacture}" var="facture"    style="padding:0px;margin: 0px; ">
+
+                                        <p:ajax event="rowToggle" listener="#{receptionnaireBeanGuichet.onRowToggle}" update="facture" />
+                                        <!--p:column  style="width:50px">
+        
+                                            <p:rowToggler />
+                                        </p:column--> 
+                                        <p:column headerText="Numéro Attestation" filterBy="#{facture.pin}">
+                                            <p:cellEditor>
+                                                <f:facet name="output"><p:outputLabel id="K" value="#{facture.pin}" /></f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText disabled="#{facture.numAttestationAvailable}" value="#{facture.pin}" rendered="#{(facture.pin eq null) ?false:true }" >
+                                                        <p:ajax event="keyup" update="K"  />
+                                                        <p:ajax event="blur" update="K,facture" listener="#{facture.changeValue()}"  />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column headerText="Numéro Police"  filterBy="#{facture.objetVoiture.numeroPolice}">
+                                            <h:outputText value="#{facture.objetVoiture.numeroPolice}" />
+                                        </p:column>
+                                        <p:column headerText="Date payement ou rejet" filterBy="#{facture.formatDate(facture.datePayementOUrejetTransaction)}" >
+                                            <h:outputText value="#{facture.formatDate(facture.datePayementOUrejetTransaction)}" />
+                                        </p:column>
+
+                                        <p:column headerText="Compagnie"   filterBy="#{facture.compagnie.abbreviation}">
+                                            <h:outputText value="#{facture.compagnie.abbreviation}" />
+                                        </p:column>
+                                        <p:column headerText="Courtier"  filterBy="#{facture.courtier.abbreviation}">
+                                            <h:outputText value="#{facture.courtier.abbreviation}" />
+                                        </p:column>
+                                        <p:column headerText="Lieu de retrait" style="text-align: center"  filterBy="#{facture.guichetDeRetrait.designation}">
+                                            <h:outputText value="#{facture.guichetDeRetrait.designation}" />
+                                        </p:column>
+
+                                        <p:column  headerText="Nom du client"  filterBy="#{facture.objetVoiture.client.nom}"  >
+                                            <h:outputText value="#{facture.objetVoiture.client.nom}" />
+                                        </p:column>
+
+                                        <p:column  headerText="Catégorie"  filterBy="#{facture.objetVoiture.categorie.libelle}" > 
+                                            <h:outputText value="#{facture.objetVoiture.categorie.libelle}" />
+                                        </p:column>
+
+                                        <p:column filterBy="#{facture.primeTtc}" headerText="PrimeTTC"  >
+                                            <p:outputLabel value="#{facture.primeTtc}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="Actions"  >
+                                            <div class="btn-toolbar">
+                                                <p:commandLink disabled="#{facture.numAttestationAvailable}" title="Enregistrer N°Attestation" class=" btn btn-xs btn-success glyphicon glyphicon-save" ajax="true"  update="facture,formliste:msgs" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  action="#{receptionnaireBeanGuichet.updateFactureAfterPin()}" >
+                                                    <f:setPropertyActionListener target="#{receptionnaireBeanGuichet.factureSelect}" value="#{facture}" />
+                                                </p:commandLink>
+
+                                                <sec:authorize ifAllGranted="ROLE_MODIFIER_NUM_ATTESTATION">
+                                                    <p:commandLink title="Modifier N°Attestation " rendered="#{facture.numAttestationAvailable}" disabled="#{facture.readyToPrint}" class=" btn-xs btn btn-primary glyphicon glyphicon-edit" ajax="true" action="#{receptionnaireBeanGuichet.editPin()}"  update="facture,formliste:msgs,editPin" oncomplete="PF('editNumAttestation').show()"  >
+                                                        <f:setPropertyActionListener target="#{receptionnaireBeanGuichet.factureSelect}" value="#{facture}" />
+                                                    </p:commandLink>
+                                                </sec:authorize>
+
+                                                <p:commandLink disabled="#{!facture.numAttestationAvailable}" rendered="#{!facture.readyToPrint}" title="Réceptionner" update="ajout,reception,reception:klm" action="#{receptionnaireBeanGuichet.loadNativeClientAtGuichet()}" class=" btn btn-xs btn-primary glyphicon glyphicon-send" oncomplete="PF('ajout').show()" >
+                                                    <f:setPropertyActionListener value="#{facture}" target="#{receptionnaireBeanGuichet.factureToTake}" />
+                                                    <f:setPropertyActionListener value="#{facture.receptionnaire}" target="#{receptionnaireBeanGuichet.receptionnaireToSave}" />
+                                                    <f:setPropertyActionListener value="#{facture}" target="#{receptionnaireBeanGuichet.factureSelect}" />
+                                                </p:commandLink>
+
+                                                <p:commandLink  title="Contrat" rendered="#{facture.readyToPrint}" class="btn btn-xs btn-imprimer glyphicon glyphicon-print" ajax="false" target="/rapport"   action="#{receptionnaireBeanGuichet.doGetA()}" >
+                                                    <f:setPropertyActionListener target="#{receptionnaireBeanGuichet.factureSelect}" value="#{facture}" />
+                                                </p:commandLink>
+                                                <p:outputPanel rendered="false">
+                                                <p:commandLink disabled="#{!facture.numAttestationAvailable}" rendered="#{facture.afficheRecu}"  title="Imprimer Attestation" class=" btn btn-xs btn-primary glyphicon glyphicon-file" ajax="false" target="/rapport"   action="#{allMessageBean.doGetPrintRecu2()}" >
+                                                    <f:setPropertyActionListener target="#{allMessageBean.factureSelect}" value="#{facture}" />
+                                                </p:commandLink>
+                                                    </p:outputPanel>
+
+                                                <p:commandLink rendered="false"  title="Format reçu" class=" btn btn-xs btn-primary" ajax="false" target="/rapport"   action="#{allMessageBean.doGetPrintRecuAST()}" >
+                                                    <i class="fa fa-file-text"/>
+                                                    <f:setPropertyActionListener target="#{allMessageBean.factureSelect}" value="#{facture}" />
+                                                </p:commandLink>
+
+                                                <p:commandLink rendered="false"  title="Contenu format" class=" btn btn-xs btn-success" ajax="false" target="/rapport"   action="#{allMessageBean.doGetPrintRecuAST2()}" >
+                                                    <i class="fa fa-file-text-o"/>
+                                                    <f:setPropertyActionListener target="#{allMessageBean.factureSelect}" value="#{facture}" />
+                                                </p:commandLink>
+
+                                                <p:commandLink   title="Lettre Assurance" class=" btn btn-xs btn-success glyphicon glyphicon-print" ajax="false" target="/rapport" disabled="#{facture.immatriculationVehicule}"  action="#{allMessageBean.doGetPrintLettreAssurance()}" >
+                                                    <f:setPropertyActionListener target="#{allMessageBean.factureSelect}" value="#{facture}" />
+                                                </p:commandLink>
+
+                                                <p:commandLink rendered="false" title="ATT-SUNU-SALAMA" class=" btn btn-xs btn-primary glyphicon glyphicon-amazon" ajax="false"    action="#{allAttestationBean.printAttSunuSalama()}" >
+                                                    <f:setPropertyActionListener target="#{allAttestationBean.factureSelect}" value="#{facture}" />
+                                                </p:commandLink>
+                                                <p:commandLink rendered="false" title="ATT-AXA" class=" btn btn-xs btn-primary fa fa-amazon" ajax="false"    action="#{allAttestationBean.printAttAxaAskia()}" >
+                                                    <f:setPropertyActionListener target="#{allAttestationBean.factureSelect}" value="#{facture}" />
+                                                </p:commandLink>
+                                                <p:commandLink rendered="true" title="Attestation" class=" btn btn-xs btn-primary glyphicon glyphicon-print" ajax="false" target="/rapport"    action="#{allAttestationBean.printAttestation()}" >
+                                                    <f:setPropertyActionListener target="#{allAttestationBean.factureSelect}" value="#{facture}" />
+                                                </p:commandLink>
+                                                <p:commandLink rendered="true" title="AttCEDAO" class=" btn btn-xs btn-primary glyphicon glyphicon-text-color" ajax="false" target="/rapport"    action="#{allAttestationBean.printAttCEDAO()}" >
+                                                    <f:setPropertyActionListener target="#{allAttestationBean.factureSelect}" value="#{facture}" />
+                                                </p:commandLink>               
+                                            </div>
+                                        </p:column>
+
+                                        <p:rowExpansion  >
+                                            <fieldset> 
+                                                <legend class="text-center" style="background-color: #BBBBBB" > <p:outputLabel value="Informations du réceptionnaire"></p:outputLabel></legend>
+                                            </fieldset>   
+
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Nom"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{receptionnaireBeanGuichet.factureToTake.receptionnaire.nom}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Prénom"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{receptionnaireBeanGuichet.factureToTake.receptionnaire.prenom}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Téléphone"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{receptionnaireBeanGuichet.factureToTake.receptionnaire.telephone}"  />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Adresse"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{receptionnaireBeanGuichet.factureToTake.receptionnaire.adresse}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Pièce"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{receptionnaireBeanGuichet.factureToTake.receptionnaire.piece}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Numéro"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{receptionnaireBeanGuichet.factureToTake.receptionnaire.numPiece}"  />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Date d'expiration"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{receptionnaireBeanGuichet.factureToTake.receptionnaire.dateExpirationPiece}"  />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </p:rowExpansion>
+                                    </p:dataTable>
+                                </div>
+                            </p:fieldset>
+                        </p:outputPanel>
+                    </div>
+                </div>
+            </h:form>
+            <p:dialog  header="INFORMATIONS DU RECEPTIONNAIRE" showEffect="fade"  widgetVar="ajout" modal="true" width="900" minHeight="200" resizable="false">
+                <ui:include src="greception_ajout.xhtml"/>
+            </p:dialog>
+            <p:dialog widgetVar="editNumAttestation" modal="true" width="250" height="150" id="editPin" resizable="false" >
+                <ui:include src="modification_numero.xhtml"/>
+            </p:dialog>
+            <h:form>
+                <p:confirmDialog id="confirmation" message="#{msg['supprimer.message']}"
+                                 header="#{msg['titre.operation.suppression']}" severity="alert" 
+                                 widgetVar="supprimer">
+
+                    <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn btn-danger danger" />
+                    <p:commandButton value="#{msg['supprimer.oui']}"    oncomplete="PF('supprimer').hide()" class="btn btn-primary primary"/>
+                </p:confirmDialog>
+            </h:form>
+
+        </div>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+    </ui:composition> 
+</html>
+

@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <h:form class="form-horizontal" id="listcompagnie">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="table-responsive">
+                    <p:dataTable sortOrder="descending"  class="table table-bordered" var="paquetage"  rows="5" rowKey="#{paquetage.idPackageUniqueGarantieCompagnie}" selection="#{packageUniqueGarantieCompagnieBean.listPackageUniqueGarantieCompagniesSelected}" value="#{packageUniqueGarantieCompagnieBean.listPackageUniqueGarantieCompagnies}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                 paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" scrollWidth="50%" scrollHeight="150"  editable="true" editMode="cell">
+
+                        <p:column headerText="Pays">
+                            <p:outputLabel value="#{paquetage.typeAssuranceCompagnie.compagnie.pays.designationPays}"/>
+                        </p:column>
+                        <p:column headerText="Branche">
+                            <p:outputLabel value="#{paquetage.typeAssuranceCompagnie.typeAssurance.reference}"/>
+                        </p:column>
+                        <p:column headerText="Compagnie">
+                            <p:outputLabel value="#{paquetage.typeAssuranceCompagnie.compagnie.abbreviation}"/>
+                        </p:column>
+                        <p:column headerText="Designation">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="ss4" value="#{paquetage.designation}">
+
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{paquetage.designation}">
+                                        <p:ajax event="keyup" update ="ss4"  />
+
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Description">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="ss5" value="#{paquetage.description}">
+
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{paquetage.description}">
+                                        <p:ajax event="keyup" update ="ss5" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Abbreviation">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="ss5ab" value="#{paquetage.abbreviation}">
+
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{paquetage.abbreviation}">
+                                        <p:ajax event="keyup" update ="ss5ab" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Capital assuré">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="ss5ca" value="#{paquetage.capitaleAssure}">
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{paquetage.capitaleAssure}">
+                                        <p:ajax event="keyup" update ="ss5ca"  />
+
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Franchise">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="ss5fr" value="#{paquetage.franchise}">
+ <f:convertNumber pattern="###,##0" type="number" />
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{paquetage.franchise}">
+                                        <p:ajax event="keyup" update ="ss5fr"  />
+
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Action" width="7%">
+                            <p:commandButton icon="fa fa-save" title="Enregistrer les modifications" action="#{packageUniqueGarantieCompagnieBean.updateOnePackageUniqueGarantieCompagnie()}" update="@form" >
+                                <f:setPropertyActionListener value="#{paquetage}" target="#{packageUniqueGarantieCompagnieBean.packageUniqueGarantieCompagnieToUpadate}" />
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-trash" title="Supprimer la ligne" action="#{packageUniqueGarantieCompagnieBean.deleteOne()}"  update="@form">
+                                <f:setPropertyActionListener value="#{paquetage}" target="#{packageUniqueGarantieCompagnieBean.packageUniqueGarantieCompagnieToUpadate}" />
+                            </p:commandButton>
+                        </p:column>
+                        <p:column width="5%"  selectionMode="multiple" style="width: 16px;text-align: center; color: black;" />
+
+                    </p:dataTable>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                        <div class="btn-toolbar">
+                            <p:commandButton value="Supprimer" class="btn btn-danger" title="Suppprimer la selection" actionListener="#{packageUniqueGarantieCompagnieBean.deleteList()}" update="@form" />
+                            <p:commandButton value="Enrégistrer" class="btn btn-imprimer pull-right" title="Enrégistrer la selection" actionListener="#{packageUniqueGarantieCompagnieBean.updateListPackageUniqueGarantieCompagnie()}" update="@form" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:composition>
+
+</html>

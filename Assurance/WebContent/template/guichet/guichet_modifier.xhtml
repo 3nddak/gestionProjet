@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+
+
+        <p:outputPanel id="modification" style="text-align:center;">
+            <h:form class="form-horizontal" >
+                <p:growl id="msgs2" showDetail="false" globalOnly="true" />
+                <div class="form-group">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:outputLabel for="ge" value="#{msg['guichet.externe']}"  class="pull-left"/>
+                        <p:selectBooleanCheckbox id="ge" value="#{guichetsBean.guichetsSelected.guichetExterne}" class="pull-right">
+                        </p:selectBooleanCheckbox>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:outputLabel for="pdr2" value="Est un point de retrait"  class="pull-left"/>
+                        <p:selectBooleanCheckbox id="pdr2" value="#{guichetsBean.guichetsSelected.pointsDeRetrait}" class="pull-right">
+                        </p:selectBooleanCheckbox>
+                    </div> 
+                </div>
+                
+                <div class="form-group">
+
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="desi" value="#{msg['guichet.designation']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                        <p:inputText id="desi" required="true" requiredMessage="#{msg['guichet.designation.requireMessage']}" value="#{guichetsBean.guichetsSelected.designation}" styleClass="form-control" a:placeholder="#{msg['guichet.designation']}">
+                            <f:ajax event="keyup" render="desiMessage"/>
+                        </p:inputText>
+                        <p:message for="desi" id="desiMessage" class="errorClass"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="point" value="#{msg['guichet.pv']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                        <h:selectOneMenu id="point" required="true" requiredMessage="#{msg['guichet.pv.requireMessage']}"  value="#{guichetsBean.guichetsSelected.pointsVente.idPointVente}" class="form-control">
+                            <f:selectItem itemLabel="#{msg['guichet.pv']}" itemValue="" itemDisabled="true" itemDescription="#{msg['guichet.pv']}"/>
+                            <f:selectItems value="#{guichetsBean.pointsVenteItems}"/>
+                            <f:ajax event="click" render="pointMessage"/>
+                        </h:selectOneMenu><br/>
+                        <p:message for="point" id="pointMessage" class="errorClass"/>
+                    </div>
+                    <!--div class="col-md-6 col-lg-6 col-sm-6">
+                        <div class="col-lg-12" style="margin-left: -10px;">
+                            <h:outputLabel for="plafondActifs" value="plafondActifs" class="pull-left text-left"/>
+                        </div>
+                        <div class="input-group">
+                            <p:outputLabel class="form-control" for ="plafondActifs"/>
+                            <span class="input-group-addon">
+                                <p:selectBooleanCheckbox  id="plafondActifs" value="#{guichetsBean.guichetsSelected.plafondsActifs}"/>
+                            </span>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6">
+                        <h:outputLabel for="modifcode" value="Code" class="pull-left text-left"/>
+                        <p:inputText id="modifcode" value="#{guichetsBean.guichetsSelected.code}" styleClass="form-control" a:placeholder="Code PV"/>
+                    </div> 
+                    </div-->
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:commandButton value="#{msg['btn.annuller']}" type="reset" class="btn btn-danger pull-left"/>
+                   
+                        <p:commandButton value="#{msg['btn.enregistrer']}" update="msgs2,formliste" action="#{guichetsBean.modifier()}"  oncomplete="PF('modifier').hide()" 
+                                         class="btn btn-primary pull-right" />
+                    </div>
+
+
+                </div>
+            </h:form>
+        </p:outputPanel>
+
+
+
+
+    </ui:composition> 
+
+</html>
+

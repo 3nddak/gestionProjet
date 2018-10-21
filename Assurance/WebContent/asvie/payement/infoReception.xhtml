@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <p:panel id="R1" header="#{msg['titre.informationsreceptionnaire']}" collapsed="false"  toggleable="true"  >
+            <div class="form-group">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  class="pull-left" for="filtreR" value="#{msg['titre.receptionnaire']}" /> 
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h:selectOneRadio  layout="grid" id="filtreR" value="#{validationSouscriptionAsVieBean.choix}" >
+                            <f:selectItem class="radio" itemLabel="#{msg['client.title']}" itemValue="0" />
+                            <f:selectItem class="radio" itemLabel="#{msg['titre.autre']}"  itemValue="1"  />
+                            <p:ajax listener="#{validationSouscriptionAsVieBean.filtreReception()}" update="R1,nomR,pnomR,piece,nump,dte,PDR" />
+                        </h:selectOneRadio> 
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  class="pull-left" for="typeR" value="#{msg['titre.lieuDeReception']} " /> 
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h:selectOneRadio  layout="grid" id="typeR" value="#{validationSouscriptionAsVieBean.typeReception}" >
+                            <f:selectItem class="radio" itemLabel="#{msg['titre.guichet']}"  itemValue="0"  />
+                            <f:selectItem class="radio" itemLabel="#{msg['titre.pdr']}" itemValue="1" />
+                            <p:ajax listener="#{validationSouscriptionAsVieBean.modeReceptionChoisie()}" update="R1,nomR,pnomR,piece,nump,dte,PDR,sese" />
+                        </h:selectOneRadio> 
+                    </div>
+                </div>
+            </div>
+            <p:panel header="#{msg['titre.informationsreceptionnaire']}" collapsed="false" rendered="#{validationSouscriptionAsVieBean.displayReceptionnaire}"  >
+                <div class="form-group">
+                    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                            <h:outputLabel for="nomR" value="#{msg['client.nom']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                            <p:inputText id="nomR" required="#{validationSouscriptionAsVieBean.displayReceptionnaire}" requiredMessage="Veuillez entrer le nom"  value="#{validationSouscriptionAsVieBean.receptionnaireToSave.nom}" styleClass="form-control" >
+                                <f:ajax event="keyup" render="nomMessage"/>
+                            </p:inputText>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                            <h:message for="nomR" id="nomMessage" class="errorClass"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                            <h:outputLabel for="pnomR" value="#{msg['client.prenom']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                            <p:inputText id="pnomR" required="#{validationSouscriptionAsVieBean.displayReceptionnaire}" requiredMessage="#{msg['client.prenom.requiredMessage']}"  value="#{validationSouscriptionAsVieBean.receptionnaireToSave.prenom}" styleClass="form-control" >
+                                <f:ajax event="keyup" render="prenomMessage"/>
+                            </p:inputText>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                            <h:message for="pnomR" id="prenomMessage" class="errorClass"/>
+                        </div> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['client.piece']}"  for="piece" class=" pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+                            <h:selectOneMenu id="piece" required="false" requiredMessage="#{msg['client.piece.requireMessage']}" value="#{validationSouscriptionAsVieBean.receptionnaireToSave.piece}" class="form-control" >
+                                <f:selectItem noSelectionOption="true" itemDisabled="true" itemLabel="#{msg['client.piece']}"/> 
+                                <f:selectItem itemValue="carte d'identité" itemLabel="#{msg['client.piece.carte']}"/>
+                                <f:selectItem itemValue="passport" itemLabel="#{msg['client.piece.passport']}"/>
+                                <f:selectItem itemValue="permis de conduite" itemLabel="#{msg['client.piece.permis']}"/>
+                                <f:selectItem itemValue="autre" itemLabel="#{msg['titre.autre']}"/>
+                                <f:ajax event="keyup" render="pieceMessage"/>
+                            </h:selectOneMenu>
+                            <h:message for="piece" id="pieceMessage" class="errorClass"/>
+                        </div>
+                    </div> 
+                    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12">                              
+                            <h:outputLabel  value="#{msg['titre.numeroDeLaPiece']}"  for="nump" class=" pull-left" />
+                            <p:inputText id="nump" required="false" requiredMessage="#{msg['client.numeropiece.requireMessage']}" value="#{validationSouscriptionAsVieBean.receptionnaireToSave.numPiece}" styleClass="form-control" placeholder="#{msg['client.numeropiece']} *">
+                                <f:ajax event="keyup" render="numpMessage"/>
+                            </p:inputText>
+                            <h:message for="nump" id="numpMessage" class="errorClass"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">                         
+                            <h:outputLabel  value="#{msg['client.dateexpirationpiece']}"  for="dte" class=" pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                            <p:calendar id="dte" required="false" requiredMessage="#{msg['client.dateexpirationpiece.requiredMessage']}" value="#{validationSouscriptionAsVieBean.receptionnaireToSave.dateExpirationPiece}" navigator="true" class="pull-left" locale="#{receptionnaireBean.curentUserLocale}" pattern="dd-MM-yyyy" mask="true" placeholder="dateExpirationPiece*" >
+
+                                <p:ajax event="dateSelect" update="dteMessage"/>
+                            </p:calendar>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">    
+                            <h:message for="dte" id="dteMessage" class="errorClass"/>
+                        </div>
+                    </div>
+                </div>
+            </p:panel>
+        </p:panel>
+
+
+
+
+        <p:outputPanel id="sese">
+            <p:panel rendered="#{!validationSouscriptionAsVieBean.renderPanel}" id="PDR" header="#{msg['titre.pdr']}" collapsed="false"  >
+                <div class="form-group">
+                    <div class="col-md-8 col-lg-6 col-sm-10 col-xs-12 col-lg-offset-2 col-md-offset-2 col-sm-offset-1">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">                         
+                            <h:outputLabel  value="#{msg['titre.pdr']}"  for="des" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">  
+                            <h:selectOneMenu id="des"  value="#{validationSouscriptionAsVieBean.assuranceCredit.pointDeRetrait}" required="#{validationSouscriptionAsVieBean.des}" converter="omnifaces.SelectItemsConverter"  requiredMessage="Veuillez choisir un point de retrait" class="form-control">
+                                <f:selectItem itemLabel="#{msg['titre.pdr']}" itemDisabled="true"/>
+                                <f:selectItems value="#{validationSouscriptionAsVieBean.allPointDeRetraitCompagnie}" var="p" itemLabel="#{p.libelle}" itemValue="#{p}" />
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+            </p:panel>
+
+            <p:panel rendered="#{validationSouscriptionAsVieBean.renderPanel}" id="GDR" header="#{msg['titre.guichetDeRetrait']}" collapsed="false"  >
+                <div class="form-group">
+                    <div class="col-md-8 col-lg-6 col-sm-10 col-xs-12 col-lg-offset-2 col-md-offset-2 col-sm-offset-1">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">                         
+                            <h:outputLabel  value="#{msg['titre.guichetDeRetrait']}"  for="des2" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">  
+                            <h:selectOneMenu id="des2"  value="#{validationSouscriptionAsVieBean.assuranceCredit.guichetDeRetrait}" required="#{validationSouscriptionAsVieBean.des}" converter="omnifaces.SelectItemsConverter"  requiredMessage="Veuillez choisir un guichet " class="form-control">
+                                <f:selectItem itemLabel="#{msg['titre.guichet']}" />
+                                <f:selectItems value="#{validationSouscriptionAsVieBean.allGuichetDuCourtierFiltreQuiSontPointsDeRetrait}" var="gp" itemLabel="#{gp.designation}" itemValue="#{gp}" />
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+            </p:panel>
+        </p:outputPanel>
+    </ui:composition>
+</html>

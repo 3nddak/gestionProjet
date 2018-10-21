@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <div class="panel">
+
+            <div class="panel-body">
+                <fieldset><legend class="text-uppercase" ><h:outputLabel class="police_label" value="#{msg['credit.info']}"/></legend>
+
+                    <p:growl id="msgslm" globalOnly="true" showDetail="false"/>
+                    <ui:include src="infos_type.xhtml"/>
+
+                    <p:panel header="#{msg['liste.compagnie']}">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+
+                                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                        <div class="form-group" >
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <p:outputPanel id="tt">
+                                                    <h:outputLabel for="pss" value="#{msg['titre.compagnie']}"/><h:outputLabel id="etoile" rendered="#{souscriptionBean.req}" value="*" class="etoile_rouge"/>
+                                                </p:outputPanel>
+                                            </div>
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <p:selectCheckboxMenu converter="entityConverter" id="pss" required="#{souscriptionBean.req}"  requiredMessage="#{msg['courtier.compagnie.requireMessage']}" value="#{souscriptionBean.selectedCompagnie}" label="#{msg['titre.compagnie']}"
+                                                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                                                    <f:selectItems value="#{souscriptionBean.listCompagnie}" var="compagnie" itemValue="#{compagnie}" itemLabel="#{compagnie.abbreviation}" />
+
+                                                </p:selectCheckboxMenu>
+                                                <p:commandButton value="#{msg['btn.valider']}" update="formliste:display2" class="btn-purple" action="#{souscriptionBean.addCompagnieCourtierToList()}" />
+
+                                            </div>
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <h:message for="pss"  id="pssMessage" class="errorClass" />
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:outputPanel id="display22">
+                                    <div class="table-responsive">
+                                        <p:dataTable class="table table-striped " var="compcour" id="display2" reflow="true" rows="5" value="#{souscriptionBean.listAssuranceCredit}"
+                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                     rowsPerPageTemplate="10,20,30,40,50"  emptyMessage="#{msg[tableau.vide]}" rowKey="#{compcour.compagnie.idCompagnie}"  >                                                    
+                                            <p:column headerText="#{msg['titre.compagnie']}">
+                                                <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                                            </p:column>
+
+                                            <p:column headerText="#{msg['titre.courtier']}">
+                                                <h:outputText value="#{compcour.courtier.abbreviation}" />
+                                            </p:column >
+                                            <p:column headerText=" #{msg['titre.typeCapitauxGaranties']}">
+                                                <h:outputText value="#{compcour.typeCapitauxGaranite}" />
+                                            </p:column >
+
+                                            <p:column headerText="#{msg['titre.actions']}">
+
+                                                <p:commandButton icon="fa fa-trash" update="formliste:display2,formliste:pss" action="#{souscriptionBean.removeCompagnieCourtierFromList()}" title="Supprimer" class="btn btn-danger">
+                                                    <f:setPropertyActionListener value="#{compcour}" target="#{souscriptionBean.assuranceCreditSelected}" />
+                                                </p:commandButton>
+
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </p:outputPanel>
+                            </div>
+
+                        </div>
+                    </p:panel>
+
+                </fieldset>   
+            </div> 
+        </div>
+
+
+    </ui:composition>
+</html>

@@ -1,0 +1,272 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+    <ui:composition>
+
+        <div id="liste" class="row">
+            <!--div class="col-lg-4 col-md-4 col-xs-4 col-sm-4 well-lg">
+
+
+
+
+            </div-->
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 well-lg">
+                <div class="panel">
+                    <p:panel  class="form-horizontal well-sm" id="detail">
+                        <div class="panel-heading bg-primary">  
+                            <h:outputLabel value="#{msg['simulation.compagnie']} " class="text-uppercase" >
+                                <h:outputText value="#{objetBean.factureChoisie.compagnie.abbreviation}" />
+                            </h:outputLabel>
+                        </div>
+
+                        <div class="panel-body"> 
+
+                            <div class="row">
+
+                                <fieldset><legend class="titre_entete text-left text-capitalize small" >
+                                        <p:outputLabel value="#{msg['garantie.souscrite']}" class=" police_label text-center text-uppercase"></p:outputLabel>
+                                    </legend>
+
+                                    <p:dataTable class="table_label" id="g" var="p" editable="true" editMode="cell" scrollable="true" value="#{objetBean.factureChoisie.propositions}">
+                                        <p:columnGroup type="header">
+                                            <p:growl  >
+                                                <p:column rowspan="2" headerText="#{msg['garantie.titre']}"/>
+
+                                                <p:column rowspan="2" headerText="#{msg['tableau.primeannuelle']}" />
+                                                <p:column colspan="4" headerText="#{msg['tableau.redmaj']}" />
+                                                <p:column rowspan="2" headerText="#{msg['tableau.generique']}"  />
+                                                <p:column rowspan="2" headerText="#{msg['tableau.primenette']}"  />
+                                            </p:growl>
+                                            <p:row>
+                                                <p:column headerText="#{msg['tableau.bns']}" />
+                                                <p:column headerText="#{msg['tableau.red']}" />
+                                                <p:column headerText="#{msg['tableau.mls']}" />
+                                                <p:column headerText="#{msg['tableau.total']}" />
+                                            </p:row>
+                                        </p:columnGroup>
+
+                                        <p:column >
+                                            <h:outputText value="#{p.compagnieGuarantie.guarantie.symbole}" />
+                                        </p:column>
+                                        <p:column class="text-right">
+                                            <h:outputText value="#{objetBean.factureChoisie.arrondireFormat(p.primePropose)}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column class="text-right">
+                                            <h:outputText value="#{objetBean.factureChoisie.arrondireFormat(p.bonus)}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column class="text-right">
+                                            <h:outputText value="#{objetBean.factureChoisie.arrondireFormat(p.reduction)}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column class="text-right">
+                                            <h:outputText value="#{objetBean.factureChoisie.arrondireFormat(p.malus)}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column class="text-right">
+                                            <h:outputText value="#{objetBean.factureChoisie.arrondireFormat(p.montant)}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column class="text-right">
+                                            <h:outputText value="#{objetBean.factureChoisie.arrondireFormat(p.taxeGeneriqueValue)}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column class="text-right">
+                                            <h:outputText value="#{objetBean.selectedFacture.arrondireFormat(p.prime)}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:columnGroup type="footer" id="primeTotal1">
+                                            <p:row>
+                                                <p:column   style="text-align:right" footerText="#{msg['tableau.total']} :"/>
+                                                <p:column   footerText="#{facture.totalnet}" />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText="#{objetBean.factureChoisie.arrondireFormat2(objetBean.factureChoisie.primeNettennuelle)}" />
+                                            </p:row>
+
+                                        </p:columnGroup>
+                                    </p:dataTable>
+                                    <br/>
+
+
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{msg['tableau.primenetteannuelle']} :" class=" police_label form-control bg-purple"  >
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{objetBean.factureChoisie.primeNettennuelle}" class=" police_label form-control text-right"  >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{msg['tableau.fractionnement']} :" class=" police_label form-control bg-purple"  >
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{objetBean.factureChoisie.arrondireFormat2(objetBean.factureChoisie.primeFracionne)} " class=" police_label form-control text-right"  >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{msg['tableau.dureefractionnement']} :" class=" police_label form-control bg-purple"  >
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{objetBean.factureChoisie.periodeDeFractionnement()} " class=" police_label form-control text-right"  >
+                                                
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{msg['tableau.bonus']} :" class=" police_label form-control bg-purple"  >
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{objetBean.factureChoisie.bonusValue}" class=" police_label form-control text-right"  >
+                                                
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{msg['tableau.reduction.exceptionnelle']} :" class=" police_label form-control bg-purple"  >
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{objetBean.factureChoisie.reductionExceptionnelleValue}" class=" police_label form-control text-right"  >
+                                                
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                  
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{msg['tableau.reduction.flotte']} :" class=" police_label form-control bg-purple"  >
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{objetBean.factureChoisie.reductionFlotteValue}" class=" police_label form-control text-right"  >
+                                                
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{msg['tableau.primeapresred']} :" class=" police_label form-control bg-purple"  >
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{objetBean.factureChoisie.arrondireFormat2(objetBean.factureChoisie.total)} " class=" police_label form-control text-right"  >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{msg['tableau.accessoire']} :" class=" police_label form-control bg-purple"  title="#{msg['prix.total']}">
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{objetBean.factureChoisie.accessoire}" class=" police_label form-control text-right"  >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{msg['tableau.taxeFGA']}:" class=" police_label form-control bg-purple"  title="#{msg['prix.total']}">
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{objetBean.factureChoisie.arrondireFormat(objetBean.factureChoisie.taxeFGAvalue)}" class=" police_label form-control text-right"  >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{msg['tableau.tauxenregistrement']} :" class=" police_label form-control bg-purple" >
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{objetBean.factureChoisie.arrondireFormat(objetBean.factureChoisie.tauxEnregistrementValue)}" class=" police_label form-control text-right"  >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:outputLabel>
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{msg['prix.total']} :" class=" police_label form-control bg-purple" style="color: red" title="#{msg['prix.total']}">
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{objetBean.factureChoisie.arrondireFormat(objetBean.factureChoisie.primeTtc)}" class=" police_label form-control text-right" style="color: red" title="#{msg['montant.total']}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:outputLabel>
+                                        </div>  
+                                    </div>
+                                </fieldset>
+                            </div> 
+
+                        </div>
+
+                    </p:panel>
+                </div>
+            </div>
+        </div>
+
+        <pe:blockUI widgetVar="simulation">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                <h:outputText value="Simulation en cours...." />  
+            </h:panelGrid>  
+        </pe:blockUI> 
+    </ui:composition> 
+</html>
+

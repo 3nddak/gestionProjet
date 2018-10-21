@@ -1,0 +1,66 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div id="liste">
+
+            <h:form  id="formliste2" class="form-horizontal">
+
+                <p:panel header ="#{msg['titre.listeDesDemandesDAnnulation']}" toggleable="true">
+                    <p:dataTable rows="8" paginator="true"   emptyMessage="#{msg['tableau.vide']}" class="table table-responsive" var="demande" value="#{autorisationDemandeAnnulationAsVoyage.listDemandeAnnulationAsVoyage}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150"  
+                                 rowsPerPageTemplate="2,3,4,5,6,7"  > 
+                                 
+                        <p:column headerText="#{msg['titre.codeTransaction']}" >
+                            <p:outputLabel value="#{demande.assurance.codeTransaction}" />
+                        </p:column>
+                        <p:column headerText="#{msg['tableau.numeropolice']}" filterBy="#{demande.assurance.numeroPolice}" >
+                            <h:outputText value="#{demande.assurance.numeroPolice}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.dateDemande']}"  >
+                            <h:outputText value="#{demande.dateDemandeAnnulation}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.compagnie']}" filterBy="#{demande.assurance.compagnie.abbreviation}">
+                            <h:outputText value="#{demande.assurance.compagnie.abbreviation}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.courtier']}" filterBy="#{demande.assurance.courtier.abbreviation}">
+                            <h:outputText value="#{demande.assurance.courtier.abbreviation}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['client.nom']}" >
+                            <h:outputText value="#{demande.assurance.client.nom}"/>
+                        </p:column>
+                        <p:column  headerText="#{msg['client.prenom']}">
+                            <h:outputText value="#{demande.assurance.client.prenom}"/>
+                        </p:column>
+                        <p:column  headerText="#{msg['client.numeroDIdentite']}">
+                            <h:outputText value="#{demande.assurance.client.numeroPiece}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.autoriser']}" >
+                            <h:outputText value="#{demande.libelleEtaDemandeCourtier}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.dateAutorisation']} " >
+                            <h:outputText value="#{demande.dateAutorisation}"/>
+                        </p:column>
+                      
+                        <p:column headerText="#{msg['titre.dateAnnulation']}" >
+                            <h:outputText value="#{demande.dateAnnullation}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.action']}">
+                            <p:commandLink title="#{msg['titre.traiter']}" rendered="#{!demande.annuler}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{autorisationDemandeAnnulationAsVoyage.check()}" class=" btn btn-xs btn-primary fa fa-file" update="traiter,formliste3,@form"  >
+                                <f:setPropertyActionListener target="#{autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage}" value="#{demande}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:composition>
+</html>
+

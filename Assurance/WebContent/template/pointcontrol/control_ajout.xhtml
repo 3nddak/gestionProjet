@@ -1,0 +1,60 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:outputPanel id="ajout" style="text-align:center;">
+                    <h:form class="form-horizontal" id="dispatcher">      
+                        <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="des" value="Point de retrait" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:selectOneMenu id="des"  value="#{controlBean.pointDeRetraitToUse}" required="true" converter="omnifaces.SelectItemsConverter"  requiredMessage="Veuillez choisir un point de retrait" styleClass="form-control">
+                                        <f:selectItem itemLabel="Choisir un point de retrait" noSelectionOption="true"/>
+                                        <f:selectItems value="#{controlBean.allPointDeRetraitCompagnie}" var="p" itemLabel="#{p.libelle}" itemValue="#{p}" />
+                                    </h:selectOneMenu>
+                                </div> 
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:message for="des" id="desMessage" class="errorClass"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <div class="col-md-6 col col-lg-6">
+                                    <p:commandButton value="Annuler" type="reset" id="annuler" class="danger btn-danger pull-left col-md-4"/>
+                                </div>
+
+                                <div class="col-md-6 col col-lg-6">
+                                    <p:commandButton value="Envoyer" action="#{controlBean.dispatcher}" update="dispatcher,:formliste:facture, :formliste:msgs" oncomplete="PF('ajout').hide()" class="success btn-success pull-right col-md-4"/>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+
+                </p:outputPanel>
+            </div>
+        </div>
+
+
+        <!-- Fin du dialogue--> 
+
+
+
+    </ui:composition> 
+
+</html>
+

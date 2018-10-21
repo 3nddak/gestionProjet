@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <p:outputPanel id="cg" >
+            <div class="panel">
+                <p:panel   header="Ajout Condition General"  toggleable="true" collapsed="true" >
+                    <ui:include src="condition_general_ajout.xhtml"/>
+                </p:panel>
+            </div>
+            <div class="panel">
+                <p:panel header="Liste des conditions générals compagnie-courtier" >
+                    <h:form id="conditionGeneralList" class="form-horizontal">
+
+                        <div class="table-responsive">
+                            <p:dataTable  var="conge" id="listconditionGeneral" class="table table-bordered" rows="5" 
+                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                          paginator="true" paginatorPosition="bottom" widgetVar="anscoVar" value="#{condition_GeneralBean.listCondition_General}"
+                                          emptyMessage="tableau vide" sortOrder="ascending" editable="true" editMode="cell"
+                                          selection="#{condition_GeneralBean.selectedCondition_General}" rowKey="#{conge.idReference}"
+                                          > 
+
+                                <p:column headerText="Designation" filterBy="#{conge.designation}">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:outputLabel id="K" value="#{conge.designation}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{conge.designation}" rendered="#{(conge.designation eq null) ?false:true }" >
+                                                <p:ajax event="keyup" update="K"  /> 
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Decription" filterBy="#{conge.description}">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:outputLabel id="L" value="#{conge.description}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{conge.description}" rendered="#{(conge.description eq null) ?false:true }" >
+                                                <p:ajax event="keyup" update="L"  /> 
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Compagnie" filterBy="#{conge.compagnie.abbreviation}" >
+                                    <h:outputText value="#{conge.compagnie.abbreviation}" />
+                                </p:column>
+                                <p:column headerText="Courtier" filterBy="#{conge.courtier.abbreviation}" >
+                                    <h:outputText value="#{conge.courtier.abbreviation}" />
+                                </p:column>
+                                <p:column headerText="Fonction" filterBy="#{conge.fonction}">
+                                    <p:outputLabel id="O" value="#{conge.fonction}" />
+                                </p:column>
+                                <p:column headerText="Champ AS" filterBy="#{conge.fieldOfAssuranceCredit}">
+                                    <p:outputLabel  value="#{conge.fieldOfAssuranceCredit}" />
+                                </p:column>
+                                <p:column headerText="Valeur" filterBy="#{conge.valeur}">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:outputLabel id="M" value="#{conge.valeur}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{conge.valeur}" rendered="#{(conge.valeur eq null) ?false:true }" >
+                                                <p:ajax event="keyup" update="M"  /> 
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Activer"  class="text-center">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><!--p:outputLabel id="ss0"  /--><i jsf:id="t" class="text-green icon-default fa fa-check #{conge.active}" /><i jsf:id="f" class=" icon-default  text-red fa fa-close #{!conge.active}" /></f:facet>
+                                        <f:facet name="input"> 
+                                            <p:selectBooleanCheckbox value="#{conge.active}" >
+                                                    <!--p:ajax update="ss0" /-->
+                                                <p:ajax update="t,f" />
+                                            </p:selectBooleanCheckbox>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column selectionMode="multiple" style="width:36px;text-align:center"/>
+                            </p:dataTable>
+                        </div>
+                        <p:growl id="gl" globalOnly="true" showDetail="false"  life="3000"/>
+                        <!--div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"-->
+                        <div class="btn-toolbar">
+                            <p:commandButton update="@form,gl,conditionGeneralList,cg" value="Modifier" title="Modifier" action="#{condition_GeneralBean.updateConditionGeneralSelection()}" class="btn btn-primary" />
+                            <p:commandButton  update="@form,gl,conditionGeneralList,cg" value="Supprimer" title="Supprimer"  action="#{condition_GeneralBean.deleteConditionGeneralSelection()}"  class="btn btn-danger" /> 
+                        </div>
+                    </h:form>
+                </p:panel>
+            </div>
+        </p:outputPanel>
+    </ui:composition>
+</html>

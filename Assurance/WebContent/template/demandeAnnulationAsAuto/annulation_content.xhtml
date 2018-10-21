@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <ui:include src="recherche.xhtml"/>
+        <ui:include src="listResultats.xhtml"/>
+        <ui:include src="listdemande.xhtml"/>
+        
+        
+        <p:dialog widgetVar="traiter" modal="true" id="traiter" >
+            <ui:include src="traitement.xhtml"/>
+        </p:dialog>
+        
+        <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+            <h:form>
+                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes btn-xs btn btn-primary" icon="fa fa-check" actionListener="#{factureCourtierBean.comptabilite()}" />
+                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no btn-xs btn btn-danger" icon="fa fa-close" />
+            </h:form>
+        </p:confirmDialog>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+    </ui:composition>
+
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <p:growl id="msgs2" globalOnly="true" showDetail="false"  life="3000"/>
+            <h:form id="temporalListCompagnieCourtier" class="form-horizontal" >
+                <p:dataTable id="temporalListCompagnieCourtierData" value="#{natureEvenementSinistreBean.listNatureEvenementSinistreAsAuto}" var="natureEven" 
+                             class="table table-striped"  editable="true" editMode="cell"  rows="25" 
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150"  
+                             rowsPerPageTemplate="25,50,100,150,200"  emptyMessage="#{msg['tableau.vide']}" 
+                             selection="#{natureEvenementSinistreBean.listNatureEvenementSinistreAsAutoSelect}"
+                             rowKey="#{natureEven.hashCode()}"
+                             >                      
+                    <p:column headerText="Type d'assurance">
+                        <p:outputLabel value="#{natureEven.typeAssuranceCompagnie.typeAssurance.designation}" />
+                    </p:column>
+                    <p:column headerText="Compagnie">
+                        <p:outputLabel value="#{natureEven.typeAssuranceCompagnie.compagnie.abbreviation}" />
+                    </p:column>
+                    <!--p:column headerText="Type d'assurance">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel  id ="Ag" value="#{natureEven.typeAssuranceCompagnie.typeAssurance.designation}" /></f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu  required="true" class="form-control" converter="omnifaces.SelectItemsConverter"  id="courtig" value="#{natureEven.typeAssuranceCompagnie.compagnie}"  >
+                                    <f:selectItem  itemLabel="Choisir le courtier" /> 
+                                    <f:selectItems value="#{natureEvenementSinistreBean.listTypeAssurance}" var="courtig" itemLabel="#{courtig.designation}" itemValue="#{courtig}"/>
+                                    <p:ajax event="keyup" update="Ag" listener="#{natureEvenementSinistreBean.listCompagnieByTypeAssurance()}"  /> 
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Compagnie">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel  id ="A" value="#{natureEven.typeAssuranceCompagnie.compagnie.abbreviation}" /></f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu required="true" class="form-control" converter="omnifaces.SelectItemsConverter"  id="courti" value="#{natureEven.typeAssuranceCompagnie.compagnie}"  >
+                                    <f:selectItem noSelectionOption="true" itemLabel="Choisir le courtier" /> 
+                                    <f:selectItems value="#{natureEvenementSinistreBean.listCompagnie}" var="courti" itemLabel="#{courti.abbreviation}" itemValue="#{courti}"/>
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column-->
+
+                    <p:column headerText="libelle" class="text-right" >
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="Maj" value="#{natureEven.libelle}" /></f:facet>
+                            <f:facet name="input"> 
+                                <p:inputText value="#{natureEven.libelle}">
+                                    <p:ajax update="Maj"/>
+
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Description" class="text-right" >
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="Red" value="#{natureEven.description}" /></f:facet>
+                            <f:facet name="input"> 
+                                <p:inputText value="#{natureEven.description}">
+                                    <p:ajax update="Red"/>
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="action">
+                        <div class="btn-toolbar">
+                            <p:commandButton icon="fa fa-edit" class="btn btn-primary" title="Enregistrer les modifications" action="#{natureEvenementSinistreBean.updateOnep()}" update="temporalListCompagnieCourtier,msgs2" >
+                                <f:setPropertyActionListener value="#{natureEven}" target="#{natureEvenementSinistreBean.natureEvenementSinistreAsAutoToUpdate}" />
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-trash" class="btn btn-danger" title="Supprimer la ligne" action="#{natureEvenementSinistreBean.deleteOne()}"  update="temporalListCompagnieCourtier,msgs2">
+                                <f:setPropertyActionListener value="#{natureEven}" target="#{natureEvenementSinistreBean.natureEvenementSinistreAsAutoToUpdate}" />
+                            </p:commandButton>
+                        </div>
+                    </p:column>
+                    <p:column headerText="Selection" width="6%" selectionMode="multiple" class="text-center"/>
+
+
+                </p:dataTable>
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="btn-toolbar">
+                            <p:commandButton class="btn-danger btn" value="Supprimer"  title="Suppprimer la selection" actionListener="#{natureEvenementSinistreBean.deleteList()}" update="temporalListCompagnieCourtier,msgs2" />
+                            <p:commandButton class="btn-purple btn pull-right"  value="Enrégistrer" title="Enrégistrer la selection" actionListener="#{natureEvenementSinistreBean.updateList()}" update="temporalListCompagnieCourtier,msgs2" />
+                        </div>
+                    </div>
+                </div>
+
+            </h:form>
+        </div>
+    </ui:composition> 
+
+</html>
+

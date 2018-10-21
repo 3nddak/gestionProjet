@@ -1,0 +1,404 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <h:form  class="form-horizontal well-sm" id="detail22">
+            <div class="panel-heading bg-primary">  
+                <h:outputLabel class="police_label" value="SOCIETE DE COURTAGE" ></h:outputLabel>
+            </div>
+
+            <div class="panel-body"> 
+
+                <div class="row">
+
+                    <p:fieldset  legend="VOIR LES REFERENCES DU CLIENT" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Souscripteur"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.client.nom}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Téléphone"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.client.telephoneMobile}"/>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Adresse"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.client.adresse}"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </p:fieldset>
+                    <p:fieldset  legend="VOIR LE TYPE D'OPERATIONS" toggleable="true" collapsed="false"  toggleSpeed="500"  style="margin-bottom:20px">                                              
+                        <div class="form-group">
+                            <div class=" col-lg-12 ">
+                                <div class="input-group">
+
+
+                                    <p:panelGrid columns="2">
+                                        <p:outputLabel for="av" value="Avenant :"/>
+                                        <p:outputLabel id="av" value="#{factureCompagnieBean.selectedFacture.type}"/>
+                                        <p:outputLabel for="datedebut" value="Date debut :"/>
+                                        <p:outputLabel id="datedebut" value="#{factureCompagnieBean.selectedFacture.dateDebut}"/>
+                                        <p:outputLabel for="periode" value="Periode :"/>
+                                        <p:outputLabel id="periode" value="#{factureCompagnieBean.selectedFacture.periode}"/>
+                                        <p:outputLabel for="numPolice" value="Numero Police :"/>
+                                        <p:outputLabel id="numPolice" value="#{factureCompagnieBean.selectedFacture.numeroPolice}"/>
+                                    </p:panelGrid>
+                                </div>
+                            </div>
+                        </div>
+
+                    </p:fieldset>
+                    <p:fieldset  legend="VOIR LES CARACTERISTIQUES DU VEHICULE" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                                
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Immatriculation"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.numeroImmatriculation}"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Genre"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.genre}"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Marque"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.marque}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Type"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.type}"/>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Puissance"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.puissance}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Nombre de places"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.nombrePlaces}"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="N° Chassis"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.numChassis}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="N° Moteur"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.numMoteur}"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Usage"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.usagev}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Année"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.miseEnCirculation}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Valeur neuve"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.valeurNeuve}" >
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                    </h:outputLabel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Valeur Venale"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.valeurvenale}" >
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                    </h:outputLabel>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Categorie"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{factureCompagnieBean.voiture.categorie.libelle}"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </p:fieldset>
+
+                    <p:fieldset style="margin-bottom:20px" id="ddd">
+                        <legend>GARANTIES SOUSCRITES</legend>
+                        <p:dataTable id="g" class="table_label" var="proposition" editable="true" editMode="cell" scrollable="true" value="#{factureCompagnieBean.listPropositionselect}">
+                            <p:columnGroup type="header">
+                                <p:growl>
+                                    <p:column rowspan="2" headerText="GUARANTIE" />
+                                    <p:column rowspan="2" headerText="PRIME ANNUELE" />
+                                    <p:column colspan="4" headerText="REDUCTION OU MAJORATION" />
+                                    <p:column rowspan="2" headerText="PRIME NETTE"  />
+                                </p:growl>
+                                <p:row>
+                                    <p:column headerText="BNS" />
+                                    <p:column headerText="RED" />
+                                    <p:column headerText="MLS" />
+                                    <p:column headerText="MONTANT" />
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column>
+                                #{proposition.compagnieGuarantie.guarantie.libelle}
+                            </p:column>
+                            <p:column>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel id="ss4" value="#{proposition.primePropose}">
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:outputLabel>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{proposition.primePropose}">
+                                            <p:ajax event="keyup" update ="ss4,primeTotal1,sss,ss1" listener="#{factureCompagnieBean.actionl()}" />
+                                            <pe:keyFilter  mask="num" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel  id="ss3" value="#{proposition.bonus}">
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:outputLabel>
+                                    </f:facet>
+                                    <f:facet name="input">
+
+                                        <p:inputText value="#{proposition.bonus}">
+                                            <p:ajax event="keyup" update="ss3,primeTotal1,sss,ss1" listener="#{factureCompagnieBean.actionl()}" />
+                                            <p:ajax event="blur" update="g"  />
+                                            <pe:keyFilter  mask="num" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel id="ss2" value="#{proposition.reduction}">
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:outputLabel>
+                                    </f:facet>
+                                    <f:facet name="input">
+
+                                        <p:inputText value="#{proposition.reduction}">
+                                            <p:ajax event="keyup" update="ss2,primeTotal1,sss,ss1" listener="#{factureCompagnieBean.actionl()}" />
+                                            <p:ajax event="blur" update="g"  />
+                                            <pe:keyFilter  mask="num" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel id="ss" value="#{proposition.malus}">
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:outputLabel>
+                                    </f:facet>
+                                    <f:facet name="input">
+
+                                        <p:inputText value="#{proposition.malus}">
+                                            <p:ajax event="keyup" update="ss,primeTotal1,sss,ss1" listener ="#{factureCompagnieBean.actionl()}"  />
+                                             <p:ajax event="blur" update="g"  />
+                                            <pe:keyFilter  mask="num" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="sss" value="#{proposition.montant}">
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:outputLabel>
+
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="ss1" value="#{proposition.prime}">
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:outputLabel>
+
+                            </p:column>
+                            <p:columnGroup type="footer" id="primeTotal1">
+                                <p:row>
+                                    <p:column    style="text-align:right" footerText="Total :" />
+                                    <p:column  footerText="" />
+                                    <p:column   footerText=""  />
+                                    <p:column   footerText=""  />
+                                    <p:column   footerText=""  />
+                                    <p:column   footerText=""  />
+
+                                    <p:column   footerText="#{factureCompagnieBean.selectedFacture.arrondireFormat2(factureCompagnieBean.selectedFacture.primeNettennuelle)}" id="primeTotal" />
+                                </p:row>
+
+                            </p:columnGroup>
+                        </p:dataTable>  
+
+                    </p:fieldset>
+                </div> 
+
+            </div>
+
+            <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                <h:form>
+                    <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </h:form>
+            </p:confirmDialog>
+        </h:form>
+        <h:form id="text">
+            <p:panel>
+                <p:panelGrid columns="2" layout="grid" >
+                    <p:outputLabel class="police_label" value="Prime nette:" for="ps"></p:outputLabel>
+                    <p:outputLabel id="ps"  value="#{factureCompagnieBean.selectedFacture.primeNettennuelle}"><f:convertNumber pattern="###,##0" type="number" /></p:outputLabel>
+                    <p:outputLabel class="police_label" value="Fractionnement en %:" for="frac"></p:outputLabel>
+                    <p:inputText id="frac" size="13" value="#{factureCompagnieBean.selectedFacture.fractionnement}">
+                        <p:ajax event="keyup" update="pttc"  />
+                        <pe:keyFilter  mask="num" />
+                    </p:inputText>
+                    <p:outputLabel class="police_label" value="Reduction flote en %:" for="rfl"></p:outputLabel>
+                    <p:inputText id="rfl" size="13" value="#{factureCompagnieBean.selectedFacture.reductionFlotte}">
+                        <p:ajax event="keyup" update="pttc"  />
+                        <pe:keyFilter  mask="num" />
+                    </p:inputText>
+                    <p:outputLabel class="police_label" value="Reduction Exeptionnelle en %:" for="rexp"></p:outputLabel>
+                    <p:inputText id="rexp" size="13" value="#{factureCompagnieBean.selectedFacture.reductionExceptionnelle}">
+                        <p:ajax event="keyup" update="pttc"  />
+                        <pe:keyFilter  mask="num" />
+                    </p:inputText>
+                    <p:outputLabel class="police_label" value="bonus %:" for="bon"></p:outputLabel>
+                    <p:inputText id="bon" size="13" value="#{factureCompagnieBean.selectedFacture.bonus}">
+                        <p:ajax event="keyup" update="pttc"  />
+                        <pe:keyFilter  mask="num" />
+                    </p:inputText>
+                    <p:outputLabel  class="police_label" value="Accessoire:" for="acc"/>
+                    <p:inputText id="acc" size="13" value="#{factureCompagnieBean.selectedFacture.accessoire}">
+                        <p:ajax event="keyup" update="pttc"  />
+                        <pe:keyFilter  mask="num" />
+                    </p:inputText>
+                    <p:outputLabel class="police_label" value=" Taxe en %:" for="te"/>
+                    <p:inputText id="te" size="13" value="#{factureCompagnieBean.selectedFacture.tauxEnregistrement}">
+                        <p:ajax event="keyup" update="pttc"  />
+                        <pe:keyFilter  mask="num" />
+                    </p:inputText>
+                    <p:outputLabel class="police_label" value="Prime TTC:" for="pttc"/>
+                    <p:outputLabel id="pttc"  style="text-decoration: #ffffff " value="#{factureCompagnieBean.selectedFacture.primeTtc}">
+                        <f:convertNumber pattern="###,##0" type="number" /></p:outputLabel>
+                </p:panelGrid>
+            </p:panel>
+
+            <div class="form-group" style="padding-right:10px;">
+                <div class="col-lg-4">
+                    <p:commandButton  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" oncomplete="PF('modifier').hide()" value="Annuler" update="@form,detail22" action="#{factureCompagnieBean.destroy()}" class="btn-danger danger col-md-6 pull-right"  icon="fa fa-trash" />
+                </div>
+                <div class="col-lg-4">
+                    <p:commandButton oncomplete="PF('modifier').hide()"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  class="col-md-6 btn-success success pull-right" icon="fa fa-shopping-card" value="Valider" action="#{factureCompagnieBean.updateFacture()}" update="@form,detail22">  
+                        <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert" rendered="#{(factureCourtierBean.selectedFacture.objetVoiture.numeroPolice==null)?false:true}" />
+                    </p:commandButton>
+                </div>
+
+
+            </div>
+
+
+        </h:form>
+        <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+            <h:form>
+                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{factureCourtierBean.comptabilite()}" />
+                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </h:form>
+        </p:confirmDialog>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+    </ui:composition>
+
+</html>

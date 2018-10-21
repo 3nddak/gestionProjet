@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+
+        <div class="container-fluid">
+            <div id="liste" class="row-fluid">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+
+                    <div class="panel">
+                        <h:form  id="formliste">
+                            <div class="panel-heading"> 
+
+                                <fieldset>
+                                    <legend class="police_label text-center"><p:outputLabel value="DEMANDES1"></p:outputLabel></legend>
+
+                                </fieldset>
+
+                            </div><br/> 
+
+                            <div class="panel panel-body">
+
+                                <p:outputPanel id="devise">
+                                    <p:dataTable var="car" value="#{dtFilterView.cars}" widgetVar="carsTable"
+                                                 emptyMessage="#{msg['tableau.vide']}" filteredValue="#{dtFilterView.filteredCars}">
+
+                                        <!--f:facet name="header">
+                                            <p:outputPanel>
+                                                <h:outputLabel value="Recherche"><span>:</span></h:outputLabel>
+                                                <p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()" style="width:150px" placeholder="Recherche"/>
+
+                                            </p:outputPanel>
+                                        </f:facet-->
+
+
+                                        <p:column filterBy="#{car.id}" headerText="Code" footerText="contains" filterMatchMode="contains" class="col-lg-3">
+                                            <h:outputText value="Code" />
+                                        </p:column>
+                                        <p:column filterBy="#{car.color}" headerText="Compagie" class="col-lg-2">
+                                            <f:facet name="filter">
+                                                <h:selectOneMenu class="form-control" onchange="PF('carsTable').filter()" >
+                                                    <f:selectItem itemLabel="C1" itemValue="#{null}" noSelectionOption="true" />
+                                                    <f:selectItem itemLabel="C2" itemValue="c1"/>
+                                                    <f:selectItem itemLabel="C3" itemValue="c2" />
+                                                </h:selectOneMenu>
+                                            </f:facet>
+                                            <h:outputText value="#{car.color}" />
+                                        </p:column>
+
+                                        <p:column filterBy="#{car.year}" headerText="Nom" footerText="contains" filterMatchMode="contains" class="col-lg-3">
+                                            <h:outputText value="Nom" />
+                                        </p:column>
+
+                                        <p:column filterBy="#{car.brand}" headerText="Prenom" footerText="contains" filterMatchMode="contains" class="col-lg-2">
+                                            <h:outputText value="Prenom" />
+                                        </p:column>
+
+                                        <p:column filterBy="#{car.sold}" headerText="Date" class="col-lg-2">
+                                            <p:calendar value="#{null}" />
+                                        </p:column>
+
+                                        <p:column selectionMode="single" class="col-lg-1"/>
+                                    </p:dataTable> 
+                                </p:outputPanel>
+                            </div>
+                        </h:form>
+
+
+                        <!--div class="panel-footer"> 
+
+                        </div--> 
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+    </ui:composition> 
+
+</html>
+

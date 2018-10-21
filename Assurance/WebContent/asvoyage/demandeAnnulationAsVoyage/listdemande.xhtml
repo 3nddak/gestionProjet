@@ -1,0 +1,50 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div id="liste">
+            <h:form  id="formliste2" class="form-horizontal">
+                <p:panel header ="Liste des demandes d'annulation" toggleable="true">
+                    <p:dataTable rows="8" paginator="true"   emptyMessage="#{msg['tableau.vide']}" class="table table-responsive" var="demande" value="#{demandeAnnulationAsVoyageBean.listDemandeAnnulationAsVoyage}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150"  
+                                 rowsPerPageTemplate="2,3,4,5,6,7"  > 
+                              
+                        <p:column headerText="N° Transaction"  >
+                            <h:outputText value="#{demande.assurance.codeTransaction}"/>
+                        </p:column>
+                        <p:column headerText="N° Police"  >
+                            <h:outputText value="#{demande.assurance.numeroPolice}"/>
+                        </p:column>
+                        <p:column headerText="date demande"  >
+                            <h:outputText value="#{demande.dateDemandeAnnulation}"/>
+                        </p:column>
+                        <p:column headerText="Compagnie" filterBy="#{demande.assurance.compagnie.abbreviation}">
+                            <h:outputText value="#{demande.assurance.compagnie.abbreviation}"/>
+                        </p:column>
+                        <p:column headerText="Courtier" filterBy="#{demande.assurance.courtier.abbreviation}">
+                            <h:outputText value="#{demande.assurance.courtier.abbreviation}"/>
+                        </p:column>
+                        <p:column headerText="Etat de la demande" >
+                            <h:outputText value="#{demande.libelleEtaDemandePV}"/>
+                        </p:column>
+                        <p:column headerText="date Autorisation" >
+                            <h:outputText value="#{demande.dateAutorisation}"/>
+                        </p:column>
+                    
+                        <p:column headerText="Date annulation" >
+                            <h:outputText value="#{demande.dateAnnullation}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                
+                <h:form class="form-horizontal" id="courtierAutonome-ajout" >
+                    <p:growl id="msgsc" showDetail="false"  globalOnly="true" life="3000"  severity="info"/>
+                    <div class="col-md-6 col-md-offset-3  col-lg-4 col-lg-offset-4 col-sm-12">
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <label >#{msg['titre.courtier']}</label>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <h:selectOneMenu  required="true" id="courtier"  value="#{courtierAutonomeBean.compagnieCourtierToSave.courtier}" converter="omnifaces.SelectItemsConverter"
+                                                  requiredMessage="#{msg['pv.courtier.requireMessage']}"  class="form-control" >
+                                    <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""/>
+                                    <f:selectItems itemLabel="#{courtier.designation}" var="courtier"  itemValue="#{courtier}" value="#{courtierAutonomeBean.courtierlist}"  />
+
+                                    <p:ajax   listener="#{courtierAutonomeBean.listCompagniesByCourtier()}" update="compagnie" />
+                                    <p:ajax event="click" update="courMessage"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 ">
+                                <p:message id="courMessage" for="courtier"/>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <label >#{msg['titre.compagnie']}</label>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 ">
+                                <h:selectOneMenu  id="compagnie" value="#{courtierAutonomeBean.compagnieCourtierToSave.compagnie}"  style="min-width: 300px" converter="omnifaces.SelectItemsConverter" requiredMessage="#{msg['courtier.compagnie.requireMessage']}" class="form-control" 
+                                                  required="true"     
+                                                  >
+                                    <f:selectItem itemLabel="Compagnie" itemValue=""/>
+                                    <f:selectItems value="#{courtierAutonomeBean.compagnielist}" var="compagnie" itemValue="#{compagnie}" itemLabel="#{compagnie.designation}" />
+                                    <p:ajax event="click" update="comMessage"/>
+                                </h:selectOneMenu> 
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 ">
+                                <p:message id="comMessage" for="compagnie"/>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <p:commandButton class="btn btn-primary pull-right primary" update="courtierAutonome-liste,courtierAutonome-ajout,msgsc" action="#{courtierAutonomeBean.enregistrer()}"  value="#{msg['btn.valider']}">
+
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>  
+            </div>
+        </div>
+    </ui:composition>
+</html>
+

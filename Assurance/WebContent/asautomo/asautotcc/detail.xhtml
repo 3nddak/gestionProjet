@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition>
+        <h:form id="text" class="form-horizontal">
+            <p:panel id="calculTotal">
+                <!--p:panelGrid columns="2"  layout="grid"-->
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12" >
+                    <div class="panel panel-border-none" >
+                        <p:outputLabel class="form-control bg-purple" value="Prime nette:" for="ps"></p:outputLabel>
+                    </div>
+                    <div class="panel panel-border-none" >
+                        <p:outputLabel  class="form-control bg-purple" value="Accessoire:" for="acc"/>
+                    </div>
+                    <div class="panel panel-border-none" >
+                        <p:outputLabel  class="form-control bg-purple" value="Reduction:" for="red"/>
+                    </div>
+                    <div class="panel panel-border-none" >
+                        <p:outputLabel  class="form-control bg-purple" value="Majoration:" for="maj"/>
+                    </div>
+                    <div class="panel panel-border-none" >
+                        <p:outputLabel  class="form-control bg-purple" value="Remise:" for="accrr"/>
+                    </div>
+                    <div class="panel panel-border-none" >
+                        <p:outputLabel class="form-control bg-purple" value="Taxe:" for="tes"/>
+                    </div>
+                    <div class="panel panel-border-none" >
+                        <p:outputLabel class="form-control bg-purple" value="Prime TTC:" for="pttc"/>
+                    </div>
+
+
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12" >
+                    <div class="panel panel-border-none" >
+                        <p:outputLabel id="ps" class="text-right form-control"  value="#{espaceCompagnieAsCompteBean.selectedAssurance.prixNette}"> 
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </p:outputLabel>
+                    </div>
+                    <div class="panel panel-border-none" >
+                        <p:inputText id="acc" class="text-right form-control" value="#{espaceCompagnieAsCompteBean.selectedAssurance.accessoire}">
+                            <p:ajax event="keyup" update="pttc"  />
+                            <pe:keyFilter  mask="num" />
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </p:inputText>
+                    </div>
+                    <div class="panel panel-border-none" >
+                        <div class="row panel-border-none">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <p:inputText class="form-control" id="red" value="#{espaceCompagnieAsCompteBean.selectedAssurance.reduction}">
+                                    <p:ajax event="keyup" update="pttc,redx,tes" />
+                                    <pe:keyFilter  mask="num"  />
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:inputText>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <h:outputText class="form-control" id="redx"  value="#{espaceCompagnieAsCompteBean.selectedAssurance.valeurReduction()}" >
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </h:outputText>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <p:selectBooleanCheckbox  itemLabel="En%"  class="pull-right"  id="somm" value="#{espaceCompagnieAsCompteBean.selectedAssurance.reductionEnPourcentage}" >
+                                    <p:ajax update="tes,redx,pttc" />
+                                </p:selectBooleanCheckbox>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-border-none" >
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <p:inputText id="maj" class="form-control" value="#{espaceCompagnieAsCompteBean.selectedAssurance.majoration}">
+                                    <p:ajax event="keyup" update="pttc,redl,tes" />
+                                    <pe:keyFilter  mask="num"  />
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:inputText>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <h:outputText id="redl" class="form-control" value="#{espaceCompagnieAsCompteBean.selectedAssurance.valeurMajoration()}" 
+                                              >
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </h:outputText>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <p:selectBooleanCheckbox class="pull-right" id="sommm" itemLabel="En%" value="#{espaceCompagnieAsCompteBean.selectedAssurance.majorationEnPourcentage}" 
+                                                         >
+                                    <p:ajax update="redl,tes,pttc" />
+                                </p:selectBooleanCheckbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-border-none" >
+                        <p:inputText id="accrr" class="text-right form-control" value="#{espaceCompagnieAsCompteBean.selectedAssurance.remise}">
+                            <p:ajax event="keyup" update="pttc"  />
+                            <pe:keyFilter  mask="num" />
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </p:inputText>
+                    </div>
+                    <div class="panel panel-border-none" >
+                        <p:inputText id="tes" class="text-right form-control" value="#{espaceCompagnieAsCompteBean.selectedAssurance.taxe}">
+                            <p:ajax event="keyup" update="pttc"  />
+                            <pe:keyFilter  mask="num" />
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </p:inputText>
+                    </div>
+                    <div class="panel panel-border-none" >
+                        <p:outputLabel id="pttc" class="text-right form-control"  value="#{espaceCompagnieAsCompteBean.selectedAssurance.primeTTCS}">
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </p:outputLabel>
+                    </div>
+                </div>
+                <div class="btn-toolbar" >
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                        <p:commandButton rendered="#{(espaceCompagnieAsCompteBean.selectedAssurance.idFacture==null)?false:true}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" value="Rejeter"  action="#{espaceCompagnieAsCompteBean.annuler()}" class="btn-danger btn"  icon="fa fa-trash" update="@form,message1,detail,vvv" />
+                        <p:commandButton rendered="#{(espaceCompagnieAsCompteBean.selectedAssurance.idFacture==null)?false:true}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  class="btn-success btn pull-right" icon="fa fa-shopping-card" value="Valider" action="#{espaceCompagnieAsCompteBean.enregistrer()}" update="@form,message1,detail,vvv">  
+                            <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert"  />
+                        </p:commandButton>
+                    </div>
+                    <p:growl for="somekey" id="vvv"  />
+                </div>
+            </p:panel>
+        </h:form>
+    </ui:composition>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+        <p:outputPanel id="dev" >
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <fieldset> 
+                    <legend class="text-center text-uppercase"><p:outputLabel value="#{msg['devise.gestion']}"></p:outputLabel></legend>
+
+
+                    <p:panel  header="#{msg['devise.ajouter']}" toggleable="true" toggleSpeed="500"  collapsed="true" style="margin-bottom:20px">                          
+                        <div class="panel-body">
+                            <ui:include src="devise_ajout.xhtml"/>
+                        </div>
+                    </p:panel>
+                    <br/>
+                    
+                    <h:form  id="formliste" class="form-horizontal" >
+                        <p:panel  header="#{msg['devise.liste']}">
+                            <p:outputPanel id="devise">
+                                <!--div class="form-horizontal"-->
+                                <div class="panel-body">
+                                    <div class="btn-toolbar">
+                                        <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-xs btn-imprimer" actionListener="#{deviseBean.doGetA}"   > 
+                                            <i class=" glyphicon glyphicon-print"></i>
+                                        </h:commandLink>  
+
+                                    </div>
+                                   
+                                    <p:commandButton value="Export" ajax="false"  icon="ui-icon-arrowthick-1-s">
+                                        <p:fileDownload value="#{deviseBean.file}" />
+                                    </p:commandButton>
+                                    <div class="table-responsive">
+                                        <p:dataTable  sortBy="#{devise.idDevise}" class="table table-condensed table-striped" rowKey="#{devise.idDevise}" selection="#{deviseBean.triDeviseList}" var="devise" id="deviseliste" reflow="true" rows="5" value="#{deviseBean.deviseList}"
+                                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                      paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd"
+                                                      sortOrder="descending" emptyMessage="#{msg['tableau.vide']}"> 
+
+                                            <f:facet name="{Exporters}">
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/excel.png" width="24"/>
+                                                    <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/pdf.png" width="24"/>
+                                                    <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/csv2.png" width="24"/>
+                                                    <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/xml.png" width="24"/>
+                                                    <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+                                            </f:facet>
+
+                                            <p:column headerText="Libellé" filterBy="#{devise.libelle}">
+                                                <h:outputText value="#{devise.libelle}" />
+                                            </p:column>
+
+                                            <p:column headerText="Description" filterBy="#{devise.description}">
+                                                <h:outputText value="#{devise.description}" />
+                                            </p:column >
+                                            <p:column headerText="Actions" class="col-lg-2">
+
+                                                <p:commandButton   rendered="#{sec:areAllGranted('MOD_DEVISE')}" icon="fa fa-edit"  update="devise-modif" oncomplete="PF('modifier').show()"
+                                                                   title="#{msg['btn.modifier']}" class="btn btn-xs btn-primary " immediate="true">
+                                                    <f:setPropertyActionListener value="#{devise}" target="#{deviseBean.deviseSelected}" />
+                                                </p:commandButton>
+                                                <p:commandButton rendered="#{sec:areAllGranted('DEL_DEVISE')}" icon="fa fa-trash"  oncomplete="PF('supprimer').show()"  title="#{msg['btn.supprimer']}" class="btn btn-danger btn-xs " immediate="true">
+                                                    <f:setPropertyActionListener value="#{devise}" target="#{deviseBean.deviseSelected}" />
+                                                </p:commandButton>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                                <!--/div-->
+
+                            </p:outputPanel>
+                        </p:panel>
+                    </h:form>
+                    <!--p:dialog  class="police_label" header="Ajout Devise" showEffect="fade" widgetVar="ajouter" modal="true" width="500" minHeight="800" resizable="false">
+                        <ui:include src="devise_ajout.xhtml"/>
+                        <p:ajax update="devise-ajout:libelleMessage"/>
+                    </p:dialog--> 
+                    <p:dialog class="police_label" header="Modification Devise " showEffect="fade"  widgetVar="modifier" modal="true" width="600" minHeight="500" resizable="false">
+                        <ui:include src="devise_modifier.xhtml"/>
+                    </p:dialog>
+
+
+                    <!--div class="modal" id="myModal9" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <ui:include src="devise_modifier.xhtml"/>
+                            </div>
+                        </div>
+                    </div-->
+
+                    <h:form>
+                        <p:growl id="msgs3" showDetail="false" globalOnly="true" life="3000" />
+                        <p:confirmDialog  class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                                          header="#{msg['btn.supprimer']}" severity="alert" 
+                                          widgetVar="supprimer">
+
+
+                            <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-sm btn-primary primary" />
+                            <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste" action="#{deviseBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn-xs btn-danger danger" />
+                        </p:confirmDialog>
+                    </h:form>
+                    <!--div class="panel-footer"> 
+
+                       </div--> 
+
+
+                </fieldset>
+            </div>
+
+        </p:outputPanel>
+
+
+    </ui:composition> 
+
+</html>

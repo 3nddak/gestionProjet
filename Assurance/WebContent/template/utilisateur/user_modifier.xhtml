@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+        <p:outputPanel id="modification" class="" style="text-align:center;">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                <h:form id="fo" class="form-horizontal ">
+                    <p:growl id="msgs"  globalOnly="true" life="3000"/>
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h:outputLabel class="police_label pull-left" for="console" value="#{msg['utilisateur.type']}"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>   
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:selectOneRadio layout="pageDirection" id="console" class="" required="true" value="#{gestionUtilisateurBean.console}">
+                                    <f:selectItem itemLabel="#{msg['titre.compagnie']}" itemValue="compagnie" />
+                                    <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue="courtier" />
+                                    <f:selectItem itemLabel="#{msg['titre.pdv']}" itemValue="pointVente" />
+                                    <f:selectItem itemLabel="#{msg['titre.pdr']}" itemValue="pointRetrait" />
+                                    <f:selectItem itemLabel="NCP tech" itemValue="ncp" />
+                                    <p:ajax listener="#{gestionUtilisateurBean.choixProfil()}" update="sel,cc,menu,menu_utilisateur2,menu_utilisateur3,menu_utilisateur6,menu_utilisateur7,menu4"  />
+                                </p:selectOneRadio>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <h:outputLabel for="menu4" class=" police_label pull-left" value="#{msg['titre.utilisateur']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <h:selectOneMenu id="menu4" value="#{gestionUtilisateurBean.typeUtilisateur}"  class=" police_label form-control">
+                                            <f:selectItems value="#{gestionUtilisateurBean.types}" />
+                                            <p:ajax update="sel,cc"/>
+                                            <p:ajax listener="#{gestionUtilisateurBean.resetStructure}" update="sel,cc"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel value="#{msg['utilisateur.structure']}"  class=" pull-left" for="cc" /> <h:outputLabel class="etoile_rouge pull-left" value="*"/><br/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <p:autoComplete id="cc" value="#{gestionUtilisateurBean.selectedObjet}" required="true" forceSelection="true" dropdown="true" completeMethod="#{gestionUtilisateurBean.completeMethodCompagnieCourtier}"  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <h:outputLabel for="sel" class=" police_label pull-left" value="#{msg['titre.profil']}" /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <h:selectOneMenu  id="sel" label="#{msg['titre.profil']}" value="#{gestionUtilisateurBean.utilisateurS.profil}" converter="omnifaces.SelectItemsConverter" class="form-control"
+                                                          required="true"
+                                                          requiredMessage="#{msg['utilisateur.profil.requireMessage']}"
+                                                          >
+                                            <p:ajax  listener="#{gestionUtilisateurBean.loadPageByProfil2()}" 
+                                                     update="menu,menu_utilisateur2,menu_utilisateur3,menu_utilisateur6,menu_utilisateur7"/>
+
+                                            <f:selectItem itemLabel="Profil" itemValue="" noSelectionOption="true"/>
+                                            <f:selectItems value="#{gestionUtilisateurBean.allProfils}" var="p" itemValue="#{p}" itemLabel="#{p.libelle}"/>
+                                            <p:ajax update="profilMessage" event="click"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">  
+                                        <p:message id="profilMessage" for="sel"/>
+                                    </div> 
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <h:outputLabel for="login_save" class=" police_label pull-left" value="#{msg['utilisateur.pseudo']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <p:inputText id="login_save" value="#{gestionUtilisateurBean.utilisateurSelected.login}"  
+                                                     required="true" styleClass="form-control" a:placeholder="#{msg['utilisateur.pseudo']}" 
+                                                     requiredMessage="#{msg['utilisateur.pseudo.requireMessage']}" 
+                                                     validatorMessage ="#{msg['utilisateur.pseudo.validatorMessage']}">
+                                            <f:validateLength minimum="4"/>
+                                            <p:ajax event="keyup" update="loginMessage" />
+                                        </p:inputText>
+                                    </div>   
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <p:message id="loginMessage" for="login_save" class="errorClass" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel class=" police_label pull-left" value="Catégorie de droit"  />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:selectCheckboxMenu class="col-lg-2 col-md-6 col-sm-12 col-xs-12 pull-left" id="menu" label="#{msg['page.menu.admimistration']}" value="#{gestionUtilisateurBean.r1}"
+                                                      filter="true" filterMatchMode="startsWith" style="width: 150px"  panelStyle="width:300px">
+                                    <f:selectItems  value="#{gestionUtilisateurBean.allPermissionAdministration}" var="role_para" itemLabel="#{role_para.libelle}" itemValue="#{role_para}"/>
+                                </p:selectCheckboxMenu>
+
+                                <p:selectCheckboxMenu class="col-lg-2 col-md-6 col-sm-12 col-xs-12 pull-left" id="menu_utilisateur2" label="#{msg['page.menu.parametres']}" value="#{gestionUtilisateurBean.r2}"
+                                                      filter="true" filterMatchMode="startsWith" style="width: 150px"  panelStyle="width:300px">
+                                    <f:selectItems  value="#{gestionUtilisateurBean.allPermissionParametre}" var="role_para" itemLabel="#{role_para.libelle}" itemValue="#{role_para}"/>
+                                </p:selectCheckboxMenu>
+
+                                <p:selectCheckboxMenu class="col-lg-2 col-md-6 col-sm-12 col-xs-12 pull-left" id="menu_utilisateur3" label="#{msg['page.menu.operation']}" value="#{gestionUtilisateurBean.r3}"
+                                                      filter="true" filterMatchMode="startsWith" style="width: 150px"  panelStyle="width:400px">
+                                    <f:selectItems  value="#{gestionUtilisateurBean.allPermissionEspaceCompagnie}" var="role_para" itemLabel="#{role_para.libelle}" itemValue="#{role_para}"/>
+                                </p:selectCheckboxMenu>
+
+                                <p:selectCheckboxMenu class="col-lg-2 col-md-6 col-sm-12 col-xs-12 pull-left" id="menu_utilisateur6" label="#{msg['page.menu.comptabilite']}" value="#{gestionUtilisateurBean.r6}"
+                                                      filter="true" filterMatchMode="startsWith" style="width: 150px"  panelStyle="width:400px">
+                                    <f:selectItems  value="#{gestionUtilisateurBean.allPermissionComptabilite}" var="role_para" itemLabel="#{role_para.libelle}" itemValue="#{role_para}"/>
+                                </p:selectCheckboxMenu>
+
+                                <p:selectCheckboxMenu class="col-lg-2 col-md-6 col-sm-12 col-xs-12 pull-left" id="menu_utilisateur7" label="Statistique" value="#{gestionUtilisateurBean.r7}"
+                                                      filter="true" filterMatchMode="startsWith" style="width: 150px"  panelStyle="width:400px">
+                                    <f:selectItems  value="#{gestionUtilisateurBean.allPermissionEspaceStatistique}" var="role_para" itemLabel="#{role_para.libelle}" itemValue="#{role_para}"/>
+                                </p:selectCheckboxMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel for="name_save" class=" police_label pull-left" value="#{msg['utilisateur.nom']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:inputText   id="name_save" value="#{gestionUtilisateurBean.utilisateurSelected.nom}"  required="true"  
+                                               styleClass="form-control" a:placeholder="Nom*"  
+                                               requiredMessage="#{msg['utilisateur.nom.requireMessage']}"
+                                               validatorMessage="#{msg['utilisateur.nom.validatorMessage']}">
+                                    <f:validateLength minimum="2"/>
+                                    <p:ajax event="keyup" update="nomMessage" />
+                                </p:inputText>
+                            </div> 
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:message id="nomMessage" for="name_save" class="errorClass"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel for="prenoms_save" class=" police_label pull-left" value="#{msg['utilisateur.prenom']}" /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:inputText  id="prenoms_save" value="#{gestionUtilisateurBean.utilisateurSelected.prenom}" 
+                                              required="true" styleClass="form-control" a:placeholder="Prénoms *" 
+                                              requiredMessage="#{msg['utilisateur.prenoms.requireMessage']}" 
+                                              validatorMessage="#{msg['utilisateur.prenoms.validatorMessage']}">
+                                    <f:validateLength minimum ="2"/>
+                                    <p:ajax event="keyup" update="prenomMessage" />
+                                </p:inputText>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:message id="prenomMessage" for="prenoms_save" class="errorClass" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel for="langue" class=" police_label pull-left" value="#{msg['titre.langue']}"  />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:selectOneMenu id="langue" value="#{gestionUtilisateurBean.selectedLang}" class=" police_label form-control">
+                                    <f:selectItems value="#{gestionUtilisateurBean.langues}" var="lang" itemLabel="#{lang.libelle}" itemValue="#{lang}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel for="telephone_save" class=" police_label pull-left" value="#{msg['utilisateur.tel']}"  />
+                                <h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:inputText id="telephone_save" value="#{gestionUtilisateurBean.utilisateurSelected.telephone}"
+                                             required="true"  styleClass="form-control" 
+                                             a:placeholder="#{msg['utilisateur.tel']}" requiredMessage="#{msg['utilisateur.telephone.requireMessage']}">
+                                    <p:ajax event="keyup" update="telephoneMessage" />
+                                    <pe:keyFilter for="telephone_save" preventPaste="true" mask="num"/>
+                                </p:inputText>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:message id="telephoneMessage" for="telephone_save" class="errorClass" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel for="email_save" class=" police_label pull-left" value="#{msg['utilisateur.email']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:inputText id="email_save" value="#{gestionUtilisateurBean.utilisateurSelected.email}"  
+                                             required="true" styleClass="form-control" a:placeholder="#{msg['utilisateur.email']}" 
+                                             requiredMessage="#{msg['utilisateur.email.requireMessage']}"
+                                             validatorMessage="#{msg['utilisateur.email.validatorMessage']}">
+
+                                    <f:validateRegex
+                                        pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+
+                                    <p:ajax event="keyup" update="emailMessage" />
+                                </p:inputText>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:message id="emailMessage" for="email_save" class="errorClass" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel for="adresse_save" class=" police_label pull-left" value="#{msg['utilisateur.adresse']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:inputText id="adresse_save" value="#{gestionUtilisateurBean.utilisateurSelected.adresse}"  
+                                             required="true" styleClass="form-control" a:placeholder="#{msg['utilisateur.adresse']}"
+                                             requiredMessage="#{msg['utilisateur.adresse.requireMessage']}" 
+                                             validatorMessage="#{msg['utilisateur.adresse.validatorMessage']}">
+                                    <f:validateLength minimum="4"/>
+                                    <p:ajax event="keyup" update="adresseMessage" />
+                                </p:inputText>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:message id="adresseMessage" for="adresse_save" class="errorClass" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                           <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:commandButton  value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" type="reset" class="btn btn-danger pull-left"  actionListener="#{gestionUtilisateurBean.cancel()}" update="fo"  />
+                            
+                                <p:commandButton  class=" btn-primary btn pull-right" onstart="PF('editProcess').block()" oncomplete="PF('editProcess').unblock()"  onclick="PF('modifier').hide()"  ajax="true"  action="#{gestionUtilisateurBean.updateUtilisateur()}" value="#{msg['btn.enregistrer']}" title="#{msg['btn.enregistrer']}" update="msgs,fo,formliste,modification"/>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+
+        </p:outputPanel>
+        <pe:blockUI widgetVar="editProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif"  
+                                style="margin: auto;"/>  
+                <h:outputText value="#{msg['btn.modificationencour']}..." style="white-space: nowrap;"/>  
+            </h:panelGrid>  
+        </pe:blockUI>  
+    </ui:composition> 
+</html>
+

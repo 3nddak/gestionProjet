@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <div class="form-group">
+            <p:dataTable value="#{souscriptionAsSanteBean.beneficiaireListToUse}" 
+                         rowKey="#{benef.idClient}" var="benef" id="ggb"
+                         class="table table-bordered"
+                         editable="true" editMode="cell">
+
+                <p:column headerText="#{msg['client.nom']}" filterBy="#{benef.nom}" filterMatchMode="contains">
+                    <h:outputText value="#{benef.nom}" />
+                </p:column >
+                <p:column headerText="#{msg['client.prenom']}" filterBy="#{benef.prenom}" filterMatchMode="contains">
+                    <h:outputText value="#{benef.prenom}" />
+                </p:column >
+                <p:column  headerText="#{msg['client.datedenaissance']}" >
+                    <p:cellEditor  >
+                        <f:facet name="output">
+                            <p:outputLabel id="k12" value="#{benef.dateNaissance}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:calendar required="true" requiredMessage="#{msg['client.datedenaissance.requireMessage']}" id="k112" yearRange="c-100:c+10"  pattern="dd/MM/yyyy" maxdate="#{souscriptionAsSanteBean.dateEmission}" readonlyInput="true" navigator="true" value="#{benef.dateNaissance}" mask="true" class="form-control" placeholder="#{souscriptionAsSanteBean.type eq 'Client physique'?msg['client.datedenaissance']:'Date de création'}"
+                                          converterMessage="format incorect">
+                                <f:convertDateTime pattern="dd/MM/yyyy" type="date"/>
+                                <p:ajax event="keyup" update="k112" />
+                            </p:calendar>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="#{msg['client.piece']}" filterBy="#{benef.typePiece}" filterMatchMode="contains">
+                    <h:outputText value="#{benef.typePiece}" />
+                </p:column >
+                <p:column headerText="#{msg['client.numeropiece']}" filterBy="#{benef.numeroPiece}" filterMatchMode="contains">
+                    <h:outputText value="#{benef.numeroPiece}" />
+                </p:column >
+                <p:column headerText="Option" width="8%" style="text-align: center;">
+                    <p:commandButton icon="fa fa-remove" class="btn btn-danger danger" update="ggb" action="#{souscriptionAsSanteBean.removeOneLineBeneficiaire()}" >
+                        <f:setPropertyActionListener value="#{benef}" target="#{souscriptionAsSanteBean.beneficiaireToRemove}" />
+                        <p:confirm icon="ui-icon-alert"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>   
+        </div>
+    </ui:composition>
+</html>

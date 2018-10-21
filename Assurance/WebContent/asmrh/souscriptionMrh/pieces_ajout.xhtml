@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition >
+        <div class="row">
+
+            <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['piece.type']}"  for="tpiece" class=" " />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                    <h:selectOneMenu id="tpiece" value="#{souscriptionAsMrhBean.piece.typepiece}"  class="form-control"
+                                     requiredMessage="#{msg['Typelogement.requireMessage']}">
+                        <f:selectItem itemLabel="#{msg['piece.type']}"/> 
+                        <f:selectItems value="#{souscriptionAsMrhBean.typePiece}" /> 
+                        <p:ajax event="click" update="piecemrhMessage"/> 
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="tpiece" id="piecemrhMessage"/>
+                </div>
+            </div> 
+            
+            <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.Longueur']}"  for="longueur" class=" " />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsMrhBean.piece.longueur}"  id="longueur" styleClass="form-control" placeholder="longueur"
+                                   requiredMessage="#{msg['longueur.requireMessage']}"  
+                                 >
+                        <pe:keyFilter for="longueur" mask="num"/>
+                        <p:ajax event="keyup" update="longueurMessage"/>
+
+                    </p:inputText>
+
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="longueur" id="longueurMessage"/>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.Largeur']}"  for="largeur" class=" " />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsMrhBean.piece.largeur}"  id="largeur" styleClass="form-control" placeholder="largeur"
+                                requiredMessage="#{msg['largeur.requireMessage']}"  
+                                 >
+                        <pe:keyFilter for="largeur" mask="num"/>
+                        <p:ajax event="keyup" update="largeurMessage"/>
+
+                    </p:inputText>
+
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="longueur" id="largeurMessage"/>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.hauteur']}"  for="hauteur" class=" " />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsMrhBean.piece.hauteur}"  id="hauteur" styleClass="form-control" placeholder="hauteur"
+                                requiredMessage="#{msg['hauteur.requireMessage']}"  
+                                 >
+                        <pe:keyFilter for="hauteur" mask="num"/>
+                        <p:ajax event="keyup" update="hauteurMessage"/>
+
+                    </p:inputText>
+
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="hauteur" id="hauteurMessage"/>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.Surface']}(m2)"  for="air" class=" " />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsMrhBean.piece.aire}"  id="air" styleClass="form-control" placeholder="surface"
+                                 requiredMessage="#{msg['surface.requireMessage']} "  
+                                 >
+                        <pe:keyFilter for="air" mask="num"/>
+                        <p:ajax event="keyup" update="airMessage"/>
+
+                    </p:inputText>
+
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="air" id="airMessage"/>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.Volume']}"  for="volume" class=" " />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsMrhBean.piece.volume}"  id="volume" styleClass="form-control" placeholder="volume"
+                                   requiredMessage="#{msg['volume.requireMessage']} "  
+                                 >
+                        <pe:keyFilter for="volume" mask="num"/>
+                        <p:ajax event="keyup" update="volumeMessage"/>
+
+                    </p:inputText>
+
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="volume" id="volumeMessage"/>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.Nombre']}"  for="nombre" class=" " />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsMrhBean.piece.nombre}"  id="nombre" styleClass="form-control" placeholder="nombre"
+                                  requiredMessage="#{msg['nombre.requireMessage']} "  
+                                 >
+                        <pe:keyFilter for="nombre" mask="num"/>
+                        <p:ajax event="keyup" update="nombreMessage"/>
+
+                    </p:inputText>
+
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="nombre" id="nombreMessage"/>
+                </div>
+            </div>
+            </div>
+            
+        <br/>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="btn-toolbar">
+                    <p:commandButton value="#{msg['btn.annuller']}" class="btn btn-danger" actionListener="#{souscriptionAsMrhBean.annullerPiece()}" update="formliste" />
+
+                    <p:commandButton value="#{msg['btn.enregistrer']}" class="btn btn-purple pull-right"  update="formliste" actionListener="#{souscriptionAsMrhBean.addOnePiece()}"  />
+                </div>
+            </div>
+        </div>
+
+    </ui:composition>
+
+</html>

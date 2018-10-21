@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <p:panel rendered="false" toggleable="true" collapsed="true" header="#{msg['recherche.titre']}">
+              <div class="panel-body">
+            <h:form  class="form-horizontal" id="recherche">
+              
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <h:outputLabel for="pays"  value="#{msg['titre.pays']}" class="pull-left text-left"/>    
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{traitementCompagnieAsMrhBean.paysSelected}" >                                          
+                                <f:selectItem itemLabel="#{msg['titre.tousLesPays']}" itemDisabled="false" />
+                                <f:selectItems var="#{msg['titre.pays']}" value="#{traitementCompagnieAsMrhBean.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                            </h:selectOneMenu>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <h:outputLabel for="compagnie"  value="#{msg['titre.compagnie']}" class="pull-left text-left"/>                              
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <h:selectOneMenu id="compagnie" value="#{traitementCompagnieAsMrhBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                <f:selectItem itemLabel="#{msg['titre.tousLesCompagnies']}" itemDisabled="false" />
+                                <f:selectItems value="#{traitementCompagnieAsMrhBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                            </h:selectOneMenu>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <h:outputLabel for="courtier"  value="#{msg['titre.courtier']}"/>   
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <h:selectOneMenu id="courtier"  converter="entityConverter" value="#{traitementCompagnieAsMrhBean.courtierSelected}" class="form-control" >                                          
+                                <f:selectItem itemLabel="#{msg['titre.courtier']}" itemDisabled="false" />
+                                <f:selectItems var="courtier" value="#{traitementCompagnieAsMrhBean.listCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <h:outputLabel for="pv"  value="#{msg['titre.pdv']}" class="pull-left text-left"/>                          
+                        </div>  
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <h:selectOneMenu id="pv"  value="#{traitementCompagnieAsMrhBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                <f:selectItem itemLabel="#{msg['titre.pdv']}" itemDisabled="false" />
+                                <f:selectItems var="pv" value="#{traitementCompagnieAsMrhBean.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <h:outputLabel for="gt"  value="#{msg['titre.guichet']}" class="pull-left text-left"/>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <h:selectOneMenu id="gt"  value="#{traitementCompagnieAsMrhBean.guichetSelected}"  converter="entityConverter" class="form-control" >                                          
+                                <f:selectItem itemLabel="#{msg['titre.guichet']}" itemDisabled="false" />
+                                <f:selectItems var="guichet" value="#{traitementCompagnieAsMrhBean.listGuichet}" itemLabel="#{guichet.designation}" itemValue="#{guichet}" />            
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <p:outputLabel for="mask" value="#{msg['titre.dateDebut']}" />
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <p:calendar id="mask"  pattern="dd-MM-yyyy" class="form-control" mask="true" value="#{traitementCompagnieAsMrhBean.dateDebutRecherche}" >
+                            </p:calendar>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <p:outputLabel for="mask" value="#{msg['titre.dateFin']}" />
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <p:calendar id="mask2"   pattern="dd-MM-yyyy" class="form-control" mask="true" value="#{traitementCompagnieAsMrhBean.dateFinRecherche}">
+                            </p:calendar>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:commandButton value="#{msg['btn.rechercher']}" update="message1:facture,@form" class="btn-imprimer btn btn-xs pull-right" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{traitementCompagnieAsMrhBean.rechercherAssurance()}"  />
+                        </div>
+                    </div>
+
+
+               
+            </h:form>
+             </div>
+        </p:panel>
+    </ui:composition> 
+</html>
+

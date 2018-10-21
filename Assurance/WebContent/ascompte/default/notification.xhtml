@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="sms1" class="">
+        <div class="navbar-custom-menu">
+            <div class="navbar bg-under-head">
+                <sec:authorize ifAllGranted="NOTIFICATION"> 
+                    <ul class="nav navbar-nav">
+                        <sec:authorize ifAnyGranted="USER_GUICHET">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.ev']}"  style="color:#ffffff " /> <sup><h:outputLabel class="badge small" value="#{notificationAsCompteBean.demandeTraitee}" style="background-color:red" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  action="#{notificationAsCompteBean.getPagesDemandeTraitee()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}" > 
+                                            <h:outputLabel value="#{notificationAsCompteBean.demandeTraitee}" style="background-color:#ec971f" class="pull-right badge" />                                           
+
+                                        </h:commandLink>
+                                    </li>
+
+
+
+                                </ul>
+                            </li>
+                        </sec:authorize>
+
+
+                        <sec:authorize ifAnyGranted="USER_GUICHET,USER_PVT,USER_CRT">
+                            <li class="">
+
+                                <a href="#" class="dropdown-toggle" title="#{msg['notification.de']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                    <h:outputLabel value="#{msg['notification.de']}"  style=" color:#ffffff " /><sup><h:outputLabel class="badge small" value="#{notificationAsCompteBean.nouvelleDemande}" style="background-color:#ec971f" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+
+
+                                    <li>
+                                        <h:commandLink  value="#{msg['notification.menu.sousrenouv']}" action="#{notificationAsCompteBean.getPagesNouvelleD()}"  title="#{msg['notification.de']}"  >
+                                            <h:outputLabel value="#{notificationAsCompteBean.nouvelleDemande}" style="background-color: #ec971f" class="pull-right badge" />                
+
+                                        </h:commandLink>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAnyGranted="USER_GUICHET,USER_PVT,USER_CRT,USER_CMP">
+                            <li class="">
+
+                                <a href="#" class="dropdown-toggle" title="Demandes Validée"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                    <h:outputLabel value="Demandes Validée"  style="color:#ffffff " /><sup><h:outputLabel class="badge small" value="#{notificationAsCompteBean.demandeValidee}" style="background-color:#FFE495" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+
+
+                                    <li>
+                                        <h:commandLink  value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.de']}"  action="#{notificationAsCompteBean.getPagesDemandeValideParClient()}" >
+                                            <h:outputLabel value="#{notificationAsCompteBean.demandeValidee}" style="background-color: #ec971f" class="pull-right badge" />                
+                                           
+                                        </h:commandLink>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAllGranted="USER_CMP ">
+                            <li class="" >
+
+                                <a href="#" class="dropdown-toggle" title="#{msg['notification.nd']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel value="#{msg['notification.nd']}"  style=" color:#ffffff " /><sup><h:outputLabel class="badge small" value="#{notificationAsCompteBean.nouvelleDemande}" style="background-color:red" /></sup></a>
+                                <ul  class="dropdown-menu" >
+
+                                    <li>
+                                        <h:commandLink action="#{notificationAsCompteBean.getPagesNouvelleD()}"  value="#{msg['notification.menu.sousrenouv']}"   title="#{msg['notification.nd']}"  >
+                                            <h:outputLabel value="#{notificationAsCompteBean.nouvelleDemande}" style="background-color:#ec971f" class="pull-right badge" />
+
+                                        </h:commandLink>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </sec:authorize>
+
+
+                        <sec:authorize ifAnyGranted="USER_CMP">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.demandeTraitee']}"  style="color:#ffffff " /> <sup><h:outputLabel class="badge small" value="#{notificationAsCompteBean.demandeTraitee}" style="background-color: #00733e" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  action="#{notificationAsCompteBean.getPagesDemandeTraitee()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}" > 
+                                            <h:outputLabel value="#{notificationAsCompteBean.demandeTraitee}" style="background-color:#ec971f" class="pull-right badge" />                                           
+
+                                        </h:commandLink>
+                                    </li>
+
+
+
+                                </ul>
+                            </li>
+                        </sec:authorize>
+
+                        <sec:authorize ifAnyGranted="USER_CMP, USER_GUICHET,USER_PVT,USER_CRT">
+                            <li class="">
+
+                                <a href="#" class="dropdown-toggle" title="#{msg['notification.rp']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel value="#{msg['notification.rp']}"  style=" color:#ffffff " /><sup><h:outputLabel class="badge small" value="#{notificationAsCompteBean.souscriptioneffective}" style="background-color:lawngreen" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                                    <li>  
+                                        <h:commandLink action="#{notificationAsCompteBean.getPagesSouscriptionEffective()}"  value="#{msg['notification.menu.sousrenouv']}"    title="#{msg['notification.rp']}" >
+                                            <h:outputLabel value="#{notificationAsCompteBean.souscriptioneffective}" style="background-color: #ec971f" class="pull-right badge" />
+
+                                        </h:commandLink>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </sec:authorize>
+
+
+                        <sec:authorize ifAnyGranted="USER_CMP,USER_GUICHET,USER_PVT,USER_CRT">
+                            <li class="">
+
+                                <a href="#" class="dropdown-toggle" title="#{msg['notification.dr']}"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                    <h:outputLabel value="#{msg['notification.dr']}"  style=" color:#ffffff " /><sup><h:outputLabel class="badge small" value="#{notificationAsCompteBean.demandeRejetee}" style="background-color: slategrey" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+
+
+                                    <li> 
+                                        <h:commandLink  action="#{notificationAsCompteBean.getPagesDemandeRejete()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.dr']}" >
+                                            <h:outputLabel value="#{notificationAsCompteBean.demandeRejetee}" style="background-color: #ec971f" class="badge pull-right" />
+
+                                        </h:commandLink>
+
+                                    </li>
+
+
+                                </ul>
+                            </li>
+                        </sec:authorize>
+
+
+                    </ul>
+                </sec:authorize>   
+            </div>
+        </div>
+    </h:form>
+
+    <h:form id="sms3">
+
+
+        <div class="modal " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                        <h4 class="modal-title" id="myModalLabel">Demandes de souscription</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ui:include src="souscrit.xhtml"/> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal " id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                        <h4 class="modal-title" id="myModalLabel">Demandes de renouvellement</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ui:include src="renouvel.xhtml"/> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal " id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                        <h4 class="modal-title" id="myModalLabel">demandes d'attestation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ui:include src="attest.xhtml"/> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </h:form>
+</ui:composition>

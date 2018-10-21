@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+
+        <fieldset>
+            <legend class="text-center text-uppercase"> <p:outputLabel value="LISTE DES CONTRATS"></p:outputLabel></legend>
+        </fieldset>
+        <div id="liste" class="row">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+                <div class="panel">
+                    <div class="panel-body"> 
+                        <h:form  id="formliste4" class="form-horizontal">
+                            <p:panel  header="#{msg['titre.filtrer']}" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                        <p:outputPanel id="ajout" style="text-align:center;">
+                                            <p:spacer/>
+                                            <p:growl id="msgs" showDetail="false" globalOnly="true" />
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                                    <p:outputLabel for="mask" value=" #{msg['titre.dateDebut']}" />
+                                                    <p:calendar id="mask"  value="#{echeanceBean.echule}" pattern="dd-MM-yyyy" mask="true" >
+                                                    </p:calendar></div>
+                                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                                    <p:outputLabel for="mask1" value=" #{msg['titre.dateFin']}" />
+                                                    <p:calendar id="mask1"  value="#{echeanceBean.echuau}" pattern="dd-MM-yyyy" mask="true" >
+                                                    </p:calendar>
+                                                </div>
+
+                                                <div class="col-md-6 col-lg-4 col-sm-12">
+                                                    <p:outputLabel value="#{msg['titre.echuilya']} " />
+                                                    <p:inputText  value="#{echeanceBean.echuIlya}" />  <p:outputLabel value="#{msg['titre.jour']}" />
+
+                                                </div>
+                                            </div>
+
+                                            <hr/>
+
+                                            <div class="row">
+                                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group" >
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <h:outputLabel for="pays" value="#{msg['titre.pays']}" class="pull-left text-left"/>
+
+                                                        </div>
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <h:selectOneMenu id="pays" value="#{echeanceBean.factureFortriU.pays}" converter="omnifaces.SelectItemsConverter" class="form-control"
+
+                                                                             >
+                                                                <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                                                <f:selectItems value="#{echeanceBean.paysList}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                                            </h:selectOneMenu> 
+                                                        </div>                        
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group" >
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <h:outputLabel rendered="#{echeanceBean.u.compagnie ne null ?false:true}"  for="pss" value="#{msg['titre.compagnie']}" class="pull-left text-left" />
+                                                        </div>
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <h:selectOneMenu rendered="#{echeanceBean.u.compagnie ne null ?false:true}" class="form-control" converter="omnifaces.SelectItemsConverter"  id="pss" value="#{echeanceBean.factureFortriU.compagnie}"  >
+                                                                <f:selectItem  itemLabel="#{msg['titre.compagnie']}" itemValue="" /> 
+                                                                <f:selectItems value="#{echeanceBean.compagnieList}" var="compagnie"
+                                                                               itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                                            </h:selectOneMenu>
+                                                        </div>
+
+                                                    </div>
+                                                </div>  
+                                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group" >
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                                                            <h:outputLabel rendered="#{echeanceBean.u.courtier ne null ?false:true}" for="courtier" value="#{msg['titre.courtier']}" class="pull-left text-left" />
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <h:selectOneMenu rendered="#{echeanceBean.u.courtier ne null ?false:true}"  id="courtier"  value="#{echeanceBean.factureFortriU.courtier}" converter="omnifaces.SelectItemsConverter"
+                                                                             class="form-control" >
+                                                                <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""/>
+                                                                <f:selectItems itemLabel="#{courtier.abbreviation}" var="courtier"  itemValue="#{courtier}" value="#{echeanceBean.courtierList}"  />
+
+                                                            </h:selectOneMenu>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group" >
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                                                            <h:outputLabel rendered="#{echeanceBean.u.pointsVente ne null ?false:true}" for="pdv" value="#{msg['titre.pdv']}" class="pull-left text-left" />
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <h:selectOneMenu rendered="#{echeanceBean.u.pointsVente ne null ?false:true}"  id="pdv"  value="#{echeanceBean.factureFortriU.pointsVente}" converter="omnifaces.SelectItemsConverter"
+                                                                             class="form-control" >
+                                                                <f:selectItem itemLabel="#{msg['titre.pdv']}" itemValue=""/>
+                                                                <f:selectItems itemLabel="#{pdv.designation}" var="pdv"  itemValue="#{pdv}" value="#{echeanceBean.pointsVenteList}"  />
+
+                                                            </h:selectOneMenu>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group" >
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                                                            <h:outputLabel for="gui" rendered="#{echeanceBean.u.guichets ne null ?false:true}"   value="#{msg['titre.guichet']}" class="pull-left text-left" />
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <h:selectOneMenu rendered="#{echeanceBean.u.guichets ne null ?false:true}"  id="gui"  value="#{echeanceBean.factureFortri.guichet}" converter="omnifaces.SelectItemsConverter"
+                                                                             class="form-control" >
+                                                                <f:selectItem itemLabel="#{msg['titre.guichet']}" itemValue=""/>
+                                                                <f:selectItems itemLabel="#{gui.designation}" var="gui"  itemValue="#{gui}" value="#{echeanceBean.guichetList}"  />
+
+                                                            </h:selectOneMenu>
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <div class="col-md-12 col col-lg-12">
+                                                    <div class="col-md-4 col col-lg-2 pull-left">
+                                                        <p:commandButton value="#{msg['btn.annuller']}" actionListener="#{primeBean.annuler()}" class="btn btn-danger danger form-control"/>
+                                                    </div>
+
+                                                    <div class="col-md-4 col col-lg-2 pull-right">
+                                                        <p:commandButton value="#{msg['btn.rechercher']}" action="#{echeanceBean.contratEchu()}" update="formliste3,formliste4,msgs," class="btn btn-success form-control success "/>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+
+                                        </p:outputPanel>
+                                    </div>
+                                </div>
+                            </p:panel>
+                        </h:form>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-body">
+                        <h:form id="formliste3">
+
+                            <p:outputPanel id="courtier">
+
+                                <p:panel header="#{echeanceBean.tableTitle1}" style="margin-bottom:20px">   
+                                    <p:spacer/>
+                                    <div class="form-group">
+                                        
+                                            <p:outputPanel id="display22">
+                                                <div > 
+                                                    <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-imprimer btn-xs" actionListener="#{echeanceBean.doGetA()}"   > 
+                                                        <i class=" glyphicon glyphicon-print"></i>
+                                                    </h:commandLink>
+                                                </div>
+                                                <p:dataTable  class="table-bordered table table-responsive" id="trclist2" value="#{echeanceBean.liste_factureEchu}" rows="8" var="factureEchu"
+                                                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                              paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" sortOrder="descending"
+                                                              rowsPerPageTemplate="8,15,20"
+                                                              >
+
+
+
+                                                    <p:column rendered="#{echeanceBean.u.compagnie ne null ?false:true}" headerText="#{msg['courtier.compagnie']}" filterBy="#{factureEchu.compagnie.abbreviation}" >
+                                                        <h:outputText value="#{factureEchu.compagnie.abbreviation}" />
+                                                    </p:column>
+                                                    <p:column rendered="#{echeanceBean.u.courtier ?false:true}" headerText="#{msg['titre.courtier']}" filterBy="#{factureEchu.courtier.abbreviation}" >
+                                                        <h:outputText value="#{factureEchu.courtier.abbreviation}" />
+                                                    </p:column>
+                                                    <p:column rendered="#{echeanceBean.u.pointsVente ne null ?false:true}" headerText="#{msg['tiers.pdv']}" filterBy="#{factureEchu.pointsVente.designation}" >
+                                                        <h:outputText value="#{factureEchu.pointsVente.designation}" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['client.nom']}" filterBy="#{factureEchu.objetVoiture.client.nom}" >
+                                                        <h:outputText value="#{factureEchu.objetVoiture.client.nom}" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['client.tel']}" filterBy="#{factureEchu.objetVoiture.client.telephoneMobile}">
+                                                        <h:outputLabel  value="#{factureEchu.objetVoiture.client.telephoneMobile}" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['titre.police']}" filterBy="#{factureEchu.objetVoiture.numeroPolice}" >
+                                                        <h:outputText value="#{factureEchu.objetVoiture.numeroPolice}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="#{msg['titre.dateDebut']}"  >
+                                                        <h:outputText  value="#{factureEchu.formatDate(factureEchu.dateDebut)}" />
+                                                    </p:column>
+
+
+                                                    <p:column headerText="#{msg['titre.dateFin']}" >
+                                                        <h:outputLabel value="#{factureEchu.formatDate(factureEchu.dateFin)}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="#{msg['titre.prime']}" filterBy="#{factureEchu.primeTtc}">
+                                                        <h:outputText value="#{factureEchu.arrondireFormat2(factureEchu.primeTtc)}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="#{msg['titre.JoursDepuisEcheance']} " >
+                                                        <h:outputText value="#{echeanceBean.jourRestant(factureEchu.dateFin)}" />
+                                                    </p:column>
+
+
+                                                </p:dataTable>
+                                            </p:outputPanel>
+
+                                    </div>
+                                </p:panel>
+                                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                    <h:graphicImage library="images" name="ajax-loader.gif" />
+                                </p:dialog>
+                            </p:outputPanel>
+
+
+                            <p:growl id="msgs3" showDetail="false" />
+                            <p:confirmDialog id="confirmation" message="#{msg['supprimer.message']}"
+                                             header="#{msg['titre.operation.suppression']}" severity="alert" 
+                                             widgetVar="supprimer">
+
+
+                                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste3" action="#{primeBean.delete()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+                            </p:confirmDialog>
+                        </h:form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </ui:composition> 
+
+</html>
+

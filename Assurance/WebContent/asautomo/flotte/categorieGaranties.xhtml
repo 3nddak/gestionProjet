@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+        <fieldset><legend><h:outputLabel value="Catégorie et garanties"/></legend>
+            <!--ui:include src="infos.xhtml"/-->
+            <div class="form-group">
+                <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="cat" value="#{msg['vehicule.categorie']}"   class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu id="cat" value="#{flotteBean.selectedCategorie}" required="true" class="form-control"
+                                         requiredMessage="#{msg['vehicule.categorie.requiredMessage']}" converter="omnifaces.SelectItemsConverter"
+                                         >
+                            <f:selectItem itemLabel="#{msg['vehicule.categorie']}" itemValue=""/>
+                            <f:selectItems value="#{flotteBean.listCategorie}" var="ca" itemLabel="#{ca.libelle}" itemValue="#{ca}"  /> 
+                            <p:ajax  listener="#{flotteBean.guarantiesByCategorie}" update="formliste:pickList" />
+                            <f:ajax event="click" render="catMessage" />
+                            <p:ajax update="formliste:pickList" />
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="cat"  id="catMessage" class="errorClass"/>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="package" value="package de garantie"   class=" pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu id="package" value="#{flotteBean.paquegeGarantieAsAuto}" class="form-control" converter="entityConverter" >
+                            <f:selectItem itemLabel="packaged" noSelectionOption="true"/>
+                            <f:selectItems var="packaged" value="#{flotteBean.listPaquegeGarantieAsAuto}" itemLabel="#{packaged.designation}: #{packaged.listGarantie()}" itemValue="#{packaged}"/> 
+                            <p:ajax  update="formliste:pickList"  listener="#{flotteBean.initselectedGuaranties()}"/>
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                       <h:outputLabel  value="Sélectionner les Garanties"  class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />                
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:pickList id="pickList" showCheckbox="true" 
+                                    required="true"
+                                    requiredMessage="Veuillez choisir les guaranties"
+                                    addLabel="Ajouter" removeLabel="Retirer" addAllLabel="Ajouter tout" 
+                                    removeAllLabel="Retirer tout" converter="entityConverter" 
+                                    value="#{flotteBean.guanranties}" var="guanranties" 
+                                    itemLabel="#{guanranties.symbole}" itemValue="#{guanranties}" >
+                            <p:ajax event="transfer" listener="#{flotteBean.onTransfer}" update="" />
+                        </p:pickList>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </ui:composition> 
+</html>
+

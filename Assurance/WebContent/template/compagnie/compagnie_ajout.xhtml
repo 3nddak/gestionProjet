@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:outputPanel id="ajout" style="text-align:center;">
+                    <h:form class="form-horizontal" enctype="multipart/form-data">                        
+
+                        <p:growl id="msgs" showDetail="false" globalOnly="true" />
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel  value="#{msg['compagnie.abbreviation']}"  for="Abbreviation" class="pull-left"/> <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:inputText required="true" id="Abbreviation" requiredMessage="#{msg['compagnie.abbreviation.requireMessage']}" value="#{compagnieBean.abbreviation}" title="#{msg['compagnie.abbreviation']}" class="form-control" a:placeholder="#{msg['compagnie.abbreviation']}" >
+                                        <p:ajax event="keyup" update="abrMessage" />
+                                    </p:inputText>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:message id="abrMessage" for="Abbreviation" class="errorClass" />
+                                </div>
+
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel  value="#{msg['compagnie.designation']}"  for="Designation" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:inputText required="true" requiredMessage="#{msg['compagnie.designation.requireMessage']}"  id="Designation" value="#{compagnieBean.designation}" title="#{msg['compagnie.designation']}" class="form-control" a:placeholder="#{msg['compagnie.designation']}">
+                                        <p:ajax event="keyup" update="designationMessage" />
+                                    </p:inputText>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:message id="designationMessage" for="Designation" class="errorClass" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel  value="#{msg['compagnie.adresse']}"  for="Adresse" class="pull-left" />
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:inputText id="Adresse" value="#{compagnieBean.adresse}" class="form-control" title="#{msg['compagnie.adresse']}" a:placeholder="#{msg['compagnie.adresse']}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="pays" value="#{msg['compagnie.pays']}" class=" pull-left" />
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:selectOneMenu id="pays" value="#{compagnieBean.idpays}" required="true" requiredMessage="#{msg['compagnie.pays.requireMessage']}" title="Pays" class=" form-control " >
+                                        <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                        <f:selectItems value="#{compagnieBean.paysItems}"/>
+                                        <p:ajax event="click"  update="paysMessage"/>
+                                        <p:ajax listener="#{compagnieBean.configTelephone()}" update="basic-addon,telephone" />
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:message for="pays" id="paysMessage" /> 
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel class="pull-left" value="#{msg['compagnie.tel']}" for="telephone" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="input-group">
+                                        <h:outputLabel  class="input-group-addon label-primary" style="color: white;" value="#{compagnieBean.indicatif}" id="basic-addon"/>
+                                        <p:inputText id ="telephone" required="true" requiredMessage="#{msg['compagnie.tel.requireMessage']}"
+                                                     converterMessage="#{msg['compagnie.tel.converterMessage']}"
+                                                     validatorMessage="#{msg['compagnie.tel.validatorMessage']}"
+                                                     value="#{compagnieBean.telephones}" title="#{msg['compagnie.tel']}" class="form-control" a:placeholder="#{msg['compagnie.tel']}"
+                                                     maxlength="#{compagnieBean.longueur}" 
+                                                     >
+                                            <f:validateLength minimum="#{compagnieBean.longueur}"  maximum="#{compagnieBean.longueur}"  />
+                                            <f:validateLongRange minimum="1"  />
+
+                                            <p:ajax event="keyup" update="telMessage"/>
+                                        </p:inputText>
+                                        <pe:keyFilter for="telephone" mask="pint"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:message for="telephone" id="telMessage" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                    <h:outputLabel  value="#{msg['compagnie.agrement']}"  for="agr" class=" pull-left" />
+                                </div>
+                                <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                    <p:inputText id="agr" value="#{compagnieBean.agrement}" title="#{msg['compagnie.agrement']}" class="form-control" a:placeholder="#{msg['compagnie.agrement']}">
+                                    </p:inputText>
+                                </div> 
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                    <h:outputLabel  value="#{msg['compagnie.statut']}"  for="sta" class=" pull-left" />
+                                </div>
+                                <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                    <p:inputText id="sta" value="#{compagnieBean.statut}" title="#{msg['compagnie.statut']}" class="form-control" a:placeholder="#{msg['compagnie.statut']}">
+                                    </p:inputText>
+                                </div> 
+                            </div>
+
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                    <h:outputLabel  value="#{msg['compagnie.page.pieds']}"  for="pieds" class=" pull-left" />
+                                </div>
+                                <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                    <p:inputText id="pieds" value="#{compagnieBean.piedPageFacture}" title="#{msg['compagnie.page.pieds']}" class="form-control" a:placeholder="#{msg['compagnie.page.pieds']}">
+                                    </p:inputText>
+                                </div> 
+                            </div>
+                            
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class=" col-lg-12 col-md-12 col-sm-12" align="left"> 
+                                    <h:outputLabel  value="Conditions Particuliere"  for="condition" class=" pull-left" />
+                                </div>
+                                <div class=" col-lg-12 col-md-12 col-sm-12" align="left"> 
+                                    <p:inputTextarea id="condition" value="#{compagnieBean.conditionParticuliere}"  rows="5" cols="65" a:placeholder="Condition particulière" class="form-control" />
+                                </div> 
+                            </div>
+
+
+
+                            
+                        </div>
+                        <div class="form-group">
+                            
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel  value="Logo" for="fileUpload" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:fileUpload id="fileUpload" required="true" fileUploadListener ="#{compagnieBean.handleFileUpload}"
+                                                  mode="advanced" 
+                                                  class="form-control"
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|bmp)$/"        
+                                                  label="#{msg['fichier.selection']}" uploadLabel="#{msg['btn.telecharger']}" cancelLabel="#{msg['btn.annuller']}"       
+                                                  validatorMessage="#{msg['fichier.invalide']}"      
+                                                  dragDropSupport="false"      
+                                                  multiple="true"  
+                                                  disabled="false"
+                                                  update="messages"
+                                                  requiredMessage="#{msg['fichier.requiredMessage']}"
+                                                  >
+                                        <!--f:ajax event="blur" render="imageMessage"/-->
+                                    </p:fileUpload>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:message for="fileUpload" id="imageMessage" class="errorClass"/>
+                                    <p:growl id="messages" showDetail="false" globalOnly="true"/>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class=" col-lg-12 col-md-12 col-sm-12" align="left"> 
+                                    <h:outputLabel  value="#{msg['compagnie.recu.proposition']}"  for="note" class=" pull-left" />
+                                </div>
+                                <div class=" col-lg-12 col-md-12 col-sm-12" align="left"> 
+                                    <p:inputTextarea id="note" value="#{compagnieBean.note}"  rows="5" cols="65" a:placeholder="#{msg['compagnie.recu.note']}" class="form-control" />
+                                </div> 
+                            </div>
+
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class=" col-lg-12 col-md-12 col-sm-12" align="left"> 
+                                    <h:outputLabel  value="#{msg['compagnie.recu.note']}"  for="noter" class=" pull-left" />
+                                </div>
+                                <div class=" col-lg-12 col-md-12 col-sm-12" align="left"> 
+                                    <p:inputTextarea id="noter" value="#{compagnieBean.noteRecu}"  rows="5" cols="65" a:placeholder="#{msg['compagnie.recu.note']}" class="form-control" />
+                                </div> 
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="Type Contrat"  for="tyc" class=" pull-left" /> <h:outputLabel value="*"  class="etoile_rouge pull-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="tyc"  value="#{compagnieBean.typeContrat}" required="true"  class="form-control"
+                                                 requiredMessage="Veuillez choisir le type de Contrat">
+                                    <f:selectItem itemValue="" itemLabel="Type Contrat"/> 
+                                    <f:selectItems value="#{compagnieBean.typeContratAuto}" /> 
+                                    <p:ajax event="click" update="tycMessage"/> 
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="tyc" id="tycMessage"/>
+                            </div>
+                        </div>
+                        <!--div class="form-group">
+                            <div class="col-lg-4">
+                                <h:outputLabel  value="Code" for ="code" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                <p:inputText  id="code" value="#{compagnieBean.code}" class="form-control" title="Code" a:placeholder="Code *"/>
+                            </div>
+
+                           <div class=" col-lg-4">
+                                <h:outputLabel  value="Code Inscription" for ="CodeInscription" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                <p:inputText  id="CodeInscription" value="#{compagnieBean.codeInscription}" title="Code Inscription" class="form-control" a:placeholder="Code Inscription *"/>
+                            </div>
+                            <div class="col-lg-4">
+                                <h:outputLabel  value="CléInscription"  for ="cleInscription" class="pull-left"  />
+                                <p:inputText id ="cleInscription" value="#{compagnieBean.cleInscription}" title="CléInscription" class="form-control" a:placeholder="CléInscription"/>
+                            </div>
+                            <div class="col-lg-4">
+                                <h:outputLabel  value="Tarif Actifs" for="tarifActifs" class="col-lg-12  pull-left text-left" style=" margin-left: -10px" />
+                                <div class="input-group">
+                                    <p:outputLabel class=" police_label form-control text-left" for ="tarifActifs" value="tarifActifs"/>
+                                    <span class="input-group-addon">
+                                        <h:selectBooleanCheckbox  id="tarifActifs" value="#{compagnieBean.tarifsActifs}"/>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div-->
+
+                        <!--div class="form-group">
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <p:outputLabel class=" police_label form-control text-left"  for ="taxePaysTTC" value="taxePaysTTC"/>
+                                    <span class="input-group-addon">
+                                        <h:selectBooleanCheckbox id="taxePaysTTC" value="#{compagnieBean.taxesPaysTTC}"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <p:outputLabel class=" police_label form-control text-left"  for ="taxesZoneTTC" value="Taxes zone" />
+                                    <span class="input-group-addon">
+                                        <h:selectBooleanCheckbox id="taxesZoneTTC" value="#{compagnieBean.taxesZoneTTC}"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class=" col-lg-4">
+                                <div class="input-group">
+                                    <p:outputLabel class="form-control police_label text-left"  for ="taxesHorsZoneTTC" value="Taxes hors zone"  />
+                                    <span class="input-group-addon">
+                                        <h:selectBooleanCheckbox  id="taxesHorsZoneTTC" value="#{compagnieBean.taxesHorsZoneTTC}"/> 
+                                    </span>
+                                </div>
+                            </div> 
+                        </div-->
+                        <div class="form-group">
+
+
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="col-md-12 col col-lg-12 col-xs-12 col-sm-12">
+                                <p:commandButton title="#{msg['btn.annuller']}" value="#{msg['btn.annuller']}" type="reset" id="annuler" class="btn btn-danger  pull-left"/>
+                          
+                                <p:commandButton  title="#{msg['btn.enregistrer']}" value="#{msg['btn.enregistrer']}"  update="msgs,formliste,annuler,ajout" action="#{compagnieBean.ajouter()}"  class="btn btn-success pull-right"/>
+                            </div>
+
+                        </div>
+                    </h:form>
+
+                </p:outputPanel>
+            </div>
+        </div>
+
+
+        <!-- Fin du dialogue--> 
+
+
+
+    </ui:composition> 
+
+</html>
+

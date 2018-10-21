@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"  
+      >
+    <ui:composition>
+        <div class="form-group">
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <h:outputLabel for="pays"  value="#{msg['titre.pays']}" class="pull-left text-left"/>                              
+                <h:selectOneMenu id="pays"   class="form-control"   converter="entityConverter" value="#{demandeRejeteAsSanteBean.paysSelect}" >                                          
+                    <f:selectItem itemLabel="#{msg['titre.pays']}" itemDisabled="false" />
+                    <f:selectItems var="pays" value="#{demandeRejeteAsSanteBean.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                    <p:ajax listener="#{demandeRejeteAsSanteBean.trierPrametresByPays()}" update="serachPanel" />
+                </h:selectOneMenu>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <h:outputLabel for="compagnie"  value="#{msg['titre.compagnie']}" class="pull-left text-left"/>                              
+                <h:selectOneMenu id="compagnie" value="#{demandeRejeteAsSanteBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                    <f:selectItem itemLabel="#{msg['titre.tous']}" itemDisabled="false" />
+                    <f:selectItems value="#{demandeRejeteAsSanteBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                </h:selectOneMenu>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <h:outputLabel for="courtier"  value="#{msg['titre.courtier']}" class="pull-left text-left"/>                               
+                <h:selectOneMenu id="courtier"  converter="entityConverter" value="#{demandeRejeteAsSanteBean.courtierSelected}" class="form-control" >                                          
+                    <f:selectItem itemLabel="#{msg['titre.courtier']}" itemDisabled="false" />
+                    <f:selectItems var="courtier" value="#{demandeRejeteAsSanteBean.listCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                </h:selectOneMenu>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <h:outputLabel for="pv"  value="#{msg['titre.pdv']}" class="pull-left text-left"/>                          
+                <h:selectOneMenu id="pv"  value="#{demandeRejeteAsSanteBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                    <f:selectItem itemLabel="#{msg['titre.pdv']}" itemDisabled="false" />
+                    <f:selectItems var="pv" value="#{demandeRejeteAsSanteBean.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                </h:selectOneMenu>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <h:outputLabel for="gt"  value="#{msg['titre.guichet']}" class="pull-left text-left"/>                            
+                <h:selectOneMenu id="gt"  value="#{demandeRejeteAsSanteBean.guichetSelected}"  converter="entityConverter" class="form-control" >                                          
+                    <f:selectItem itemLabel="#{msg['titre.guichet']}" itemDisabled="false" />
+                    <f:selectItems var="guichet" value="#{demandeRejeteAsSanteBean.listGuichet}" itemLabel="#{guichet.designation}" itemValue="#{guichet}" />            
+                </h:selectOneMenu>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <p:outputLabel for="mask" value="#{msg['titre.dateDebut']}:" />
+                    <p:calendar id="mask"  pattern="dd-MM-yyyy" mask="true" value="#{demandeRejeteAsSanteBean.dateDebutRecherche}" >
+                    </p:calendar>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <p:outputLabel for="mask" value="#{msg['titre.dateFin']}:" />
+                    <p:calendar id="mask2"   pattern="dd-MM-yyyy" mask="true" value="#{demandeRejeteAsSanteBean.dateFinRecherche}">
+                    </p:calendar>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-12  col-md-12 col-xs-12 col-sm-12">
+                <div class="col-lg-2 col-md-12 pull-right col-xs-12 col-sm-12">
+                    <p:commandButton value="#{msg['btn.rechercher']}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{demandeRejeteAsSanteBean.rechercheAvance()}"  update="@form,dataListeForm" /> 
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

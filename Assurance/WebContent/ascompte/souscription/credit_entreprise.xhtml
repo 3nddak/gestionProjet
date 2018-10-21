@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        
+        <p:panel header="TYPE DE CLIENT"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel for="tynom2oio" value="#{msg['titre.type']} :"/>
+                <h:outputText id="tynom2oio" value="#{souscriptionAsCompteBean.groupe eq 0?'client physique':'client moral'}"/>
+                <p:outputLabel for="getel2oio" value="#{msg['titre.genre']}:"/>
+                <h:outputText id="getel2oio" value="#{souscriptionAsCompteBean.genreGroup eq 0?'groupe':'entreprise'}"/>
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:outputPanel >
+
+            <div class="form-group">
+
+
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['entreprise.nom']}"  for="nomE" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{souscriptionAsCompteBean.grpAssuranceCompte.nomGroup}" required="true"  requiredMessage="#{msg['entreprise.nom.requiredMessage ']}" 
+                                     id="nomE" class="form-control" placeholder="#{msg['entreprise.nom']}">
+                            <p:ajax event="keyup" update="nomMessageE"/>
+                        </p:inputText>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="nomE"  id="nomMessageE" class="errorClass" />
+                    </div> 
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['entreprise.description']}"  for="domE" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{souscriptionAsCompteBean.grpAssuranceCompte.descriptionGroup}" required="true"  requiredMessage="#{msg['entreprise.description.requiredMessage ']} " 
+                                     id="domE" class="form-control" placeholder="#{msg['entreprise.description']}">
+                            <p:ajax event="keyup" update="domMessageE"/>
+                        </p:inputText>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="domE"  id="domMessageE" class="errorClass" />
+                    </div> 
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['client.adresse']}"  for="faxea" class=" pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{souscriptionAsCompteBean.grpAssuranceCompte.adresseGroup}" id="faxea" styleClass="form-control" placeholder="#{msg['client.adresse']}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['client.tel']}"  for="faxeat" class=" pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{souscriptionAsCompteBean.grpAssuranceCompte.numeroTelephoneGroup}" id="faxeat" styleClass="form-control" placeholder="#{msg['client.tel']}e"/>
+                        </div>
+                    </div>
+
+                </div> 
+                <div class="form-group">
+
+
+                </div> 
+
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  id="dateNaic" value="#{msg['entreprise.dateCreation']}"   for="dateNaissancec" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:calendar   id="dateNaissancec" yearRange="c-100:c+10"  pattern="dd/MM/yyyy" maxdate="#{souscriptionAsCompteBean.dateEmission}" readonlyInput="true" navigator="true" value="#{souscriptionAsCompteBean.grpAssuranceCompte.dateCreationGroup}" mask="true" class="form-control" placeholder="#{msg['entreprise.dateCreation']}"
+                                      required="true"
+                                      requiredMessage="#{msg['entreprise.dateCreation.requiredMessage']}" 
+                                      converterMessage="format incorect"
+                                      >
+
+                            <f:convertDateTime pattern="dd/MM/yyyy"  type="date"/>
+                            <p:ajax event="dateSelect" update="datenMessagec"/> 
+                        </p:calendar>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="dateNaissancec" id="datenMessagec" class="errorClass"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="Type pièce"  for="piecec" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" id="typPLc" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                            <h:selectOneMenu id="piecec" value="#{souscriptionAsCompteBean.grpAssuranceCompte.typePieceGroup}"  class="form-control"
+                                             requiredMessage="#{msg['client.piece.requireMessage']}">
+                                <f:selectItem itemLabel="#{msg['client.piece']}"/> 
+                                <f:selectItems value="#{souscriptionAsCompteBean.listPieceGroup}" /> 
+                                <p:ajax event="click" update="pieceMessagec"/> 
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="piecec" id="pieceMessagec"/>
+                        </div>
+                    </div> 
+
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['client.numeropiece']}" for="numpiecec" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{souscriptionAsCompteBean.grpAssuranceCompte.numeroPieceGroup}" required="true" id="numpiecec" class="form-control" placeholder="#{msg['client.numeropiece']}"
+                                         requiredMessage="#{msg['client.numeropiece.requireMessage']}">
+                                <p:ajax event="keyup" update="numpieceMessagec"/> 
+                            </p:inputText> 
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="numpiecec" id="numpieceMessagec"/> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </p:outputPanel>
+    </ui:composition>
+</html>

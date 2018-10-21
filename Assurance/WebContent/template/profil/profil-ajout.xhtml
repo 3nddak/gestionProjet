@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+    <ui:composition>
+        <p:outputPanel id="ajiter" style="text-align:center;">
+            <div class="row">
+                <div class="col-lg-10 col-md-10 col-lg-offset-1 col-md-offset-1 col-sm-12  col-xs-12">
+                    <h:form class=" form-horizontal" id="ajout_profil">
+                        <p:growl id="growl" showDetail="false" globalOnly="true"  sticky="false" />
+                        <div class="form-group">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="console" class="pull-left" value="#{msg['profile.typestructure']}"/><h:outputLabel value="*" class="etoile_rouge pull-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:selectOneRadio  class="police_label" id="console" required="0" value="#{profilBean.console}"
+                                                       requiredMessage="">
+                                        <f:selectItem itemLabel="#{msg['titre.compagnie']}" itemValue="compagnie" />
+                                        <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue="courtier" />
+                                        <f:selectItem itemLabel="#{msg['titre.pdv']}" itemValue="pointVente" />
+                                        <!--f:selectItem itemLabel="Guichet Externe" itemValue="guichetExterne" /-->
+                                        <f:selectItem itemLabel="#{msg['titre.pdr']}" itemValue="pointRetrait" />
+                                        <f:selectItem itemLabel="NCP Tech" itemValue="ncp" />
+                                        <p:ajax listener="#{profilBean.filtrePages()}" update="menu_utilisateur1,menu_utilisateur2,menu_utilisateur3,menu_utilisateur6,menu_utilisateur7"  />
+                                        <f:ajax event="blur" render="consoleMessage"/>
+                                    </p:selectOneRadio>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:message for="console"  id="consoleMessage" class="errorClass" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="code" class=" police_label pull-left" value="Code"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                    <p:inputText id="code" title="Profil" class="form-control" required="true" value="#{profilBean.codeProfil}" placeholder="Code"
+                                                 requiredMessage="#{msg['profile.code.requireMessage']}"
+                                                 >
+                                        <f:ajax event="blur" render="codeMessage"/>
+                                    </p:inputText>
+
+                                    <h:message for="code" id="codeMessage" class="errorClass"/>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="Profil" class=" police_label pull-left" value="Libellé"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                    <p:inputText title="Profil" id="Profil" required="true" class="form-control"  value="#{profilBean.libelleProfil}" placeholder="Libelle"
+                                                 requiredMessage="#{msg['profile.libelle.requireMessage']}"
+                                                 >
+                                        <f:ajax event="blur" render="libelleMessage"/>
+                                    </p:inputText>
+                                    <h:message for="Profil" id="libelleMessage" class="errorClass"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel class="pull-left" value="Catégorie de droit"  />
+                                </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 ">
+                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 ">
+                                            <div class="form-group">
+                                                <p:selectCheckboxMenu class="form-control " id="menu_utilisateur1" label="#{msg['page.menu.admimistration']}" value="#{profilBean.selectedPermission}"
+                                                                      filter="true" filterMatchMode="startsWith">
+                                                    <f:selectItems  value="#{profilBean.allPermissionAdministration}" var="role_para" itemLabel="#{role_para.libelle}" itemValue="#{role_para}"/>
+                                                    <!--<f:ajax event="change" render="menu_utilisateur1Message"  />-->
+                                                </p:selectCheckboxMenu>
+                                                <h:message for="menu_utilisateur1" id="menu_utilisateur1Message" class="errorClass"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 ">
+                                            <div class="form-group">
+                                                <p:selectCheckboxMenu id="menu_utilisateur2" class="form-control"  label="#{msg['page.menu.parametres']}" value="#{profilBean.selectedPermission2}"
+                                                                      filter="true" filterMatchMode="startsWith">
+                                                    <f:selectItems  value="#{profilBean.allPermissionParametre}" var="role_para" itemLabel="#{role_para.libelle}" itemValue="#{role_para}"/>
+                                                </p:selectCheckboxMenu>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 ">
+                                            <div class="form-group">
+                                                <p:selectCheckboxMenu id="menu_utilisateur3" class="form-control"   label="#{msg['page.menu.operation']}" value="#{profilBean.selectedPermission3}"
+                                                                      filter="true" filterMatchMode="startsWith">
+                                                    <f:selectItems  value="#{profilBean.allPermissionOperation}" var="role_para" itemLabel="#{role_para.libelle}" itemValue="#{role_para}"/>
+                                                </p:selectCheckboxMenu>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 ">
+                                            <div class="form-group">
+                                                <p:selectCheckboxMenu id="menu_utilisateur6" class="form-control "   label="#{msg['page.menu.comptabilite']}" value="#{profilBean.selectedPermission6}"
+                                                                      filter="true" filterMatchMode="startsWith">
+                                                    <f:selectItems  value="#{profilBean.allPermissionComptabilite}" var="role_para" itemLabel="#{role_para.libelle}" itemValue="#{role_para}"/>
+                                                </p:selectCheckboxMenu>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 ">
+                                            <div class="form-group">
+                                                <p:selectCheckboxMenu id="menu_utilisateur7" class="form-control"  label="#{msg['page.menu.statistique']}" value="#{profilBean.selectedPermission7}"
+                                                                      filter="true" filterMatchMode="startsWith">
+                                                    <f:selectItems  value="#{profilBean.allPermissionEspaceStatistique}" var="role_para" itemLabel="#{role_para.libelle}" itemValue="#{role_para}"/>
+                                                </p:selectCheckboxMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 ">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 ">
+                                    <div class="btn-toolbar  ">
+                                        <p:commandButton  ajax="true"  class="btn-success btn btn-xs pull-right" action="#{profilBean.saveProfil()}" title="#{msg['btn.enregistrer']}" value="#{msg['btn.enregistrer']}" onstart="PF('addProcess').block()" oncomplete="PF('addProcess').unblock()"  update="growl,ajiter,formliste">
+                                            <f:ajax execute="@form" render="@form" />
+                                        </p:commandButton>
+                                        <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" type="reset" class="btn-danger btn btn-xs pull-right"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </h:form>
+                </div>
+            </div>
+        </p:outputPanel>
+        <pe:blockUI widgetVar="addProcess">
+            <h:panelGrid columns="2">
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>
+                <h:outputText value="Enregistrement en cours...." />
+            </h:panelGrid>
+        </pe:blockUI>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+    <ui:composition>
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <p:outputPanel id="option" class="panel-border-none ">
+                <h:form id="primeAjoutForm" class="form-horizontal" >
+                    <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+
+                    <div class="form-group">
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pays" value="#{msg['titre.pays']}" class=""/><h:outputLabel value="*" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="pays" value="#{primeAsMrhBean.paysSelected}" converter="omnifaces.SelectItemsConverter" required="tue" class="form-control"
+                                                 requiredMessage="#{msg['compagnie.pays.requireMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                    <f:selectItems value="#{primeAsMrhBean.listpays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                    <p:ajax event="click" update="courtier,paysMessage"  listener="#{primeAsMrhBean.trierPrametresByPays()}" />
+                                </h:selectOneMenu> 
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pays"  id="paysMessage" class="errorClass" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="courtier" value="#{msg['titre.courtier']}" class=""/><h:outputLabel value="*" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="courtier" value="#{primeAsMrhBean.courtierSelected}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                 requiredMessage="#{msg['pv.courtier.requireMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""/>
+                                    <f:selectItems value="#{primeAsMrhBean.listCourtier}" var="courtier" itemLabel="#{courtier.designation}" itemValue="#{courtier}" /> 
+                                    <p:ajax event="click" update="compagnie,courtierMessage"  listener="#{primeAsMrhBean.trierCompagnieByCourtier()}" />
+                                </h:selectOneMenu> 
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="courtier"  id="courtierMessage" class="errorClass" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="compagnie" value="#{msg['titre.compagnie']}" class=""/><h:outputLabel value="*" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:selectCheckboxMenu id="compagnie" label="#{msg['titre.compagnie']}" value="#{primeAsMrhBean.listCompagniesSelected}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                      requiredMessage="#{msg['courtier.compagnie.requireMessage']}" >
+                                    <f:selectItems value="#{primeAsMrhBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.designation}" itemValue="#{compagnie}" /> 
+                                </p:selectCheckboxMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="compagnie"  id="compagnieMessage" class="errorClass" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="formule" value="#{msg['titre.formule']}" class=""/><h:outputLabel value="*" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="formule" value="#{primeAsMrhBean.primeAsMrh.formule}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                 requiredMessage="#{msg['titre.formule.requireMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="Formule" itemValue=""/>
+                                    <f:selectItems value="#{primeAsMrhBean.listfFormule}" />
+                                     <f:ajax event="click" render="formuleMessage"/>
+                                </h:selectOneMenu> 
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="formule"  id="formuleMessage" class="errorClass" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="valeur" value="#{msg['titre.valeurOuTauxDeLaPrime']}" class=""/><h:outputLabel value="*" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="valeur" required="true" converterMessage="#{msg['format.integer.converterMessage']}"  requiredMessage="#{msg['titre.valeur.requiredMessage']}" value="#{primeAsMrhBean.primeAsMrh.valeurPrime}" styleClass="form-control"  title="Capital" a:placeholder="Capital" >
+                                    <f:ajax event="keyup" render="valeurMessage"/>
+                                    <p:ajax event="blur" update="@this" />
+                                </p:inputText>
+                                <pe:keyFilter for="valeur" mask="num"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="valeur"  id="valeurMessage" class="errorClass" />
+                            </div>  
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="pourcent" value="#{msg['titre.enPourcentage']}" class="pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:selectBooleanCheckbox id="active" value="#{primeAsMrhBean.primeAsMrh.isPourcentage}" />
+                                </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="valeurMin" value="#{msg['titre.capitalMinimale']}" class=""/><h:outputLabel value="*" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="valeurMin" required="true" converterMessage="#{msg['format.integer.converterMessage']}"  requiredMessage="#{msg['titre.champsObligatoire']}" value="#{primeAsMrhBean.primeAsMrh.valeurMinimale}" styleClass="form-control"  title="#{msg['titre.capitalMinimale']}" a:placeholder="#{msg['titre.capitalMinimale']}" >
+                                    <f:ajax event="keyup" render="valeurMinMessage"/>
+                                    <p:ajax event="blur" update="@this" />
+                                </p:inputText>
+                                <pe:keyFilter for="valeurMin" mask="num"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="valeurMin"  id="valeurMinMessage" class="errorClass" />
+                            </div>  
+                        </div>
+                        
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="valeurMax" value="#{msg['titre.capitalMaximale']}" class=""/><h:outputLabel value="*" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="valeurMax" required="true" converterMessage="#{msg['format.integer.converterMessage']}"  requiredMessage="#{msg['titre.champsObligatoire']}" value="#{primeAsMrhBean.primeAsMrh.valeurMaximale}" styleClass="form-control"  title="#{msg['titre.capitalMaximale']}" a:placeholder="#{msg['titre.capitalMaximale']}" >
+                                    <f:ajax event="keyup" render="valeurMaxMessage"/>
+                                    <p:ajax event="blur" update="@this" />
+                                </p:inputText>
+                                <pe:keyFilter for="valeurMax" mask="num"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="valeurMax"  id="valeurMaxMessage" class="errorClass" />
+                            </div>  
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="accessoire" value="#{msg['tableau.accessoire']}" class=""/><h:outputLabel value="*" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="accessoire" required="true" converterMessage="#{msg['format.integer.converterMessage']}"  requiredMessage="#{msg['tableau.accessoire']}" value="#{primeAsMrhBean.primeAsMrh.assessoire}" styleClass="form-control"  title="#{msg['tableau.accessoire']}" a:placeholder="#{msg['tableau.accessoire']}" >
+                                    <f:ajax event="keyup" render="accessoireMessage"/>
+                                    <p:ajax event="blur" update="@this" />
+                                </p:inputText>
+                                <pe:keyFilter for="accessoire" mask="num"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="accessoire"  id="accessoireMessage" class="errorClass" />
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="btn-toolbar">
+                                    <p:commandButton value="#{msg['btn.annuller']}" ajax="true" action="#{primeAsMrhBean.cancel()}" update="@form"  class="btn btn-danger pull-left" />
+                                    <p:commandButton value="#{msg['btn.enregistrer']}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{primeAsMrhBean.saveOnePrimeAsMrh()}" update="@form,primeList:pliste"  class="btn btn-purple pull-right"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p:growl for="somekey" id="vvv" />
+                </h:form>
+            </p:outputPanel>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+    </ui:composition>
+</html>

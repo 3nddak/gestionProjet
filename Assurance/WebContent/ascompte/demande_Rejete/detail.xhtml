@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <h:form  class="form-horizontal well-sm" id="detail">
+            <div class="panel-heading bg-primary">  
+                <h:outputLabel class="police_label" value="SOCIETE DE COURTAGE" ></h:outputLabel>
+            </div>
+
+            <div class="panel-body"> 
+
+                <div class="row">
+
+                    <p:fieldset  legend="VOIR LES REFERENCES DU CLIENT" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                        <p:panelGrid columns="6" class="table">
+                            <h:outputLabel value="Souscripteur"/>
+                            <h:outputText value="#{demandeRejeteAsCompteBean.assuranceCompte.client.nom}"/>
+                            <h:outputLabel value="Date de naissance"/>
+                            <h:outputText value="#{demandeRejeteAsCompteBean.assuranceCompte.client.dateNaissance}"/>
+                            <h:outputLabel value="Téléphone"/>
+                            <h:outputText  value="#{demandeRejeteAsCompteBean.assuranceCompte.client.telephoneMobile}"/>
+                            <h:outputLabel value="Adresse"/>
+                            <h:outputText  value="#{demandeRejeteAsCompteBean.assuranceCompte.client.adresse}"/>
+                        </p:panelGrid>
+
+                    </p:fieldset>
+                    <p:fieldset  legend="VOIR LES REFERENCES DU COMPTE" toggleable="true" collapsed="false"  toggleSpeed="500"  style="margin-bottom:20px">                                              
+                        <p:panelGrid columns="4" class="table">
+                            <p:outputLabel rendered="false" for="compte" value="Compte :"/>
+                            <h:outputText rendered="false" id="compte" value="#{demandeRejeteAsCompteBean.assuranceCompte.compte}"/>
+                            <p:outputLabel for="intitulecompte" value="Intitulé du compte :"/>
+                            <h:outputText id="intitulecompte" value="#{demandeRejeteAsCompteBean.assuranceCompte.intituleCompte}"/>
+                            <p:outputLabel for="typecompte" value="Type de compte :"/>
+                            <h:outputText id="typecompte" value="#{demandeRejeteAsCompteBean.assuranceCompte.typeCompte == null ? null : demandeRejeteAsCompteBean.assuranceCompte.typeCompte.toString()}"/>
+                            <p:outputLabel for="dateouverturecompte" value="Date ouverture du compte :"/>
+                            <h:outputText id="dateouverturecompte" value="#{demandeRejeteAsCompteBean.assuranceCompte.dateOuvertureCompte}"/>
+                            <p:outputLabel for="codeguichet" value="Code guichet :"/>
+                            <h:outputText id="codeguichet" value="#{demandeRejeteAsCompteBean.assuranceCompte.codeGuichet}"/>
+                            <p:outputLabel for="coderib" value="Code RIB :"/>
+                            <h:outputText id="coderib" value="#{demandeRejeteAsCompteBean.assuranceCompte.rib}"/>
+                            <p:outputLabel for="solde" value="Solde du compte :"/>
+                            <h:outputText id="solde" value="#{demandeRejeteAsCompteBean.assuranceCompte.soldeCompte}" >
+                            <f:convertNumber pattern="###,##0" type="number" />
+                            </h:outputText>
+                        </p:panelGrid>
+                    </p:fieldset>
+                    
+                </div> 
+            </div>
+        </h:form>
+        <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                <h:form>
+                    <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </h:form>
+            </p:confirmDialog>
+        <h:form id="text" class="form-horizontal">
+            <p:panel >
+                <div class="form-group" >
+                    <p:panelGrid columns="2"  layout="grid" >
+                        <p:outputLabel class="form-control bg-purple" value="Prime nette:" for="ps"></p:outputLabel>
+                        <p:outputLabel id="ps" class="text-right form-control"  value="#{demandeRejeteAsCompteBean.assuranceCompte.prixNette}"> 
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </p:outputLabel>
+
+                        <p:outputLabel class="form-control bg-purple" value="Remise:" for="psrr"></p:outputLabel>
+                        <p:outputLabel id="psrr" class="text-right form-control"  value="#{demandeRejeteAsCompteBean.assuranceCompte.remise}"> 
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </p:outputLabel>
+
+                        <p:outputLabel class="form-control bg-purple" value="Réduction:" for="psr"></p:outputLabel>
+                        <p:outputLabel id="psr" class="text-right form-control"  value="#{demandeRejeteAsCompteBean.assuranceCompte.valeurReduction()}"> 
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </p:outputLabel>
+
+                        <p:outputLabel class="form-control bg-purple" value="Majoration:" for="psrm"></p:outputLabel>
+                        <p:outputLabel id="psrm" class="text-right form-control"  value="#{demandeRejeteAsCompteBean.assuranceCompte.valeurMajoration()}"> 
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </p:outputLabel>
+                      
+                        <p:outputLabel class="form-control bg-purple" value=" Taxe:" for="tes"/>
+                        <p:outputLabel id="tes" class="text-right form-control" value="#{demandeRejeteAsCompteBean.assuranceCompte.valeurTaxes()}">
+
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </p:outputLabel>
+
+                        <p:outputLabel class="form-control bg-purple" value="Prime TTC:" for="pttc"/>
+                        <p:outputLabel id="pttc" class="text-right form-control"  value="#{demandeRejeteAsCompteBean.assuranceCompte.primeTTCS}">
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </p:outputLabel>
+                    </p:panelGrid>
+                </div>
+            </p:panel>
+        </h:form>
+    </ui:composition>
+</html>

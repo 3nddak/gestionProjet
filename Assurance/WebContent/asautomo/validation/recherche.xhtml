@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <h:form>
+            <p:panel  header="Recherche avancee" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                <p:outputLabel for="numPolice" value="Numero Police"/>
+                <p:inputText id="numPolice" value="#{renouvelementBean.numeroPolice}" />
+                <p:outputLabel for="pss" value="Puissance :"/>
+                <p:selectOneMenu  id="pss" value="#{renouvelementBean.compagnieSelected}" filterMatchMode="custom" filterFunction="customFilter" >
+                    <f:selectItem itemLabel="Select One" itemValue="" />
+                    <f:selectItems value="#{renouvelementBean.compagnieList}" var="compagnie"
+                                   itemLabel="#{compagnie}" itemValue="#{compagnie.abbreviation}"/>
+                </p:selectOneMenu>
+                <p:commandButton icon="fa fa-trash" update="detail" actionListener="#{renouvelementBean.recherche()}" validateClient="search"  />
+            </p:panel>
+        </h:form>
+    </ui:composition>
+</html>

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+
+        <div class="panel">
+
+
+            <h:commandLink class="list-group-item"   value="Demandes d'attestation" action="demandeatt" title="Demandes d'attestation" > 
+                <h:outputLabel value="#{numberAttestationBean.nouvelleAttestation}" style="background-color:red" class="pull-right badge" />                                           
+
+            </h:commandLink>
+
+            <h:commandLink class="list-group-item" value="Attestations traitees" title="Demandes traitees"  action="vdc" >
+                <h:outputLabel value="#{numberAttestationBean.attestationTraite}" style="background-color: #ec971f" class="pull-right badge" />                
+
+            </h:commandLink>
+
+            <h:commandLink class="list-group-item"   value ="Attestations validees"  title ="Attestations validees" action="actp">
+                <h:outputLabel value="#{numberAttestationBean.attestationValide}" style="background-color:  #a94442" class="pull-right badge" ></h:outputLabel>
+
+            </h:commandLink>
+
+            <h:commandLink class="list-group-item"  value="Attestation reçue"  title="Attestation reçue" action="xttc">
+                <h:outputLabel value="#{numberAttestationBean.attestationRecu}" style="background-color:  #aed248" class="pull-right badge" ></h:outputLabel>
+
+            </h:commandLink>  
+
+            <h:commandLink class="list-group-item"  value="Attestations rejetées" title="Demandes rejetées" >
+                <h:outputLabel value="#{numberAttestationBean.attestationRejete}" style="background-color: slategrey" class="badge pull-right" />
+
+            </h:commandLink>
+
+
+        </div>
+
+    </ui:composition>
+</html>
+

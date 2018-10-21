@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <div class="container-fluid">
+            <div id="liste" class="row">
+                <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4 well-lg">
+
+                    <p:panel  class="form-horizontal well-sm" id="message1">
+                        <div class="panel-heading bg-primary"> 
+                            <p:outputLabel class="police_label" value="#{msg['titre.compagnie']}"></p:outputLabel>
+                        </div>
+                        <p:dataScroller class="police_label" value="#{objetBean.listselectedCompagnies}" var="compagnie" chunkSize="10">
+
+                            <div class="table-responsive">
+                                <p:commandLink class=" col-lg-12 lien_liste" update="formliste" actionListener="#{objetBean.detailSouscription}" style="text-align:left; margin: 0px;padding:0px " >
+
+                                    <div class="col-lg-10 pull-left">
+
+                                        <p:outputLabel class="col-lg-12" value="#{compagnie.abbreviation}"/>
+
+                                    </div>
+                                    <f:setPropertyActionListener value="#{compagnie}" target="#{objetBean.compagnie}" />  
+
+                                </p:commandLink>
+
+
+                            </div>
+
+                        </p:dataScroller>
+
+                    </p:panel>
+
+
+                </div>
+                <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8 well-lg">
+                    <div class="panel">
+                        <p:panel  class="form-horizontal well-sm" id="detail">
+                            <div class="panel-heading bg-primary">  
+                                <h:outputLabel value="#{msg['simulation.compagnie']}" class="text-uppercase" >
+                                    <h:outputText value="#{objetBean.compagnie.abbreviation}" />
+                                </h:outputLabel>
+                            </div>
+
+                            <div class="panel-body"> 
+
+                                <div class="row">
+
+                                    <fieldset><legend class="titre_entete text-left text-capitalize small" >
+                                            <p:outputLabel value="#{msg['garantie.souscrite']}" class=" police_label text-center text-uppercase"></p:outputLabel>
+                                        </legend>
+
+                                        <p:dataTable class="table_label" id="g" var="compagnieGuarantie" rowKey="#{compagnieGuarantie.idCompagnie_Guarantie}" editable="true" editMode="cell" scrollable="true" value="#{objetBean.compagnieGuarantieList}">
+                                            <p:column headerText="#{msg['garantie.titre']}">
+                                                <h:outputText value="#{compagnieGuarantie.guarantie.symbole}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['garantie.prime']}">
+                                                <h:outputText value="#{compagnieGuarantie.calculPrime2}" />
+                                            </p:column>
+                                        
+                                        </p:dataTable>
+                                        <br/>
+
+
+                                        <div class="form-group">
+                                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                <p:outputLabel value="#{msg['prix.total']} :" class=" police_label form-control bg-purple" style="color: red" title="#{msg['prix.total']}"/>
+                                            </div> 
+                                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                <p:outputLabel value="#{objetBean.montant}" class=" police_label form-control text-right" style="color: red" title="#{msg['montant.total']}" />
+                                            </div>  
+                                        </div>
+                                    </fieldset>
+                                </div> 
+
+                            </div>
+
+                        </p:panel>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

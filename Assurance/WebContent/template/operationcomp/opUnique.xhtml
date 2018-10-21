@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+
+        <div id="liste" class="row">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+                <div class="panel">
+                    <h:form  id="formliste2" class="form-horizontal" enctype="multipart/form-data">
+                        <div class="panel-heading"> 
+                            <p:fieldset  legend="Effectuer une opération " toggleable="true"  collapsed="false" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <div class="row">
+                                    <div class="col-md-19 col-lg-12 col-sm-12">
+                                        <p:outputPanel id="ajout2" style="text-align:center;">
+                                            <p:growl id="msgs" showDetail="false" globalOnly="true" />
+                                            <div class="form-group">
+                                                <div class=" col-lg-6 ">
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <h:outputLabel  value="Reference"  class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" /> 
+                                                    </div>
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <p:inputText  required="true" value="#{opDivBean.referenceU}" class="form-control" >
+
+                                                        </p:inputText>
+                                                    </div> 
+                                                </div>
+                                                <div class=" col-lg-6 ">
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <h:outputLabel  value="Description" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" /> 
+                                                    </div>
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <p:inputText  required="true" value="#{opDivBean.descriptionU}" class="form-control" >
+
+                                                        </p:inputText>
+                                                    </div> 
+
+                                                </div>
+
+
+                                            </div> 
+                                            <div class="form-group">
+                                                <div class=" col-lg-6 ">
+                                                    <h:outputLabel for="facAtt" value="type de Payement"   class=" pull-left" />
+                                                    <h:selectOneMenu  id="facAtt" value="#{opDivBean.typePayementU}" class="form-control"
+                                                                      >
+                                                        <f:selectItem itemLabel="par Cheque " itemValue="1"/>
+                                                        <f:selectItem itemLabel="par Banque" itemValue="2"/>
+                                                        <f:selectItem itemLabel="espèce" itemValue="3"/>
+                                                        <f:selectItem itemLabel="autres" itemValue="4"/>
+                                                    </h:selectOneMenu>
+
+                                                </div>
+                                                <div class="col-md-4 col col-lg-4" >
+                                                    <h:outputLabel  value="Logo" for="fileUpload" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                                    <p:fileUpload id="fileUpload" required="true" fileUploadListener ="#{opDivBean.handleFileUploadU}"
+                                                                  mode="advanced"
+
+                                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|bmp)$/"        
+                                                                  label="#{msg['fichier.selection']}" uploadLabel="#{msg['btn.telecharger']}" cancelLabel="#{msg['btn.annuller']}"       
+                                                                  validatorMessage="#{msg['fichier.invalide']}"      
+                                                                  dragDropSupport="true"      
+                                                                  multiple="true"  
+                                                                  disabled="false"
+                                                                  update="messages"
+                                                                  requiredMessage="#{msg['fichier.requiredMessage']}"
+                                                                  >
+                                                        <!--f:ajax event="blur" render="imageMessage"/-->
+                                                    </p:fileUpload>
+                                                    <p:message for="fileUpload" id="imageMessage" class="errorClass"/>
+                                                    <p:growl id="messages" showDetail="false" globalOnly="true"/>
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group">
+
+                                                <div class="col-lg-6">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                                        <h:outputLabel class="police_label pull-left" value="Numero de Compte A debiter"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                                                        <p:inputText class="form-control" value="#{opDivBean.selectedObjetDebiteur}" required="true" >
+                                                            <p:ajax event="keyup" listener="#{opDivBean.selectNumCompteDeb()}" update="formliste2:strc2"  />
+                                                        </p:inputText>
+
+                                                    </div>
+                                                    <div class="col-lg-6  col-md-6 col-xs-12 col-sm-12">
+                                                        <h:outputText class="text-primary" id="strc2" value="#{opDivBean.structureDebiteur}" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                                        <h:outputLabel class="police_label pull-left" value="Numero de Compte A crediter"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                                                        <p:inputText class="form-control" value="#{opDivBean.selectedObjetCrediteur}" required="true" >
+                                                            <p:ajax event="keyup" listener="#{opDivBean.selectNumCompteCre()}" update="formliste2:strc1"  />
+                                                        </p:inputText>
+
+                                                    </div>
+                                                    <div class="col-lg-6  col-md-6 col-xs-12 col-sm-12">
+                                                        <h:outputText class="text-primary" id="strc1" value="#{opDivBean.structureCrediteur}" />
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                            <div class="form-group">
+
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                                        <h:outputLabel class="police_label pull-left" value="Valeur"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    </div>
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <p:inputText  required="true" value="#{opDivBean.valeurU}" class="form-control" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                            <p:ajax event="blur" update="@this"  />
+                                                        </p:inputText>
+                                                    </div> 
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+
+                                                <div class="col-md-12 col col-lg-12">
+                                                    <div class="col-md-4 col col-lg-2 pull-left">
+                                                        <p:commandButton value="#{msg['btn.annuller']}" actionListener="#{opDivBean.annuler()}" update="formliste" class="btn btn-danger danger form-control"/>
+                                                    </div>
+
+                                                    <div class="col-md-4 col col-lg-2 pull-right">
+                                                        <p:commandButton value="#{msg['btn.enregistrer']}" oncomplete="PF('enregistrerU').show()"   class="btn btn-success success form-control"/>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+
+                                        </p:outputPanel>
+                                    </div>
+                                </div>
+                            </p:fieldset>
+                            <h:form>
+                                <p:growl id="msgs3" showDetail="false" globalOnly="true" />
+                                <p:confirmDialog id="confirmation" message="Voulez vous enregistrer?"
+                                                 header="Enregistrer" severity="alert" 
+                                                 widgetVar="enregistrerU">
+
+                                    <p:commandButton value="Non" onclick="PF('enregistrerU').hide();" type="button" class="btn-danger danger"  />
+                                    <p:commandButton value="Oui" onstart="PF('statusDialog2').show()" onsuccess="PF('statusDialog2').hide()" update="formliste2,msgs3" action="#{opDivBean.enregistrerOperationU()}" class="btn-primary primary" oncomplete="PF('enregistrerU').hide()" styleClass="ui-priority-primary"/>
+                                </p:confirmDialog>
+                            </h:form>
+                            <p:dialog widgetVar="statusDialog2" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                <h:graphicImage library="images" name="ajax-loader.gif" />
+                            </p:dialog>
+                        </div>
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

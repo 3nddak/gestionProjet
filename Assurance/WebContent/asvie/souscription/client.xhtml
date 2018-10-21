@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+
+    <ui:composition>
+        <p:growl id="test"  globalOnly="true"  severity="info,warn"/>
+        <ui:include src="infos_credit.xhtml"/>
+
+        <div class="panel">
+            <div class="panel-body">
+
+                <p:dataTable class="#{souscriptionBean.groupeClients.size() le 0 ?false:true}"  id="clienttable3"  value="#{souscriptionBean.groupeClients}"  var="client3" 
+                             rows="5"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px"
+                             rowsPerPageTemplate="10,15,20,25"  emptyMessage="#{msg[tableau.vide]}"
+                             >
+
+                    <p:column headerText="#{msg['client.nom']}" filterBy="#{client3.nom}" filterMatchMode="contains">
+                        <h:outputText value="#{client3.nom}" />
+                    </p:column >
+                    <p:column headerText="#{msg['client.prenom']}" filterBy="#{client3.prenom}" filterMatchMode="contains">
+                        <h:outputText value="#{client3.prenom}" />
+                    </p:column >
+                    <p:column headerText="#{msg['client.datedenaissance']}" filterMatchMode="contains">
+                        <h:outputText value="#{client3.dateNaissance}" />
+                    </p:column >
+                    <p:column headerText="#{msg['titre.actions']}" width="10%">
+
+                        <p:commandButton title="#{msg['btn.supprimer']}" update="formliste"   icon="fa fa-remove"  class="btn btn-danger danger" action="#{souscriptionBean.deleteFromGroupList()}" >
+                            <f:setPropertyActionListener target="#{souscriptionBean.clientGroupToDelete}" value="#{client3}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+                <p:outputPanel id="btn" rendered="#{!souscriptionBean.cacherTable}"  >
+                    <div class="row">
+                        <div class="btn-toolbar">
+                            <p:commandButton value="#{msg['btn.ajouter']}"  class="btn-success btn pull-right" update="formliste" action="#{souscriptionBean.ajouterClientGroupe()}" />
+                        </div>
+                    </div>
+                </p:outputPanel>
+
+
+                <p:panel class="#{souscriptionBean.cacherTable}" id="pan" rendered="#{!souscriptionBean.renderedClient}">
+                    <fieldset>
+                        <legend class="text-uppercase small" ><h:outputLabel value="#{msg['titre.option']}" />
+                            <p:selectOneRadio  id="cons" value="#{souscriptionBean.option}" requiredMessage="#{msg['client.option.requiredMessage']}">
+                                <f:selectItem  itemLabel="#{msg['client.choisir']}"  itemValue="choix" />
+                                <f:selectItem itemLabel="#{msg['client.creer']}"  itemValue="creation" />
+                                <p:ajax listener="#{souscriptionBean.choixOperation()}" update="formliste,choix,creation,"/>
+                            </p:selectOneRadio>
+                        </legend>
+                    </fieldset>   
+                    <p:fieldset  id="creation"  style="border: none" >
+                        <p:panel rendered="#{souscriptionBean.hideAjoutClientForm}" style="border: none"  >
+                            <div class="row">
+                                <ui:include src="client_ajout.xhtml"/>
+
+                            </div>
+                        </p:panel>
+                    </p:fieldset>
+
+                    <p:fieldset  id="choix" style="border: none" >
+                        <p:panel rendered="#{souscriptionBean.hideChoixClientForm}" style="border: none"  >
+                            <div class="row">
+                                <ui:include src="client_choix.xhtml"/>
+                            </div>
+                        </p:panel>
+                    </p:fieldset>
+
+                </p:panel>
+            </div> 
+        </div>
+    </ui:composition>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<body>
+<center>
+<h:form> 
+    <p:growl id="growl" sticky="true" showDetail="true" life="3000" /><font></font>
+<font></font>
+    
+        <h:panelGrid columns="2" cellpadding="5"><font></font>
+            <h:outputLabel for="username" value="Username:" /><font></font>
+            <p:inputText id="username" value="#{login.username}" required="true" label="username" /><font></font>
+<font></font>
+            <h:outputLabel for="password" value="Password:" /><font></font>
+            <p:password id="password" value="#{login.password}" required="true" label="password" /><font></font>
+<font></font>
+            <f:facet name="footer"><font></font>
+                <p:commandButton value="Login" update="growl" actionListener="#{login.login()}"/><font></font>
+            </f:facet>  <font></font>
+        </h:panelGrid><font></font>
+</h:form>
+</center>
+</body> 
+</html>

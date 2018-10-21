@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:adm="http://github.com/adminfaces"
+	template="#{layoutMB.template}">
+
+
+	<ui:define name="metadata">
+		<ui:param name="enableSlideMenu" value="false" />
+		<!-- disables slide menu (only on this page) on small screens -->
+		<ui:param name="autoShowNavbar" value="false" />
+		<!-- disables auto show navbar (only on this page) on small devices -->
+		<style type="text/css">
+.header-right.ui-datatable .ui-datatable-header {
+	text-align: right !important;
+}
+
+.year-spinner input {
+	width: 100px
+}
+
+.ui-button-text-only .ui-button-text {
+	padding: 0.3em 0.4em;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+	display: none;
+}
+</style>
+	</ui:define>
+	<ui:define name="title">
+        Table des sinistres cumulés
+    </ui:define>
+
+	<ui:define name="description">
+        Cette page vous affiche la liste des sinistres par souscripteur et par bénéficiaire .
+    </ui:define>
+
+	<ui:define name="body">
+		<p:spacer />
+
+		<div>
+
+			<h:form id="form">
+				<h:panelGrid columns="5" cellpadding="50">
+					<p:outputLabel for="button" value="Date debut:" />
+					<p:calendar id="button" value="#{tableSinistres.date_deb}"
+						pattern="dd-MM-yyyy" mask="true" />
+
+					<p:outputLabel for="button1" value="Date fin:" />
+					<p:calendar id="button1" value="#{tableSinistres.date_fin}"
+						pattern="dd-MM-yyyy" mask="true" />
+					<p:commandButton value="submit"
+						actionListener="#{tableSinistres.buttonDate}" icon="ui-icon-check" />
+				</h:panelGrid>
+			</h:form>
+		</div>
+
+
+		<p:spacer />
+
+		<div>
+			<p:dataTable value="#{tableSinistres.assuPrin_periode}" var="cp"
+				class="table1" paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} 
+      {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="15,25,30" rows="30">
+				<!--       <p:column>
+         <f:facet name="header">
+            <h:outputText value="ID" />
+         </f:facet>
+         <h:outputText value="#{cp.id}" />
+      </p:column>
+       -->
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="DATE" />
+					</f:facet>
+					<h:outputText value="#{cp.dateDeclare}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Souscripteur" />
+					</f:facet>
+					<h:outputText value="#{cp.souscripteur}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Beneficiaire" />
+					</f:facet>
+					<h:outputText value="#{cp.beneficiare}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Expose" />
+					</f:facet>
+					<h:outputText value="#{cp.expose}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Paye" />
+					</f:facet>
+					<h:outputText value="#{cp.paye}" />
+				</p:column>
+
+			</p:dataTable>
+		</div>
+
+		<p:spacer />
+
+	</ui:define>
+
+	<ui:define name="code">
+
+
+	</ui:define>
+</ui:composition>

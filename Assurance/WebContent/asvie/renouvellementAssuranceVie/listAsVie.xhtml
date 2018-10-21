@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <h:form  id="formliste" class="form-horizontal">
+            <p:panel header ="#{msg['titre.listeDesAssurancesCredit']}" toggleable="true">
+                <p:dataTable rows="8" paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" class="table table-responsive" var="asscredit" value="#{renouvellementAsVieBean.listeAssuranceCredit}" rowKey="#{asscredit.idFacture}" selection="#{renouvellementAsVieBean.lastAssuranceCredit}">
+                    <p:column headerText="#{msg['titre.renouveler']}" >
+                        <p:commandLink title="#{msg['titre.renouveler']}" class=" btn-sm btn-info info glyphicon glyphicon-refresh" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" update="detail,client,validation"  action ="#{renouvellementAsVieBean.listener()}" >
+                            <f:setPropertyActionListener target="#{renouvellementAsVieBean.lastAssuranceCredit}" value="#{asscredit}"/>
+                        </p:commandLink>
+                    </p:column>
+                    <p:column headerText="#{msg['titre.typeCapitauxGaranties']}" filterBy="#{asscredit.typeCapitauxGaranite ==  null ? null : asscredit.typeCapitauxGaranite.toString()}" >
+                        <h:outputText value="#{asscredit.typeCapitauxGaranite ==  null ? null : asscredit.typeCapitauxGaranite.toString()}"/>
+                    </p:column>
+                    <p:column headerText="#{msg['titre.numeroPolice']}" filterBy="#{asscredit.numeroPolice}" >
+                        <h:outputText value="#{asscredit.numeroPolice}"/>
+                    </p:column>
+                    <p:column headerText="#{msg['titre.compagnie']}" filterBy="#{asscredit.compagnie.abbreviation}">
+                        <h:outputText value="#{asscredit.compagnie.abbreviation}"/>
+                    </p:column>
+                    <p:column headerText="#{msg['client.nom']}" >
+                        <h:outputText value="#{asscredit.client.nom}"/>
+                    </p:column>
+                    <p:column  headerText="#{msg['client.prenom']}">
+                        <h:outputText value="#{asscredit.client.prenom}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>   
+    </ui:composition>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['pays.entete']}"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row-fluid">
+               
+
+
+                    <div class="panel">
+                        <div class="panel-heading"> 
+                            <p:fieldset legend="#{msg['pays.titre.ajouter']}" toggleable="true" toggleSpeed="500"  collapsed="true" style="margin-bottom:20px">                          
+                                <ui:include src="pays_ajout.xhtml"/>
+                            </p:fieldset>
+                        </div>
+                        <h:form  id="formliste">
+                            <div class="panel panel-body">
+
+                                <p:outputPanel id="devise">
+                                    <p:fieldset legend="#{msg['pays.liste']}" style="margin-bottom:20px">                           
+                                        <div class="form-horizontal">
+                                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                                <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-imprimer btn" actionListener="#{paysBean.doGetA()}"   > 
+                                                    <i class=" glyphicon glyphicon-print"></i>
+                                                </h:commandLink>
+                                                <p:dataTable class="table table-bordered table-responsive" var="pays" id="deviseliste" reflow="true" rows="5" value="#{paysBean.paysList}"
+                                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                             paginator="true" sortOrder="descending" sortBy="#{pays.idPays}" paginatorPosition="bottom"  style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                             emptyMessage="#{msg[tableau.vide]}"
+                                                             > 
+
+                                                    <!--f:facet name="header">
+                                                        <p:outputPanel >
+                                                            <p:outputLabel  value="#{msg['rechercher.tableau']}" /><span>:</span>
+                                                            <p:inputText id="globalFilter" onkeyup="ddd.filter()" style="width:150px" placeholder="Rechercher"/>
+                                                        </p:outputPanel>
+                                                    </f:facet-->
+                                                    <f:facet name="{Exporters}">
+                                                        <h:commandLink>
+                                                            <p:graphicImage library="img" name="/excel.png" width="24"/>
+                                                            <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                                        </h:commandLink>
+
+                                                        <h:commandLink>
+                                                            <p:graphicImage library="img" name="/pdf.png" width="24"/>
+                                                            <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                                        </h:commandLink>
+
+                                                        <h:commandLink>
+                                                            <p:graphicImage library="img" name="/csv2.png" width="24"/>
+                                                            <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                                                        </h:commandLink>
+
+                                                        <h:commandLink>
+                                                            <p:graphicImage library="img" name="/xml.png" width="24"/>
+                                                            <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                                                        </h:commandLink>
+                                                    </f:facet>
+
+                                                    <p:column headerText="#{msg['pays.code']}" filterBy="#{pays.codePays}">
+                                                        <h:outputText value="#{pays.codePays}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="#{msg['pays.designation']}" filterBy="#{pays.designationPays}">
+                                                        <h:outputText value="#{pays.designationPays}" />
+                                                    </p:column>
+
+
+                                                    <p:column headerText="#{msg['pays.indicatif']}" filterBy="#{pays.indicatifTelephone}">
+                                                        <h:outputText value="#{pays.indicatifTelephone}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="#{msg['pays.longueur']}" filterBy="#{pays.longueurTelephone}">
+                                                        <h:outputText value="#{pays.longueurTelephone}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="#{msg['titre.zone']}" filterBy="#{pays.zonesmonetaire.designation}">
+                                                        <h:outputText value="#{pays.zonesmonetaire.designation}"  />
+                                                    </p:column>
+                                                    <!--   <p:column headerText="montant LimiteHors Zone">
+                                                              <h:outputText value="" />
+                                                          </p:column>
+                                                          
+                                                          <p:column headerText="montant Limite Zone">
+                                                              <h:outputText value="" />
+                                                          </p:column>   -->
+                                                    <p:column headerText="Actions">
+
+                                                        <p:commandButton rendered="#{sec:areAllGranted('MOD_PAYS')}" title="#{msg['btn.modifier']}" update="modification" oncomplete="PF('modifier').show()" icon="fa fa-edit" class="btn-primary primary btn-sm">
+                                                            <f:setPropertyActionListener value="#{pays}" target="#{paysBean.paysSelected}" />
+                                                        </p:commandButton>
+
+
+
+                                                        <p:commandButton  rendered="#{sec:areAllGranted('DEL_PAYS')}" oncomplete="PF('supprimer').show()" icon="fa fa-trash" title="#{msg['btn.supprimer']}" class="btn-danger danger btn-sm">
+                                                            <f:setPropertyActionListener value="#{pays}" target="#{paysBean.paysSelected}" />
+                                                        </p:commandButton>
+                                                    </p:column>
+
+                                                </p:dataTable>
+                                            </div>
+                                        </div>
+                                    </p:fieldset>
+
+                                </p:outputPanel>
+                            </div>
+                        </h:form>
+                        <!--p:dialog class="police_label" header="#{msg['pays.titre.ajouter']}" showEffect="fade"  widgetVar="ajouter" modal="true" width="800" minHeight="600" resizable="false">
+                            <ui:include src="pays_ajout.xhtml"/>
+                            <p:ajax update="ajout-pays:codePaysMessage"/>
+                            <p:ajax update="ajout-pays:desMessage"/>
+                            <p:ajax update="ajout-pays:indicatifMessage"/>
+                            <p:ajax update="ajout-pays:desLongueur"/>
+                            <p:ajax update="ajout-pays:zoneMessage"/>
+                        </p:dialog-->
+                        <p:dialog class="police_label" header="#{msg['pays.titre.modifier']}" showEffect="fade"  widgetVar="modifier" modal="true" width="800" minHeight="600" resizable="false">
+                            <ui:include src="pays_modifier.xhtml"/>
+                        </p:dialog>
+                        <h:form>
+                            <p:growl id="msgs3" showDetail="false" globalOnly="true" />
+                            <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                                             header="Suppression" severity="alert" 
+                                             widgetVar="supprimer">
+
+
+                                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste" action="#{paysBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+                            </p:confirmDialog>
+                        </h:form>
+
+                        <!--div class="panel-footer"> 
+
+                        </div--> 
+                    </div>
+
+
+                </div>
+            </div>
+     
+
+
+
+
+
+
+    </ui:composition> 
+
+</html>
+

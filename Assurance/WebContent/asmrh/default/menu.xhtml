@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:form id="menu-form" >
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+
+                <ul class="sidebar-menu">
+                    <li>
+                        <h:commandLink action="avmenug">
+                            <i class="fa fa-windows"></i> <span>#{msg['menu.haut.user.menuprincipal']}</span> 
+                        </h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink action="acmrh">
+                            <i class="fa fa-home"></i> <span>#{msg['titre.accueil']}</span> <!--small class="label pull-right bg-green">Hot</small-->
+                        </h:commandLink>
+                    </li>
+                    <li class="treeview" jsf:rendered="#{sec:areAllGranted('ACCESS_CONFIGURATION')}">
+                        <a>
+                            <i class="fa fa-cogs"></i>
+                            <span>Configuration</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">                       
+                            <li ><h:commandLink  action="mrhgarantie" > <i class="fa fa-circle-o"></i> #{msg['titre.gestionDesGaranties']}  </h:commandLink></li>
+                            <li ><h:commandLink  action="categoriemrh" > <i class="fa fa-circle-o"></i> #{msg['titre.gestionDesCategories']} </h:commandLink></li>
+                            <li ><h:commandLink  action="compagniegarantiemrh" > <i class="fa fa-circle-o"></i> #{msg['titre.compagnieGarantie']} </h:commandLink></li>
+                            <li ><h:commandLink  action="primemrh" > <i class="fa fa-circle-o"></i> #{msg['titre.gestionDesPrimes']}  </h:commandLink></li>
+                        </ul>
+                    </li>
+                    <!--  DEBUT BRANCHE !-->
+                    <li class="treeview">
+                        <a>
+                            <i class="fa fa-asterisk"></i>
+                            <span>#{msg['titre.branche']}</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_AUTO')}" action="acauto" ><i class="fa fa-circle-o"/>#{msg['assurance.automobile']}</h:commandLink></li>                                       
+                            <li > <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VIE')}"  action="acvie" ><i class="fa fa-circle-o"/>#{msg['assurance.credit']}</h:commandLink></li>
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_COMPTE')}" action="accompte"><i class="fa fa-circle-o"/>#{msg['assurance.compte']}</h:commandLink></li> 
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VOYAGE')}" action="acvoyage"><i class="fa fa-circle-o"/>#{msg['assurance.voyage']}</h:commandLink></li> 
+                             <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_SANTE')}" action="acsante"><i class="fa fa-circle-o"/>#{msg['assurance.sante']}</h:commandLink></li> 
+                        </ul>
+                    </li>
+
+                    <!--  FIN BRANCHE !-->
+
+                    <li class="treeview" jsf:rendered="#{sec:areAllGranted('ACCESS_OPERATION')}">
+                        <a>
+                            <i class="fa fa-exchange"></i>
+                            <span>Operations</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">                          
+                            <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET,SOUSCRIPTION_ASMRH">
+                                <li ><h:commandLink action="asmrhsouscription" > <i class="fa fa-circle-o"></i> #{msg['page.menu.souscription']} </h:commandLink></li>
+                            </sec:authorize>
+                            <sec:authorize ifAllGranted="USER_CMP,TRAITEMENT_COMPAGNIE_ASMRH">
+                                <li ><h:commandLink action="nouvelleDemandeCompagnieAssuranceMrh" > <i class="fa fa-circle-o"></i> #{msg['titre.traitementCompagnie']}  </h:commandLink></li>
+                            </sec:authorize>
+                            <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET,PAYEMENT_ASMRH">
+                                <li ><h:commandLink action="validationPayementAssuranceMrh" > <i class="fa fa-circle-o"></i> #{msg['titre.payement']} </h:commandLink></li>
+                            </sec:authorize>
+                            <!--sec:authorize ifAllGranted="IMPRIMER_CONTRAT_ASVOYAGE">
+                            <li ><h:commandLink action="#" > <i class="fa fa-circle-o"></i> Imprimer Contrat </h:commandLink></li>
+                            </sec:authorize>
+                             <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET,SOUSCRIPTION_ASVOYAGE">
+                                <li ><h:commandLink action="#" > <i class="fa fa-circle-o"></i> Renouvellement  </h:commandLink></li>
+                            </sec:authorize-->
+                        </ul>
+                    </li>
+
+
+                    <!--   DEBUT STATISTIQUE -->
+                    <sec:authorize ifAllGranted="ACCESS_STATISTIQUE">
+
+                        <li class="treeview">
+                            <a>
+                                <i class="glyphicon glyphicon-stats"></i>
+                                <span>#{msg['page.menu.statistique']}</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+
+                                <sec:authorize ifAllGranted="STATISTIQUE"><li><h:commandLink  action="statistiqueAsMrh"> <i class="fa fa-circle-o"></i> #{msg['titre.statistique']} </h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="STATISTIQUE_LIST_COURTIER"><li><h:commandLink  action="listeCourtierAsMrh"><i class="fa fa-circle-o"></i>#{msg['liste.courtier']} </h:commandLink></li></sec:authorize>                                 
+                                <sec:authorize ifAnyGranted="STATISTIQUE_LIST_PDV"><li><h:commandLink action="listePointVenteAsMrh"> <i class="fa fa-circle-o"></i>  #{msg['liste.pdv']} </h:commandLink> </li></sec:authorize>
+                                <sec:authorize ifAnyGranted="STATISTIQUE_LIST_CLIENT"><li><h:commandLink action="listeClientsAsMrh"><i class="fa fa-circle-o"></i> #{msg['liste.client']} </h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAnyGranted="ETAT_OPERATION_ASMRH"><li><h:commandLink action="mrhimprimerOperation" >  <i class="fa fa-circle-o"></i> #{msg['liste.etatSurLesOperations']} </h:commandLink></li></sec:authorize>                                 
+                                    <!--sec:authorize ifAnyGranted="STATISTIQUE_BORDERAU"><li> <h:commandLink rendered="false" action="bordereauAsMrh"> <i class="fa fa-circle-o"></i> #{msg['menu.bordereau']} </h:commandLink> </li></sec:authorize-->
+                                    <!--sec:authorize ifAnyGranted="STATISTIQUE_LIST_CONTRAT"><li> <h:commandLink  action="echuouechoircontratMrh"><i class="fa fa-circle-o"></i> #{msg['liste.contrat']} </h:commandLink></li></sec:authorize-->
+
+                            </ul>
+                        </li>
+
+                    </sec:authorize>
+                    <!--   FIN STATISTIQUE -->
+
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+    </h:form>
+</ui:composition>

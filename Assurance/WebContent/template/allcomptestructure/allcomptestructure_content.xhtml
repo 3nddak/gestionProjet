@@ -1,0 +1,626 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset>
+                <legend class=" text-uppercase text-center"><p:outputLabel value="Situation des comptes"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="panel">
+                <h:form  id="formliste" class="form-horizontal" >
+                    <p:tabView>
+                        <p:ajax event="tabChange" listener="#{compteDetailBean.onTabChange}" update="formliste"/>
+                        <p:tab  title="Liste des comptes opérations des #{compteDetailBean.sousAgent}">
+                            <p:panel header="Liste des comptes opérations des #{compteDetailBean.sousAgent}" collapsed="false" >
+
+
+                                <div class=" table-responsive" >
+                                    <p:dataTable sortBy="#{compte.idCompte}" sortOrder="descending" paginator="true" rowExpandMode="single" paginatorPosition="bottom" 
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 emptyMessage="#{msg['tableau.vide']}" class="table table-bordered table-hover"
+                                                 var="compte" id="comp" rows="25" value="#{compteDetailBean.listComptesOperation}"
+                                                 rowsPerPageTemplate="25,50,100,200,500"
+                                                 reflow="true">
+                                        <p:ajax event="rowToggle" listener="#{compteDetailBean.onRowToggle}" update="comp" />
+
+                                        <p:column  style="width:70px" headerText="Détail">
+
+                                            <p:rowToggler/>
+                                        </p:column>
+
+                                        <p:column filterBy="#{compte.numCompte}" headerText="Numero">
+                                            <h:outputText value="#{compte.numCompte}" />
+                                        </p:column>
+                                        <p:column  headerText="Tiers" filterBy="#{compte.compagnie.designation}#{compte.courtier.designation}#{compte.pointsVente.designation}#{compte.societe.designation}"  >
+                                            <h:outputText value="#{compte.compagnie.designation}" />
+                                            <h:outputText value="#{compte.courtier.designation}" />
+                                            <h:outputText value="#{compte.pointsVente.designation}" />
+                                            <h:outputText value="#{compte.societe.designation}" />
+                                            <h:outputText value="#{compte.guichet.designation}" />
+                                            <h:outputText value="#{compte.guichet.pointsVente.designation}" />
+                                        </p:column>
+                                        <p:column width="200" filterBy="#{compte.typeCompte.libelle}"  headerText="Type compte">
+                                            <h:outputText value="#{compte.typeCompte.libelle}" />
+                                        </p:column>
+
+                                        <p:column filterBy="#{compte.devise.libelle}" headerText="Devise">
+                                            <h:outputText value="#{compte.devise.libelle}" />
+                                        </p:column>
+                                        <p:column filterBy="#{compte.solde}" headerText="Solde du compte">
+                                            <h:outputText value="#{compte.solde}" >
+                                                <f:convertNumber   pattern="#,##0.0" type="currency"/>
+                                            </h:outputText>
+                                        </p:column>
+
+
+                                        <p:rowExpansion >  
+                                            <div class="form-group">
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Libellé"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.libelleCompte.toLowerCase()}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Numéro"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.numCompte}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Débit"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.debit}"/>
+                                                    </div>
+                                                </div>   
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Crédit"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.credit}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Nature"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.natureCompte}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Type Compte"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.typeCompte.libelle}"/>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Type Tiers"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.typeTiers}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Tiers"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.compagnie==null?false:true}" value="#{compteDetailBean.compteSelected.compagnie.designation}" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.courtier==null?false:true}" value="#{compteDetailBean.compteSelected.courtier.designation}" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.pointsVente==null?false:true}" value="#{compteDetailBean.compteSelected.pointsVente.designation} (#{compteDetailBean.compteSelected.pointsVente.typePointVente})" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.societe==null?false:true}" value="#{compteDetailBean.compteSelected.societe.designation}" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.guichet==null?false:true}" value="#{compteDetailBean.compteSelected.guichet.designation}" />
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Date Creation"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control" value="#{compteDetailBean.compteSelected.dateCreation}">
+                                                            <f:convertDateTime  dateStyle="short" />
+                                                        </h:outputLabel>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="devise"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.devise.libelle}"  />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </p:rowExpansion>
+                                    </p:dataTable>
+                                </div>
+                            </p:panel>
+                        </p:tab>
+                        <p:tab title="Liste des comptes commissions des #{compteDetailBean.sousAgent}">
+                            <p:panel header="Liste des comptes commissions des #{compteDetailBean.sousAgent}"   collapsed="false" >
+
+                                <div class=" table-responsive" >
+                                    <p:dataTable sortBy="#{compte.idCompte}" sortOrder="descending" paginator="true" rowExpandMode="single" paginatorPosition="bottom" 
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 emptyMessage="#{msg['tableau.vide']}" class="table table-bordered table-hover"
+                                                 var="compte" id="comppp" rows="25" value="#{compteDetailBean.listComptesCommission}"
+                                                 rowsPerPageTemplate="25,50,100,200,500"
+                                                 reflow="true">
+                                        <p:ajax event="rowToggle" listener="#{compteDetailBean.onRowToggle}" update="comppp" />
+
+                                        <p:column  style="width:70px" headerText="Détail">
+
+                                            <p:rowToggler/>
+                                        </p:column>
+
+                                        <p:column filterBy="#{compte.numCompte}" headerText="Numero">
+                                            <h:outputText value="#{compte.numCompte}" />
+                                        </p:column>
+                                        <p:column  headerText="Tiers" filterBy="#{compte.compagnie.designation}#{compte.courtier.designation}#{compte.pointsVente.designation}#{compte.societe.designation}"  >
+                                            <h:outputText value="#{compte.compagnie.designation}" />
+                                            <h:outputText value="#{compte.courtier.designation}" />
+                                            <h:outputText value="#{compte.pointsVente.designation}" />
+                                            <h:outputText value="#{compte.societe.designation}" />
+                                            <h:outputText value="#{compte.guichet.designation}" />
+                                            <h:outputText value="#{compte.guichet.pointsVente.designation}" />
+                                        </p:column>
+                                        <p:column width="200" filterBy="#{compte.typeCompte.libelle}"  headerText="Type compte">
+                                            <h:outputText value="#{compte.typeCompte.libelle}" />
+                                        </p:column>
+
+                                        <p:column filterBy="#{compte.devise.libelle}" headerText="Devise">
+                                            <h:outputText value="#{compte.devise.libelle}" />
+                                        </p:column>
+                                        <p:column filterBy="#{compte.solde}" headerText="Solde du compte">
+                                            <h:outputText value="#{compte.solde}" >
+                                                <f:convertNumber   pattern="#,##0.0" type="currency"/>
+                                            </h:outputText>
+                                        </p:column>
+
+
+                                        <p:rowExpansion >  
+                                            <div class="form-group">
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Libellé"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.libelleCompte.toLowerCase()}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Numéro"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.numCompte}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Débit"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.debit}"/>
+                                                    </div>
+                                                </div>   
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Crédit"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.credit}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Nature"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.natureCompte}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Type Compte"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.typeCompte.libelle}"/>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Type Tiers"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.typeTiers}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Tiers"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.compagnie==null?false:true}" value="#{compteDetailBean.compteSelected.compagnie.designation}" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.courtier==null?false:true}" value="#{compteDetailBean.compteSelected.courtier.designation}" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.pointsVente==null?false:true}" value="#{compteDetailBean.compteSelected.pointsVente.designation} (#{compteDetailBean.compteSelected.pointsVente.typePointVente})" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.societe==null?false:true}" value="#{compteDetailBean.compteSelected.societe.designation}" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.guichet==null?false:true}" value="#{compteDetailBean.compteSelected.guichet.designation}" />
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Date Creation"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control" value="#{compteDetailBean.compteSelected.dateCreation}">
+                                                            <f:convertDateTime  dateStyle="short" />
+                                                        </h:outputLabel>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="devise"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.devise.libelle}"  />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </p:rowExpansion>
+                                    </p:dataTable>
+                                </div>
+                            </p:panel>
+                        </p:tab>
+                        <p:tab  title="Liste des comptes opérations des #{compteDetailBean.sousAgent2}">
+                            <p:panel header="Liste des comptes opérations des #{compteDetailBean.sousAgent2}" collapsed="false" >
+
+
+                                <div class=" table-responsive" >
+                                    <p:dataTable sortBy="#{compte.idCompte}" sortOrder="descending" paginator="true" rowExpandMode="single" paginatorPosition="bottom" 
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 emptyMessage="#{msg['tableau.vide']}" class="table table-bordered table-hover"
+                                                 var="compte" id="comp2" rows="25" value="#{compteDetailBean.listComptesOperation2}"
+                                                 rowsPerPageTemplate="25,50,100,200,500"
+                                                 reflow="true">
+                                        <p:ajax event="rowToggle" listener="#{compteDetailBean.onRowToggle}" update="comp2" />
+
+                                        <p:column  style="width:70px" headerText="Détail">
+
+                                            <p:rowToggler/>
+                                        </p:column>
+
+                                        <p:column filterBy="#{compte.numCompte}" headerText="Numero">
+                                            <h:outputText value="#{compte.numCompte}" />
+                                        </p:column>
+                                        <p:column  headerText="Tiers" filterBy="#{compte.compagnie.designation}#{compte.courtier.designation}#{compte.pointsVente.designation}#{compte.societe.designation}"  >
+                                            <h:outputText value="#{compte.compagnie.designation}" />
+                                            <h:outputText value="#{compte.courtier.designation}" />
+                                            <h:outputText value="#{compte.pointsVente.designation}" />
+                                            <h:outputText value="#{compte.societe.designation}" />
+                                            <h:outputText value="#{compte.guichet.designation}" />
+                                            <h:outputText value="#{compte.guichet.pointsVente.designation}" />
+                                        </p:column>
+                                        <p:column width="200" filterBy="#{compte.typeCompte.libelle}"  headerText="Type compte">
+                                            <h:outputText value="#{compte.typeCompte.libelle}" />
+                                        </p:column>
+
+                                        <p:column filterBy="#{compte.devise.libelle}" headerText="Devise">
+                                            <h:outputText value="#{compte.devise.libelle}" />
+                                        </p:column>
+                                        <p:column filterBy="#{compte.solde}" headerText="Solde du compte">
+                                            <h:outputText value="#{compte.solde}" >
+                                                <f:convertNumber   pattern="#,##0.0" type="currency"/>
+                                            </h:outputText>
+                                        </p:column>
+
+
+                                        <p:rowExpansion >  
+                                            <div class="form-group">
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Libellé"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.libelleCompte.toLowerCase()}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Numéro"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.numCompte}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Débit"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.debit}"/>
+                                                    </div>
+                                                </div>   
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Crédit"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.credit}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Nature"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.natureCompte}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Type Compte"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.typeCompte.libelle}"/>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Type Tiers"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.typeTiers}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Tiers"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.compagnie==null?false:true}" value="#{compteDetailBean.compteSelected.compagnie.designation}" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.courtier==null?false:true}" value="#{compteDetailBean.compteSelected.courtier.designation}" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.pointsVente==null?false:true}" value="#{compteDetailBean.compteSelected.pointsVente.designation} (#{compteDetailBean.compteSelected.pointsVente.typePointVente})" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.societe==null?false:true}" value="#{compteDetailBean.compteSelected.societe.designation}" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.guichet==null?false:true}" value="#{compteDetailBean.compteSelected.guichet.designation}" />
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Date Creation"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control" value="#{compteDetailBean.compteSelected.dateCreation}">
+                                                            <f:convertDateTime  dateStyle="short" />
+                                                        </h:outputLabel>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="devise"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.devise.libelle}"  />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </p:rowExpansion>
+                                    </p:dataTable>
+                                </div>
+                            </p:panel>
+                        </p:tab>
+                        <p:tab title="Liste des comptes commissions des #{compteDetailBean.sousAgent2}">
+                            <p:panel header="Liste des comptes commissions des #{compteDetailBean.sousAgent2}"   collapsed="false" >
+
+                                <div class=" table-responsive" >
+                                    <p:dataTable sortBy="#{compte.idCompte}" sortOrder="descending" paginator="true" rowExpandMode="single" paginatorPosition="bottom" 
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 emptyMessage="#{msg['tableau.vide']}" class="table table-bordered table-hover"
+                                                 var="compte" id="comppp2" rows="25" value="#{compteDetailBean.listComptesCommission2}"
+                                                 rowsPerPageTemplate="25,50,100,200,500"
+                                                 reflow="true">
+                                        <p:ajax event="rowToggle" listener="#{compteDetailBean.onRowToggle}" update="comppp2" />
+
+                                        <p:column  style="width:70px" headerText="Détail">
+
+                                            <p:rowToggler/>
+                                        </p:column>
+
+                                        <p:column filterBy="#{compte.numCompte}" headerText="Numero">
+                                            <h:outputText value="#{compte.numCompte}" />
+                                        </p:column>
+                                        <p:column  headerText="Tiers" filterBy="#{compte.compagnie.designation}#{compte.courtier.designation}#{compte.pointsVente.designation}#{compte.societe.designation}"  >
+                                            <h:outputText value="#{compte.compagnie.designation}" />
+                                            <h:outputText value="#{compte.courtier.designation}" />
+                                            <h:outputText value="#{compte.pointsVente.designation}" />
+                                            <h:outputText value="#{compte.societe.designation}" />
+                                            <h:outputText value="#{compte.guichet.designation}" />
+                                            <h:outputText value="#{compte.guichet.pointsVente.designation}" />
+                                        </p:column>
+                                        <p:column width="200" filterBy="#{compte.typeCompte.libelle}"  headerText="Type compte">
+                                            <h:outputText value="#{compte.typeCompte.libelle}" />
+                                        </p:column>
+
+                                        <p:column filterBy="#{compte.devise.libelle}" headerText="Devise">
+                                            <h:outputText value="#{compte.devise.libelle}" />
+                                        </p:column>
+                                        <p:column filterBy="#{compte.solde}" headerText="Solde du compte">
+                                            <h:outputText value="#{compte.solde}" >
+                                                <f:convertNumber   pattern="#,##0.0" type="currency"/>
+                                            </h:outputText>
+                                        </p:column>
+
+
+                                        <p:rowExpansion >  
+                                            <div class="form-group">
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Libellé"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.libelleCompte.toLowerCase()}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Numéro"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.numCompte}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Débit"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.debit}"/>
+                                                    </div>
+                                                </div>   
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Crédit"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.credit}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Nature"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.natureCompte}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Type Compte"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.typeCompte.libelle}"/>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Type Tiers"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.typeTiers}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Tiers"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.compagnie==null?false:true}" value="#{compteDetailBean.compteSelected.compagnie.designation}" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.courtier==null?false:true}" value="#{compteDetailBean.compteSelected.courtier.designation}" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.pointsVente==null?false:true}" value="#{compteDetailBean.compteSelected.pointsVente.designation} (#{compteDetailBean.compteSelected.pointsVente.typePointVente})" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.societe==null?false:true}" value="#{compteDetailBean.compteSelected.societe.designation}" />
+                                                        <h:outputLabel class="form-control" rendered="#{compteDetailBean.compteSelected.guichet==null?false:true}" value="#{compteDetailBean.compteSelected.guichet.designation}" />
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Date Creation"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control" value="#{compteDetailBean.compteSelected.dateCreation}">
+                                                            <f:convertDateTime  dateStyle="short" />
+                                                        </h:outputLabel>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="devise"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{compteDetailBean.compteSelected.devise.libelle}"  />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </p:rowExpansion>
+                                    </p:dataTable>
+                                </div>
+                            </p:panel>
+                        </p:tab>
+                    </p:tabView>
+
+
+                </h:form>
+
+            </div>
+        </div>
+
+
+    </ui:composition> 
+</html>
+

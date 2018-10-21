@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['demande.gestion']}"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row">
+                <div class="col-lg-3 col-md-3 col-xs-12 col-sm-6" id="espace_message">
+
+                    <ui:include src="recherche.xhtml"/>
+
+                    <ui:include src="liste_messages.xhtml"/>
+                    <h:form id="f">
+                        <p:remoteCommand name="newProposition"    process="f" partialSubmit="true"  actionListener ="#{traitementCompagnieAsSanteBean.rechercherAssurance()}"  update="message1:facture" autoRun="false"/> 
+                    </h:form>
+
+                </div>
+                <div class="col-lg-9 col-md-9 col-xs-12 col-sm-6 " id="espace_detail">
+                    <div class="panel">
+                        <h:form  class="form-horizontal" id="detail">
+                            <div class="panel-heading bg-purple">  
+                                
+                                <h:outputLabel class="" value="#{msg['titre.societeDeCourtage']} #{traitementCompagnieAsSanteBean.assuranceSante.courtier.abbreviation}" ></h:outputLabel>
+                            </div>
+              
+                            <div class="panel-body"> 
+                                <p:panel header="#{msg['message.client.titre']}"  toggleable="true" collapsed="true">
+
+                                    <p:panelGrid columns="6" class="table">
+                                        <h:outputLabel value="#{msg['titre.souscripteur']}"/>
+                                        <h:outputText value="#{traitementCompagnieAsSanteBean.assuranceSante.client.nom} #{traitementCompagnieAsSanteBean.assuranceSante.client.prenom}"/>
+                                        <h:outputLabel value="#{msg['client.datedenaissance']}"/>
+                                        <h:outputText value="#{traitementCompagnieAsSanteBean.assuranceSante.client.dateNaissance}"/>
+                                        <h:outputLabel value="#{msg['client.tel']}"/>
+                                        <h:outputText  value="#{traitementCompagnieAsSanteBean.assuranceSante.client.telephoneMobile}"/>
+                                        <h:outputLabel value="#{msg['titre.adresse']}"/>
+                                        <h:outputText  value="#{traitementCompagnieAsSanteBean.assuranceSante.client.adresse}"/>
+                                        <p:outputLabel value="#{msg['titre.profession']} :"/>
+                                        <h:outputText value="#{traitementCompagnieAsSanteBean.assuranceSante.client.profession}"/>
+
+                                    </p:panelGrid>
+                                </p:panel>
+
+                                <p:panel header="Infos souscriptions"  toggleable="true" collapsed="true">
+                                    <p:panelGrid columns="4" class="table">
+                                        <p:outputLabel value="#{msg['titre.dateDebutDuContrat']}:"/>
+                                        <h:outputText class="text-right"  value="#{traitementCompagnieAsSanteBean.assuranceSante.dateDebutContrat}"/>
+
+                                    </p:panelGrid>
+                                    <p:panelGrid class="table" columns="4">
+                                        <p:outputLabel    value="Nombre d'enfants :"/>
+                                        <h:outputText class="text-right"  value="#{traitementCompagnieAsSanteBean.assuranceSante.nombreEnfants}"/>
+                                        <p:outputLabel    value="Prime annuelle enfants :"/>
+                                        <h:outputText class="text-right"  value="#{traitementCompagnieAsSanteBean.assuranceSante.primeAnnuelleEnfant}"/>
+                                        <p:outputLabel    value="Nombre d'adultes :"/>
+                                        <h:outputText class="text-right"  value="#{traitementCompagnieAsSanteBean.assuranceSante.nombreAdultes}"/>
+                                        <p:outputLabel    value="Prime annuelle adultes :"/>
+                                        <h:outputText class="text-right"  value="#{traitementCompagnieAsSanteBean.assuranceSante.primeAnnuelleAdulte}"/>
+
+                                    </p:panelGrid>
+
+                                </p:panel>
+
+                                <p:panel header="#{msg['titre.garantie']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+                                    <div class="table-responsive">
+                                        <p:dataTable id="cars1" var="risque" value="#{traitementCompagnieAsSanteBean.assuranceSante.risqueAsSantes}" editable="true" style="margin-bottom:20px">
+
+                                            <p:ajax event="rowEdit"/>
+                                            <p:ajax event="rowEditCancel"/>
+                                            <p:column headerText="#{msg['titre.categorie']}" groupRow="true" >
+                                                <h:outputText value="#{risque.categorieGarantieAsSante.designation}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['titre.garantie']}">
+                                                <h:outputText value="#{risque.garantieAsSante.designation}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['titre.taux.remboursement']}">
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputText value="#{risque.tauxRemboursement}" /></f:facet>
+                                                    <f:facet name="input"><p:inputText id="modelInput" value="#{risque.tauxRemboursement}" style="width:100%"/></f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+
+                                            <p:column headerText="#{msg['titre.plafond.remboursement']}">
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputText value="#{risque.plafondRemboursement}" /></f:facet>
+                                                    <f:facet name="input"><p:inputText value="#{risque.plafondRemboursement}" style="width:100%" label="Year"/></f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+
+                                            <p:column style="width:32px">
+                                                <p:rowEditor />
+                                            </p:column>
+                                        </p:dataTable>
+
+                                    </div>
+
+                                </p:panel>
+
+
+
+                            </div>
+
+                            <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                                <h:form>
+                                    <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{factureCourtierBean.comptabilite()}" />
+                                    <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </h:form>
+                            </p:confirmDialog>
+                        </h:form>
+                        <ui:include src="detail.xhtml"/>
+
+                        <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                            <h:form>
+                                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  />
+                                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </h:form>
+                        </p:confirmDialog>
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                            <h:graphicImage library="images" name="ajax-loader.gif" />
+                        </p:dialog>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ui:composition> 
+</html>
+

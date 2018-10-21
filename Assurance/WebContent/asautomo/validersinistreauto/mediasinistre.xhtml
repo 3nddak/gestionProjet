@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+        <p:panel rendered="#{sinistreautoBean.sinistreautoSelected.declarationSinistreIsPresent}" header="#{msg['sinistre.declarationSinistre']}" id="cl6"   collapsed="true"  closable="false" toggleable="true">
+          
+            <p:media class="panel" rendered="#{sinistreautoBean.sinistreautoSelected.declarationSinistreIsPresent}" value="/declaration_sinistre.pdf?file=/#{sinistreautoBean.sinistreautoSelected.assurance.compagnie.abbreviation}/#{sinistreautoBean.sinistreautoSelected.numeroDossier}/#{sinistreautoBean.sinistreautoSelected.declarationSinistre}&amp;context=#{sinistreautoBean.contextName}" width="900" height="1000"  player="pdf"  />
+         
+        </p:panel>
+
+        <p:panel rendered="#{sinistreautoBean.sinistreautoSelected.photoDegatIsPresent}" header="#{msg['sinistre.photoDegats']}" id="c4l"    collapsed="true" closable="false" toggleable="true">
+            <p:media rendered="#{sinistreautoBean.sinistreautoSelected.photoDegatIsPresent}" value="/declaration_sinistre.pdf?file=/#{sinistreautoBean.sinistreautoSelected.assurance.compagnie.abbreviation}/#{sinistreautoBean.sinistreautoSelected.numeroDossier}/#{sinistreautoBean.sinistreautoSelected.photoDegat}&amp;context=#{sinistreautoBean.contextName}"  player="pdf" width="900" height="1000" />
+        </p:panel>
+
+        <p:panel rendered="#{sinistreautoBean.sinistreautoSelected.deviFactureReparationIsPresent}" header="#{msg['sinistre.devisOuFacture']}" id="c5l"   collapsed="true" toggleable="true">
+            <p:media rendered="#{sinistreautoBean.sinistreautoSelected.deviFactureReparationIsPresent}" value="/declaration_sinistre.pdf?file=/#{sinistreautoBean.sinistreautoSelected.assurance.compagnie.abbreviation}/#{sinistreautoBean.sinistreautoSelected.numeroDossier}/#{sinistreautoBean.sinistreautoSelected.deviFactureReparation}&amp;context=#{sinistreautoBean.contextName}"  player="pdf" width="900" height="1000" />
+        </p:panel>
+
+
+        <p:panel rendered="#{sinistreautoBean.sinistreautoSelected.quitanceIsPresent}" header="#{msg['sinistre.quittance']}" id="cl3"   closable="false"  collapsed="true" toggleable="true">
+            <p:media rendered="#{sinistreautoBean.sinistreautoSelected.quitanceIsPresent}" value="/declaration_sinistre.pdf?file=/#{sinistreautoBean.sinistreautoSelected.assurance.compagnie.abbreviation}/#{sinistreautoBean.sinistreautoSelected.numeroDossier}/#{sinistreautoBean.sinistreautoSelected.quitance}&amp;context=#{sinistreautoBean.contextName}"  player="pdf" width="900" height="1000"  />
+        </p:panel>
+
+        <p:panel rendered="#{sinistreautoBean.sinistreautoSelected.autreIsPresent}" header="#{msg['sinistre.autres']}" id="cl2"    closable="false" collapsed="true" toggleable="true">
+            <p:media rendered="#{sinistreautoBean.sinistreautoSelected.autreIsPresent}" value="/declaration_sinistre.pdf?file=/#{sinistreautoBean.sinistreautoSelected.assurance.compagnie.abbreviation}/#{sinistreautoBean.sinistreautoSelected.numeroDossier}/#{sinistreautoBean.sinistreautoSelected.autre}&amp;context=#{sinistreautoBean.contextName}"  player="pdf" width="900" height="1000" />
+        </p:panel>
+    </ui:composition>
+
+</html>

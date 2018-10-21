@@ -1,0 +1,108 @@
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <p:outputPanel id="modification" style="text-align:center;">
+            <h:form class="form-horizontal">
+                 <div class="form-group">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="nom" value="#{msg['client.nom']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:inputText id="nom" required="true"  value="" styleClass="form-control" a:placeholder="#{msg['client.nom']}">
+
+                                    </p:inputText>
+                                </div> 
+
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="pnom" value="#{msg['client.prenom']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:inputText id="pnom" required="true"  value="" styleClass="form-control" a:placeholder="#{msg['client.prenom']}">
+
+                                    </p:inputText>
+                                </div> 
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="adr" value="#{msg['titre.adresse']}" class="pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:inputText id="adr" value="" styleClass="form-control" placeholder="#{msg['titre.adresse']}"/>
+                                </div>
+                            </div> 
+                            <div class="col-md-6 col-lg-6">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="tel" value="#{msg['client.tel']}" class=" pull-left" />
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:inputText id="tel" value="" styleClass="form-control" placeholder="#{msg['client.tel']}"/>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-md-3 col-lg-4 col-sm-3"> 
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel  value="#{msg['client.piece']}"  for="piece" class=" pull-left" />
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:selectOneMenu id="piece"  class="form-control" >
+                                        <f:selectItem itemValue="" itemLabel="#{msg['client.piece']}"/> 
+                                        <f:selectItem itemValue="carte d'identité" itemLabel="#{msg['client.piece.carte']}"/>
+                                        <f:selectItem itemValue="passport" itemLabel="#{msg['client.piece.passport']}"/>
+                                        <f:selectItem itemValue="permis de conduite" itemLabel="#{msg['client.piece.permis']}"/>
+                                        <f:selectItem itemValue="autre" itemLabel="#{msg['client.piece.autre']}"/>
+                                    </h:selectOneMenu>
+                                </div>
+
+                            </div> 
+                            <div class="col-md-3 col-lg-4 col-sm-3"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12">                              
+                                <h:outputLabel  value="#{msg['client.numeropiece']}"  for="dateEmissionPiece" class=" pull-left" />
+                                    <p:inputText value="#{clientBean.clientSelected.numeroPiece}" styleClass="form-control" placeholder="numeroPiece *"/> 
+                                </div>
+                            </div>
+                             <div class="col-md-3 col-lg-4 col-sm-3">
+                            <div class="col-md-12 col-lg-12 col-sm-12">                         
+                                <h:outputLabel  value="#{msg['client.dateexpirationpiece']}"  for="dateExpirationPiece" class=" pull-left" />
+                                    <p:calendar  value="#{clientBean.clientSelected.dateExpirationPiece}" navigator="true" class="pull-left" locale="#{clientBean.curentUserLocale}" pattern="dd-MM-yyyy" mask="true" placeholder="dateExpirationPiece*" />
+                                </div>
+                            </div>
+                        </div> 
+                <div class="form-group">
+                    <div class="col-md-12 col col-lg-12">
+                        <div class="col-md-6 col col-lg-6">
+                            <p:commandButton value="#{msg['btn.annuller']}" type="reset" class="danger btn-danger pull-left col-md-4"/>
+                        </div>
+
+                        <div class="col-md-6 col col-lg-6">
+                            <p:commandButton value="#{msg['btn.enregistrer']}" oncomplete="PF('modifier').hide()" class="primary btn-primary pull-right col-md-4" />
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </p:outputPanel>
+
+
+
+
+    </ui:composition> 
+
+</html>
+

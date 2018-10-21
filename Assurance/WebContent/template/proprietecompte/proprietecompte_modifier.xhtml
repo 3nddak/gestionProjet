@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:outputPanel id="modification" style="text-align:center;">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <h:form id="formliste2" class="form-horizontal well">
+                    <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3 col-lg-4 col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Compte général"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{comptesBean.selectedCompte.compteGeneral.numero}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-4 col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Numéro"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{comptesBean.selectedCompte.numCompte}"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-lg-4 col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Nature du Compte"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{comptesBean.selectedCompte.natureCompte}"/>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3 col-lg-4 col-sm-3">
+                                <p:inputText class="form-control" value="#{comptesBean.selectedCompte.libelleCompte}" placeholder="Intitulé du Compte *" />
+                            </div>
+                            <div class="col-md-3 col-lg-4 col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Type tiers"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{comptesBean.selectedCompte.typeTiers}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-4 col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Tiers"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{comptesBean.selectedCompte.compagnie.designation}
+                                                   #{comptesBean.selectedCompte.courtier.designation}
+                                                   #{comptesBean.selectedCompte.pointsVente.designation}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3 col-lg-4 col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Type Compte"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" style="text-transform: lowercase" value="#{comptesBean.selectedCompte.typeCompte.libelle}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-4 col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Devise"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{comptesBean.selectedCompte.devise.libelle}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-4 col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Solde"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{comptesBean.selectedCompte.solde}">
+                                        <f:convertNumber pattern="#,##0"  type="currency"/>
+                                    </h:outputLabel>
+                                </div>
+                            </div> 
+
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3 col-lg-4 col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Classe de compte"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{comptesBean.selectedCompte.compteGeneral.compteReel.classe.libelleClasse}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col col-lg-6  pull-left">
+                                <p:commandButton value="Annuler" action="#{comptesBean.cancel()}" styleClass="ui-priority-primary" style="background: #c9302c;color:white;font-family: cursive; "/>
+                            </div>
+                            <div class="col-md-6 col col-lg-6  pull-left">
+                                <p:commandButton id="mod" value="Modifier" update="msgs,formliste,modification" action="#{comptesBean.updateCompte()}"  oncomplete="PF('modifier').hide()" styleClass="ui-priority-primary" style="background:#337ab7;color:white ; font-family: cursive" />
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </p:outputPanel>
+    </ui:composition>
+</html>

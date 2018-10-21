@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+        <p:fieldset  legend="#{msg['sinistre.rechercherSinistre']}" toggleable="true" collapsed="true" toggleSpeed="500" >                          
+
+
+            <p:growl id="msgs" showDetail="false" globalOnly="true" />
+            <div class="form-group">
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <h:outputLabel for="pv"  value="#{msg['titre.pdv']}" class="pull-left text-left"/>                          
+                    <h:selectOneMenu id="pv"  value="#{sinistreautoBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                        <f:selectItem itemLabel="#{msg['titre.pdv']}" itemDisabled="false" />
+                        <f:selectItems var="pv" value="#{sinistreautoBean.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                        <p:ajax  update="gt" />
+                    </h:selectOneMenu>
+
+
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <h:outputLabel for="gt"  value="#{msg['titre.guichet']}" class="pull-left text-left"/>                            
+                    <h:selectOneMenu id="gt"  value="#{sinistreautoBean.guichetSelected}"  converter="entityConverter" class="form-control" >                                          
+                        <f:selectItem itemLabel="#{msg['titre.guichet']}" itemDisabled="false" />
+                        <f:selectItems var="guichet" value="#{sinistreautoBean.listGuichet}" itemLabel="#{guichet.designation}" itemValue="#{guichet}" />            
+                    </h:selectOneMenu>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['titre.etat']}"  for="branche" class="pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu id="branche" value="#{sinistreautoBean.statut}" class="form-control">
+                            <f:selectItem itemLabel="#{msg['titre.tous']}"  noSelectionOption="true"/> 
+                            <f:selectItems value="#{sinistreautoBean.statuts}" /> 
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <p:outputLabel for="mask" value="#{msg['sinistre.dateDeDeclaration']}" />
+                    <p:calendar id="mask" class="form-control"  pattern="dd-MM-yyyy" mask="true" value="#{sinistreautoBean.dateDeclarationMin}" >
+                    </p:calendar>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <p:outputLabel for="mask11" value="#{msg['sinistre.finDeDeclaration']}" />
+                    <p:calendar id="mask11" class="form-control"  pattern="dd-MM-yyyy" mask="true" value="#{sinistreautoBean.dateDeclarationMax}" >
+                    </p:calendar>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:commandButton value="#{msg['btn.annuller']}" type="reset" action="#{sinistreautoBean.annuler()}" id="annuler" class="btn btn-danger btn-xs col-md-3 pull-left" />
+
+                        <p:commandButton value="#{msg['btn.rechercher']}" update="msgs,formliste"  action="#{sinistreautoBean.rechercherSinnistreListe()}"  class="btn-success btn btn-xs col-md-3 pull-right" />
+                    </div>
+                </div>
+            </div>
+
+
+        </p:fieldset>
+        <p:fieldset legend="#{msg['sinistre.liste']}" style="margin-bottom:20px">
+            <p:messages id="messages2" showDetail="true" autoUpdate="true"  closable="true" />                   
+
+            <div class="table-responsive">
+                <p:dataTable selectionMode="single" rowKey="#{sinistre.id}" selection="#{sinistreautoBean.sinistreautoSelected}" sortOrder="descending" sortBy="#{sinistre.id}" class="table table-bordered" paginatorPosition="bottom" var="sinistre" id="deviseliste" reflow="true" rows="10" value="#{sinistreautoBean.sinistresautoList}" 
+                             emptyMessage="#{msg['tableau.vide']}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             paginator="true" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" > 
+                    <f:facet name="{Exporters}">
+                        <h:commandLink>
+                            <p:graphicImage library="img" name="/excel.png" width="24"/>
+                            <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage library="img" name="/pdf.png" width="24"/>
+                            <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage library="img" name="/csv2.png" width="24"/>
+                            <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage library="img" name="/xml.png" width="24"/>
+                            <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                        </h:commandLink>
+                    </f:facet>
+
+                    <p:column headerText="#{msg['titre.pdv']}">
+                        <h:outputText value="#{sinistre.assurance.pointsVente.designation}" />
+                    </p:column>
+                    <p:column headerText="#{msg['titre.guichet']}">
+                        <h:outputText value="#{sinistre.assurance.guichet.designation}" />
+                    </p:column>
+
+                    <p:column headerText="#{msg['titre.facture']}">
+                        <h:outputText value="#{sinistre.assurance.numeroPolice}" />
+                    </p:column>
+                    <p:column headerText="#{msg['sinistre.evaluationDuMontant']}">
+                        <h:outputText value="#{sinistre.montantEvaluer}" />
+                    </p:column>
+                    <p:column headerText="#{msg['sinistre.montantDedomage']}">
+                        <h:outputText value="#{sinistre.montantPayer}" />
+                    </p:column>
+                    <p:column headerText="#{msg['titre.statut']}">
+                        <h:outputText value="#{sinistre.statut.toString()}" />
+                    </p:column>
+
+
+
+                </p:dataTable>
+            </div>
+
+        </p:fieldset>
+    </ui:composition>
+
+</html>

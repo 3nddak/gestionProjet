@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <p:outputPanel id="flotteddo">
+            <p:growl id="flotteSms" globalOnly="true" showDetail="false"/>
+            <div class="form-group">
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="Designation"  for="designation" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{flotteBean.flotteToSave.designation}" required="true"  requiredMessage="champs obligatoire" 
+                                     id="designation" class="form-control" placeholder="designation">
+                            <p:ajax event="keyup" update="designationMessage"/>
+                        </p:inputText>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="designation" id="designationMessage" styleClass="error"/>
+                    </div> 
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="Description"  for="description" class="pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{flotteBean.flotteToSave.description}" required="false"  requiredMessage="champs obligatoire" 
+                                     id="description" class="form-control" placeholder="description">
+                            <p:ajax event="keyup" update="descriptionMessage"/>
+                        </p:inputText>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="description" id="descriptionMessage" styleClass="error"/>
+                    </div> 
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="Date création"  for="datecreation" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:calendar id="datecreation"  class="form-control"   value="#{flotteBean.flotteToSave.dateCreation}" yearRange="c-100:c+10" required="true" mask="true" pattern="dd/MM/yyyy" mindate="#{flotteBean.dateminCreation}" maxdate="#{flotteBean.datemaxCreation}" 
+                                    requiredMessage="champs obligatoire"
+                                    readonlyInput="true" navigator="true">
+
+                            <p:ajax event="dateSelect" update="datecreationMessage"/>
+                        </p:calendar>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="datecreation" id="datecreationMessage"/>
+                    </div> 
+                </div>
+            </div>
+        </p:outputPanel>
+    </ui:composition>
+</html>

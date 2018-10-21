@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <ui:composition >
+        <h:form id="listtaux" class="form-horizontal">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="table-responsive"> 
+                        <p:dataTable sortOrder="descending"  class="table table-bordered" var="primeca"  rows="5" rowKey="#{primeca.idPrimeAssuraceCompte}" selection="#{primeAssuraceCompteBean.listPrimeAssuraceComptesSelected}" value="#{primeAssuraceCompteBean.listPrimeAssuraceComptes}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" scrollWidth="50%" scrollHeight="150"  editable="true" editMode="cell">
+
+                            <p:column headerText="Pays" filterBy="#{primeca.compagnie.pays.designationPays}">
+                                <p:outputLabel value="#{primeca.compagnie.pays.designationPays}"/>
+
+                            </p:column>
+
+                            <p:column headerText="Compagnie" filterBy="#{primeca.compagnie.abbreviation}">
+                                <p:outputLabel value="#{primeca.compagnie.abbreviation}"/>
+                            </p:column>
+                            <p:column headerText="Courtier" filterBy="#{primeca.courtier.abbreviation}">
+                                <p:outputLabel value="#{primeca.courtier.abbreviation}"/>
+                            </p:column>
+
+
+                            <p:column headerText="Taux de la prime annuelle">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel id="ss4" value="#{primeca.tauxPrimeAnnuelle}">
+
+                                        </p:outputLabel>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{primeca.tauxPrimeAnnuelle}">
+                                            <p:ajax event="keyup" update ="ss4"  />
+
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Prime mensuelle">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel id="ss4p" value="#{primeca.primeMensuelle}">
+
+                                        </p:outputLabel>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{primeca.primeMensuelle}">
+                                            <p:ajax event="keyup" update ="ss4p"  />
+
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Taux">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel id="ss4ca" value="#{primeca.capitalAssure}">
+
+                                        </p:outputLabel>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{primeca.capitalAssure}">
+                                            <p:ajax event="keyup" update ="ss4ca"  />
+
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="action">
+                                <div class="btn-toolbar">
+                                    <p:commandButton icon="fa fa-edit" class="btn btn-primary" title="Enregistrer les modifications" action="#{primeAssuraceCompteBean.updateOnePrimeAssuraceCompte()}" update="@form" >
+                                        <f:setPropertyActionListener value="#{primeca}" target="#{primeAssuraceCompteBean.primeAssuraceCompteToUpdate}" />
+                                    </p:commandButton>
+                                    <p:commandButton icon="fa fa-trash" class="btn btn-danger" title="Supprimer la ligne" action="#{primeAssuraceCompteBean.deletePrimeAssuraceCompte()}"  update="@form">
+                                        <f:setPropertyActionListener value="#{primeca}" target="#{primeAssuraceCompteBean.primeAssuraceCompteToUpdate}" />
+                                    </p:commandButton>
+                                </div>
+                            </p:column>
+                            <p:column width="5%"  selectionMode="multiple" class="text-center" />
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="btn-toolbar">
+                        <p:commandButton class="btn-danger btn" value="Supprimer"  title="Suppprimer la selection" actionListener="#{primeAssuraceCompteBean.deleteListPrimeAssuraceCompte()}" update="@form" />
+                        <p:commandButton class="btn-purple btn pull-right"  value="Enrégistrer" title="Enrégistrer la selection" actionListener="#{primeAssuraceCompteBean.updateListPrimeAssuraceCompte()}" update="@form" />
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:composition>
+
+</html>

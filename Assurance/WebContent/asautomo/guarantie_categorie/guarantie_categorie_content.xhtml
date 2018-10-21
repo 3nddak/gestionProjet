@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['categorie.entete']}"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row">
+
+                <div class="panel">
+
+                    <div class="panel-heading"> 
+                        <p:growl id="msgs" showDetail="false" globalOnly="true" />
+                        <!--p:fieldset legend="#{msg['categorie.title.ajouter']}" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                            <ui:include src="guarantieCategorie_ajout.xhtml"/>
+                        </p:fieldset-->
+                        <h:form id="form1" class="form-horizontal">     
+                            <p:fieldset id="legende" legend="#{guarantieCategorieBean.legende}" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <div class="form-group">
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu id="pays" value="#{guarantieCategorieBean.pays}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                             requiredMessage="#{msg['compagnie.pays.requireMessage']}"
+                                                             >
+                                                <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                                <f:selectItems value="#{guarantieCategorieBean.paysList}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                                <f:ajax event="click" render="paysMessage" />
+                                                <p:ajax update="garantie" listener="#{guarantieCategorieBean.filtreGarantieByPays()}" />
+                                            </h:selectOneMenu> 
+                                            <h:message for="pays"  id="paysMessage" class="errorClass" />
+                                        </div>                        
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="ist" value="Deux ou 3 roux?" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                        </div>   
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:selectBooleanCheckbox id="ist" value="#{guarantieCategorieBean.deuxOU3roux}">
+
+                                            </p:selectBooleanCheckbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel  value="Garanties" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu  id="garantie" value="#{guarantieCategorieBean.guarantieS}"  converter="omnifaces.SelectItemsConverter"  class="police_label form-control">
+                                                <f:selectItem itemLabel="#{msg['garantie.titre']}" itemValue=""/>
+                                                <f:selectItems var="garantie" itemLabel="#{garantie.symbole}" value="#{guarantieCategorieBean.guanrantieList}"/>
+                                                <p:ajax update="jj,display,@this" listener="#{guarantieCategorieBean.triGuarantie()}" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <h:outputLabel for="poids" value="Poids" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                            </div>
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">  
+                                                <p:inputText id="poids" value="#{guarantieCategorieBean.poids}" class="form-control" maxlength="2" required="true" requiredMessage="Veuillez saisir la position" 
+                                                             >
+                                                    
+                                                    <f:ajax event="keyup" render="poidsMessage"/>
+                                                    <f:validateLongRange minimum="1" />
+                                                </p:inputText>
+                                            </div>
+                                            <pe:keyFilter for="poids" mask="int"/>
+
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">  
+                                                <h:message for="poids"  id="poidsMessage" class="errorClass" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{(guarantieCategorieBean.guarantieS.idRegle eq 5) ?true:false }" value="paramètres" class="pull-left text-left"/>
+                                        </div>
+                                        <p:panel id="jj"  >
+                                            <div class="col-md-8 col-lg-8 col-sm-10 col-xs-12">
+                                                
+                                                <p:selectCheckboxMenu id="menu1" required="true"  rendered="#{(guarantieCategorieBean.guarantieS.idRegle eq 5) ?true:false }" value="#{guarantieCategorieBean.parametres}" label="#{msg['garantie.titre']}" title="#{msg['garantie.titre']}"
+                                                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                                                    <f:selectItem itemLabel="Puissance" itemValue="0" />
+                                                    <f:selectItem itemLabel="Energie" itemValue="1" />
+                                                    <f:selectItem itemLabel="Surprime" itemValue="8" />
+                                                    <f:selectItem itemLabel="Nombre de places" itemValue="2" />
+                                                    <f:selectItem itemLabel="Poids" itemValue="3" />
+                                                    <f:selectItem itemLabel="Carrosserie" itemValue="4" />
+                                                    <f:selectItem itemLabel="Type de vitres" itemValue="5" />
+                                                    <f:selectItem itemLabel="Cylindre" itemValue="6" />
+                                                    <f:selectItem itemLabel="Type de cylindre" itemValue="7" />
+
+                                                </p:selectCheckboxMenu>
+                                            </div>
+                                            <div class="col-md-4 col-lg-4 col-sm-2 col-xs-12">
+                                                <p:commandButton value="Ok" rendered="#{(guarantieCategorieBean.guarantieS.idRegle eq 5) ?true:false }" update="jj,display,garantie" action="#{guarantieCategorieBean.triParam()}" class="btn btn-imprimer" />
+                                            </div>
+
+                                        </p:panel> 
+                                    </div> 
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="libelle" value="#{msg['categorie.libelle']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText id="libelle" required="true" value="#{guarantieCategorieBean.libelle}" styleClass="form-control" placeholder="#{msg['categorie.libelle']}"
+                                                         requiredMessage="#{msg['categorie.libelle.requireMessage']}"
+                                                         >
+                                                <p:ajax event="keyup" update="libelleMessage"/>
+                                            </p:inputText>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message for="libelle" id="libelleMessage" class="errorClass"/>
+                                        </div>  
+                                    </div> 
+                                    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="description" value="#{msg['categorie.description']}" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText id="description"  value="#{guarantieCategorieBean.description}" styleClass="form-control" placeholder="#{msg['categorie.description']}"  >
+
+                                            </p:inputText>
+                                        </div>
+                                    </div> 
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <!--p:dataTable  id="display" var="car" value="#{guarantieCategorieBean.guarantieCategorieList}" editable="true"-->
+                                        <p:dataTable class="table table-responsive" id="display" reflow="true" rows="5" editable="true" var="car" editMode="cell" value="#{guarantieCategorieBean.guarantieCategorieList}"  
+                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                     rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg['tableau.vide']}" >                                                    
+
+
+                                            <p:column headerText="Garantie">
+                                                <h:outputText value="#{car.guarantie.libelle}"   />
+                                            </p:column>
+
+
+                                            <p:column headerText="Statut">
+                                                <p:cellEditor >
+                                                    <f:facet name="output"><h:outputText value="#{car.status}" /></f:facet>
+                                                    <f:facet  name="input">
+                                                        <h:selectOneMenu rendered="#{(car.guarantie.statut eq 'obligatoire') ?false:true }" value="#{car.status}" style="width:100%">
+                                                            <f:selectItem itemLabel="Optionnelle" itemValue="optionnelle" />
+                                                            <f:selectItem itemLabel="Obligatoire" itemValue="obligatoire" />
+                                                        </h:selectOneMenu>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column headerText="Parametres">
+                                                <h:outputText value="#{guarantieCategorieBean.parametreNom(car.parametre)}"   />
+                                            </p:column>
+                                            <p:column headerText="Actions">
+                                                <p:commandButton  action="#{guarantieCategorieBean.sup()}" update="display,form1:garantie" icon="fa fa-trash" class="btn btn-danger" style="background: #d9534f;color:#fff;border-color: #d43f3a;">
+                                                    <f:setPropertyActionListener value="#{car}"  target="#{guarantieCategorieBean.guarantieCategorieSelected}" />
+                                                </p:commandButton>
+                                            </p:column>
+
+                                        </p:dataTable>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <!--div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"-->
+                                    <div class="col-md-4 col-lg-2 col-sm-12 col-xs-12 pull-left">
+                                        <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" action="#{guarantieCategorieBean.annuler()}" update="formliste,form1" id="annuler" class="btn btn-danger danger form-control"/>
+                                    </div>
+                                    <div class="col-md-4 col-lg-2 col-sm-12 col-xs-12 pull-right">
+                                        <p:commandButton value="#{msg['btn.enregistrer']}" title="#{msg['btn.enregistrer']}" update="formliste,form1,msgs" action="#{guarantieCategorieBean.ajouter()}"  class="btn btn-success success form-control">
+                                            <!--f:ajax execute="@form" render="@form" /-->
+                                        </p:commandButton>
+                                    </div>
+                                    <!--/div-->
+                                </div>
+
+                            </p:fieldset>
+                        </h:form>
+                    </div>
+
+                    <h:form  id="formliste" class="form-horizontal">
+                        <div class="panel panel-body">
+                            <p:outputPanel id="categorie">
+                                <p:fieldset legend="Liste des Categorie" style="margin-bottom:20px">                                  
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <div class="form-group">
+                                            <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-imprimer btn "  actionListener="#{guarantieCategorieBean.doGetA()}"   > 
+                                                <i class=" glyphicon glyphicon-print"></i>
+                                            </h:commandLink>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:dataTable class="table_label table-responsive" rowExpandMode="single" var="categorie" id="deviseliste" rows="5" value="#{guarantieCategorieBean.categorieList}"
+                                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                         paginator="true" paginatorPosition="bottom"  style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                         emptyMessage="#{msg[tableau.vide]}"
+                                                         > 
+
+                                                <f:facet name="{Exporters}">
+                                                    <h:commandLink>
+                                                        <p:graphicImage library="img" name="/excel.png" width="24"/>
+                                                        <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                                    </h:commandLink>
+
+                                                    <h:commandLink>
+                                                        <p:graphicImage library="img" name="/pdf.png" width="24"/>
+                                                        <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                                    </h:commandLink>
+
+                                                    <h:commandLink>
+                                                        <p:graphicImage library="img" name="/csv2.png" width="24"/>
+                                                        <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                                                    </h:commandLink>
+
+                                                    <h:commandLink>
+                                                        <p:graphicImage library="img" name="/xml.png" width="24"/>
+                                                        <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                                                    </h:commandLink>
+                                                </f:facet>
+
+                                                <p:ajax event="rowToggle" listener="#{guarantieCategorieBean.onRowToggle}" update="display3" />
+                                                <p:column style="width:50px">
+
+                                                    <p:rowToggler  />
+                                                </p:column> 
+                                                <p:column headerText="pays">
+                                                    <h:outputText value="#{categorie.pays.designationPays}" />
+                                                </p:column>
+                                                <p:column headerText="#{msg['categorie.libelle']}">
+                                                    <h:outputText value="#{categorie.libelle}" />
+                                                </p:column>
+                                                <p:column headerText="#{msg['categorie.description']}">
+                                                    <h:outputText value="#{categorie.description}" />
+                                                </p:column>
+                                                <p:column headerText="Position">
+                                                    <h:outputText value="#{categorie.poids}" />
+                                                </p:column>
+
+                                                <p:column headerText="Actions" class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                                    <p:commandButton rendered="#{sec:areAllGranted('MOD_CATEGORIES')}" update="form1" action="#{guarantieCategorieBean.pickList()}"  icon="fa fa-edit" title="#{msg['btn.modifier']}" class="btn-primary primary btn-sm">
+                                                        <f:setPropertyActionListener value="#{categorie}" target="#{guarantieCategorieBean.categorieSelected}" />
+                                                    </p:commandButton>
+                                                    <p:commandButton rendered="#{sec:areAllGranted('DEL_CATEGORIES')}"  oncomplete="PF('supprimer').show()" icon="fa fa-trash" title="#{msg['btn.supprimer']}" class="btn-danger danger btn-sm">
+                                                        <f:setPropertyActionListener value="#{categorie}" target="#{guarantieCategorieBean.categorieSelected}" />
+                                                    </p:commandButton>
+                                                </p:column>
+
+                                                <p:rowExpansion>  
+                                                    <p:dataTable class="table_label table-responsive tableTwo "  var="gaca" id="display3" rows="5" value="#{guarantieCategorieBean.guarantieListByCategorie}"
+                                                                 paginator="true" style="margin-bottom:20px"
+                                                                 paginatorPosition="bottom"
+                                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                                 rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg[tableau.vide]}" >                                                    
+                                                        <f:facet name="header">
+
+                                                            <p:outputLabel  value="Liste des Guaranties " />
+
+                                                        </f:facet>
+                                                        <p:column headerText="Guarantie">
+                                                            <h:outputText value="#{gaca.guarantie.libelle}" />
+                                                        </p:column>
+                                                        <p:column headerText="Statut">
+                                                            <h:outputText value="#{gaca.status}" />
+                                                        </p:column>
+                                                        <p:column headerText="Paramètres">
+                                                            <h:outputText value="#{guarantieCategorieBean.parametreNom(gaca.parametre)}" />
+                                                        </p:column>
+
+                                                    </p:dataTable>
+                                                </p:rowExpansion> 
+
+                                            </p:dataTable>
+                                        </div>
+
+
+                                    </div>
+                                </p:fieldset>
+                            </p:outputPanel>
+                        </div>
+                    </h:form>
+                    <!--p:dialog  header="#{msg['categorie.title.ajouter']}" showEffect="fade"  widgetVar="ajouter" modal="true" width="500" minHeight="800" resizable="false">
+                        <ui:include src="guarantieCategorie_ajout.xhtml"/>
+                    </p:dialog--> 
+
+                    <h:form>
+                        <p:growl id="msgs3" showDetail="false" />
+                        <p:confirmDialog id="confirmation" message="#{msg['supprimer.message']}"
+                                         header="#{msg['btn.supprimer']}" severity="alert" 
+                                         widgetVar="supprimer">
+
+
+                            <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-primary primary" />
+                            <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste" action="#{guarantieCategorieBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn-danger danger" />
+                        </p:confirmDialog>
+                    </h:form>
+
+                    <!--div class="panel-footer"> 
+
+                    </div--> 
+                </div>
+
+            </div>
+        </div>
+    </ui:composition> 
+
+</html>
+

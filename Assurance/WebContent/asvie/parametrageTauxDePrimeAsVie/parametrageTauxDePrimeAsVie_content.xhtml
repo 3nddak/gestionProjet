@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['titre.parametrageDuTauxDePrime']}"></p:outputLabel></legend>
+            </fieldset>
+            <div class="panel">
+                <div class="panel-body">
+                    <p:fieldset  legend="#{msg['titre.enregistrerUnePrime']}" toggleable="true" collapsed="true" toggleSpeed="500" >                         
+                        <ui:include src="ajout.xhtml"/>
+                    </p:fieldset> 
+                    <br/>
+                    <p:fieldset  legend="#{msg['titre.listeDesPrimes']}"  >                         
+                        <ui:include src="list.xhtml"/>
+                    </p:fieldset> 
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+
+</html>

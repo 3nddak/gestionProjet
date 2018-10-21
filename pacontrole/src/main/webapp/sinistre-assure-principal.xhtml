@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+
+    <ui:define name="metadata">
+        <ui:param name="enableSlideMenu" value="false"/> <!-- disables slide menu (only on this page) on small screens -->
+        <ui:param name="autoShowNavbar" value="false"/> <!-- disables auto show navbar (only on this page) on small devices -->
+        <style type="text/css">
+            .header-right.ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+
+            .year-spinner input {
+                width: 100px
+            }
+
+            .ui-button-text-only .ui-button-text {
+                padding: 0.3em 0.4em;
+            }
+
+            .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                display: none;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="title">
+        Table des sinistres par Assure.
+    </ui:define>
+
+    <ui:define name="description">
+        Cette page vous affiche la liste des sinistres par assuré pricipale et par bénéficiaire .
+    </ui:define>
+
+    <ui:define name="body">
+        <p:spacer/>
+             <div>
+      <p:dataTable value="#{tableSinistres.assuPrin}" var="cp" class="table1" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20" rows="20">
+      <p:column>
+         <f:facet name="header">
+            <h:outputText value="DATE" />
+         </f:facet>
+         <h:outputText value="#{cp.dateDeclare}" />
+      </p:column>
+      
+       <p:column>
+         <f:facet name="header">
+            <h:outputText value="NUM DOSSIER"/>
+         </f:facet>
+         <h:outputText value="#{cp.numDossier}" />
+      </p:column>
+       <p:column>
+         <f:facet name="header">
+            <h:outputText value="NUM POLICE" />
+         </f:facet>
+         <h:outputText value="#{cp.numPolice}" />
+      </p:column>
+      
+     <p:column>
+         <f:facet name="header">
+            <h:outputText value="SOUSCRIPTEUR" />
+         </f:facet>
+         <h:outputText value="#{cp.souscripteur}" />
+      </p:column>
+      
+       <p:column>
+         <f:facet name="header">
+            <h:outputText value="ASSURE PRINCIPAL" />
+         </f:facet>
+         <h:outputText value="#{cp.assurePricipale}" />
+      </p:column>
+      
+       <p:column>
+         <f:facet name="header">
+            <h:outputText value="BENEFICIAIRES" />
+         </f:facet>
+         <h:outputText value="#{cp.beneficiare}" />
+      </p:column>
+      
+       <p:column>
+         <f:facet name="header">
+            <h:outputText value="EXPOSE" />
+         </f:facet>
+         <h:outputText value="#{cp.expose}" />
+      </p:column>
+      <p:column>
+         <f:facet name="header">
+            <h:outputText value="PAYE" />
+         </f:facet>
+         <h:outputText value="#{cp.paye}" />
+      </p:column>
+  
+      </p:dataTable>
+   </div>
+   
+   
+   
+       <p:spacer/>
+
+    </ui:define>
+
+    <ui:define name="code">
+        
+      
+    </ui:define>
+</ui:composition>

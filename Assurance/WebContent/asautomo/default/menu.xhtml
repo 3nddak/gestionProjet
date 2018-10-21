@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="menu-form" >
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+
+                <ul class="sidebar-menu">
+                    <li>
+                        <h:commandLink action="avmenug">
+                            <i class="fa fa-windows"></i> <span>#{msg['menu.haut.user.menuprincipal']}</span> 
+                        </h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink action="#{accueilBeans.accueilRedirect()}">
+                            <i class="fa fa-home"></i> <span>#{msg['titre.accueil']}</span> 
+                        </h:commandLink>
+
+                    </li>
+
+                    <!-- ####################### MENU CONFIGURATION ##########################-->
+                    <li class="treeview" jsf:rendered="#{sec:areAllGranted('ACCESS_CONFIGURATION')}">
+                        <a>
+                            <i class="fa fa-cogs"></i>
+                            <span>#{msg['menu.configuration']}</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('GUARANTIES')}" action="guarantieauto"><i class="fa fa-circle-o"></i>#{msg['menu.garantie']}</h:commandLink></li>
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('CATEGORIES')}" action="categorieauto"  ><i class="fa fa-circle-o"></i>#{msg['menu.categorie']}</h:commandLink></li>                                                      
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('RC')}"  action="rc" ><i class="fa fa-circle-o"></i>#{msg['menu.lecture.directe']}</h:commandLink></li>                               
+                            <li><h:commandLink rendered="#{sec:areAllGranted('COMMISSION')}" action="commissionNCPCourtierPV"><i class="fa fa-circle-o"></i>#{msg['menu.commission']}</h:commandLink></li>
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESSOIRE')}" action="coutPolice"   ><i class="fa fa-circle-o"></i>#{msg['menu.accessoires']}</h:commandLink></li>
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('PRIME')}"  action="prime"><i class="fa fa-circle-o"></i>#{msg['menu.parametre.prime']}</h:commandLink></li>
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('TAXE')}"  action="taxe" ><i class="fa fa-circle-o"></i>#{msg['menu.parametre.taxe']}</h:commandLink></li>
+                            <li ><h:commandLink   action="paquegeGarantieAsAuto" ><i class="fa fa-circle-o"></i>#{msg['menu.packageGarantie']}</h:commandLink></li>
+                            <li ><h:commandLink   action="natureEvenementSinistreAuto" ><i class="fa fa-circle-o"></i>#{msg['menu.natureEvenementSinistre']}</h:commandLink></li>
+                            <li ><h:commandLink   action="senarioSituationAuto" ><i class="fa fa-circle-o"></i>#{msg['menu.scenarioSituation']}</h:commandLink></li>
+
+
+
+                        </ul>
+                    </li>
+                    <!-- #######################FIN  MENU CONFIGURATION ##########################-->
+
+                    <!--  DEBUT BRANCHE !-->
+                    <li class="treeview">
+                        <a>
+                            <i class="fa fa-asterisk"></i>
+                            <span>#{msg['titre.lesbranche']}</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li > <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VIE')}"  action="acvie" ><i class="fa fa-circle-o"/>#{msg['assurance.credit']}</h:commandLink></li>
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VOYAGE')}" action="acvoyage"><i class="fa fa-circle-o"/>#{msg['assurance.voyage']}</h:commandLink></li> 
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_COMPTE')}" action="accompte"  ><i class="fa fa-circle-o"/>#{msg['assurance.compte']}</h:commandLink></li> 
+                            <li ><h:commandLink  action="acmrh"><i class="fa fa-circle-o"/>#{msg['assurance.habitation']}</h:commandLink></li> 
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VOYAGE')}" action="acsante"><i class="fa fa-circle-o"/>#{msg['assurance.sante']}</h:commandLink></li> 
+                        </ul>
+                    </li>
+
+                    <!--  FIN BRANCHE !-->
+
+                    <!-- ####################### DEBUT MENU OPERATION  ##########################-->
+                    <li class="treeview" jsf:rendered="#{sec:areAllGranted('ACCESS_OPERATION')}">
+                        <a>
+                            <i class="fa fa-exchange"></i>
+                            <span>#{msg['menu.operations']}</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li jsf:rendered="#{sec:areAllGranted('USER_PVT,USER_GUICHET')}" ><h:commandLink action="simulation"><i class="fa fa-circle-o"></i>#{msg['page.menu.simulation']}</h:commandLink></li>
+                            <!--#  DEBUT ESPACE COMPAGNIE #!-->
+                            <sec:authorize ifAllGranted="USER_CMP, ACCESS_ESPACE_COMPAGNIE,DEMANDE_ATTESTATION">
+                                <li ><h:commandLink  action="espace_traitement_compagnie" > <i class="fa fa-circle-o"></i>#{msg['page.menu.demandes']}</h:commandLink></li>
+                                <li ><h:commandLink  action="chartel" > <i class="fa fa-circle-o"></i>#{msg['page.menu.chargerContrat']}</h:commandLink></li>
+                            </sec:authorize>
+                            <!--#  FIN ESPACE COMPAGNIE #!--> 
+
+                            <!--  DEBUT ESPACE POINT DE VENTE !-->
+                            <sec:authorize ifAllGranted="USER_PVT,ACCESS_ESPACE_PDV,USER_GUICHET">
+                                <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET">
+                                    <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET,SOUSCRIPTION">
+                                        <li ><h:commandLink  action="souscription" > <i class="fa fa-circle-o"></i>#{msg['page.menu.souscription']} </h:commandLink></li>
+                                    </sec:authorize>
+                                    <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET,RENOUVELLEMENT">
+                                        <li ><h:commandLink  action="renouvelement" > <i class="fa fa-circle-o"></i>#{msg['page.menu.renouvellement']}</h:commandLink></li>
+
+                                    </sec:authorize>
+                                    <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET,RENOUVELLEMENT">
+                                        <li ><h:commandLink  action="remiseenvigueur" > <i class="fa fa-circle-o "></i>Remise en vigueur</h:commandLink></li>
+                                    </sec:authorize>
+                                    <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET">
+                                        <li ><h:commandLink  action="espace_traitement_courtier" > <i class="fa fa-circle-o"></i>#{msg['page.menu.gestioncourrier']}</h:commandLink></li>
+                                    </sec:authorize>
+                                    <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET">
+                                        <li ><h:commandLink action="annulation" > <i class="fa fa-circle-o"></i>#{msg['demande.annulation']}</h:commandLink></li>
+                                    </sec:authorize>
+                                    <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET">
+                                        <li ><h:commandLink action="declarationSinistreasauto" > <i class="fa fa-circle-o"></i>#{msg['page.menu.declarerSinistre']}</h:commandLink></li>
+
+                                    </sec:authorize>
+                                    <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET">
+                                        <li ><h:commandLink action="flotteasauto" > <i class="fa fa-circle-o"></i>Flotte</h:commandLink></li>
+                                    </sec:authorize>
+                                </sec:authorize>
+
+                                <li ><h:commandLink action="chartel" > <i class="fa fa-circle-o"></i>#{msg['telecharger.contrat']}</h:commandLink></li> 
+                                <li ><h:commandLink action="duplicata" > <i class="fa fa-circle-o"></i>Duplicata</h:commandLink></li> 
+                            </sec:authorize>
+
+
+                            <sec:authorize ifAnyGranted="USER_PVT,USER_GUICHET,USER_CRT">
+                                <li ><h:commandLink rendered="#{sec:areAllGranted('ROLE_RECEPTION_CONTRAT_ASAUTO')}"  action="greception" > <i class="fa fa-circle-o"></i>#{msg['page.menu.contrat.reception']} </h:commandLink></li>                          
+                            </sec:authorize>
+
+                            <!--  FIN ESPACE POINT DE VENTE !--> 
+
+                            <sec:authorize ifAllGranted="USER_PDR">
+                                <li ><h:commandLink  action="reception" > <i class="fa fa-circle-o"></i>#{msg['page.menu.contrat.reception']} </h:commandLink></li>
+                            </sec:authorize>
+
+                            <sec:authorize ifAnyGranted="IMMATRICULATION">
+                                <li ><h:commandLink  action="mettreImmatriculation" > <i class="fa fa-circle-o"></i>#{msg['page.menu.immatriculation']} </h:commandLink></li>
+                            </sec:authorize>
+
+
+
+                            <li ><h:commandLink action="validation" > <i class="fa fa-circle-o"></i>#{msg['page.menu.validation']} </h:commandLink></li>
+                            <li ><h:commandLink action="quittance" > <i class="fa fa-circle-o"></i>#{msg['page.menu.quittanceEncaissement']}</h:commandLink></li>
+
+
+
+                            <sec:authorize ifAnyGranted="USER_PVT,USER_GUICHET,USER_CRT">
+                                <li ><h:commandLink action="ncpaCancel" > <i class="fa fa-circle-o"></i>#{msg['page.menu.annulationSouscription']}</h:commandLink></li>
+                            </sec:authorize>
+                            <sec:authorize ifAnyGranted="USER_PVT,USER_GUICHET,USER_CRT">
+                                <li ><h:commandLink action="autorisation" > <i class="fa fa-circle-o"></i>#{msg['page.menu.autorisationAnnulation']}</h:commandLink></li>
+                            </sec:authorize>
+                            <sec:authorize ifAnyGranted="STATISTIQUE_ETAT_OPERATION">
+                                <li ><h:commandLink action="AutoimprimerOperation" > <i class="fa fa-circle-o"></i>#{msg['liste.etatSurLesOperations']}</h:commandLink></li>                                
+                            </sec:authorize>
+
+                        </ul>
+                    </li>
+
+                    <!-- #######################FIN  MENU OPERATION  ##########################-->
+
+                    <!-- ####################### debut Gestion des Sinistres ##########################-->
+
+                    <li class="treeview">
+                        <a>
+                            <i class="fa fa-file"></i>
+                            <span>#{msg['menu.gestionSinistre']}</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET"> <li ><h:commandLink action="sinistreauto" > <i class="fa fa-circle-o"></i>#{msg['page.menu.declarerSinistre']}</h:commandLink></li> </sec:authorize>
+                            <sec:authorize ifAllGranted="ADMIN,USER_CRT"> <li ><h:commandLink  action="traitersinistreauto" ><i class="fa fa-circle-o"></i>#{msg['page.menu.traiterSinistre']}</h:commandLink></li></sec:authorize>
+                            <sec:authorize ifAllGranted="ADMIN,USER_CMP"> <li ><h:commandLink  action="validersinistreauto" ><i class="fa fa-circle-o"></i>#{msg['page.menu.validerSinistre']}</h:commandLink></li></sec:authorize>
+                            <li ><h:commandLink  action="listesinistreauto" ><i class="fa fa-circle-o"></i>#{msg['page.menu.listeSinistre']}</h:commandLink></li>
+                            <li ><h:commandLink  action="avenantSuspension" > <i class="fa fa-circle-o"></i>Suspension contrat</h:commandLink></li>
+                            <li ><h:commandLink  action="listeavenantsuspension" ><i class="fa fa-circle-o"></i>Listes suspension contrat</h:commandLink></li>
+
+                        </ul>
+                    </li>
+                    <!-- ####################### fin Gestion des Sinistres ##########################-->
+
+
+                    <!-- ####################### DEBUT DEMANDE D'ATTESTATION #######################!-->
+                    <sec:authorize ifAllGranted="DEMANDE_ATTESTATION">
+                        <li class="treeview">
+                            <a>
+                                <i class="fa fa-file"></i>
+                                <span>#{msg['page.menu.attestations']}</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <sec:authorize ifAllGranted="USER_CMP"> <li ><h:commandLink action="demandeatt"><i class="fa fa-circle-o"></i>#{msg['menu.gestion.caution']}</h:commandLink></li>  </sec:authorize>
+                                <sec:authorize ifAllGranted="USER_CMP"> <li ><h:commandLink  action="vdc"  ><i class="fa fa-circle-o"></i>#{msg['menu.validation.attestation']}</h:commandLink></li> </sec:authorize>                                                 
+                                <sec:authorize ifAllGranted="USER_CMP"> <li ><h:commandLink action="actp" ><i class="fa fa-circle-o"></i>#{msg['menu.gestion.caution.payer']}</h:commandLink></li>   </sec:authorize>                              
+                                <sec:authorize ifAllGranted="USER_CMP"><li ><h:commandLink action="xttc"   ><i class="fa fa-circle-o"></i>#{msg['menu.attestation.delivrer']}</h:commandLink></li>  </sec:authorize>
+                                <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET"><li ><h:commandLink  action="attestation"><i class="fa fa-circle-o"></i>#{msg['menu.attestation.demande']}</h:commandLink></li>  </sec:authorize>
+                                <sec:authorize ifAllGranted="USER_PVT"> <li ><h:commandLink   action="demandeatt" ><i class="fa fa-circle-o"></i>#{msg['menu.attestation.liste']}</h:commandLink></li>  </sec:authorize>
+                                <sec:authorize ifAllGranted="USER_PVT"><li ><h:commandLink  action="vdc"><i class="fa fa-circle-o"></i>#{msg['menu.attestation.caution']}</h:commandLink></li>  </sec:authorize>
+                                <sec:authorize ifAllGranted="USER_PVT"><li ><h:commandLink   action="xttc" ><i class="fa fa-circle-o"></i>#{msg['menu.attestation.recue']}</h:commandLink></li>  </sec:authorize>
+                            </ul>
+                        </li>
+                    </sec:authorize>
+                    <!-- ####################### FIN DEMANDE D'ATTESTATION #######################!-->
+
+
+
+                    <!--  DEBUT COMPTABILITE !-->
+                    <!--sec:authorize ifAllGranted="ACCESS_COMPTABILITE">
+
+                        <li class="treeview">
+                            <a>
+                                <i class="fa fa-file"></i>
+                                <span>#{msg['page.menu.comptabilite']}</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <sec:authorize ifAllGranted="ACCOUNT_CREATION"><li><h:commandLink action="compte"><i class="fa fa-circle-o"></i>#{msg['menu.comptabilite.compte']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="DEPOSIT"><li><h:commandLink  action="deposite"><i class="fa fa-circle-o"></i>#{msg['menu.comptabilite.deposit']}</h:commandLink></li></sec:authorize>                  
+                                <sec:authorize ifAllGranted="ROLE_REMBOURSEMENT_COMMISSION"><li><h:commandLink action="cmm"> <i class="fa fa-circle-o"></i> #{msg['menu.comptabilite.remboursement.commission']}</h:commandLink></li></sec:authorize>                  
+                                <sec:authorize ifAllGranted="VALIDATION_OPD"><li><h:commandLink action="trsfr"><i class="fa fa-circle-o"></i>#{msg['menu.comptabilite.valider']}</h:commandLink></li></sec:authorize> 
+                                <sec:authorize ifAllGranted="ACCOUNT_DETAILS"><li><h:commandLink  action="proprietecompte"><i class="fa fa-circle-o"></i>#{msg['menu.comptabilite.compte.propriete']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="ETAT_COMPTE"><li><h:commandLink  action="etcompte"><i class="fa fa-circle-o"></i>#{msg['menu.comptabilite.compte.situation']}</h:commandLink></li></sec:authorize>                                                    
+                                <sec:authorize ifAllGranted="ACCOUNT_JOURNAL"><li> <h:commandLink action="journal"><i class="fa fa-circle-o"></i>#{msg['menu.comptabilite.journal']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="ACCOUNT_GRANDLIVRE"><li> <h:commandLink  action="grandlivre"><i class="fa fa-circle-o"></i>#{msg['menu.comptabilite.grandlivre']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="ACCOUNT_BALANCE"><li><h:commandLink action="balance"><i class="fa fa-circle-o"></i>#{msg['menu.comptabilite.balance']}</h:commandLink></li></sec:authorize>
+                                <li ><h:commandLink  action="listSauv"   ><i class="fa fa-circle-o"></i>Liste des Sauvegardes</h:commandLink></li>
+                                <li ><h:commandLink  action="acManuel"   ><i class="fa fa-circle-o"></i>Sauvegardes manuelles</h:commandLink></li>
+                            </ul>
+                        </li>
+                    </sec:authorize-->
+                    <!--  FIN COMPTABILITE -->
+
+                    <!--   DEBUT STATISTIQUE -->
+                    <sec:authorize ifAllGranted="ACCESS_STATISTIQUE">
+
+                        <li class="treeview">
+                            <a>
+                                <i class="glyphicon glyphicon-stats"></i>
+                                <span>#{msg['page.menu.statistique']}</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <sec:authorize ifAllGranted="STATISTIQUE"><li><h:commandLink  action="statistiqueAsAuto"> <i class="fa fa-circle-o"></i>#{msg['titre.statistique']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="STATISTIQUE_LIST_COMPAGNIE"><li><h:commandLink  action="listeCompagnieAsAuto"> <i class="fa fa-circle-o"></i>#{msg['liste.compagnie']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="STATISTIQUE_LIST_COURTIER"><li><h:commandLink  action="listeCourtierAsAuto"><i class="fa fa-circle-o"></i> #{msg['liste.courtier']}</h:commandLink></li></sec:authorize>                                 
+                                <sec:authorize ifAnyGranted="STATISTIQUE_LIST_PDV"><li><h:commandLink action="listePointVenteAsAuto"> <i class="fa fa-circle-o"></i>#{msg['liste.pdv']}</h:commandLink> </li></sec:authorize>
+                                <sec:authorize ifAnyGranted="STATISTIQUE_LIST_CLIENT"><li><h:commandLink action="listeClientsAsAuto"><i class="fa fa-circle-o"></i>#{msg['liste.client']}</h:commandLink></li></sec:authorize>  
+                                <sec:authorize ifAnyGranted="STATISTIQUE_FICHE_CLIENT"> <li><h:commandLink action="fichierClientsAsAuto"><i class="fa fa-circle-o"></i>#{msg['client.fichier']}</h:commandLink></li></sec:authorize>                                  
+                                <sec:authorize ifAnyGranted="STATISTIQUE_FICHE_POLICE"><li><h:commandLink action="fichierContratsAsAuto"><i class="fa fa-circle-o"></i>#{msg['client.fichePolice']}</h:commandLink></li> </sec:authorize>                                 
+                                <sec:authorize ifAnyGranted="STATISTIQUE_LIST_SINISTRE"> <li><h:commandLink action="fichierSinistresAsAuto"><i class="fa fa-circle-o"></i>#{msg['client.ficheSinistre']}</h:commandLink></li></sec:authorize>                                  
+                                <sec:authorize ifAnyGranted="STATISTIQUE_BORDERAU"><li> <h:commandLink  action="bordereauAsAuto"> <i class="fa fa-circle-o"></i> #{msg['menu.bordereau']} </h:commandLink> </li></sec:authorize>
+                                <sec:authorize ifAnyGranted="STATISTIQUE_ETAT_OPERATION"><li> <h:commandLink action="AutoimprimerOperation"> <i class="fa fa-circle-o"></i>#{msg['liste.etatSurLesOperations']}</h:commandLink></li></sec:authorize>                          
+                                <sec:authorize ifAnyGranted="STATISTIQUE_BORDERAUPRODUCTIONCOMMISSION"><li> <h:commandLink action="bordereauProductionCommission"> <i class="fa fa-circle-o"></i>#{msg['bordereau.productionCommission']} </h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAnyGranted="STATISTIQUE_BORDERAUPRODUCTIONCOMMISSION"><li> <h:commandLink action="bordereauProductionOac"> <i class="fa fa-circle-o"></i>#{msg['bordereau.production.oac']} </h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAnyGranted="STATISTIQUE_LIST_CONTRAT"><li> <h:commandLink  action="echuouechoircontratAuto"><i class="fa fa-circle-o"></i>#{msg['liste.contrat']} </h:commandLink></li></sec:authorize>
+                            </ul>
+                        </li>
+
+                    </sec:authorize>
+                    <!--   FIN STATISTIQUE -->
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <p:dialog modal="true" widgetVar="statusDialog" header="Status" 
+                  draggable="false" closable="false" resizable="false">  
+            <p:graphicImage library="images" name="ajax-loading-bar.gif" />  
+        </p:dialog>  
+
+    </h:form>
+</ui:composition>

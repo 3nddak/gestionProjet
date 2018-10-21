@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+       
+<h:form id="modification"> 
+        <p:messages id="nouveauSms" globalOnly="true" showDetail="false" autoUpdate="true"/>
+        <div class="form-group">
+            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                <h:outputLabel  value="Type"  for="typeClient" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                <h:selectOneMenu id="typeClient" required="true" class="form-control" requiredMessage="Veuillez choisir le type">
+                    <f:selectItem itemValue="personne morale" itemLabel="personne physique"/>
+                    <f:selectItem itemValue="societe" itemLabel="Societé"/> 
+                    <f:ajax event="blur" render="typeMessage" />
+                </h:selectOneMenu>
+                <h:message for="typeClient" id="typeMessage" styleClass="error"/>
+            </div> 
+            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                <h:outputLabel  value="Nom"  for="nom" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                <p:inputText value="#{clientBean.clientSelected.nom}"  requiredMessage="Veuillez saisir le nom" 
+                             id="nom"  styleClass="form-control" placeholder="nom *">
+                    <f:ajax event="blur" render="nomMessage"/>
+                </p:inputText>
+                <h:message for="nom"  id="nomMessage" class="errorClass" />
+            </div> 
+            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                <h:outputLabel  value="Prenoms"  for="prenom" class=" pull-left" />
+                <p:inputText value="#{clientBean.clientSelected.prenom}" id="prenom" styleClass="form-control" placeholder="prenom"/>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-3">
+                <h:outputLabel  value="Lieu d'Emission"  for="lieuemission" class=" pull-left" />
+                <p:inputText value="#{clientBean.clientSelected.lieuEmission}"  id="lieuemission" styleClass="form-control" placeholder="lieuemission"/>
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-3 col-lg-3 col-sm-3">  
+                <h:outputLabel  value="Faxe"  for="faxe" class=" pull-left" />
+                <p:inputText value="#{clientBean.clientSelected.fax}" id="faxe" styleClass="form-control" placeholder="faxe"/>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-3">
+                <h:outputLabel  value="BP"  for="codeZip" class=" pull-left" />
+                <p:inputText value="#{clientBean.clientSelected.codeZip}" id="codeZip" styleClass="form-control" placeholder="codeZip"/>
+            </div>
+
+            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                <h:outputLabel  value="Email"  for="email" class=" pull-left" />
+                <p:inputText value="#{clientBean.clientSelected.email}" id="email" styleClass="form-control" placeholder="email"/>
+            </div>
+            <!--div class="col-md-3 col-lg-3 col-sm-3">
+                <h:outputLabel  value="Genre"  for="genre" class=" pull-left" />
+                <p:inputText value="#{clientBean.clientSelected.genre}" id="genre" styleClass="form-control" placeholder="genre"/>
+            </div-->
+
+
+            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                <h:outputLabel  value="Pays"  for="pays" class=" pull-left" />
+                <p:inputText value="#{clientBean.clientSelected.pays}" id="pays" styleClass="form-control" placeholder="pays"/>
+            </div>
+        </div> 
+
+        <div class="form-group">
+            <div class="col-md-3 col-lg-3 col-sm-3">
+
+                <h:outputLabel  value="Lieu de Naissance"  for="lieunaissance" class=" pull-left" />
+                <p:inputText value="#{clientBean.clientSelected.lieuNaissance}" id="lieunaissance" styleClass="form-control" placeholder="lieunaissance "/>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                <h:outputLabel  value="Date de Naissance"  for="dateNaissance" class=" pull-left" />
+                <p:calendar  value="#{clientBean.clientSelected.dateNaissance}" class="pull-left" navigator="true" id="dateNaissance" locale="#{clientBean.curentUserLocale}" pattern="dd-MM-yyyy" mask="true" placeholder="dateNaissance*" />
+            </div> 
+            <div class="col-md-3 col-lg-3 col-sm-3">
+                <h:outputLabel  value="Nationalité"  for="nationalite" class=" pull-left" />
+                <p:inputText value="#{clientBean.clientSelected.nationalite}" id="nationalite" styleClass="form-control" placeholder="nationalite"/>
+            </div>
+
+
+            <div class="col-md-3 col-lg-3 col-sm-3">
+                <h:outputLabel  value="Adresse"  for="Adresse" class=" pull-left" />
+                <p:inputText value="#{clientBean.clientSelected.adresse}" id="Adresse" styleClass="form-control" placeholder="Adresse"/>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                <h:outputLabel  value="Pièce"  for="piece" class=" pull-left" />
+                <h:selectOneMenu id="piece"  class="form-control" >
+                    <f:selectItem itemValue="" itemLabel="Pièce"/> 
+                    <f:selectItem itemValue="carte d'identité" itemLabel="Carte d'identité"/>
+                    <f:selectItem itemValue="passport" itemLabel="Passport"/>
+                    <f:selectItem itemValue="permis de conduite" itemLabel="Permis de conduite"/>
+                    <f:selectItem itemValue="autre" itemLabel="Autre"/>
+                </h:selectOneMenu>
+            </div> 
+
+            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                <h:outputLabel  value="Numero Piece"  for="dateEmissionPiece" class=" pull-left" />
+                <p:inputText value="#{clientBean.clientSelected.numeroPiece}" styleClass="form-control" placeholder="numeroPiece *"/> 
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-3">  
+                <h:outputLabel  value="Date Emission Piece"  for="dateEmissionPiece" class=" pull-left" />
+                <p:calendar value="#{clientBean.clientSelected.dateEmissionPiece}" navigator="true" id="dateEmissionPiece" class="pull-left" locale="#{clientBean.curentUserLocale}" pattern="dd-MM-yyyy" mask="true" placeholder="dateEmissionPiece*" />
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-3">
+                <h:outputLabel  value="Date Expiration Piece"  for="dateExpirationPiece" class=" pull-left" />
+                <p:calendar  value="#{clientBean.clientSelected.dateExpirationPiece}" navigator="true" class="pull-left" locale="#{clientBean.curentUserLocale}" pattern="dd-MM-yyyy" mask="true" placeholder="dateExpirationPiece*" />
+            </div>
+
+
+        </div> 
+        <div class="form-group">
+            <div class="col-md-3 col-lg-3 col-sm-3">      
+                <p:inputText value="#{clientBean.clientSelected.pseudo}" styleClass="form-control hide" placeholder="pseudo *"/>
+
+            </div> 
+            <div class="col-md-3 col-lg-3 col-sm-3">      
+                <p:inputText value="#{clientBean.clientSelected.password}"  class="form-control hide" placeholder="password *"/>
+
+            </div>
+        </div>
+        <div class="form-group">
+
+            <div class="col-md-6 col col-lg-6  pull-left">
+                <p:commandButton value="Annuler" type="reset" styleClass="ui-priority-primary"/>
+            </div>
+
+            <div class="col-md-6 col col-lg-6  pull-left">
+                <p:commandButton value="Modifier" update="nouveauSms,formliste" action="#{clientBean.modifierClient()}"  oncomplete="PF('modifier').hide()" styleClass="ui-priority-primary"/>
+            </div>
+
+
+        </div>
+</h:form> 
+    </ui:composition>
+</html>
+
+    

@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition>
+
+        <p:panel header="#{msg['titre.typeDuClient']}"  toggleable="true" collapsed="true">
+
+           <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel  value="#{msg['voyage.type']}:"/>
+                <h:outputText value="#{souscriptionAsVoyageBean.groupe eq 0? msg['client.type.physique']: msg['client.type.morale']}" />
+               <p:outputLabel  rendered="#{souscriptionAsVoyageBean.groupe eq 1?true:false}" value="#{msg['titre.genre']} :"/>
+               <h:outputText rendered="#{souscriptionAsVoyageBean.groupe eq 1?true:false}"  value="#{souscriptionAsVoyageBean.genreGroup eq 0? msg['titre.groupe'] :msg['titre.entreprise']}"/>
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['voyage.informationsDuGroupe']}"  rendered="#{souscriptionAsVoyageBean.groupe eq 1 and souscriptionAsVoyageBean.genreGroup eq 0?true:false}" toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel  value="#{msg['titre.nomDuGroupe']} :"/>
+                <h:outputText  value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.nomGroup}"/>
+                <p:outputLabel  value="#{msg['titre.descriptionDuGroupe']} :"/>
+                <h:outputText  value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.descriptionGroup}"/>
+                <p:outputLabel  value="#{msg['titre.adresse']} :"/>
+                <h:outputText value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.adresseGroup}"/>
+                <p:outputLabel value="#{msg['titre.numeroDeTelephone']} :"/>
+                <h:outputText value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.numeroTelephoneGroup }"/>
+                <p:outputLabel value="#{msg['titre.dateDeCreation']} :"/>
+                <h:outputText value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.dateCreationGroup}"/>
+
+
+            </p:panelGrid>
+
+        </p:panel>
+
+        <p:panel header="#{msg['voyage.informationsDeLEntreprise']}" rendered="#{souscriptionAsVoyageBean.groupe eq 1 and souscriptionAsVoyageBean.genreGroup eq 1 ?true:false}" toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel value="#{msg['titre.nomDeLEntreprise']} :"/>
+                <h:outputText value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.nomGroup}"/>
+                <p:outputLabel  value="#{msg['titre.descriptionDeLEntreprise']} :"/>
+                <h:outputText  value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.descriptionGroup}"/>
+                <p:outputLabel  value="#{msg['titre.adresse']} :"/>
+                <h:outputText  value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.adresseGroup}"/>
+                <p:outputLabel value="#{msg['titre.numeroDeTelephone']} :"/>
+                <h:outputText value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.numeroTelephoneGroup }"/>
+                <p:outputLabel value="#{msg['titre.dateDeCreation']} :"/>
+                <h:outputText value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.dateCreationGroup}"/>
+                <p:outputLabel value="#{msg['titre.typePiece']} :"/>
+                <h:outputText value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.typePieceGroup}"/>
+                <p:outputLabel value="#{msg['titre.numeroDeLaPiece']} :"/>
+                <h:outputText value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.numeroPieceGroup}"/>
+            </p:panelGrid>
+
+        </p:panel>
+
+
+        <p:panel header="#{msg['voyage.informationSurLeVoyage']}"  toggleable="true" collapsed="true" >
+
+            <p:panelGrid columns="8" class="table">
+
+                <p:outputLabel value="#{msg['voyage.typeVoyage']} :"/>
+                <h:outputText value="#{souscriptionAsVoyageBean.assuranceVoyageToSave.typeVoyage}"/>
+                <p:outputLabel value="#{msg['voyage.paysDeDestination']} :"/>
+                <h:outputText class="text-right"  value="#{souscriptionAsVoyageBean.assuranceVoyageToSave.paysDestination.nom_en_fr}"/>
+                <p:outputLabel value="#{msg['voyage.dateDeDepart']} :"/>
+                <h:outputText  value="#{souscriptionAsVoyageBean.assuranceVoyageToSave.dateDepart}"/>   
+                <p:outputLabel value="#{msg['voyage.dateDeretour']} :"/>
+                <h:outputText  value="#{souscriptionAsVoyageBean.assuranceVoyageToSave.dateRetour}"/>
+                <p:outputLabel value="#{msg['voyage.regionDeDestination']} :"/>
+                <h:outputText  value="#{souscriptionAsVoyageBean.assuranceVoyageToSave.regionDestination}"/>
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['titre.compagniesCourtiersChoisies']}"  toggleable="true" collapsed="true" >
+            <div class="table-responsive">
+                <p:dataTable class="table_label table-responsive" var="compcour" reflow="true" rows="5" value="#{souscriptionAsVoyageBean.allAssuranceVoyage}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" 
+                             rowsPerPageTemplate="5,10,15,20,25"  emptyMessage="#{msg[tableau.vide]}"  >                                                    
+                    <p:column headerText="#{msg['titre.compagnie']}">
+                        <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                    </p:column>
+
+                    <p:column headerText="#{msg['titre.courtier']}">
+                        <h:outputText value="#{compcour.courtier.abbreviation}" />
+                    </p:column >
+
+                </p:dataTable>
+            </div>
+
+        </p:panel>
+
+
+    </ui:composition> 
+
+</html>
+

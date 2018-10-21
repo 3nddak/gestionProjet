@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div class="panel">
+                <div class="panel-heading"> 
+                    <fieldset>
+                        <legend class="police_label text-center"><p:outputLabel value="#{msg['notification.demandeValidee']}"></p:outputLabel></legend>
+                    </fieldset>
+                </div>
+                <h:form  id="searchForm" class="form-horizontal">
+                    <p:panel id="serachPanel" header="#{msg['recherche.titre']}" toggleable="true" collapsed="false" >
+                        <ui:include src="searchengine_demande_valide.xhtml" />
+                    </p:panel>
+                </h:form>
+            </div>
+            <div class="panel">
+                <h:form  id="dataListeForm" class="form-horizontal">
+                    <p:panel  header="#{msg['notification.demandeValidee']}" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                        <p:dataTable id="dataListe" editable="true" editMode="cell"
+                                     resizableColumns="true"
+                                     class="table table-condensed" 
+                                     paginator="true" rows="20" emptyMessage="#{msg['tableau.vide']}"  paginatorPosition="bottom" value="#{demandeValideAsvoyageBean.listAssuranceVoyage}" var="assVoyage"    style="padding:0px;margin: 0px; ">
+
+                            <p:column headerText="#{msg['titre.numeroPolice']}" width="11%" class="col-md-2 col-lg-2"  filterBy="#{assVoyage.numeroPolice}"  >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{assVoyage.numeroPolice}" id="police" >
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="vprimemin" class="text-right form-control" value="#{assVoyage.numeroPolice}">
+                                           
+                                            <p:ajax event="keyup" update="police" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="#{msg['voyage.dateDeDepart']}" class="col-lg-1 col-md-1"   >
+                                <h:outputText value="#{assVoyage.dateDepart}" />
+                            </p:column>
+                            <p:column headerText="#{msg['voyage.dateDeretour']}"  class="col-lg-1 col-md-1"  >
+                                <h:outputText value="#{assVoyage.dateRetour}" />
+                            </p:column>
+                            <p:column class="col-md-2 col-lg-2" width="11%" headerText="#{msg['titre.codeTransaction']}" filterBy="#{assVoyage.codeTransaction}">
+                                <h:outputText value="#{assVoyage.codeTransaction}" />
+                            </p:column>
+                            <p:column headerText="#{msg['titre.compagnie']}" filterBy="#{assVoyage.compagnie.abbreviation}" class="col-lg-1 col-md-1">
+                                <h:outputText value="#{assVoyage.compagnie.abbreviation}" />
+                            </p:column>
+                            <p:column headerText="#{msg['titre.courtier']}"  filterBy="#{assVoyage.courtier.abbreviation}" class="col-lg-1 col-md-1">
+                                <h:outputText value="#{assVoyage.courtier.abbreviation}" />
+                            </p:column>
+                            <p:column  headerText="#{msg['control.client.nom']}"  filterBy="#{assVoyage.client.nom}" class="col-lg-1 col-md-1"  >
+                                <h:outputText value="#{assVoyage.client.nom}" />
+                            </p:column>
+                            <p:column filterBy="#{assVoyage.primeTTC}" headerText="#{msg['tableau.primettc']}" class="col-lg-1 col-md-1"  >
+                                <p:outputLabel value="#{assVoyage.arrondireFormat2(assVoyage.primeTTC)}" />
+                            </p:column>
+                            <p:column headerText="#{msg['titre.actions']}" class="col-lg-1 col-md-1"  >
+                                <p:commandLink title="detail"  class=" btn-xs btn btn-imprimer" oncomplete="PF('detailasvie').show()"  update="detailasvie" >
+                                    <i class="fa fa-search-plus"/>
+                                    <f:setPropertyActionListener target="#{demandeValideAsvoyageBean.assuranceVoyage}" value="#{assVoyage}" />
+                                </p:commandLink>
+                                <p:commandLink rendered="#{demandeValideAsvoyageBean.estCompagnie}" title="Enrégistrer le numero Police"  class=" btn-xs btn btn-success"  action="#{demandeValideAsvoyageBean.saveNumeroPolice()}"  update="detail" >
+                                    <i class="fa fa-search-plus"/>
+                                    <f:setPropertyActionListener target="#{demandeValideAsvoyageBean.assurance}" value="#{assVoyage}" />
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+        </div>
+        <p:dialog widgetVar="detailasvie" modal="true" width="1000" height="400" id="detailasvie" >
+            <ui:include src="detail.xhtml"/>
+        </p:dialog>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+    </ui:composition> 
+</html>
+

@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <p:growl id="msgsAux2"  globalOnly="true"  severity="info,warn"/>   
+        <div class="col-md-12 col-lg-12 col-sm-12" style="padding-top: 10px;">
+            <div class="panel well">
+                <div class="panel-body">
+                    <div class="row">
+                        <fieldset> 
+                            <legend class="text-uppercase small" ><h:outputLabel value="#{msg['client.title']}" /></legend>
+                            <legend class="text-uppercase small" ><h:outputLabel value="Option" />
+                                <p:selectOneRadio  id="cons" value="#{objetBean.option}" requiredMessage="#{msg['client.option.requiredMessage']}">
+                                    <f:selectItem  itemLabel="#{msg['client.choisir']}"  itemValue="choix" />
+                                    <f:selectItem itemLabel="#{msg['client.creer']}"  itemValue="creation" />
+                                    <p:ajax listener="#{objetBean.choixOperation()}" update="choix,creation"/>
+                                </p:selectOneRadio>
+                            </legend>
+                            <p:fieldset id="creation"  >
+                                <p:panel  rendered="#{objetBean.hideAjoutClientForm}">
+                                    <ui:include src="client_add.xhtml"/>
+                                </p:panel>
+                            </p:fieldset>
+
+
+                            <p:fieldset id="choix" >
+
+                                <p:panel   header="Recherche"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+                                    <div class="form-group">
+                                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <h:outputLabel  value="#{msg['client.type']}"  for="typeClient" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                            </div>
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <h:selectOneMenu id="typeClientr" value="#{objetBean.clientTri.type}" title="#{msg['client.type']}"  class="form-control">
+                                                    <f:selectItem itemValue="" itemLabel="Type"/>
+                                                    <f:selectItem itemValue="Client physique" itemLabel="#{msg['client.type.physique']}"/>
+                                                    <f:selectItem itemValue="Client moral" itemLabel="#{msg['client.type.morale']}"/> 
+
+                                                </h:selectOneMenu>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <h:outputLabel  value="#{msg['client.nom']}"  for="nom" class=" pull-left" />
+                                            </div>
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <p:inputText value="#{objetBean.clientTri.nom}"
+                                                             id="nomr" class="form-control" placeholder="#{msg['client.nom']}">
+
+                                                </p:inputText>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <h:outputLabel  value="#{msg['client.prenom']}"  for="prenomr" class=" pull-left" />
+                                            </div>
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <p:inputText value="#{objetBean.clientTri.prenom}" id="prenomr" styleClass="form-control" placeholder="#{msg['client.prenom']}"
+                                                             >
+                                                </p:inputText>  
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                                                <h:outputLabel  value="#{msg['client.pays']}"  for="designationPaysr" class=" pull-left" style=""/>
+                                            </div>
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                                                <p:autoComplete id="designationPaysr"  class="pull-left" value="#{objetBean.clientTri.pays}" forceSelection="true"  completeMethod="#{objetBean.completeMethod}"  >
+
+                                                </p:autoComplete>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+
+
+                                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <h:outputLabel  value="#{msg['client.numeropiece']}" for="numpiecer" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                            </div>
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <p:inputText value="#{objetBean.clientTri.numeroPiece}"  id="numpiecer" class="form-control" placeholder="#{msg['client.numeropiece']}"
+                                                             >
+
+                                                </p:inputText> 
+                                            </div>
+
+                                        </div>
+
+                                    </div> 
+
+
+                                    <div class="form-group">
+                                        <div class="col-lg-6">
+                                            <p:commandButton onstart="PF('statusDialog2').show()" onsuccess="PF('statusDialog2').hide()" value="#{msg['btn.rechercher']}" update="clienttable" actionListener="#{objetBean.trierClient()}" class="btn btn-success   pull-right" />
+                                        </div>
+
+                                    </div>
+                                    <p:dialog widgetVar="statusDialog2" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                        <h:graphicImage library="images" name="ajax-loader.gif" />
+                                    </p:dialog>
+                                </p:panel>
+
+
+                                <div  class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+
+                                    <h:outputLabel rendered="#{objetBean.hideChoixClientForm}" for="facAtt" value="recherche"   class=" pull-left" />
+                                    <h:selectOneMenu rendered="#{objetBean.hideChoixClientForm}" id="facAtt" value="#{objetBean.facAtt}" class="form-control"
+                                                     >
+                                        <f:selectItem itemLabel="Tous les clients" itemValue=""/>
+                                        <f:selectItem itemLabel="Tous les client locaux " itemValue="clientLocaux"/>
+                                        <f:selectItem itemLabel="attestations demandées" itemValue="attestation"/>
+                                        <f:selectItem itemLabel="clients souscrits" itemValue="souscri"/>
+                                        <p:ajax  listener="#{objetBean.filtreAttestationFactureTest()}" update="formliste:clienttable" />
+
+                                    </h:selectOneMenu>
+
+                                </div>
+
+
+                                <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:dataTable rendered="#{objetBean.hideChoixClientForm}" widgetVar="clientsTable" class="table table-bordered"
+                                                 rowExpandMode="single" id="clienttable" 
+                                                  var="client" 
+                                                 value="#{objetBean.clientList}" selectionMode="single"
+                                                 selection="#{objetBean.clientSelected}" rowKey="#{client.idClient}" 
+                                                 emptyMessage="#{msg['tableau.vide']}" 
+                                                 rows="8"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 paginator="true" paginatorPosition="bottom" rowsPerPageTemplate="8,15,20">
+                                        <p:ajax event="rowSelect" listener="#{objetBean.onRowSelect}" />
+                                        <p:ajax event="rowToggle" listener="#{objetBean.onRowToggle}" update="clienttable" />
+                                        <f:facet name="header">
+                                            <p:outputPanel>
+                                                <h:outputText value="Recherche d'un client:" />
+                                                <p:inputText id="globalFilter" onkeyup="PF('clientsTable').filter()" style="width:500px" placeholder="Entrer les infos"/>
+                                            </p:outputPanel>
+                                        </f:facet>
+                                        <p:column style="width:50px">
+
+                                            <p:rowToggler/>
+                                        </p:column>
+                                        <p:column headerText="#{msg['client.code']}" filterBy="#{client.numeroPiece}" filterMatchMode="contains">
+                                            <h:outputText value="#{client.numeroPiece}" />
+                                        </p:column>
+                                        <p:column filterBy="#{client.type}" headerText="#{msg['client.type']}" class="col-lg-2">
+                                            <f:facet name="filter">
+                                                <h:selectOneMenu class="form-control" onchange="PF('clientsTable').filter()" >
+                                                    <f:selectItem itemLabel="#{msg['client.type']}" itemValue="#{null}" noSelectionOption="true" />
+                                                    <f:selectItem itemLabel="#{msg['client.type.physique']}" itemValue="1"/>
+                                                    <f:selectItem itemLabel="#{msg['client.type.morale']}" itemValue="2" />
+                                                </h:selectOneMenu>
+                                            </f:facet>
+                                            <h:outputText value="#{client.type}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['client.nom']}" filterBy="#{client.nom}" filterMatchMode="contains">
+                                            <h:outputText value="#{client.nom}" />
+                                        </p:column >
+                                        <p:column headerText="#{msg['client.prenom']}" filterBy="#{client.prenom}" filterMatchMode="contains">
+                                            <h:outputText value="#{client.prenom}" />
+                                        </p:column >
+                                        <p:column headerText="#{msg['client.datedenaissance']}" filterMatchMode="contains">
+                                            <h:outputText value="#{client.dateNaissance}" />
+                                        </p:column >
+
+                                        <p:rowExpansion >
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.type']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.fax}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.nom']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.nom}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.prenom']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.prenom}"  />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="form-group">
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.lieuemission']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.lieuEmission}"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.bp']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.codeZip}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.email']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.email}"  />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.pays']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.pays}" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.lieudenaissance']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.lieuNaissance}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.datedenaissance']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.dateNaissance}"  />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.nationalite']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.nationalite}"  />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.adresse']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.adresse}"/> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.piece']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.typePiece}"  />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.numeropiece']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.numeroPiece}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.dateemissionpiece']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.dateEmissionPiece}"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="#{msg['client.dateexpirationpiece']}"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.dateExpirationPiece}" />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group hide">
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Pseudo"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.pseudo}"  />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <h:outputText value="Password"/>
+                                                        </span>
+                                                        <h:outputLabel class="form-control"  value="#{objetBean.clientSelected.password}" />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </p:rowExpansion> 
+                                    </p:dataTable>
+                                </div>
+                            </p:fieldset>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </ui:composition>
+</html>

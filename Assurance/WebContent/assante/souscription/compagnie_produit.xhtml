@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="form-group">
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel for="comp" value="Compagnie" class="pull-left text-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="comp" required="false" requiredMessage="Veuillez choisir la compagnie" value="#{souscriptionAsSanteBean.selectedCompagnie}"  >
+                        <f:selectItem noSelectionOption="true" itemLabel="Choisir compagnie" /> 
+                        <f:selectItems value="#{souscriptionAsSanteBean.listCompagnieByCourtierOrigineDuPointDeVente}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                        <f:ajax event="keyup" render="compMessage"/>
+                        <p:ajax listener="#{souscriptionAsSanteBean.feshProduitByCompagnie()}" update="prod" />
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:message for="comp"  id="compMessage" class="errorClass" />    
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel for="prod" value="Produit" class="pull-left text-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="prod" required="false" requiredMessage="Veuillez choisir un produit" value="#{souscriptionAsSanteBean.selectedProduit}"  >
+                        <f:selectItem noSelectionOption="true" itemLabel="Choisir produit" /> 
+                        <f:selectItems value="#{souscriptionAsSanteBean.listProduitByCompagnie}" var="produit" itemLabel="#{produit.nom}" itemValue="#{produit}"/>
+                        <f:ajax event="keyup" render="prodMessage"/> 
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:message for="prod"  id="prodMessage" class="errorClass" />    
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                <div class="col-md-12 col-lg-12 col-sm-12">
+                    <h:outputLabel  value="#{msg['souscription.datedebut']}"  for="datedebut" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12">
+                    <p:calendar id="datedebut"  pattern="dd/MM/yyyy" value="#{souscriptionAsSanteBean.dateDebutContrat}" mask="true" placeholder="#{msg['souscription.datedebut']} " 
+                                required="true" readonlyInput="true" navigator="true"
+                                requiredMessage="#{msg['souscription.datedebut.requireMessage']}" 
+                                validatorMessage="#{msg['souscription.datedebut.validatorMessage']}"
+                                converterMessage="#{msg['souscription.datedebut.converterMessage']}"
+                                mindate="#{souscriptionAsSanteBean.datemax}" 
+                                >
+                        <f:convertDateTime pattern="dd/MM/yyyy"  type="date"/>
+                    </p:calendar>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12">
+                    <p:message for="datedebut" id="dateMessage"/> 
+                </div>
+            </div>
+            <!--/div>
+            <div class="form-group"-->
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                <br/>
+                <div class="btn-toolbar">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:commandButton class="btn btn-success " id="valid" value="#{msg['btn.ajouter']}" action="#{souscriptionAsSanteBean.createAssuranceSanteList()}"  update="formliste:comp,formliste:prod,display2"  />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-12 col-sm-12">
+            <p:outputPanel id="display22">
+                <p:dataTable class="table_label table-responsive" var="asSante" id="display2"  rows="5" value="#{souscriptionAsSanteBean.assuranceSanteList}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                             rowsPerPageTemplate="2,3,4,5,6,7" emptyMessage="#{msg[tableau.vide]}" rowKey="#{asSante.idFacture}" >
+
+                    <p:ajax event="rowToggle" listener="#{souscriptionAsSanteBean.onRowToggleForProduitDetail}" update="display2,gg" />
+                    <p:column style="width:50px" headerText="#{msg[tableau.detail]}">
+                        <p:rowToggler  />
+                    </p:column>
+                    <p:column headerText="Pays">
+                        <h:outputText value="#{asSante.produitAsSante.compagnie.pays.designationPays}" />
+                    </p:column>
+                    <p:column headerText="Compagnie">
+                        <h:outputText value="#{asSante.produitAsSante.compagnie.designation}" />
+                    </p:column>
+                    <p:column headerText="Produit">
+                        <h:outputText value="#{asSante.produitAsSante.nom}" />
+                    </p:column >
+                    <p:column headerText="Prime Annuelle Adulte">
+                        <h:outputText value="#{asSante.produitAsSante.primeAnnuelleAdulte}" >
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </h:outputText>
+                    </p:column >
+                    <p:column headerText="Prime Annuelle Mineur">
+                        <h:outputText value="#{asSante.produitAsSante.primeAnnuelleMineur}" >
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </h:outputText>
+                    </p:column >
+
+                    <p:column headerText="Actions">
+                        <p:commandButton icon="fa fa-trash" update="display2,formliste:comp,formliste:prod" oncomplete="PF('supprimer').show()" title="Supprimer" class="btn btn-danger">
+                            <f:setPropertyActionListener value="#{asSante}" target="#{souscriptionAsSanteBean.asSanteSelected}" />
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:rowExpansion >
+                        <p:dataTable value="#{souscriptionAsSanteBean.garantieCategorieCompagnieProduit}" 
+                                     rowKey="#{catgarcompdet.idGarantieCategorieCompagnieProduit}" var="catgarcompdet" id="gg"
+                                     sortBy="#{catgarcompdet.categorieGarantieAsSante.idCategorieGarantieAsSante}"  
+                                     class="table table-bordered" >
+                            <p:columnGroup type="header">
+
+                                <p:column rowspan="2" headerText="Catégorie"/>
+                                <p:column rowspan="2" headerText="Garantie" class="col-md-3"/>
+                                <p:column rowspan="2" headerText="Taux remboursement" />
+                                <p:column rowspan="2" headerText="Plafond remboursement"  />
+
+                            </p:columnGroup>
+                            <p:column groupRow="true" >
+                                <h:outputText value="#{catgarcompdet.categorieGarantieAsSante.designation}" />
+                            </p:column>
+                            <p:column >
+                                <h:outputText value="#{catgarcompdet.garantieAsSante.designation}" />
+                            </p:column>
+                            <p:column >
+                                <h:outputText value="#{catgarcompdet.tauxRemboursement}" />
+                            </p:column>
+                            <p:column >
+                                <h:outputText value="#{catgarcompdet.plafondRemboursement}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:rowExpansion>
+                </p:dataTable>
+            </p:outputPanel>
+        </div>
+        <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                         header="#{msg['btn.supprimer']}" severity="alert" 
+                         widgetVar="supprimer">
+
+            <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn btn-primary" style="background: #337ab7;color:#fff;border-color: #337ab7;"  />
+            <p:commandButton value="#{msg['supprimer.oui']}" update="display2,formliste:comp,formliste:prod" action="#{souscriptionAsSanteBean.removeOneLine()}"  oncomplete="PF('supprimer').hide()" class="btn btn-danger" style="background: #d9534f;color:#fff;border-color: #d43f3a;" />
+        </p:confirmDialog>
+    </ui:composition>
+</html>

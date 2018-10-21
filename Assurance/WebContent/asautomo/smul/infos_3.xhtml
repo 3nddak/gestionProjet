@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition>
+
+        <p:panel header="#{msg['titre.categorieGarantieselectionner']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel for="cat2bbb" value="#{msg['titre.categorie']} :"/>
+                <h:outputText id="cat2bbb" value="#{objetBean.categorie.libelle}"/>
+
+            </p:panelGrid>
+            <p:outputLabel value="#{msg['vehicule.garantie']} :"/>
+            <p:dataGrid  value="#{objetBean.selectedObjetGuaranties}" var="guarantie" columns="4" layout="grid" class="table"> 
+
+                #{guarantie.symbole}
+            </p:dataGrid>
+        </p:panel>
+        <p:panel header="#{msg['simulation.auto.caracteristiqueVehicule']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+            <p:panelGrid columns="8" class="table">
+
+                <p:outputLabel for="immbbb" value="#{msg['vehicule.immatriculation']} :"/>
+                <h:outputText id="immbbb" value="#{objetBean.voiture.numeroImmatriculation}"/>
+                <p:outputLabel for="pui2bbb" value="#{msg['vehicule.puissance']} :"/>
+                <h:outputText id="pui2bbb" value="#{objetBean.voiture.puissance}"/>
+                <p:outputLabel for="puiRbbb" value="#{msg['vehicule.puissancereelle']} :"/>
+                <h:outputText id="puiRbbb" value="#{objetBean.voiture.puissanceReelle}"/>
+                <p:outputLabel for="vn2bbb" value="#{msg['vehicule.valeurneuf']} :"/>
+                <h:outputText id="vn2bbb" value="#{objetBean.voiture.valeurNeuve}">
+                    <f:convertNumber pattern="###,##0" type="number" />
+                </h:outputText>         
+                <p:outputLabel  for="vn12bbb" value="#{msg['vehicule.valeurvenale']} :"/>
+                <h:outputText class="text-right" id="vn12bbb" value="#{objetBean.voiture.valeurvenale}">
+                    <f:convertNumber pattern="###,##0" type="number" />
+                </h:outputText>    
+                <p:outputLabel for="ma2bbb" value="#{msg['vehicule.marque']} :"/>
+                <h:outputText id="ma2bbb" value="#{objetBean.voiture.marque}"/>
+                <p:outputLabel for="tm2bbb" value="#{msg['vehicule.typemarque']} :"/>
+                <h:outputText id="tm2bbb" value="#{objetBean.voiture.typeMarqueVehicule}"/>
+                <p:outputLabel for="en2bbb" value="#{msg['vehicule.energie']} :"/>
+                <h:outputText id="en2bbb" value="#{objetBean.energ.libelleFr}"/>
+                <p:outputLabel for="ge2bbb" value="#{msg['vehicule.genre']} :"/>
+                <h:outputText id="ge2bbb" value="#{objetBean.voiture.genre}"/>
+                <p:outputLabel for="ty2bbb" value="#{msg['vehicule.typeVitre']} :"/>
+                <h:outputText id="ty2bbb" value="#{objetBean.voiture.typeVitre}"/>
+                <p:outputLabel for="np2bbb" value="#{msg['vehicule.nombreplace']} :"/>
+                <h:outputText id="np2bbb" value="#{objetBean.voiture.nombrePlaces}"/>
+                <p:outputLabel  for="numc2bbb" value="#{msg['vehicule.numerochassis']} :"/>
+                <h:outputText class="text-right" id="numc2bbb" value="#{objetBean.voiture.numChassis}"/>
+                <p:outputLabel  for="numm2bbb" value="#{msg['vehicule.numeromoteur']} :"/>
+                <h:outputText class="text-right" id="numm2bbb" value="#{objetBean.voiture.numMoteur}"/>
+
+                <p:outputLabel for="dm2abbb" value="#{msg['vehicule.miseencirculation']} :"/>
+                <h:outputText class="text-right" id="dm2abbb" value="#{objetBean.formatDate(objetBean.voiture.miseEnCirculation)}"/>
+
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['titre.compagnieCourtierChoisie']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+           
+              <p:panelGrid class="table" columns="2">
+
+                  <p:outputLabel for="comp2bbb" value="#{msg['titre.compagnie']} :"/>
+                <h:outputText id="comp2bbb" value="#{objetBean.factureChoisie.compagnie.abbreviation}"/>
+                <p:outputLabel for="cour2bbb" value="#{msg['titre.courtier']}:"/>
+                <h:outputText id="cour2bbb" value="#{objetBean.factureChoisie.courtier.abbreviation}"/>
+
+            </p:panelGrid>
+   
+
+        </p:panel>
+    </ui:composition> 
+
+</html>
+

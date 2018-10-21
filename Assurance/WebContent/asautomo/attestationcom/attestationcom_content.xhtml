@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <div class=" col-lg-12 col-md-12 col-xm-12 col-sm-12">
+            
+        <fieldset>
+            <legend class="text-center text-uppercase"> <p:outputLabel value="Liste des demandes"></p:outputLabel></legend>
+        </fieldset>
+        <h:form id="vf">
+
+            <p:panel header ="Liste Des Attestations Demandées" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                <p:dataTable  class="table-bordered table table-responsive" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                              emptyMessage="#{msg['tableau.vide']}"   paginatorPosition="bottom"  value="#{attestationCompagnieBean.demandeEnvoyerAList}" editable="true" var="demande" editMode="cell" >
+                    <p:columnGroup type="header">
+                        <p:growl>
+                            <p:column rowspan="2" headerText="COMPAGNIE" />
+                            <p:column colspan="2" headerText="INFORMATIONS DU CLIENT" />
+                            <p:column colspan="4" headerText="INFORMATION DU VEHICULE" />
+                            <p:column rowspan="2" headerText="CAUTION" width="13%"  rendered="#{(attestationCompagnieBean.idCompagnieU != null)?true:false}" />
+                            <p:column rowspan="2" headerText="ACTIONS" width="10%" rendered="#{(attestationCompagnieBean.idCompagnieU != null)?true:false}" />
+
+                        </p:growl>
+                        <p:row>
+                            <p:column headerText="NOM" />
+                            <p:column headerText="PRENOM" />
+                            <p:column headerText="MARQUE" />
+                            <p:column headerText="ENERGIE" />
+                            <p:column headerText="NUM CHASSIS" />
+                            <p:column headerText="PUISSANCE" />  
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column>
+                        <p:outputLabel value="#{demande.compagnie.abbreviation}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{demande.demandeAttestation.client.nom}"/>
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="#{demande.demandeAttestation.client.prenom}"/>
+                    </p:column>
+
+                    <p:column >
+                        <p:outputLabel value="#{demande.demandeAttestation.marque}"/>
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="#{demande.demandeAttestation.ennergie.libelleFr}"/>
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="#{demande.demandeAttestation.numChassi}"/>
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="#{demande.demandeAttestation.puissance}"/>
+                    </p:column>
+
+                    <p:column  rendered="#{(attestationCompagnieBean.idCompagnieU != null)?true:false}" >
+                        <p:cellEditor >
+                            <f:facet name="output" >
+                                <p:outputLabel id="VV" value="#{demande.cout}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText   value="#{demande.cout}"  >
+                                    <p:ajax event="keyup" update="VV"/>
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column rendered="#{(attestationCompagnieBean.idCompagnieU != null)?true:false}">
+
+                        <p:commandLink  title="Envoyer"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{attestationCompagnieBean.valider()}" class="btn-sm btn-danger danger glyphicon glyphicon-send" update="@form,sme" >
+                            <f:setPropertyActionListener target="#{attestationCompagnieBean.demandeEnvoyerA}" value="#{demande}" />
+                            <p:confirm header="Confirmation" message="Etes-vour sûr?" icon="ui-icon-alert" />
+                        </p:commandLink>
+                        <p:growl for="somekey" id="sme"/>
+                    </p:column>
+
+                </p:dataTable>
+               
+            </p:panel>
+            <p:panel rendered="#{(attestationPvBean.idCompagnieU != null)? true:false}" header="Liste des cautions  proposées"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+                <p:dataTable paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             emptyMessage="#{msg['tableau.vide']}"    paginatorPosition="bottom" value="#{attestationPvBean.demandeEnvoyerAList}"  var="demande">
+                    <p:columnGroup type="header">
+                        <p:growl>
+                            <p:column rowspan="2" headerText="COMPAGNIE" />
+                            <p:column colspan="2" headerText="INFORMATIONS DU CLIENT" />
+                            <p:column colspan="4" headerText="INFORMATIONS DU VEHICULE" />
+                            <p:column rowspan="2" headerText="CAUTION" width="13%" />
+                            <p:column rowspan="2" headerText="ACTIONS" width="15%" />
+
+                        </p:growl>
+                        <p:row>
+                            <p:column headerText="NOM" />
+                            <p:column headerText="PRENOM" />
+                            <p:column headerText="MARQUE" />
+                            <p:column headerText="ENERGIE" />
+                            <p:column headerText="NUM CHASSIS" />
+                            <p:column headerText="PUISSANCE" />  
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column>
+                        <p:outputLabel value="#{demande.compagnie.abbreviation}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{demande.demandeAttestation.client.nom}"/>
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="#{demande.demandeAttestation.client.prenom}"/>
+                    </p:column>
+
+                    <p:column >
+                        <p:outputLabel value="#{demande.demandeAttestation.marque}"/>
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="#{demande.demandeAttestation.ennergie.libelleFr}"/>
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="#{demande.demandeAttestation.numChassi}"/>
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="#{demande.demandeAttestation.puissance}"/>
+                    </p:column>
+
+                    <p:column  >
+                        <p:outputLabel value="#{demande.cout}"/>
+                    </p:column>
+                    <p:column>
+
+                        <p:commandLink title="Payer" rendered="#{(attestationPvBean.idCompagnieU != null)? false:true}" action="#{attestationPvBean.comptabilite()}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="btn-sm btn-sm sm glyphicon glyphicon-send" update="@form,vv" >
+                            <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert" />
+                            <f:setPropertyActionListener target="#{attestationPvBean.demandeEnvoyerA}" value="#{demande}" />
+
+                        </p:commandLink>
+                        <p:commandLink title="Rejeter" rendered="#{(attestationPvBean.idCompagnieU != null)? false:true}" action="#{attestationPvBean.deleteOne()}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="btn-sm btn-sm sm glyphicon glyphicon-trash" update="@form,vv" >
+                            <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert" />
+                            <f:setPropertyActionListener target="#{attestationPvBean.demandeEnvoyerA}" value="#{demande}" />
+
+                        </p:commandLink>
+                        <p:commandLink  title="Imprimer" class="btn-sm btn-sm sm glyphicon glyphicon-print"  action="#{attestationPvBean.doGetA()}"  target="/" ajax="false" >
+                            <f:setPropertyActionListener target="#{attestationPvBean.demandeEnvoyerA}" value="#{demande}" />
+
+                        </p:commandLink>
+                        <p:growl for="somekey" id="vv"/>
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+        <h:form id="f">
+            <p:remoteCommand name="newProposition"    process="f" partialSubmit="true"  actionListener ="#{attestationCompagnieBean.init()}" action="#{attestationPvBean.init()}"  update="vf" autoRun="false"/> 
+        </h:form>
+
+ <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                    <h:form>
+                        <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  />
+                        <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </h:form>
+                </p:confirmDialog>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+            </div>
+    </ui:composition>
+</html>

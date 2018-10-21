@@ -1,0 +1,257 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <h:form id="listCompagnieGarantieForm" class="form-horizontal">
+                    <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                    <div class="form-group">
+                        <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                            <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                                <fieldset> 
+                                    <legend class=""> <p:outputLabel value="#{msg['titre.listeDesCompagniesGaranties']}"></p:outputLabel></legend>
+
+                                    <div class="table-responsive">
+                                        <p:dataTable id="listCompagnieGarantie" class="table table-hover table-striped" rows="15" rowKey="#{comG.idCompagnieGarantieAsMrh}" 
+                                                     emptyMessage="#{msg['tableau.vide']}"
+                                                     paginator="true" paginatorPosition="bottom"  var="comG" value="#{compagnieGarantieAsMrhBean.listCompagnieGarantieAsMrh}" editable="true" editMode="cell" 
+                                                     selection="#{compagnieGarantieAsMrhBean.listCompagnieGarantieAsMrhSelected}" >
+                                            
+                                            <p:column  class="" headerText="#{msg['commission.compagnie']}" filterBy="#{comG.compagnie.designation}" >
+                                                <p:outputLabel value="#{comG.compagnie.designation}"/>
+                                            </p:column>
+                                            
+                                            <p:column  class="" headerText="#{msg['titre.categorie']}" filterBy="#{comG.garantieAsmrh.categorieAsMrh.designation}" >
+                                                <p:outputLabel value="#{comG.garantieAsmrh.categorieAsMrh.designation}"/>
+                                            </p:column>
+
+                                            <p:column  class="" headerText="#{msg['titre.garantie']}" filterBy="#{comG.garantieAsmrh.designation}" >
+                                                <p:outputLabel value="#{comG.garantieAsmrh.designation}"/>
+                                            </p:column>
+                                            <!-- Franchise -->
+                                            <p:column  class="" headerText="#{msg['titre.franchiseMinimalInitial']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="AA"  value="#{comG.franchiseMinimalInitial}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.franchiseMinimalInitial)}" >
+                                                            <p:ajax event="keyup" update="AA" />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.franchiseMinimalClassic']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="BB" value="#{comG.franchiseMinimalClassic}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.franchiseMinimalClassic)}" >
+                                                            <p:ajax event="keyup" update="BB" />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.franchiseMinimalIntegral']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="CC" value="#{comG.franchiseMinimalIntegral}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.franchiseMinimalIntegral)}" >
+                                                            <p:ajax event="keyup" update="CC" />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <!--Capital Garantie -->
+                                            <p:column  class="" headerText="#{msg['titre.capitalGarantieInitial']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="DD" value="#{comG.capitalGarantieInitial}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.capitalGarantieInitial)}" >
+                                                            <p:ajax event="keyup" update="DD" />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.capitalGarantieClassic']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="EE" value="#{comG.capitalGarantieClassic}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.capitalGarantieClassic)}" >
+                                                            <p:ajax event="keyup" update="EE" />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.capitalGarantieIntegral']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="FF"  value="#{comG.capitalGarantieIntegral}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.capitalGarantieIntegral)}" >
+                                                            <p:ajax event="keyup" update="FF" />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <!--Description -->
+                                            <p:column  class="" headerText="#{msg['titre.descriptionInitial']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="GG" value="#{comG.descriptionInitial}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.descriptionInitial)}" >
+                                                            <p:ajax event="keyup" update="GG" />
+
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.descriptionClassic']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="HH" value="#{comG.descriptionClassic}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.descriptionClassic)}" >
+                                                            <p:ajax event="keyup" update="HH" />
+
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.descriptionIntegral']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="II" value="#{comG.descriptionIntegral}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.descriptionIntegral)}" >
+                                                            <p:ajax event="keyup" update="II" />
+
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <!--Boolean Initial -->
+                                            <p:column  class="bg-purple3" style="text-align: center;" headerText="#{msg['titre.initial']}"  >
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="JJYes" class="#{comG.initial}" ><i class="fa fa-check text-green" /></p:outputLabel>
+                                                        <p:outputLabel id="JJNo" class="#{!comG.initial}" ><i class="fa fa-close text-red" /></p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input"> 
+                                                        <p:selectBooleanCheckbox value="#{comG.initial}" >
+                                                            <p:ajax update="JJYes,JJNo" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="bg-purple3" style="text-align: center;" headerText="#{msg['titre.classic']}"  >
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="KKYes" class="#{comG.classic}" ><i class="fa fa-check text-green" /></p:outputLabel>
+                                                        <p:outputLabel id="KKNo" class="#{!comG.classic}" ><i class="fa fa-close text-red" /></p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input"> 
+                                                        <p:selectBooleanCheckbox value="#{comG.classic}" >
+                                                            <p:ajax update="KKYes,KKNo" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="bg-purple3" style="text-align: center;" headerText="#{msg['titre.integral']}"  >
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="LLYes" class="#{comG.integral}" ><i class="fa fa-check text-green" /></p:outputLabel>
+                                                        <p:outputLabel id="LLNo" class="#{!comG.integral}" ><i class="fa fa-close text-red" /></p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input"> 
+                                                        <p:selectBooleanCheckbox value="#{comG.integral}" >
+                                                            <p:ajax update="LLYes,LLNo" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <!--Boolean Option -->
+                                            <p:column  class="bg-purple3" style="text-align: center;" headerText="#{msg['titre.optionInitial']}"  >
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="MMYes" class="#{comG.optionInitial}" ><i class="fa fa-check text-green" /></p:outputLabel>
+                                                        <p:outputLabel id="MMNo" class="#{!comG.optionInitial}" ><i class="fa fa-close text-red" /></p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input"> 
+                                                        <p:selectBooleanCheckbox value="#{comG.optionInitial}" >
+                                                            <p:ajax update="MMYes,MMNo" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="bg-purple3" style="text-align: center;" headerText="#{msg['titre.optionClassic']}"  >
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="NNYes" class="#{comG.optionClassic}" ><i class="fa fa-check text-green" /></p:outputLabel>
+                                                        <p:outputLabel id="NNNo" class="#{!comG.optionClassic}" ><i class="fa fa-close text-red" /></p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input"> 
+                                                        <p:selectBooleanCheckbox value="#{comG.optionClassic}" >
+                                                            <p:ajax update="NNYes,NNNo" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="bg-purple3" style="text-align: center;" headerText="#{msg['titre.optionIntegral']}"  >
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="OOYes" class="#{comG.optionIntegral}" ><i class="fa fa-check text-green" /></p:outputLabel>
+                                                        <p:outputLabel id="OONo" class="#{!comG.optionIntegral}" ><i class="fa fa-close text-red" /></p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input"> 
+                                                        <p:selectBooleanCheckbox value="#{comG.optionIntegral}" >
+                                                            <p:ajax update="OOYes,OONo" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+
+                                            <p:column headerText="#{msg['titre.selection']}" selectionMode="multiple" width="8%" style="text-align: center;" />
+                                        </p:dataTable>
+                                    </div>
+                                    <div class="btn-toolbar">
+                                        <p:commandButton class="btn-danger btn" value="#{msg['btn.annuller']}" update="@form" action="#{compagnieGarantieAsMrhBean.cancel()}" />
+                                        <p:commandButton class="btn-imprimer btn pull-right" value="#{msg['btn.modifier']}" update="@form" action="#{compagnieGarantieAsMrhBean.updateMultipleCompagnieGarantie()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                        <p:commandButton class="btn-imprimer btn pull-right" value="#{msg['btn.supprimer']}" update="@form" action="#{compagnieGarantieAsMrhBean.deleteMultipleCompagnieGarantie()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" >
+                                            <p:confirm icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </ui:composition>
+</html>

@@ -1,0 +1,94 @@
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.login-page{
+    background: #d2d6de;
+}
+
+/* ###################################DEBUT LOGIN-BOX#####################################*/
+.login-box{
+    /*border: 1px solid #673AB7;*/
+    width: 360px;
+    margin: 12% auto;
+    /*border-radius: 10px 10px 10px 10px ;*/
+}
+@media (max-width: 768px) {
+    .login-box{
+        width: 90%;
+        margin-top: 20px;
+    }
+}
+/* ###################################FIN LOGIN-BOX#####################################*/
+
+/* ###################################DEBUT LOGIN-BOX CONTENT #####################################*/
+.login-box-header{
+    padding: 10px;
+    /*margin: 5px;*/
+    background: #673AB7;
+    border-top-left-radius: 5px;
+    border-top-right-radius:    5px;
+}
+
+.login-box-body{
+    padding: 27px;
+    background: #fff;
+
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.login-logo,
+.installation-logo {
+    font-size: 35px;
+    text-align: center;
+    margin-bottom: auto;
+    font-weight: 300;
+}
+.login-logo a,.installation-logo a,.login-logo a:hover,.installation-logo a:hover {
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.login-box-msg,
+.register-box-msg {
+    margin: 0;
+    text-align: center;
+    padding: 0 20px 20px 20px;
+}
+
+.form-control:focus{
+    border-color:  #673AB7;
+}
+.btn-connexion{
+    background:#311B92;
+    border-color: #673AB7;
+    border-radius : 5px 5px 5px 5px;
+    -webkit-border-radius:5px 5px 5px 5px;
+    color:#fff;
+    font-size:15px;
+}
+.text-connexion{
+    color: #673AB7;
+}
+
+.btn-connexion:hover,
+.btn-connexion:focus,
+.btn-connexion.focus,
+.btn-connexion:active,
+.btn-connexion.active,
+.open > .dropdown-toggle.btn-connexion {
+    color: #fff;
+    background: #673AB7;
+    border-color: #311B92;
+} 
+/* ###################################DEBUT LOGIN-BOX CONTENT #####################################*/

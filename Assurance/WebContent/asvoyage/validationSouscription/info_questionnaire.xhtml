@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <p:outputPanel id="questionnaireFormConfirm">
+            <!--div class="panel-heading bg-purple"><h3 class="panel-title">Réponses aux questions</h3> </div-->
+            <div class="panel-body">
+                <div class="table-responsive ">
+                    <table class="table table-bordered table-condensed table-striped table-police ">
+                        <thead class="text-center bg-gray text-uppercase text-purple text-bold ">
+                            <td>#{msg['titre.numero']}</td>
+                            <td>#{msg['titre.questions']}</td>
+                            <td >#{msg['titre.reponses']}</td>
+                        </thead>
+                        <tbody >
+                            <tr>
+                                <td>1</td>
+                                <td>titre.question.un</td>
+                                <td class="text-center"> <p:outputLabel id="crq1" value="#{validationSouscriptionAsVoyage.assuranceVoyage.question_1}" class=""/></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>titre.question.deux</td>
+                                <td class="text-center"><p:outputLabel id="crq2" value="#{validationSouscriptionAsVoyage.assuranceVoyage.question_2}" class=""/></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>titre.question.trois</td>
+                                <td class="text-center"><p:outputLabel id="crq3" value="#{validationSouscriptionAsVoyage.assuranceVoyage.question_3}" class=""/></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>titre.question.quatre</td>
+                                <td class="text-center"><p:outputLabel id="crq4" value="#{validationSouscriptionAsVoyage.assuranceVoyage.question_4}" class=""/></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>titre.question.cinq</td>
+                                <td class="text-center"><p:outputLabel id="crq5" value="#{validationSouscriptionAsVoyage.assuranceVoyage.question_5}" class=""/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!--ol class="">
+                        <li class="">Etes-vous actuellement en bonne santé</li>
+
+                        <p:outputLabel id="crq1" value="#{validationSouscriptionAsVoyage.assuranceVoyage.question_1}" class="form-control"/>
+
+                        <li class="">Avez-vous un défaut de constitution, une infirmité ou une maladie chronique ? Si oui précisez sa nature</li>
+
+                        <p:outputLabel id="crq2" value="#{validationSouscriptionAsVoyage.assuranceVoyage.question_2}" class="form-control"/>
+
+                        <li class=""> Avez-vous dans le passé (à quel âge) été atteint d'affection pulmonaire, nerveuse,cardiaque,rénale, d'albumine, de diabète,maladie de fois, cancer, d'anémie, d'hépatite infectueuse grave ?</li>
+
+                        <p:outputLabel id="crq3" value="#{validationSouscriptionAsVoyage.assuranceVoyage.question_3}" class="form-control"/>
+
+                        <li class="">Suivez-vous actuellement un traitement ?</li>
+                        <p:outputLabel id="crq4" value="#{validationSouscriptionAsVoyage.assuranceVoyage.question_4}" class="form-control"/>
+
+                        <li class="">Indiquez vos maladies antérieures et l'époque à laquelle vous les avez contractées ?</li>
+
+                        <p:outputLabel id="crq5" value="#{validationSouscriptionAsVoyage.assuranceVoyage.question_5}" class="form-control"/>
+                    </ol-->
+                </div>
+            </div>
+        </p:outputPanel>
+    </ui:composition>
+</html>

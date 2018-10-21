@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <p:outputPanel id="ajout" style="text-align:center;">
+                    <h:form class="form-horizontal" id="devise-ajout" > 
+                        <!--p:messages id="msgs" showDetail="false" closable="true" autoUpdate="true" /-->
+                        <p:messages id="msgs" globalOnly="true" closable="true" showDetail="false" autoUpdate="true">
+                            <p:effect type="pulsate" event="load" delay="200" speed="300">
+                                <f:param name="mode" value="show" />
+                            </p:effect>
+                        </p:messages>
+
+
+                        <div class="form-group">
+                            <div class="col-lg-12 col-sm-12 col-md-12 col-xm-12">
+                                <h:outputLabel for="ajoutLibelle" class=" police_label pull-left" value="#{msg['comptabilite.compte.libelle']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+
+                                <p:inputText id="ajoutLibelle" required="true" 
+                                             value="#{comptesBean.libelleCompte}" class="form-control" placeholder="#{msg['comptabilite.compte.libelle']}"
+                                             >                            
+                                </p:inputText>
+                                <h:message for="ajoutLibelle"  id="libelleMessage" class="errorClass" />
+                            </div>
+
+                            <div class="col-lg-3 ">
+                                <h:outputLabel for="typcompte" value="#{msg['comptabilite.compte.type']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                <h:selectOneMenu id="typcompte"  class="form-control" value="#{comptesBean.typeCompteSelected}"                                    >
+                                    <f:selectItems value="#{comptesBean.allTypeComptes}" var="typ" itemLabel="#{typ.libelle}" itemValue="#{typ}" />
+                                    
+                                </h:selectOneMenu>
+
+                            </div>
+                            
+
+
+                        </div>
+                        <div class="form-group">
+                           <div class="col-lg-12 col-sm-8 col-xs-8">
+                               <h:outputLabel for="console" value="#{msg['comptabilite.compte.typetiers']}" class="pull-left text-left"/>
+                               <p:selectOneRadio id="console" required="true" value="#{comptesBean.console}" requiredMessage="#{msg['compagnie.typetiers.requiredMessage']}">
+                                    <f:selectItem itemLabel="#{msg['titre.compagnie']}" itemValue="compagnie" />
+                                    <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue="courtier" />
+                                    <f:selectItem itemLabel="#{msg['titre.pdv']}" itemValue="pointVente" />
+                                    <p:ajax listener="#{comptesBean.listTiers()}" update="comp,court,pvt" />
+                                </p:selectOneRadio>
+
+                            </div>
+                            <div class="col-lg-3 ">
+                                <h:outputLabel for="comp" value="#{msg['titre.compagnie']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                <h:selectOneMenu id="comp" disabled="#{comptesBean.disableCompagnie}"  class="form-control" value="#{comptesBean.compagnieSelected}" >
+                                    <f:selectItems value="#{comptesBean.allCompagnie}" var="comp" itemLabel="#{comp.designation}" itemValue="#{comp}" />
+                                </h:selectOneMenu>
+
+                            </div>
+                            <div class="col-lg-3 ">
+                                <h:outputLabel for="court" value="#{msg['titre.courtier']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                <h:selectOneMenu id="court" disabled="#{comptesBean.disableCourtier}"  class="form-control" value="#{comptesBean.courtierSelected}" >
+                                    <f:selectItems value="#{comptesBean.allCourtier}" var="c" itemLabel="#{c.designation}" itemValue="#{c}" />
+                                </h:selectOneMenu>
+
+                            </div>
+                            <div class="col-lg-3 ">
+                                <h:outputLabel for="pvt"  value="#{msg['titre.pdv']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                <h:selectOneMenu id="pvt" disabled="#{comptesBean.disablePointsVente}" class="form-control" value="#{comptesBean.pointVenteSelected}" >
+                                    <f:selectItems value="#{comptesBean.allPointsVente}" var="pv" itemLabel="#{pv.designation}" itemValue="#{pv}" />
+                                </h:selectOneMenu>
+
+                            </div> 
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-3 ">
+                                <h:outputLabel for="devise" value="#{msg['titre.devise']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                <h:selectOneMenu  id="devise" label="Devise" class="form-control" value="#{comptesBean.deviseSelected}">
+                                    <f:selectItems value="#{comptesBean.allDevises}" var="dv" itemLabel="#{dv.libelle}" itemValue="#{dv}"/>
+                                </h:selectOneMenu>
+
+                                <p:message for="devise"  id="deviseMessage" class="errorClass" />
+                            </div>
+                            <div class="col-lg-3">
+                                <h:outputLabel for="soldeinitial" class=" police_label pull-left" value="#{msg['solde.initial']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                <p:inputText id="soldeinitial" required="true" 
+                                             value="#{comptesBean.solde}" class="form-control" placeholder="#{msg['solde.initial']}" 
+                                             >                            
+                                </p:inputText>              
+                            </div> 
+
+                        </div>
+
+                    </h:form>
+
+                </p:outputPanel>
+            </div>
+        </div>
+
+
+        <!-- Fin du dialogue--> 
+
+
+
+    </ui:composition> 
+
+</html>
+

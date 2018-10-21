@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <div class="panel">
+
+            <div class="panel-body">
+                <ui:include src="infos_comcour.xhtml"/>
+                <fieldset><legend class="text-uppercase" ><h:outputLabel  value="#{msg['compagnie.liste']}"/></legend>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:outputPanel id="tt">
+                                        <h:outputLabel for="pss" value="#{msg['titre.compagnie']}"/><h:outputLabel id="etoile" rendered="#{souscriptionAsMrhBean.listAssuranceMrh.size() gt 0 ?false:true}" value="*" class="etoile_rouge"/>
+                                    </p:outputPanel>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:selectOneMenu  class="form-control" required="#{souscriptionAsMrhBean.listAssuranceMrh.size() gt 0 ?false:true}" requiredMessage="#{msg['courtier.compagnie.requireMessage']}" converter="entityConverter"  id="pss" value="#{souscriptionAsMrhBean.compagnie}"  >
+                                        <f:selectItem noSelectionOption="true" itemLabel="#{msg['compagnie.requiredMessage']}" /> 
+                                        <f:selectItems value="#{souscriptionAsMrhBean.listCompagnie}" var="compagnie"
+                                                       itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                        <f:ajax event="click" render="pssMessage" />
+                                        <p:ajax   listener="#{souscriptionAsMrhBean.listCourtierByCompagnie()}"  update="formliste:display2,formliste:courtierp"/>
+
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:message for="pss"  id="pssMessage" class="errorClass" />
+                                </div>  
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                            <p:outputPanel id="display22" >
+                                <div class="table-responsive">
+                                    <p:dataTable class="table table-striped table-bordered table-condensed " var="compcour" id="display2" reflow="true" rows="5" value="#{souscriptionAsMrhBean.listAssuranceMrh}"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                 rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg[tableau.vide]}" rowKey="#{compcour.compagnie.idCompagnie}"  >                                                    
+                                        <p:column headerText="#{msg['titre.compagnie']}">
+                                            <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                                        </p:column>
+
+                                        <p:column headerText="#{msg['titre.courtier']}">
+                                            <h:outputText value="#{compcour.courtier.abbreviation}" />
+                                        </p:column >
+
+                                        <p:column headerText="#{msg['titre.actions']}">
+
+                                            <p:commandButton immediate="true" icon="fa fa-trash" update="formliste" action="#{souscriptionAsMrhBean.removeCompagnieCourtierFromList()}" title="#{msg['btn.supprimer']}" class="btn btn-danger">
+                                                <f:setPropertyActionListener value="#{compcour}" target="#{souscriptionAsMrhBean.assuranceMrhSelect}" />
+                                            </p:commandButton>
+
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </p:outputPanel>
+
+                        </div>
+                    </div>
+                </fieldset>
+
+                <p:dialog   id="courtierp" header="#{msg['courtier.requireMessage']}" showEffect="fade"  widgetVar="courtier" modal="true" width="625" minHeight="800" resizable="false">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label >#{msg['titre.courtier']}</label><h:outputLabel value="*" class="etoile_rouge  text-left"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  required="true" id="courtier"  value="#{souscriptionAsMrhBean.courtier}" converter="omnifaces.SelectItemsConverter"
+                                                  requiredMessage="#{msg['pv.courtier.requireMessage']}"  class="form-control" >
+                                    <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""/>
+                                    <f:selectItems itemLabel="#{courtier.designation}" var="courtier"  itemValue="#{courtier}" value="#{souscriptionAsMrhBean.listCourtier}"  />
+                                    <p:ajax event="click" update="courtierMessage"/>
+                                </h:selectOneMenu>
+                                <h:message for="courtier"  id="courtierMessage" class="errorClass" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                <h:message id="courMessage" for="courtier"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="btn-toolbar">
+                            <p:commandButton value="#{msg['btn.valider']}" class="btn-purple btn pull-right" action="#{souscriptionAsMrhBean.addCompagnieCourtierToList()}" oncomplete="PF('courtier').hide()" update="formliste:display2,pss,tt" />
+                        </div>
+                    </div>
+
+
+                </p:dialog>
+
+            </div> 
+        </div>
+
+
+    </ui:composition>
+</html>

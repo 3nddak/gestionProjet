@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+
+        <p:panel header="Informations sur le sinistre"  toggleable="true" collapsed="false">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel value="Numero de dossier :"/>
+                <h:outputText  value="#{fichierclientBean.sinistreautoSelected.numeroDossier}"/>
+                <p:outputLabel value="Numero de compte :"/>
+                <h:outputText  value="#{fichierclientBean.sinistreautoSelected.numeroCompte}"/>
+                <p:outputLabel value="Assureur :"/>
+                <h:outputText  value="#{fichierclientBean.sinistreautoSelected.assurance.compagnie.abbreviation}"/>
+                <p:outputLabel value="Date incident:"/>
+                <h:outputText  value="#{fichierclientBean.sinistreautoSelected.dateIncident}"/>
+                <p:outputLabel value="Date de declaration :"/>
+                <h:outputText  value="#{fichierclientBean.sinistreautoSelected.dateDeclaration}"/>
+
+
+            </p:panelGrid>
+            <p:outputLabel value="Message :"/>
+            <p:panel >
+                <p  title="Message" >
+                   #{fichierclientBean.sinistreautoSelected.message}
+                </p>
+
+            </p:panel>
+
+        </p:panel>
+        <p:panel header="Fichier"  toggleable="true" collapsed="true">
+            <ui:include src="medialist.xhtml"/>
+        </p:panel>
+        
+    </ui:composition>
+
+</html>

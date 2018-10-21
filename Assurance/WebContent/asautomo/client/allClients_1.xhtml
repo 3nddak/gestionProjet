@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+        <div class="container-fluid">
+            <div id="liste" class="row">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                    <div class="panel">
+                        <h:form  id="formliste2" class="form-horizontal">
+                            <div class="panel-heading"> 
+                                <fieldset>
+                                    <legend class="text-center text-uppercase"><p:outputLabel value="#{msg['client.gestion']}" ></p:outputLabel></legend>
+
+                                </fieldset>
+                            </div><br/> 
+
+                            <div class="form-group">
+                                <div class="col-md-6 col-lg-3 col-sm-12"> 
+                                    <h:outputLabel  value="#{msg['client.type']}"  for="typeClient" class="pull-left" />
+                                    <h:selectOneMenu id="typeClient" value="#{clientBean.client.type}" title="#{msg['client.type']}"  class="form-control" >
+                                        <f:selectItem itemValue="1" itemLabel="#{msg['client.type.physique']}"/>
+                                        <f:selectItem itemValue="2" itemLabel="#{msg['client.type.morale']}"/> 
+                                        <p:ajax listener="#{clientBean.rechercher()}" update="table" />
+                                    </h:selectOneMenu>
+
+                                </div> 
+                                <div class="col-md-6 col-lg-3 col-sm-12"> 
+                                    <h:outputLabel  value="#{msg['client.nom']}"  for="nom" class=" pull-left" />
+                                    <p:inputText value="#{clientBean.client.nom}"  
+                                                 id="nom" class="form-control" placeholder="#{msg['client.nom']}">
+                                    </p:inputText>
+                                </div> 
+                                <div class="col-md-6 col-lg-3 col-sm-12"> 
+                                    <h:outputLabel  value="#{msg['client.prenom']}"  for="prenom" class=" pull-left" />
+                                    <p:inputText value="#{clientBean.client.prenom}"  id="prenom" styleClass="form-control" placeholder="#{msg['client.prenom']}"
+                                                 >
+
+                                    </p:inputText>  
+
+                                </div>
+                           
+
+                            </div>
+
+                            <br/> 
+                            <div class="form-group">
+
+                  
+
+                                <div class="col-md-6 col-lg-3 col-sm-12"> 
+
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                                        <h:outputLabel  value="#{msg['client.pays']}"  for="designationPays" class="police_label pull-left" style=""/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                                        <p:autoComplete id="designationPays"  class="pull-left" value="#{clientBean.client.pays}" forceSelection="true"  completeMethod="#{objetBean.completeMethod}"  >
+
+                                        </p:autoComplete>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 col-lg-3 col-sm-12"> 
+                                    <h:outputLabel  value="#{msg['client.lieudenaissance']}"  for="lieunaissance" class=" pull-left" />
+                                    <p:inputText value="#{clientBean.client.lieuNaissance}" id="lieunaissance" styleClass="form-control" placeholder="#{msg['client.lieudenaissance']}"/>
+                                </div>
+
+                                <div class="col-md-6 col-lg-3 col-sm-12"> 
+                                    <h:outputLabel  value="#{msg['client.datedenaissance']}"   for="dateNaissance" class=" pull-left" />
+
+                                    <p:calendar id="dateNaissance"  pattern="dd-MM-yyyy" value="#{clientBean.client.dateNaissance}"  mask="true" placeholder="#{msg['client.datedenaissance']}" >
+                                        <f:convertDateTime pattern="dd-MM-yyyy"  type="date"/>
+
+                                    </p:calendar>
+
+                                </div>
+                            </div> 
+
+                            <div class="form-group">
+
+                                <div class="col-md-6 col-lg-3 col-sm-12"> 
+                                    <h:outputLabel  value="#{msg['client.nationalite']}"  for="nationalite" class=" pull-left" />
+                                    <p:inputText value="#{objetBean.nationalite}" id="nationalite" styleClass="form-control" placeholder="#{msg['client.nationalite']}" />
+                                </div>
+
+                                <div class="col-md-6 col-lg-3 col-sm-12"> 
+                                    <h:outputLabel  value="#{msg['client.piece']}"  for="piece" class=" pull-left" />
+                                    <h:selectOneMenu id="piece" value="#{clientBean.client.typePiece}"   class="form-control"
+                                                     >
+                                        <f:selectItem itemValue="" itemLabel="#{msg['client.piece']}"/> 
+                                        <f:selectItem itemValue="#{msg['client.piece.carte']}" itemLabel="#{msg['client.piece.carte']}"/>
+                                        <f:selectItem itemValue="#{msg['client.piece.passport']}" itemLabel="#{msg['client.piece.passport']}"/>
+                                        <f:selectItem itemValue="#{msg['client.piece.permis']}" itemLabel="#{msg['client.piece.permis']}"/>
+                                        <f:selectItem itemValue="#{msg['client.piece.autre']}" itemLabel="#{msg['client.piece.autre']}"/>
+
+                                    </h:selectOneMenu>
+
+                                </div> 
+
+                                <div class="col-md-6 col-lg-3 col-sm-12"> 
+                                    <h:outputLabel  value="#{msg['client.numeropiece']}" for="numpiece" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                    <p:inputText value="#{clientBean.client.numeroPiece}" id="numpiece" styleClass="foobjetBean.numeroPiecerm-control" placeholder="#{msg['client.numeropiece']}"
+                                                 >
+                                    </p:inputText> 
+
+                                </div>
+                              
+
+                            </div> 
+                            
+                            
+                            <p:fieldset legend="#{msg['client.liste']}" style="margin-bottom:2px">  
+                                <p:dataTable id="table" var="client" rowExpandMode="single" rowStyleClass="#{clientBean.filteredClient.size() eq 0 ?hidden:null}" rowKey="#{client.idClient}" value="#{clientBean.allClient}" widgetVar="clientsTable"
+                                             emptyMessage="Aucun client avec ces critères" filteredValue="#{clientBean.filteredClient}">
+                                   <f:facet name="header">
+                                        <p:outputPanel>
+                                            <h:outputText value="Recherche d'un client:" />
+                                            <p:inputText id="globalFilter" onkeyup="PF('clientsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+                                    <p:column style="width:50px">
+
+                                        <p:rowToggler/>
+                                    </p:column>
+                                    <p:column  filterBy="#{client.nom}" headerText="#{msg['client.nom']}" footerText="#{msg['client.nom']}" filterMatchMode="contains">
+                                        <h:outputText value="#{client.nom}" />
+                                    </p:column>
+                                    <p:column filterBy="#{client.prenom}" headerText="#{msg['client.prenom']}" footerText="#{msg['client.prenom']}" filterMatchMode="contains">
+                                        <h:outputText value="#{client.prenom}" />
+                                    </p:column>                                  
+                                    <p:column filterBy="#{client.pays}" headerText="#{msg['client.pays']}" footerText="#{msg['client.pays']}" filterMatchMode="contains">
+                                        <h:outputText value="#{client.pays}" />
+                                    </p:column>
+                                    <p:column filterBy="#{client.adresse}" headerText="#{msg['client.adresse']}" footerText="#{msg['client.adresse']}" filterMatchMode="contains">
+                                        <h:outputText value="#{client.adresse}" />
+                                    </p:column>
+
+                                    <p:rowExpansion >
+                                        <div class="form-group">
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.type']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.fax}"  />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.nom']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.nom}"  />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.prenom']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.prenom}"  />
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.lieuemission']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.lieuEmission}"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.bp']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.codeZip}"  />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.email']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.email}"  />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+
+
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.pays']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.pays}" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.lieudenaissance']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.lieuNaissance}"  />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.datedenaissance']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.dateNaissance}"  />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.nationalite']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.nationalite}"  />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.adresse']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.adresse}"/> 
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.piece']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.typePiece}"  />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.numeropiece']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.numeroPiece}"  />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.dateemissionpiece']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.dateEmissionPiece}"  />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['client.dateexpirationpiece']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.dateExpirationPiece}" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group hide">
+
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="Pseudo"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.pseudo}"  />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="Password"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control"  value="#{client.password}" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </p:rowExpansion>
+
+                                </p:dataTable>
+                            </p:fieldset>
+                        </h:form>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+
+</html>
+

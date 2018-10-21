@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['client.souscription']}"></p:outputLabel></legend>
+            </fieldset>
+            <h:form id="formliste" class="form-horizontal ">
+                <p:growl id="msgsAux"  globalOnly="true"  severity="info,warn"/>   
+                <!--  <p:wizard flowListener="">-->
+                <p:wizard   flowListener="#{objetBean.onFlowProcess2}"  nextLabel="#{msg['btn.suivant']}" backLabel="#{msg['btn.prescedent']}" >
+                    <p:tab id="personal"  title="#{msg['client.title']}" class="police_label">
+                        <p:growl id="test"  globalOnly="true"  severity="info,warn"/>
+
+                        <div class="panel">
+                            <div class="panel-body">
+                                <div class="panel-body">
+                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                        <h:outputLabel  value="Non propriétaire"  for="tll5" class=" pull-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:selectBooleanCheckbox id="tll5"  value="#{objetBean.nonProprietaire}"  class="pull-left" >
+                                            <p:ajax update="formliste" />
+                                        </p:selectBooleanCheckbox>
+                                    </div>
+                                    
+                                    <div id ='mlk' class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{objetBean.nonProprietaire}" value="#{msg['client.nom']}"  for="nombr" class=" pull-left" /><h:outputLabel rendered="#{objetBean.nonProprietaire}" value="*" class="etoile_rouge pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText rendered="#{objetBean.nonProprietaire}" value="#{objetBean.nomBeneficiaire}" required="true"  requiredMessage="#{msg['client.nom.requiredMessage']}" 
+                                                         id="nombr" class="form-control" placeholder="#{msg['client.nom']}">
+                                                <p:ajax event="keyup" update="nomMessagebr"/>
+                                            </p:inputText>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message for="nombr"  id="nomMessagebr" class="errorClass" />
+                                        </div> 
+                                    </div>
+                                    <div id ='mlk2' class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{objetBean.nonProprietaire}"  value="#{msg['client.prenom']}"  for="prenombr" class=" pull-left" /><h:outputLabel value="*" rendered="#{objetBean.nonProprietaire}" class="etoile_rouge pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText rendered="#{objetBean.nonProprietaire}" value="#{objetBean.prenomBeneficiaire}"  id="prenombr" styleClass="form-control" placeholder="#{msg['client.prenom']}"
+                                                         requiredMessage="#{msg['client.prenom.requiredMessage']}" >
+                                                <p:ajax  event="keyup" update="prenomMessagebr"/>
+                                            </p:inputText>  
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message  id="prenomMessagebr" for="prenombr"/>
+                                        </div>
+                                    </div>
+                                    <div id ='mlk22' class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{objetBean.nonProprietaire}"  value="#{msg['client.tel']}"  for="telnombr" class=" pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText rendered="#{objetBean.nonProprietaire}" value="#{objetBean.telBeneficiaire}"  id="telnombr" styleClass="form-control" placeholder="#{msg['client.tel']}"
+                                                         requiredMessage="#{msg['client.tel.requiredMessage']}" >
+                                                <p:ajax  event="keyup" update="telMessagebr"/>
+                                            </p:inputText>  
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message  id="telMessagebr" for="telnombr"/>
+                                        </div>
+                                    </div>
+                                    <div id ='mlk23' class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{objetBean.nonProprietaire}"  value="#{msg['client.profession']}"  for="profnombr" class=" pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText rendered="#{objetBean.nonProprietaire}" value="#{objetBean.professionBeneficiaire}"  id="profnombr" styleClass="form-control" placeholder="#{msg['client.profession']}"
+                                                         requiredMessage="#{msg['client.profession.requiredMessage']}" >
+                                                <p:ajax  event="keyup" update="profMessagebr"/>
+                                            </p:inputText>  
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message  id="profMessagebr" for="profnombr"/>
+                                        </div>
+                                    </div>
+                                    <div id ='mlk23' class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{objetBean.nonProprietaire}"  value="#{msg['client.numeropiece']}"  for="numpnombr" class=" pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText rendered="#{objetBean.nonProprietaire}" value="#{objetBean.numPieceBeneficiaire}"  id="numpnombr" styleClass="form-control" placeholder="#{msg['client.numeropiece']}"
+                                                         requiredMessage="#{msg['client.numeropiece.requiredMessage']}" >
+                                                <p:ajax  event="keyup" update="numpMessagebr"/>
+                                            </p:inputText>  
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message  id="numpMessagebr" for="numpnombr"/>
+                                        </div>
+                                    </div>
+                                    <div id ='mlk23' class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{objetBean.nonProprietaire}"  value="#{msg['client.adresse']}"  for="adrnombr" class=" pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText rendered="#{objetBean.nonProprietaire}" value="#{objetBean.adresseBeneficiaire}"  id="adrnombr" styleClass="form-control" placeholder="#{msg['client.adresse']}"
+                                                         requiredMessage="#{msg['client.numeropiece.requiredMessage']}" >
+                                                <p:ajax  event="keyup" update="adrMessagebr"/>
+                                            </p:inputText>  
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message  id="adrMessagebr" for="adrnombr"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <fieldset> <legend class="text-uppercase small" ><h:outputLabel value="#{msg['client.title']}" /></legend>
+                                    <legend class="text-uppercase small" ><h:outputLabel value="Option" />
+                                        <p:selectOneRadio  id="cons" value="#{objetBean.option}" requiredMessage="#{msg['client.option.requiredMessage']}">
+                                            <f:selectItem  itemLabel="#{msg['client.choisir']}"  itemValue="choix" />
+                                            <f:selectItem itemLabel="#{msg['client.creer']}"  itemValue="creation" />
+                                            <p:ajax listener="#{objetBean.choixOperation()}" update="choix,creation"/>
+                                        </p:selectOneRadio>
+                                    </legend>
+                                    <p:fieldset id="creation" class="#{objetBean.hideAjoutClientForm} panel-border-none" >
+                                        <p:panel  rendered="#{objetBean.hideAjoutClientForm}" class="panel-border-none">
+
+                                            <ui:include src="client_ajout.xhtml"/>
+
+                                        </p:panel>
+                                    </p:fieldset>
+
+                                    <p:fieldset id="choix"  class="#{!objetBean.hideAjoutClientForm} panel-border-none">
+                                        <ui:include src="client_choix.xhtml"/>
+
+                                    </p:fieldset>
+
+                                </fieldset>
+                            </div>
+                        </div>
+                    </p:tab>
+
+                    <p:tab  id="CategorieGaranties" title="#{msg['souscription.auto.tab.categorie']}  ">
+
+                        <div class="panel">
+                            <div class="panel-body">
+                                <ui:include src="categorieGaranties.xhtml"/>
+                            </div>
+                        </div>
+                    </p:tab>
+                    <p:tab class="" id="vehicule" title=" #{msg['souscription.auto.tab.vehicule']}">
+
+                        <ui:include src="voiture_ajout.xhtml"/>
+
+                    </p:tab>
+
+                    <p:tab  id="garanties" title="#{msg['souscription.auto.tab.compagnie']}">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <p:messages />
+                                <ui:include src="garanties.xhtml"/>
+                            </div>
+                        </div>
+                    </p:tab>
+
+                    <p:tab id="confirm" title="#{msg['btn.confirmation']}">
+                        <fieldset><legend>#{msg['btn.confirmation']}</legend>
+
+                            <p:panel header="#{msg['message.client.titre']}"  toggleable="true" collapsed="false">
+
+                                <p:panelGrid class="table" columns="6">
+
+                                    <p:outputLabel for="nom2" value="Souscripteur :"/>
+                                    <h:outputText id="nom2" value="#{objetBean.clientSelected.nom} #{objetBean.nom}"/>
+                                    <p:outputLabel for="tel2" value="Téléphone :"/>
+                                    <h:outputText id="tel2" value="#{objetBean.clientSelected.telephoneMobile} #{objetBean.telephoneMobile}"/>
+                                    <p:outputLabel for="addresse2" value="Adresse :"/>
+                                    <h:outputText id="addresse2" value="#{objetBean.clientSelected.adresse} #{objetBean.adresse}"/>
+
+
+                                </p:panelGrid>
+
+                            </p:panel>
+                            <p:panel header="CARACTERISTIQUES DU VEHICULE"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                                <p:panelGrid columns="8" class="table">
+
+                                    <p:outputLabel for="imm" value="Immatriculation :"/>
+                                    <h:outputText id="imm" value="#{objetBean.voiture.numeroImmatriculation}"/>
+                                    <p:outputLabel for="pui2" value="Puissance :"/>
+                                    <h:outputText id="pui2" value="#{objetBean.voiture.puissance}"/>
+                                    <p:outputLabel for="puiR" value="Puissance Reelle :"/>
+                                    <h:outputText id="puiR" value="#{objetBean.voiture.puissanceReelle}"/>
+                                    <p:outputLabel for="vn2" value="Valeur neuve :"/>
+                                    <h:outputText id="vn2" value="#{objetBean.voiture.valeurNeuve}">
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                    </h:outputText>         
+                                    <p:outputLabel  for="vn12" value="Valeur Venale:"/>
+                                    <h:outputText class="text-right" id="vn12" value="#{objetBean.voiture.valeurvenale}">
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                    </h:outputText>    
+                                    <p:outputLabel for="ma2" value="Marque :"/>
+                                    <h:outputText id="ma2" value="#{objetBean.voiture.marque}"/>
+                                    <p:outputLabel for="tm2" value="Type marque:"/>
+                                    <h:outputText id="tm2" value="#{objetBean.voiture.typeMarqueVehicule}"/>
+                                    <p:outputLabel for="en2" value="Energie :"/>
+                                    <h:outputText id="en2" value="#{objetBean.energ.libelleFr}"/>
+                                    <p:outputLabel for="ge2" value="Genre :"/>
+                                    <h:outputText id="ge2" value="#{objetBean.voiture.genre}"/>
+                                    <p:outputLabel for="ty2" value="Type Vitre:"/>
+                                    <h:outputText id="ty2" value="#{objetBean.voiture.typeVitre}"/>
+                                    <p:outputLabel for="np2" value="Nombre de place :"/>
+                                    <h:outputText id="np2" value="#{objetBean.voiture.nombrePlaces}"/>
+                                    <p:outputLabel  for="numc2" value="Numero chassis :"/>
+                                    <h:outputText class="text-right" id="numc2" value="#{objetBean.voiture.numChassis}"/>
+                                    <p:outputLabel  for="numm2" value="Numero moteur :"/>
+                                    <h:outputText class="text-right" id="numm2" value="#{objetBean.voiture.numMoteur}"/>
+
+                                    <p:outputLabel for="dm2a" value="Date de Mise En circulation:"/>
+                                    <h:outputText class="text-right" id="dm2a" value="#{objetBean.formatDate(objetBean.voiture.miseEnCirculation)}"/>
+
+
+                                </p:panelGrid>
+
+                            </p:panel>
+                            <p:panel header="GARANTIES SELECTIONNEES"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                                <p:dataGrid  value="#{objetBean.selectedObjetGuaranties}" var="guarantie" columns="4" layout="grid" class="table"> 
+
+                                    #{guarantie.symbole}
+                                </p:dataGrid>
+                            </p:panel>
+                            <p:panel header="COMPAGNIES CHOISIES"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+                                <div class="table-responsive">
+                                    <p:dataTable class="table table-bordered " var="factur" reflow="true" rows="5" value="#{objetBean.facturesList}"> 
+
+
+                                        <p:column headerText="#{msg['titre.compagnie']}">
+                                            <h:outputText value="#{factur.compagnie.abbreviation}" />
+                                        </p:column>
+
+                                        <p:column headerText="#{msg['titre.courtier']}">
+                                            <h:outputText value="#{factur.courtier.abbreviation}" />
+                                        </p:column >
+
+                                    </p:dataTable>
+                                </div>
+
+                            </p:panel>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                    <p:commandButton value="#{msg['btn.enregistrer']}" update="formliste" action="#{objetBean.enregistrerSouscription()}" onstart="PF('loadProcess').block()" oncomplete="PF('loadProcess').unblock(),PF('modifier').show()" class="btn btn-success btn-xs pull-right"/>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <fieldset> <legend>Simulation</legend>
+                            <ui:include src="simulation.xhtml"/>
+                        </fieldset>
+                    </p:tab>
+                </p:wizard>
+
+
+            </h:form>
+        </div>
+        <pe:blockUI widgetVar="loadProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>   
+            </h:panelGrid>  
+        </pe:blockUI>  
+    </ui:composition>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <ui:composition>
+ <p:outputPanel id="societe">
+        <div class="container-fluid">
+            <div id="liste" class="row-fluid">
+
+                <div class="panel">
+                    <div class="panel-heading"> 
+                        <p:fieldset legend="#{msg['societe.titre.ajouter']}" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                            <ui:include src="societe_ajout.xhtml"/>
+                        </p:fieldset>
+                    </div>
+                    <h:form  id="formliste">
+                        <div class="panel panel-body">
+
+                           
+                                <p:fieldset style="margin-bottom:20px" legend="#{msg['societe.liste']}">
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <p:dataTable class="table_label" value="#{societeBean.allSociete}"  var="societe" rowExpandMode="single" rowKey="#{societe.idCompagnie}"  id="societeliste" rows="5"  
+                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                    emptyMessage="#{msg['tableau.vide']}" paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" > 
+                                            
+                                            <f:facet name="{Exporters}">
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/excel.png" width="24"/>
+                                                    <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/pdf.png" width="24"/>
+                                                    <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/csv2.png" width="24"/>
+                                                    <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/xml.png" width="24"/>
+                                                    <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+                                            </f:facet>
+                                            <p:column headerText="#{msg['societe.designation']}" filterBy="#{societe.designation}" >
+                                                <h:outputText value="#{societe.designation}" />
+                                            </p:column>
+                                            <p:column headerText="Code" filterBy="#{societe.code}">
+                                                <h:outputText value="#{societe.code}" />
+                                            </p:column>
+                                            
+                                            <p:column headerText="#{msg['societe.adresse']}" filterBy="#{societe.adresse}">
+                                                <h:outputText value="#{societe.adresse}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['societe.tel']} " filterBy="#{societe.telephones}">
+                                                <h:outputText value="#{societe.telephones}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['societe.pays']}" filterBy="#{societe.pays.designationPays}">
+                                                <h:outputText value="#{societe.pays.designationPays}"  />
+                                            </p:column>
+                                            <p:column headerText="Actions">
+
+                                                <p:commandButton update="modification" oncomplete="PF('modifier').show()" icon="fa fa-edit" title="#{msg['btn.modifier']}"  style="background: #337ab7;color:#fff;border-color: #337ab7;">
+                                                   <f:setPropertyActionListener value="#{societe}" target="#{societeBean.selectedSociete}" />  
+                                                </p:commandButton>
+                                                <p:commandButton  oncomplete="PF('supprimer').show()" icon="fa fa-trash" title="#{msg['btn.supprimer']}" style="background: #d9534f;color:#fff;border-color: #d43f3a;">
+                                                    <f:setPropertyActionListener value="#{societe}" target="#{societeBean.selectedSociete}" />
+                                                </p:commandButton>
+
+                                            </p:column>
+                                          
+                                        </p:dataTable>
+                                    </div>
+                                </p:fieldset>
+                            
+                        </div>
+                    </h:form>
+                   
+                    <p:dialog  class="police_label" header="#{msg['societe.titre.modifier']}" showEffect="fade"  widgetVar="modifier" modal="true" width="850" minHeight="500" resizable="false" >
+                        <ui:include src="societe_modifier.xhtml"/>
+                    </p:dialog>
+                    <h:form>
+                        <p:growl id="msgs3" showDetail="false" globalOnly="true" />
+                        <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                                         header="#{msg['titre.operation.suppression']}" severity="alert" 
+                                         widgetVar="supprimer">
+
+
+                            <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                            <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste" action="#{societeBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+                        </p:confirmDialog>
+                    </h:form>
+
+                    <!--div class="panel-footer"> 
+
+                    </div--> 
+                </div>
+
+            </div>
+        </div>
+     </p:outputPanel>
+    </ui:composition> 
+
+</html>
+

@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+        <p:panel>
+            <p:outputPanel id="option2">
+                <h:form class="form-horizontal" rendered="#{packageUniqueGarantieCompagnieBean.option2}" >
+                    <div class="form-group">
+                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="Pays"  for="pays" class="pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu converter="entityConverter"  id="pays" value="#{packageUniqueGarantieCompagnieBean.paysSelected}"   class="form-control" >
+                                    <f:selectItem  itemLabel="Pays" noSelectionOption="true"/>
+                                    <f:selectItems  value="#{packageUniqueGarantieCompagnieBean.listPays}" var="pays" itemValue="#{pays}" itemLabel="#{pays.designationPays}" /> 
+                                    <p:ajax listener="#{packageUniqueGarantieCompagnieBean.initCompagnieByPaysAndBranche()}" update="compagnie" />
+
+                                </h:selectOneMenu>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="Branche"  for="branche" class="pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu converter="entityConverter"  id="branche" value="#{packageUniqueGarantieCompagnieBean.typeAssurance}"   class="form-control" >
+                                    <f:selectItem  itemLabel="branche" noSelectionOption="true"/>
+                                    <f:selectItems  value="#{packageUniqueGarantieCompagnieBean.listTypeAssurances}" var="branche" itemValue="#{branche}" itemLabel="#{branche.designation}" /> 
+                                    <p:ajax listener="#{packageUniqueGarantieCompagnieBean.initCompagnieByPaysAndBranche()}" update="compagnie" />
+
+                                </h:selectOneMenu>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="Compagnie"  for="compagnie" class="pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:selectCheckboxMenu converter="entityConverter" label="Compagnie"  id="compagnie" value="#{packageUniqueGarantieCompagnieBean.listCompagniesSelected}"   class="form-control" >
+                                    <f:selectItem  itemLabel="compagnie" noSelectionOption="true"/>
+                                    <f:selectItems  value="#{packageUniqueGarantieCompagnieBean.listCompagnies}" var="compagnie" itemValue="#{compagnie}" itemLabel="#{compagnie.abbreviation}" /> 
+                                </p:selectCheckboxMenu>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="btn-toolbar ">
+                                    <p:commandButton value="Valider" class="btn btn-imprimer pull-right" actionListener="#{packageUniqueGarantieCompagnieBean.initPackageUniqueGarantiePays()}" update="@form" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <p:dataTable sortOrder="descending"  class="table table-bordered" var="paquetage"  rows="5"  value="#{packageUniqueGarantieCompagnieBean.listPackageUniqueGarantieCompagniesTemporaire}"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                         paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" scrollWidth="50%" scrollHeight="150"  editable="true" editMode="cell">
+
+                                
+                                <p:column headerText="Designation">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <p:outputLabel id="ss4" value="#{paquetage.designation}">
+
+                                            </p:outputLabel>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{paquetage.designation}">
+                                                <p:ajax event="keyup" update ="ss4"  />
+
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Description">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <p:outputLabel id="ss5" value="#{paquetage.description}">
+
+                                            </p:outputLabel>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{paquetage.description}">
+                                                <p:ajax event="keyup" update ="ss5" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Abbreviation">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <p:outputLabel id="ss5ab" value="#{paquetage.abbreviation}">
+
+                                            </p:outputLabel>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{paquetage.abbreviation}">
+                                                <p:ajax event="keyup" update ="ss5ab" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Capita assuré">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <p:outputLabel id="ss5ca" value="#{paquetage.capitaleAssure}">
+
+                                            </p:outputLabel>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{paquetage.capitaleAssure}">
+                                                <p:ajax event="keyup" update ="ss5ca"  />
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Capita assuré">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <p:outputLabel id="ss5fr" value="#{paquetage.franchise}">
+
+                                            </p:outputLabel>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{paquetage.franchise}">
+                                                <p:ajax event="keyup" update ="ss5fr"  />
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Action" width="7%">
+
+                                    <p:commandButton icon="fa fa-trash" title="Supprimer la ligne" action="#{packageUniqueGarantieCompagnieBean.deleteFromListTemporaire()}"  update="@form">
+                                        <f:setPropertyActionListener value="#{paquetage}" target="#{packageUniqueGarantieCompagnieBean.packageUniqueGarantieCompagnieTemporaire}" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="btn-toolbar">
+                                    <p:commandButton value="Supprimer" class="btn btn-danger" actionListener="#{packageUniqueGarantieCompagnieBean.annuler2()}" update="@form" />
+                                    <p:commandButton value="Enregistrer" class="btn btn-imprimer pull-right"  actionListener="#{packageUniqueGarantieCompagnieBean.saveListPackageUniqueGarantieCompagnieOp2()}" update="@form,listcompagnie" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </p:outputPanel>
+        </p:panel>
+    </ui:composition>
+
+</html>

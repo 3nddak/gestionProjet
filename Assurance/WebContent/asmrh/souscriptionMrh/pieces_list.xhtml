@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <ui:composition >
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="table-responsive"> 
+                    <p:dataTable sortOrder="descending" id="taby"  class="table table-bordered" var="piece"  value="#{souscriptionAsMrhBean.listPieces}"
+                                 rows="10" 
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginator="true" paginatorPosition="bottom" rowsPerPageTemplate="10,20,30"
+                                 emptyMessage="#{msg['tableau.vide']}" editable="true" editMode="cell"
+                                 rowKey="#{piece.hashCode()}" >
+
+                        <p:column headerText="#{msg['piece.type']}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputLabel id="typi" value="#{piece.typepiece.toString()}" >
+                                    </h:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{piece.typepiece}"  class="form-control"
+                                                       >
+                                        <f:selectItems value="#{souscriptionAsMrhBean.typePiece}" /> 
+                                        <p:ajax event="click" update="typi"/> 
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="#{msg['titre.Longueur']}" >
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="ss4" value="#{piece.longueur}">
+
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{piece.longueur}">
+                                        <p:ajax event="keyup" update ="ss4"  />
+
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.Largeur']}" >
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="ss5" value="#{piece.largeur}">
+
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{piece.largeur}">
+                                        <p:ajax event="keyup" update ="ss5"  />
+
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.hauteur']}" >
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="ss6" value="#{piece.hauteur}">
+
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{piece.hauteur}">
+                                        <p:ajax event="keyup" update ="ss6"  />
+
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.Surface']}" >
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="ss7" value="#{piece.aire}">
+
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{piece.aire}">
+                                        <p:ajax event="keyup" update ="ss7"  />
+
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.Volume']}" >
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="s8" value="#{piece.volume}">
+
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{piece.volume}">
+                                        <p:ajax event="keyup" update ="s8"  />
+
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.Nombre']}" >
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="ss9" value="#{piece.nombre}">
+
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{piece.nombre}">
+                                        <p:ajax event="keyup" update ="ss9"  />
+
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.actions']}">
+                            <div class="btn-toolbar">
+                                <p:commandButton icon="fa fa-trash" class="btn btn-danger" title="#{msg['btn.supprimer']}" action="#{souscriptionAsMrhBean.removePiece()}"  update="formliste">
+                                    <f:setPropertyActionListener value="#{piece}" target="#{souscriptionAsMrhBean.piecesToDelete}" />
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+
+                </div>
+            </div>
+        </div>
+
+
+    </ui:composition>
+
+</html>

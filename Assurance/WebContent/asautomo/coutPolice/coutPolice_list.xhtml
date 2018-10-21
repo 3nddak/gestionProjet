@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+        <p:panel header="Lister le cout des polices"  toggleable="true" collapsed="false">
+            <h:form id="policelist" class="form-horizontal" >
+
+
+                <div class="table-responsive">
+                    <p:dataTable id="coutpt" editable="true" editMode="cell"
+                                 resizableColumns="true"
+                                 class="table" 
+                                 paginator="true" rows="20" emptyMessage="#{msg['tableau.vide']}"  paginatorPosition="bottom" value="#{coutPoliceParCompagnieBean.listCoutPoliceParCompagnie}" var="coutpolice"    style="padding:0px;margin: 0px; ">
+
+                        <p:column headerText="Pays" filterBy="#{coutpolice.compgnie.pays.codePays}">
+                            <p:outputLabel id="K" value="#{coutpolice.compgnie.pays.codePays}" />
+                        </p:column>
+                        <p:column headerText="Compagnie" filterBy="#{coutpolice.compgnie.abbreviation}">
+                            <p:outputLabel id="K2" value="#{coutpolice.compgnie.abbreviation}" />
+                        </p:column>
+                        <p:column headerText="Compagnie" filterBy="#{coutpolice.courtier.abbreviation}">
+                            <p:outputLabel id="K333" value="#{coutpolice.courtier.abbreviation}" />
+                        </p:column>
+                        <p:column headerText="Prime nette minimale" filterBy="#{coutpolice.coutInf}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel value="#{coutpolice.arrondireFormat2(coutpolice.coutInf)}" id="cinft"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{coutpolice.coutInf}" >
+                                        <p:ajax update="cinft"  />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+
+                        </p:column>
+                        <p:column headerText="Prime nette maximale" filterBy="#{coutpolice.compgnie.abbreviation}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel value="#{coutpolice.arrondireFormat2(coutpolice.coutSup)}" id="cmaxt"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{coutpolice.coutSup}" >
+                                        <p:ajax update="cmaxt"  />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Cout de la police" filterBy="#{coutpolice.accesoire}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel value="#{coutpolice.arrondireFormat2(coutpolice.accesoire)}" id="acct"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{coutpolice.accesoire}" >
+                                        <p:ajax update="acct"  />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Active" filterBy="#{coutpolice.compgnie.abbreviation}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel value="#{coutpolice.estActive}" id="act"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:selectBooleanCheckbox value="#{coutpolice.estActive}" >
+                                        <p:ajax update="act"  />
+                                    </p:selectBooleanCheckbox>
+
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Actions" >
+                            <div class="btn-toolbar">
+                                <p:commandLink title="Modifier"  action="#{coutPoliceParCompagnieBean.updateOne()}" class=" btn-xs btn-primary fa fa-edit"  update="coutpt,sms2">
+                                    <f:setPropertyActionListener target="#{coutPoliceParCompagnieBean.coutPoliceParCompagnieSelected}" value="#{coutpolice}" />
+                                </p:commandLink>
+                              
+                                <p:commandLink title="supprimer"  action="#{coutPoliceParCompagnieBean.deleteOne()}" class=" btn-xs  btn-danger fa fa-remove"  update="coutpt,sms2">
+                                    <f:setPropertyActionListener target="#{coutPoliceParCompagnieBean.coutPoliceParCompagnieSelected}" value="#{coutpolice}" />
+                                </p:commandLink>
+                            </div>
+                        </p:column>
+                        <p:growl id="sms2" for="somekey" />
+                    </p:dataTable>
+                </div>
+
+            </h:form>
+        </p:panel>
+    </ui:composition>
+</html>

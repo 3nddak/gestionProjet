@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition>
+
+        <p:panel header="#{msg['titre.typeDeClient']}"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel  for="tynom2bnj" value="Type :"/>
+                <h:outputText id="tynom2bnj" value="#{souscriptionBean.groupe eq 0? msg['client.type.physique'] : msg['client.type.morale']}"/>
+                <p:outputLabel rendered="#{souscriptionBean.groupe eq 1?true:false}" for="getel2bnj" value="#{msg['titre.genre']} :"/>
+                <h:outputText rendered="#{souscriptionBean.groupe eq 1?true:false}" id="getel2bnj" value="#{souscriptionBean.genreGroup eq 0? msg['titre.groupe'] : msg['titre.entreprise']}"/>
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['credit.info']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+            <p:panelGrid columns="8" class="table">
+                <p:outputLabel   rendered="#{souscriptionBean.groupe eq 0?true:false}" value="#{msg['titre.identifiantEmprunteur']} :"/>
+                <h:outputText class="text-right" rendered="#{souscriptionBean.groupe eq 0?true:false}" value="#{souscriptionBean.assuranceCredit.identifiant}"/>
+                <p:outputLabel value="#{msg['titre.numeroDuPret']} :"/>
+                <h:outputText class="text-right"  value="#{souscriptionBean.assuranceCredit.numeroPret}"/>
+                <p:outputLabel value="#{msg['titre.typeDeRemboursement']} :"/>
+                <h:outputText value="#{souscriptionBean.assuranceCredit.typeDePret}"/>
+                <p:outputLabel value="#{msg['titre.modeDeReglement']} :"/>
+                <h:outputText class="text-right"  value="#{souscriptionBean.assuranceCredit.mensualiteDePayement}"/>
+                <p:outputLabel for="pui2bnj" value="#{msg['titre.montantDuPret']} :"/>
+                <h:outputText id="pui2bnj" value="#{souscriptionBean.assuranceCredit.montantPret}">   
+                    <f:convertNumber pattern="###,##0" type="number" />
+                </h:outputText>
+                <p:outputLabel for="puiRbnj" value="#{msg['titre.tauxDuPret']} :"/>
+                <h:outputText id="puiRbnj" value="#{souscriptionBean.assuranceCredit.tauxDuPret}"/>
+                <p:outputLabel for="vn2bnj" value="#{msg['titre.dateDuPret']} :"/>
+                <h:outputText id="vn2bnj" value="#{souscriptionBean.assuranceCredit.dateDuPret}"/>
+
+                <p:outputLabel rendered="#{souscriptionBean.assuranceCredit.mensualiteDePayement eq souscriptionBean.autrepayement ?true:false}" value="Nombre de mensualité:"/>
+                <h:outputText class="text-right" rendered="#{souscriptionBean.assuranceCredit.mensualiteDePayement eq souscriptionBean.autrepayement ?true:false}"  value="#{souscriptionBean.assuranceCredit.nombreMensualite}"/>
+                <p:outputLabel value="#{msg['titre.pretDuConjoint']} :"/>
+                <h:outputText  class="text-right" value="#{souscriptionBean.assuranceCredit.pretConjoint}" >
+                    <f:convertNumber pattern="###,##0" type="number" />
+                </h:outputText>
+                <p:outputLabel value="#{msg['titre.dateDeLaPremiereEcheance']} :"/> 
+                <h:outputText  class="text-right" value="#{souscriptionBean.assuranceCredit.datePremiereEcheance}" />
+                <p:outputLabel rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalRestantDu ?true:false}" value="#{msg['titre.typeDeCotisation']} :"/>
+                <h:outputText rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalRestantDu ?true:false}" class="text-right"  value="#{souscriptionBean.assuranceCredit.typeCautisation}"/>
+                <p:outputLabel rendered="#{ souscriptionBean.assuranceCredit.typeCautisation  ne null and souscriptionBean.assuranceCredit.typeCautisation eq souscriptionBean.cautisationAnnuelle ?true:false}" value="#{msg['titre.periodeDeLaCotisation']} :"/>
+                <h:outputText  rendered="#{ souscriptionBean.assuranceCredit.typeCautisation  ne null and souscriptionBean.assuranceCredit.typeCautisation eq souscriptionBean.cautisationAnnuelle ?true:false}" value="#{souscriptionBean.assuranceCredit.periodeCautisation}"/>
+                <p:outputLabel  rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalRestantDu ?true:false}" value="#{msg['titre.DateDebutDeLaCotisation']} :"/>
+                <h:outputText  rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalRestantDu ?true:false}"  value="#{souscriptionBean.assuranceCredit.dateDeputCautisation}"/>
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['titre.compagniesCourtiersChoisies']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <div class="table-responsive">
+                <p:dataTable class="table_label table-responsive" var="compcour" reflow="true" rows="10" value="#{souscriptionBean.listAssuranceCredit}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" 
+                             rowsPerPageTemplate="10,15,20,25,30"  emptyMessage="#{msg[tableau.vide]}"  >                                                    
+                    <p:column headerText="#{msg['titre.compagnie']}">
+                        <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                    </p:column>
+
+                    <p:column headerText="#{msg['titre.courtier']}">
+                        <h:outputText value="#{compcour.courtier.abbreviation}" />
+                    </p:column >
+                    <p:column headerText="#{msg['titre.typeCapitauxGaranties']}">
+                        <h:outputText value="#{compcour.typeCapitauxGaranite}" />
+                    </p:column >
+                </p:dataTable>
+            </div>
+
+        </p:panel>
+        <p:panel header="#{msg['message.client.titre']}"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel  value="#{msg['titre.souscripteur']} :"/>
+                <h:outputText value="#{souscriptionBean.clientOld ne null and souscriptionBean.clientOld.idClient ne null ? souscriptionBean.clientOld.nom:souscriptionBean.clientNew.nom} #{souscriptionBean.clientOld ne null and souscriptionBean.clientOld.idClient ne null ? souscriptionBean.clientOld.prenom:souscriptionBean.clientNew.prenom}" />
+                <p:outputLabel for="tel2bnj" value="#{msg['client.tel']} :"/>
+                <h:outputText id="tel2bnj" value="#{souscriptionBean.clientOld ne null and souscriptionBean.clientOld.idClient ne null ? souscriptionBean.clientOld.telephoneMobile:souscriptionBean.clientNew.telephoneMobile }"/>
+                <p:outputLabel for="addresse2bnj" value="#{msg['titre.adresse']} :"/>
+                <h:outputText id="addresse2bnj" value="#{souscriptionBean.clientOld ne null and souscriptionBean.clientOld.idClient ne null ? souscriptionBean.clientOld.adresse:souscriptionBean.clientNew.adresse }"/>
+                <p:outputLabel for="daten2bnj" value="#{msg['client.datedenaissance']}:"/>
+                <h:outputText id="daten2bnj" value="#{souscriptionBean.clientOld ne null and souscriptionBean.clientOld.idClient ne null ? souscriptionBean.clientOld.dateNaissance:souscriptionBean.clientNew.dateNaissance}"/>
+                <p:outputLabel value="#{msg['titre.profession']} :"/>
+                <h:outputText value="#{souscriptionBean.clientOld ne null and souscriptionBean.clientOld.idClient ne null ? souscriptionBean.clientOld.profession:souscriptionBean.clientNew.profession}"/>
+
+            </p:panelGrid>
+
+        </p:panel>
+
+        <p:panel header="#{msg['titre.reponsesAuxQuestions']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+            <fieldset><legend class="titre_entete text-left text-capitalize small" ></legend>
+                <c:forEach items="#{souscriptionBean.assuranceCredit.listQuestionResponseAsVie}" var="q" >
+                    <p:outputPanel id="llu#{souscriptionBean.assuranceCredit.client.hashCode()}#{q.id()}" rendered="#{q.questionAsVie.booleanQuestion}">
+
+                        <h:outputLabel id="lu#{souscriptionBean.assuranceCredit.client.hashCode()}#{q.id()}" >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                        <p:outputLabel value="" ><i class="#{q.response} fa fa-check text-green"/><i class="#{!q.response} text-red fa fa-close"/></p:outputLabel>
+
+                        <p:outputLabel id="cu#{souscriptionBean.assuranceCredit.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" value="#{q.questionSecondaire()}" />
+
+                        <p:outputLabel id="du#{souscriptionBean.assuranceCredit.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" class="form-control" value="#{q.precisions}" />
+                    </p:outputPanel>
+
+                    <p:outputPanel rendered="#{!q.questionAsVie.booleanQuestion}">
+                        <h:outputLabel >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                        <p:outputLabel  class="form-control" value="#{q.precisions}" />
+                    </p:outputPanel>
+
+                </c:forEach>
+            </fieldset>
+        </p:panel>
+
+    </ui:composition> 
+
+</html>
+

@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions" >
+
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:outputPanel id="rechercheCour" style="text-align:center;" class="panel">
+                    <h:form id="searchEngineCour" class="form-horizontal">
+                        <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="paysCour" value="Pays" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu id="paysCour" value="#{lectureDirectCourtierBean.paysSelected}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                            <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                            <f:selectItems value="#{lectureDirectCourtierBean.paysList}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                            <p:ajax event="click" listener="#{lectureDirectCourtierBean.feshCategorieByPays()}" update="categorieCour,pssCour,garantieCour" />
+                                        </h:selectOneMenu> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="pssCour" value="Compagnie"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="pssCour" value="#{lectureDirectCourtierBean.selectedCompagnie}"  >
+                                            <f:selectItem noSelectionOption="true" itemLabel="Choisir compagnie" /> 
+                                            <f:selectItems value="#{lectureDirectCourtierBean.allCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                            <p:ajax listener="#{lectureDirectCourtierBean.feshCourtierByCompagnie()}" update="courtier2" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <label >#{msg['titre.courtier']}</label>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <h:selectOneMenu  id="courtier2"  value="#{lectureDirectCourtierBean.selectedCourtier}" converter="omnifaces.SelectItemsConverter"
+                                                            class="form-control" >
+                                            <f:selectItem itemLabel="#{msg['titre.courtier']}" noSelectionOption="true"/>
+                                            <f:selectItems itemLabel="#{courtier.designation}" var="courtier"  itemValue="#{courtier}" value="#{lectureDirectCourtierBean.allCourtier}"  />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="categorieCour" value="#{msg['vehicule.categorie']}" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu id="categorieCour" value="#{lectureDirectCourtierBean.categorieSelected}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                            <f:selectItem itemLabel="#{msg['vehicule.categorie']}" noSelectionOption="true" />
+                                            <f:selectItems value="#{lectureDirectCourtierBean.listCategorie}" var="cat" itemLabel="#{cat.libelle}" itemValue="#{cat}" /> 
+                                            <p:ajax listener="#{lectureDirectCourtierBean.feshGarantieByCategorie()}" update="garantieCour" />
+                                        </h:selectOneMenu> 
+                                    </div>   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="garantieCour" value="Garanties" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  id="garantieCour" value="#{lectureDirectCourtierBean.garantieSelected}" converter="omnifaces.SelectItemsConverter"  class="police_label form-control">
+                                            <f:selectItem itemLabel="#{msg['garantie.titre']}" noSelectionOption="true" />
+                                            <f:selectItems value="#{lectureDirectCourtierBean.guarantieList}" var="garantie" itemLabel="#{garantie.libelle}" itemValue="#{garantie}" />
+                                            <p:ajax  update="" />
+                                        </h:selectOneMenu>
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="typeVitreCour" value="Type Vitre" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  class="form-control"  converter="entityConverter"  id="typeVitreCour" value="#{lectureDirectCourtierBean.typeVitreSelected}"  >
+                                            <f:selectItem itemLabel="Choisir type vitre" noSelectionOption="true" />
+                                            <f:selectItems value="#{lectureDirectCourtierBean.typeVitreList}" var="typeV" itemLabel="#{typeV.typeVitre}" itemValue="#{typeV}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="puissanceCour" value="Puissance"  class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-6 col-xs-6">
+                                        <p:inputText id="puissanceCour" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCourtierBean.puissanceValue}"  styleClass="form-control"  title="Puissance" placeholder="Puissance inf" >
+                                        </p:inputText>
+                                    </div>
+                                    <pe:keyFilter for="puissanceCour" mask="int"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  value="#{msg['vehicule.energie']}"  for="energieCour" class=" pull-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  id="energieCour"  value="#{lectureDirectCourtierBean.energieSelected}" converter="omnifaces.SelectItemsConverter"  class="form-control" >
+                                            <f:selectItem itemLabel="#{msg['vehicule.energie']}" noSelectionOption="true"/>
+                                            <f:selectItems value="#{lectureDirectCourtierBean.energieList}" var="en" itemLabel="#{en.libelleFr} -- #{en.libelleEn}" itemValue="#{en}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="nplcCour" value="#{msg['vehicule.nombreplace']}" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText id="nplcCour" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCourtierBean.nombrePlace}" styleClass="form-control"  title="Nbr places" placeholder="Nbr places" >
+                                        </p:inputText>
+                                        <pe:keyFilter for="nplcCour" mask="int"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="poidsCour" value="Poids" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-6 col-xs-6">
+                                        <p:inputText id="poidsCour" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCourtierBean.poidsValue}" class="form-control"  title="Poids" placeholder="Poids" >
+                                        </p:inputText>
+                                    </div>
+                                    <pe:keyFilter for="poidsCour" mask="num"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="typecylindreCour" value="Type Cylindre" class="pull-left text-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  class="form-control"  converter="entityConverter"  id="typecylindreCour" value="#{lectureDirectCourtierBean.typeCylindreSelected}"  >
+                                            <f:selectItem itemLabel="Type Cylindre" noSelectionOption="true" /> 
+                                            <f:selectItems value="#{lectureDirectCourtierBean.typeCylindreList}" var="tc" itemLabel="#{tc.designation}" itemValue="#{tc}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="cylindreCour" value="Cylindre" class="pull-left text-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText id="cylindreCour"  converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCourtierBean.cylindreValue}"  class="form-control"  title="Cylindre" placeholder="Cylindre" >
+
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group ">
+                                <div class="col-lg-12  col-md-12 col-xs-12 col-sm-12">
+                                    <div class="col-lg-2 col-md-12 pull-right col-xs-12 col-sm-12">
+                                        <p:commandButton id="searchCour" action="#{lectureDirectCourtierBean.searchMethodLectureDirectCourtier()}"  update="searchEngineCour,gggg:rcliste2" value="Rechercher"  class="btn-success success form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+                </p:outputPanel>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

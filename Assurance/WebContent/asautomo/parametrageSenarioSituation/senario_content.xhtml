@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+            <p:panel   header="Ajout Nature Evenement Sinistre"  toggleable="true" collapsed="true" >
+                <div class="panel-body">
+                    <ui:include src="senario_ajout.xhtml"/>
+                </div>
+            </p:panel>
+            <p:panel   header="Recherche"  toggleable="true" collapsed="true">
+                <div class="panel-body">
+                    <!--ui:include src="senario_search.xhtml"/-->
+                </div>
+            </p:panel>
+            <div class="panel-body">
+                <ui:include src="senario_list.xhtml"/>
+            </div>
+
+        </div>
+    </ui:composition> 
+</html>
+

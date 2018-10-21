@@ -1,0 +1,175 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:outputPanel id="ajout" style="text-align:center;">
+                    <h:form class="form-horizontal">                        
+
+                        <p:growl id="msgs" showDetail="false" globalOnly="true" />
+
+                        <div class="form-group">
+                            <div class="col-md-3 col-lg-3 col-xs-12 col-sm-6">
+
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="pays" value="#{msg['compagnie.pays']}" class=" pull-left" />
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:selectOneMenu id="pays" value="#{pointsVenteBean.idpays}" converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="#{msg['compagnie.pays.requireMessage']}" title="Pays" class=" form-control " >
+                                        <f:selectItem itemLabel="Pays" itemValue=""/>
+                                        <f:selectItems value="#{compagnieBean.paysItems}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:message for="pays" id="paysMessage" /> 
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-lg-3 col-xs-12 col-sm-6">
+
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="des" value="#{msg['pv.designation']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:inputText id="des" required="true" requiredMessage="#{msg['pv.designation.requireMessage']}" value="#{pointsVenteBean.designation}" styleClass="form-control" a:placeholder="#{msg['pv.designation']}">
+                                        <p:ajax event="keyup" update="desMessage"/>
+                                    </p:inputText>
+                                </div> 
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:message for="des" id="desMessage" class="errorClass"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-xs-12 col-sm-6">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="adr" value="#{msg['pv.adresse']}" class="pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:inputText id="adr" value="#{pointsVenteBean.adresse}" styleClass="form-control" placeholder="#{msg['pv.adresse']}"/>
+                                </div>
+                            </div> 
+
+                            <div class="col-md-3 col-lg-3 col-xs-12 col-sm-6">
+
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="adrs" value="#{msg['pv.immatriculation']}" class="pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:inputText id="adrs" value="#{pointsVenteBean.rcs}" styleClass="form-control"  placeholder="#{msg['pv.immatriculation']}"/>
+                                </div>
+                            </div> 
+                            <div class="col-md-3 col-lg-3 col-xs-12 col-sm-6">
+
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="adrsni" value="Code NINEA" class="pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:inputText id="adrsni" value="#{pointsVenteBean.codeNINEA}" styleClass="form-control"  placeholder="code NINEA"/>
+                                </div>
+                            </div> 
+                            <div class="col-md-3 col-lg-3 col-xs-12 col-sm-6">
+
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="adrsso" value="Siège social" class="pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:inputText id="adrsso" value="#{pointsVenteBean.siegeSocial}" styleClass="form-control"  placeholder="Siège social"/>
+                                </div>
+                            </div> 
+                            <div class="col-md-3 col-lg-3 col-xs-12 col-sm-6">
+
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="adrssov" value="Ville" class="pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:inputText id="adrssov" value="#{pointsVenteBean.villeSiege}" styleClass="form-control"  placeholder="Ville"/>
+                                </div>
+                            </div> 
+                        </div> 
+                        <div class="form-group">
+                            <div class="col-md-4 col-lg-4 col-xs-12 col-sm-6">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="typePointsVente" value="#{msg['pv.type']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:selectOneRadio id="typePointsVente" required="true" requiredMessage="#{msg['pv.type.requireMessage']}" value="#{pointsVenteBean.typePointsVente}">
+                                        <f:selectItem itemLabel="#{msg['pv.type.externe']}" itemValue="point de vente externe" />
+                                        <f:selectItem itemLabel="#{msg['pv.type.propre']}" itemValue="point de vente propre" />
+                                        <p:ajax event="click" update="typePointsVenteMessage"/>
+                                    </p:selectOneRadio>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:message for="typePointsVente" id="typePointsVenteMessage" class="errorClass"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-xs-12 col-sm-6">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel  value="#{msg['titre.courtier']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+
+                                <div class="col-md-6 col-lg-6 col-sm-6">
+                                    <h:selectOneMenu  id="sel" value="#{pointsVenteBean.idcourtier}" class="form-control" 
+                                                      required="true"   requiredMessage="#{msg['pv.courtier.requireMessage']}"      
+                                                      >
+                                        <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""  itemDisabled="true"/>
+                                        <f:selectItems  value="#{pointsVenteBean.courtierItems}"  />
+
+                                        <p:ajax event="click" update="selMessage" />
+                                    </h:selectOneMenu> 
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:message for="sel" id="selMessage" class="errorClass"/>
+                                    <!--p:message for="menu" id="menuMessage" class="errorClass"/!-->
+                                </div>
+                            </div>
+                        
+                         <div class="col-md-6 col col-lg-3" >
+                                <div class="  col-lg-12">
+                                    <p:fileUpload id="fileUpload" fileUploadListener ="#{pointsVenteBean.handleFileUpload}" mode="advanced"
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|bmp)$/"        
+                                                  label="#{msg['fichier.selection']}" uploadLabel="#{msg['btn.telecharger']}" cancelLabel="#{msg['btn.annuller']}"        
+                                                  validatorMessage="#{msg['fichier.invalide']}"      
+                                                  dragDropSupport="true"      
+                                                  multiple="false"  
+                                                  disabled="false"
+                                                  update="messages"/>
+                                    <p:growl id="messages" showDetail="false" globalOnly="true"/>
+                                </div>
+                            </div>
+                        </div>
+                           
+                            
+
+                        <div class="form-group">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:commandButton value="#{msg['btn.annuller']}" type="reset" id="annuler" class="btn btn-danger  pull-left  btn-xs " />
+                            
+                                    <p:commandButton value="#{msg['btn.enregistrer']}" update="msgs,formliste,annuler,ajout" action="#{pointsVenteBean.ajouter()}" class="btn btn-success pull-right  btn-xs "/>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+
+                </p:outputPanel>
+            </div>
+        </div>
+
+
+        <!-- Fin du dialogue--> 
+
+
+
+    </ui:composition> 
+
+</html>
+

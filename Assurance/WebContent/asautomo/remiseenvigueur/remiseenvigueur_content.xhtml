@@ -1,0 +1,247 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div class="panel-heading"> 
+                <fieldset>
+                    <legend class="text-center"><p:outputLabel value="Remise en vigueur"></p:outputLabel></legend>
+                </fieldset>
+            </div>
+            <h:form id="recherche" class="form-horizontal">
+                <p:panel  header="#{msg['titre.recherche']}" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                    <div class="row">
+                        <p:panelGrid columns="4" class="table table-responsive" >
+                            <p:outputLabel for="pays" value="#{msg['titre.pays']} :"/>
+                            <h:selectOneMenu class="form-control" converter="entityConverter"  id="pays" value="#{remiseEnVigueurBean.paysSelect}"  >
+
+                                <f:selectItems value="#{remiseEnVigueurBean.listpays}" var="pays"
+                                               itemLabel="#{pays.designationPays}" itemValue="#{pays}"/>
+                                <p:ajax listener="#{remiseEnVigueurBean.trierPrametresByPays()}" update="pss,courtier" />
+                            </h:selectOneMenu>
+                            <p:outputLabel for="pss" value="#{msg['titre.compagnie']} :"/>
+                            <h:selectOneMenu class="form-control"  converter="entityConverter"  id="pss" value="#{remiseEnVigueurBean.compagnieSelected}"  >
+
+                                <f:selectItems value="#{remiseEnVigueurBean.listCompagnie}" var="compagnie"
+                                               itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                            </h:selectOneMenu>
+
+                            <p:outputLabel for="courtier" value="#{msg['titre.courtier']} :"/>
+                            <h:selectOneMenu class="form-control"  converter="entityConverter"  id="courtier" value="#{remiseEnVigueurBean.courtierSelected}"  >
+
+                                <f:selectItems value="#{remiseEnVigueurBean.listCourtier}" var="courtier"
+                                               itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}"/>
+                            </h:selectOneMenu>
+
+                            <p:outputLabel for="numPolice" value="#{msg['tableau.numeropolice']}"/>
+                            <p:inputText id="numPolice" value="#{remiseEnVigueurBean.numeroPoliceRechercher}" class="form-control" />
+
+                            <p:outputLabel for="nom" value="#{msg['client.nom']} "/>
+                            <p:inputText id="nom" value="#{remiseEnVigueurBean.nomRechercher}" class="form-control" />
+
+                            <p:outputLabel for="prenom" value="#{msg['client.prenom']} "/>
+                            <p:inputText id="prenom" value="#{remiseEnVigueurBean.prenomRechercher}" class="form-control" />
+
+                            <p:outputLabel for="numPiece" value="#{msg['client.numeropiece']} "/>
+                            <p:inputText id="numPiece" value="#{remiseEnVigueurBean.numeroPieceRechercher}" class="form-control" />
+
+                        </p:panelGrid>
+                    </div>
+                    <div class="row">
+                        <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  icon="fa fa-search" update="formliste" actionListener="#{remiseEnVigueurBean.trierParParamettre()}" value="#{msg['btn.rechercher']}" title="#{msg['btn.rechercher']}" class="btn btn-success pull-right" />
+                        <p:commandButton icon="fa fa-times" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" action="#{remiseEnVigueurBean.annulerRec()}" update="@form" class="btn btn-danger pull-right" />
+                    </div>
+                </p:panel>
+            </h:form>
+            <div id="liste">
+                <h:form  id="formliste" class="form-horizontal">
+                    <p:panel header ="Remettre en vigueur" toggleable="true">
+                        <p:dataTable rows="8" paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" class="table table-responsive" var="facture" value="#{remiseEnVigueurBean.listeAvenantSuspenduDsplay}" rowKey="#{facture.assurance.idFacture}" selection="#{remiseEnVigueurBean.factureSuspendu}">
+                            <p:column headerText="Remettre en vigueur" >
+                                <p:commandLink title="Remettre en vigueur" class=" btn-sm btn-info info glyphicon glyphicon-refresh"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" update="detail"  action ="#{remiseEnVigueurBean.loadFactureSuspendu()}">
+                                    <f:setPropertyActionListener target="#{remiseEnVigueurBean.factureSuspendu}" value="#{facture}"/>
+                                </p:commandLink>
+                            </p:column>
+                            <p:column headerText="#{msg['titre.numeroPolice']}" filterBy="#{facture.assurance.objetVoiture.numeroPolice}" >
+                                <h:outputText value="#{facture.assurance.objetVoiture.numeroPolice}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['titre.compagnie']}" filterBy="#{facture.assurance.compagnie.abbreviation}">
+                                <h:outputText value="#{facture.assurance.compagnie.abbreviation}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['client.nom']}" >
+                                <h:outputText value="#{facture.assurance.objetVoiture.client.nom}"/>
+                            </p:column>
+                            <p:column  headerText="#{msg['client.prenom']}">
+                                <h:outputText value="#{facture.assurance.objetVoiture.client.prenom}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['vehicule.immatriculation']}">
+                                <h:outputText value="#{facture.assurance.objetVoiture.numeroImmatriculation}"/>
+                            </p:column>
+                            <p:column  headerText="#{msg['vehicule.numeroserie']}">
+                                <h:outputText value="#{facture.assurance.objetVoiture.numSerie}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['vehicule.marque']}" >
+                                <h:outputText value="#{facture.assurance.objetVoiture.marque}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['vehicule.numerochassis']}">
+                                <h:outputText value="#{facture.assurance.objetVoiture.numChassis}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['vehicule.categorie']}" >
+                                <h:outputText value="#{facture.assurance.objetVoiture.categorie.libelle}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+
+
+            <div>
+                <h:form id="detail" class="form-horizontal">
+                    <div class="panel-body"> 
+                        <div class="row">                               
+                            <p:fieldset style="margin-bottom:20px">   
+                                <p:panel header="#{msg['titre.reference']}" toggleable="true" collapsed="true" style="margin-bottom:20px">                                     
+                                    <p:panelGrid  columns="6" layout="grid" class="table table-responsive">
+                                        <p:outputLabel  class="police_label" for="souscripteur:" value="#{msg['client.nom']} :"/>
+                                        <p:outputLabel id="souscripteur" class="form-control" value="#{remiseEnVigueurBean.factureSuspendu.assurance.client.nom}"/>
+
+                                        <p:outputLabel class="police_label" for="telephone" value="#{msg['client.tel']} : "/>
+                                        <p:outputLabel id="telephone" value="#{remiseEnVigueurBean.factureSuspendu.assurance.client.telephoneMobile}" class="form-control"/>
+
+                                        <p:outputLabel class="police_label" for="addresse" value="#{msg['client.adresse']} :"/>
+                                        <h:outputLabel id="addresse" value="#{remiseEnVigueurBean.factureSuspendu.assurance.client.adresse}" class="form-control"/>
+                                    </p:panelGrid>
+                                </p:panel>
+
+                                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                    <h:graphicImage library="images" name="ajax-loader.gif" />
+                                </p:dialog>
+                                <p:panel  header="#{msg['souscription.auto.caracteristiqueVehicule']}" toggleable="true" collapsed="false" style="margin-bottom:20px">                                                                
+                                    <p:panelGrid columns="6"   class="table table-responsive table-bordered">
+                                        <p:outputLabel class="police_label" for="immatriculation" value="#{msg['vehicule.immatriculation']} :"/>
+                                        <h:outputText id="immatriculation" value="#{remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.numeroImmatriculation}"/>
+                                        <p:outputLabel class="police_label" for="puissance" value="#{msg['vehicule.puissance']} :"/>
+                                        <h:outputText id="puissance" value="#{remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.puissance}"/>
+
+                                        <p:outputLabel class="police_label" for="valeurNeuve" value="#{msg['vehicule.valeurneuf']} :"/>
+                                        <h:outputText id="valeurNeuve" class="text-right" value="#{remiseEnVigueurBean.factureSuspendu.assurance.arrondireFormat2(remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.valeurNeuve)}"/>
+                                        <p:outputLabel class="police_label" for="valeurvenale" value="#{msg['vehicule.valeurvenale']} :"/>
+                                        <h:outputText class="text-right" id="valeurvenale" value="#{remiseEnVigueurBean.factureSuspendu.assurance.arrondireFormat2(remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.valeurvenale)}"/>
+
+                                        <p:outputLabel class="police_label" for="marque" value="#{msg['vehicule.marque']} : "/>
+                                        <h:outputText id="marque" value="#{remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.marque}"/>
+                                        <p:outputLabel class="police_label" for="genre" value="#{msg['vehicule.genre']} :"/>
+                                        <h:outputText id="genre" value="#{remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.genre}"/>
+
+                                        <p:outputLabel class="police_label" for="type"  value="#{msg['vehicule.type']} :"/>
+                                        <h:outputText id="type" value="#{remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.type}"/>
+                                        <p:outputLabel class="police_label" for="NombrePlace" value="#{msg['vehicule.nombreplace']} :"/>
+                                        <h:outputText id="NombrePlace" value="#{remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.nombrePlaces}"/>
+
+                                        <p:outputLabel class="police_label" for="categorie" value="#{msg['vehicule.categorie']} :"/>
+                                        <h:outputText id="categorie" value="#{remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.categorie.libelle}"/>
+
+                                        <p:outputLabel class="police_label" for="Numc" value="#{msg['vehicule.numerochassis']} :"/>
+                                        <h:outputText id="Numc" value="#{remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.numChassis}"/>
+                                        <p:outputLabel class="police_label" for="Numm" value="#{msg['vehicule.numeromoteur']} :"/>
+                                        <h:outputText id="Numm" value="#{remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.numMoteur}"/>
+
+                                        <p:outputLabel class="police_label" for="dmc" value="#{msg['vehicule.miseencirculation']}"/>
+                                        <h:outputText id="dmc" value="#{remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.miseEnCirculation}"/>
+
+
+                                    </p:panelGrid> 
+                                </p:panel>                                
+                                <p:panel header="#{msg['souscription.auto.souscriptionInformation']}:#{remiseEnVigueurBean.lastFacture.redateFin()}" toggleable="true" collapsed="false" style="margin-bottom:20px">  
+                                    <p:panelGrid columns="2" layout="grid" class="table table-responsive">
+                                        <p:outputLabel  class="form-control bg-purple" for="assureur" value="#{msg['titre.compagnie']} :" />
+                                        <h:outputText  id="assureur" class="form-control"  value="#{remiseEnVigueurBean.factureSuspendu.assurance.compagnie.abbreviation}"/>
+                                        <p:outputLabel class="form-control bg-purple" for="police" value="#{msg['tableau.numeropolice']} :"/>
+                                        <h:outputText id="police" class="form-control "  value="#{remiseEnVigueurBean.factureSuspendu.assurance.objetVoiture.numeroPolice}"/>
+                                        <p:outputLabel class="form-control bg-purple" for="dateDebut" value="Date début suspension:"/>
+                                        <h:outputText class="form-control"  id="dateDebut" value="#{remiseEnVigueurBean.factureSuspendu.dateDemandeSuspension}"/>
+                                    </p:panelGrid>
+                                </p:panel>   
+                            </p:fieldset>
+                        </div> 
+                    </div>
+                    <p:panel toggleable="true" collapsed="false" style="margin-bottom:20px" id="cccc">
+                        <p:panelGrid columns="2" rendered="false" layout="grid" id="calculTotal" class="table table-responsive">
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.primenette']}:" for="ps"></p:outputLabel>
+                            <h:outputText id="ps" class="form-control text-right" value="#{remiseEnVigueurBean.factureSuspendu.assurance.arrondireFormat2(remiseEnVigueurBean.factureSuspendu.assurance.primeNettennuelle)}"/>
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.dureefractionnement']}:" for="fractd"></p:outputLabel>
+                            <p:outputLabel class="form-control text-right" id="fractd" value="#{remiseEnVigueurBean.factureSuspendu.assurance.periodeDeFractionnement()}"></p:outputLabel>
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.fractionnement']}:" for="fract"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="fract" value="#{remiseEnVigueurBean.factureSuspendu.assurance.primeFracionne}">
+                                <f:convertNumber pattern="###,##0" type="number" />
+                            </h:outputText>
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.bonus']}:" for="bn"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="bn" value="#{remiseEnVigueurBean.factureSuspendu.assurance.arrondireFormat2(remiseEnVigueurBean.factureSuspendu.assurance.bonusValue)}"/>
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.reduction.exceptionnelle']}:" for="rede"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="rede" value="#{remiseEnVigueurBean.factureSuspendu.assurance.arrondireFormat2(remiseEnVigueurBean.factureSuspendu.assurance.reductionExceptionnelleValue)}"/>
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.reduction.flotte']}:" for="ref"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="ref" value="#{remiseEnVigueurBean.factureSuspendu.assurance.arrondireFormat2(remiseEnVigueurBean.factureSuspendu.assurance.reductionFlotteValue)}"/>
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.primeapresred']}:" for="fractS"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="fractS" value="#{remiseEnVigueurBean.factureSuspendu.assurance.arrondireFormat2(remiseEnVigueurBean.factureSuspendu.assurance.total)}"/>
+                            <p:outputLabel class="form-control bg-purple"  value="#{msg['tableau.accessoire']}:" for="acc"/>
+                            <h:outputText class="form-control text-right"  id="acc" value="#{remiseEnVigueurBean.factureSuspendu.assurance.arrondireFormat2(remiseEnVigueurBean.factureSuspendu.assurance.accessoire)}"/>
+                            <p:outputLabel class="form-control bg-purple" value=" #{msg['tableau.taxeFGA']} :" for="tes"/>
+                            <h:outputText  id="tes" class="form-control text-right"   value="#{remiseEnVigueurBean.factureSuspendu.assurance.arrondireFormat2(remiseEnVigueurBean.factureSuspendu.assurance.taxeFGAvalue)}">
+                            </h:outputText>
+
+                            <p:outputLabel class="form-control bg-purple" value=" #{msg['tableau.tauxenregistrement']}:" for="te"/>
+                            <h:outputText class="form-control text-right"  id="te" value="#{remiseEnVigueurBean.factureSuspendu.assurance.arrondireFormat2(remiseEnVigueurBean.factureSuspendu.assurance.tauxEnregistrementValue)}"/>
+
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.primettc']}:" for="pttc"/>
+                            <h:outputText class="form-control text-right" id="pttc" value="#{remiseEnVigueurBean.factureSuspendu.assurance.arrondireFormat2(remiseEnVigueurBean.factureSuspendu.assurance.primeTtc)}"/>
+
+                        </p:panelGrid>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" title="#{msg['btn.annuller']}" value="#{msg['btn.annuller']}" action="#{remiseEnVigueurBean.reset()}" update="detail,formliste,recherche" class="btn-danger danger " ></p:commandButton>
+                                <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" title="#{msg['btn.valider']}"  value="#{msg['btn.valider']}" action="#{remiseEnVigueurBean.saveFacture()}" update="detail,formliste,recherche,vvv" class="btn-success success" >
+                                    <p:confirm header="Confirmation" message="#{msg['supprimer.message']}" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </div>
+                        </div>
+                        <p:growl for="somekey" id="vvv" />
+                    </p:panel>
+                </h:form>
+                <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                    <h:form>
+                        <p:commandButton value="#{msg['supprimer.oui']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  />
+                        <p:commandButton value="#{msg['supprimer.non']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </h:form>
+                </p:confirmDialog>
+            </div>
+            <p:dialog widgetVar="addGarantie" class="police_label" header="#{msg['garantie.title.ajouter']}" showEffect="fade" modal="true" width="500" minHeight="500" resizable="false">
+                <!--h:panelGrid-->
+                <h:form id="detail2" class="form-horizontal" >
+                    <div class="form-group col-lg-12">
+                        <p:pickList value="#{remiseEnVigueurBean.objetGurantie}"  class="" itemValue="#{garantie}" var="garantie" converter="entityConverter"
+                                    itemLabel="#{garantie.libelle}"  >
+                            <f:facet name="sourceCaption">Disponibles</f:facet>
+                            <f:facet name="targetCaption">Sélectionnées</f:facet>
+                        </p:pickList>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  class="pull-left btn-danger danger" value="Annuler" title="Annuler"  oncomplete="PF('addGarantie').hide();" actionListener="#{remiseEnVigueurBean.annuler()}"  >
+                        </p:commandButton>
+                        <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  class="pull-right btn-success success" value="#{msg['btn.ajouter']}" oncomplete="PF('addGarantie').hide();"  update="detail" actionListener="#{remiseEnVigueurBean.valider()}" >
+                        </p:commandButton>
+                    </div>
+                </h:form>
+                <!--/h:panelGrid-->
+            </p:dialog>
+
+        </div>
+    </ui:composition> 
+</html>
+

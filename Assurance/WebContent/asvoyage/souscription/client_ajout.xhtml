@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <p:growl id="nouveauSms" globalOnly="true" showDetail="false"/>
+        <div class="form-group">
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.nom']}"  for="nom" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsVoyageBean.clientNew.nom}" required="true"  requiredMessage="#{msg['client.nom.requiredMessage']}" 
+                                 id="nom" class="form-control" placeholder="#{msg['client.nom']}">
+                        <p:ajax event="keyup" update="nomMessage"/>
+                    </p:inputText>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="nom"  id="nomMessage" class="errorClass" />
+                </div> 
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.prenom']}"  for="prenom" class=" pull-left" /><h:outputLabel value="*" id="etoileprenom" class="etoile_rouge pull-left #{souscriptionAsVoyageBean.typeClient} " />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsVoyageBean.clientNew.prenom}" required="#{souscriptionAsVoyageBean.typeClient}" disabled="#{souscriptionAsVoyageBean.griser}"  id="prenom" styleClass="form-control" placeholder="#{msg['client.prenom']}"
+                                 requiredMessage="#{msg['client.prenom.requiredMessage']}" >
+                        <p:ajax  event="keyup" update="prenomMessage"/>
+                    </p:inputText>  
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message  id="prenomMessage" for="prenom"/>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.genre']}"   for="genre" id="genrel1" class=" pull-left" /><h:outputLabel  value="*" id="genrel"  />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:selectOneMenu  id="genre" value="#{souscriptionAsVoyageBean.clientNew.genre}" required="true" title="Genre"  class="form-control" requiredMessage="#{msg['titre.genre.requiredMessage']}">
+                        <f:selectItem itemValue="F" itemLabel="#{msg['titre.genre']} " itemDisabled="false"/>
+                        <f:selectItems var="genre"  value="#{souscriptionAsVoyageBean.genre}" itemValue="#{genre}" itemLabel="#{genre}"/>
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message  id="genrem" for="genre"/>
+                </div>
+            </div> 
+
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.tel']}"  for="tel" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left"/>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsVoyageBean.clientNew.telephoneMobile}" required="true"  id="tel" styleClass="form-control" placeholder="#{msg['client.tel']}"
+                                 requiredMessage="#{msg['client.tel.requiredMessage']}" >
+                        <p:ajax  event="keyup" update="telMessage"/>
+                    </p:inputText> 
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <pe:keyFilter for="tel" mask="pint"/> 
+                    <p:message  id="telMessage" for="tel"/>
+                </div> 
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.faxe']}"  for="faxe" class=" pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsVoyageBean.clientNew.fax}" id="faxe" styleClass="form-control" placeholder="#{msg['client.faxe']}"/>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.bp']}"  for="codeZip" class=" pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsVoyageBean.clientNew.codeZip}" id="codeZip" styleClass="form-control" placeholder="#{msg['client.bp']}"/>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">   
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.email']}"  for="email" class=" pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsVoyageBean.clientNew.email}" id="email" styleClass="form-control" placeholder="#{msg['client.email']}"/>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                    <h:outputLabel  value="#{msg['titre.paysDeResidence']}"  for="designationPays" class=" pull-left" style=""/>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                    <p:autoComplete id="designationPays"  class="form-control" value="#{souscriptionAsVoyageBean.clientNew.pays}" forceSelection="true"  completeMethod="#{souscriptionAsVoyageBean.completeMethod}"  >
+
+                    </p:autoComplete>
+                </div>
+
+            </div>
+        </div> 
+
+        <div class="form-group">
+            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.lieudenaissance']}"  for="lieunaissance" class=" pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsVoyageBean.clientNew.lieuNaissance}" id="lieunaissance" styleClass="form-control" placeholder="#{msg['client.lieudenaissance']}"/>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.datedenaissance']}"   for="dateNaissance" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:calendar   id="dateNaissance" yearRange="c-100:c+10"  pattern="dd/MM/yyyy" maxdate="#{souscriptionAsVoyageBean.dateEmission}" readonlyInput="true" navigator="true" value="#{souscriptionAsVoyageBean.clientNew.dateNaissance}" mask="true" class="form-control" placeholder="#{msg['client.datedenaissance']}"
+                                  required="true"
+                                  requiredMessage="#{msg['client.datedenaissance.requireMessage']}" 
+                                  converterMessage="#{msg['titre.formatIncorrect']}"
+                                  >
+
+                        <f:convertDateTime pattern="dd/MM/yyyy"  type="date"/>
+                        <p:ajax event="dateSelect" update="datenMessage"/> 
+                    </p:calendar>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="dateNaissance" id="datenMessage" class="errorClass"/>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.nationalite']}"  for="nationalite" class=" pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsVoyageBean.clientNew.nationalite}" id="nationalite" styleClass="form-control" placeholder="#{msg['client.nationalite']}" />
+                </div>
+            </div>
+
+
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.adresse']}"   for="Adresse" class=" pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsVoyageBean.clientNew.adresse}" id="Adresse" styleClass="form-control" placeholder="#{msg['client.adresse']}"/>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.piece']}"  for="piece" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" id="typPL" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:selectOneMenu id="piece"  value="#{souscriptionAsVoyageBean.clientNew.typePiece}" required="#{souscriptionAsVoyageBean.pieceDateExpire}"  class="form-control"
+                                     requiredMessage="#{msg['client.piece.requireMessage']}">
+                        <f:selectItem itemLabel="#{msg['client.piece']}"/> 
+                        <f:selectItems value="#{souscriptionBean.listTypePiece()}" /> 
+                        <p:ajax event="click" update="pieceMessage"/> 
+                        <p:ajax  listener="#{souscriptionBean.typePiece2}" update="formliste:dateExpirationPiece,formliste:etoileExp" />
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="piece" id="pieceMessage"/>
+                </div>
+            </div> 
+
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.numeropiece']}" for="numpiece" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsVoyageBean.clientNew.numeroPiece}" required="true" id="numpiece" class="form-control" placeholder="#{msg['client.numeropiece']}"
+                                 requiredMessage="#{msg['client.numeropiece.requireMessage']}">
+                        <p:ajax event="keyup" update="numpieceMessage"/> 
+                    </p:inputText> 
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="numpiece" id="numpieceMessage"/> 
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.dateemissionpiece']}"  for="dateEmissionPiece" class="pull-left"  /> <h:outputLabel value="*"  class="etoile_rouge pull-left"/>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:calendar value="#{souscriptionAsVoyageBean.clientNew.dateEmissionPiece}" navigator="true" readonlyInput="true" class="form-control"  required="true" requiredMessage="Date d'émission est obligatoire"  id="dateEmissionPiece"  pattern="dd/MM/yyyy"   maxdate="#{souscriptionAsVoyageBean.dateEmission}" mask="true" placeholder="#{msg['client.dateemissionpiece']}" >
+                        <p:ajax event="dateSelect" update="dateEmissionMessage"/> 
+                    </p:calendar>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="dateEmissionPiece" id="dateEmissionMessage"/> 
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.dateexpirationpiece']}"  for="dateExpirationPiece" class="pull-left"  /> <h:outputLabel value="*"  class="etoile_rouge pull-left #{souscriptionAsVoyageBean.pieceDateExpire}"  id="etoileExp" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:calendar  value="#{souscriptionAsVoyageBean.clientNew.dateExpirationPiece}" class=" form-control" navigator="true" readonlyInput="true"   required="#{souscriptionAsVoyageBean.pieceDateExpire}" requiredMessage="Date d'expiration est obligatoire"   id="dateExpirationPiece"  pattern="dd/MM/yyyy" mindate="#{souscriptionAsVoyageBean.dateExpire}"  mask="true" placeholder="#{msg['client.dateexpirationpiece']}" >
+                        <p:ajax event="dateSelect" update="dateExpireMessage"/>
+                    </p:calendar>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="dateExpirationPiece" id="dateExpireMessage"/> 
+                </div>
+            </div>
+        </div> 
+        <div class="form-group"> 
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['client.lieuemission']}"  for="lieuemission" class=" pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsVoyageBean.clientNew.lieuEmission}"  id="lieuemission" styleClass="form-control" placeholder="#{msg['client.lieuemission']}"/>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.profession']}"  for="profession" class=" pull-left" /><h:outputLabel value="*" id="etoileintermediaire" class="etoile_rouge pull-left" />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsVoyageBean.clientNew.profession}" required="true"  id="profession" styleClass="form-control" placeholder="Profession"
+                                 requiredMessage="#{msg['titre.profession.requiredMessage']}" >
+                    </p:inputText>  
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message  id="professionMessage" for="profession"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="btn-toolbar">
+                        <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" class="btn btn-xs btn-danger pull-left" action="#{souscriptionAsVoyageBean.annulerClient()}" style="background: #d9534f;color:#fff;border-color: #d43f3a; font-family: cursive;"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row #{!souscriptionAsVoyageBean.hideChoixClientForm2}">
+            <div class="btn-toolbar">
+                <p:commandButton rendered="#{!souscriptionAsVoyageBean.hideChoixClientForm2}" value="#{msg['btn.valider']}" class="btn-purple btn pull-right" action="#{souscriptionAsVoyageBean.addnewClientInGroup()}" update="formliste" />
+            </div>
+        </div>
+    </ui:composition>
+</html>

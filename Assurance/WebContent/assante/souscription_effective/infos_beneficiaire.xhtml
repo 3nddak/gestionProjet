@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <p:panel header="Informations sur le bénéficiaire"  toggleable="true"  collapsed="false">
+            <p:dataTable value="#{souscriptionAsSanteBean.beneficiaireListToUse}" 
+                         rowKey="#{benef.idClient}" var="benef" id="ggbConf"
+                         class="table table-bordered">
+
+                <p:column headerText="#{msg['client.nom']}" filterBy="#{benef.nom}" filterMatchMode="contains">
+                    <h:outputText value="#{benef.nom}" />
+                </p:column >
+                <p:column headerText="#{msg['client.prenom']}" filterBy="#{benef.prenom}" filterMatchMode="contains">
+                    <h:outputText value="#{benef.prenom}" />
+                </p:column >
+                <p:column  headerText="#{msg['client.datedenaissance']}" >     
+                    <h:outputText value="#{benef.dateNaissance}"/>
+                </p:column>
+                <p:column headerText="#{msg['client.piece']}" filterBy="#{benef.typePiece}" filterMatchMode="contains">
+                    <h:outputText value="#{benef.typePiece}" />
+                </p:column >
+                <p:column headerText="#{msg['client.numeropiece']}" filterBy="#{benef.numeroPiece}" filterMatchMode="contains">
+                    <h:outputText value="#{benef.numeroPiece}" />
+                </p:column >
+            </p:dataTable>   
+        </p:panel>
+    </ui:composition> 
+</html>
+

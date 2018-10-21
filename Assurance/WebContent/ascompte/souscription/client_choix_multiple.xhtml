@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+       
+        <p:panel rendered="#{souscriptionAsCompteBean.groupe eq 0?false:true}">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="row">
+                        <p:dataTable  rendered="#{souscriptionAsCompteBean.hideChoixClientForm2}"   id="clienttable2"  value="#{souscriptionAsCompteBean.clientList}"  var="client2" 
+                                      selection="#{souscriptionAsCompteBean.clientOldlist}" rowKey="#{client2.hashCode()}" 
+                                      emptyMessage="#{msg['tableau.vide']}" 
+                                      rows="8"
+                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                      paginator="true" paginatorPosition="bottom" rowsPerPageTemplate="8,15,20">
+
+                            <p:column headerText="#{msg['client.nom']}" filterBy="#{client2.nom}" filterMatchMode="contains">
+                                <h:outputText value="#{client2.nom}" />
+                            </p:column >
+                            <p:column headerText="#{msg['client.prenom']}" filterBy="#{client2.prenom}" filterMatchMode="contains">
+                                <h:outputText value="#{client2.prenom}" />
+                            </p:column >
+                            <p:column headerText="#{msg['client.datedenaissance']}" filterMatchMode="contains">
+                                <h:outputText value="#{client2.dateNaissance}" />
+                            </p:column >
+                            <p:column selectionMode="multiple"/>
+                        </p:dataTable>
+                    </div>
+                    <div class="row #{souscriptionAsCompteBean.hideChoixClientForm2}">
+                        <div class="btn-toolbar">
+                            <p:commandButton rendered="#{souscriptionAsCompteBean.hideChoixClientForm2}" value="#{msg['btn.valider']}" class="btn-purple btn pull-right" update="formliste:clienttable3,formliste:pan,formliste" action="#{souscriptionAsCompteBean.onRowSelect2()}" />
+                        </div>
+                    </div>
+                </div> 
+            </div> 
+
+        </p:panel>
+
+
+    </ui:composition>
+</html>

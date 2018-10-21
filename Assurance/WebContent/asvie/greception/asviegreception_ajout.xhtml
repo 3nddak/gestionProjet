@@ -1,0 +1,217 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <p:outputPanel id="ajout" style="text-align:center;">
+           
+            <p:panel id="normal" rendered="#{souscriptionEffectiveAsVieBean.renderedPanel}" >
+                <h:form id="recherche" class="form-horizontal">
+                    <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>
+
+                </h:form>
+                <h:form id="reception" class="form-horizontal">      
+                    <p:panelGrid id="result" columns="4" layout="grid" >
+                        <p:outputLabel value="#{msg['client.nom']}" class="pull-left" />
+                        <h:outputText value="#{souscriptionEffectiveAsVieBean.receptionnaireTrouve.nom}" />
+                        <p:outputLabel value="#{msg['client.prenom']}" class="pull-left" />
+                        <h:outputText value="#{souscriptionEffectiveAsVieBean.receptionnaireTrouve.prenom}" />
+                        <p:outputLabel value="#{msg['titre.adresse']}" class="pull-left" />
+                        <h:outputText value="#{souscriptionEffectiveAsVieBean.receptionnaireTrouve.adresse}" />
+                        <p:outputLabel value="#{msg['client.tel']}" class="pull-left" />
+                        <h:outputText value="#{souscriptionEffectiveAsVieBean.receptionnaireTrouve.telephone}" />
+                        <p:outputLabel value="#{msg['client.piece']}" class="pull-left" />
+                        <h:outputText value="#{souscriptionEffectiveAsVieBean.receptionnaireTrouve.piece}" />
+                        <p:outputLabel value="#{msg['titre.numero']}" class="pull-left" />
+                        <h:outputText value="#{souscriptionEffectiveAsVieBean.receptionnaireTrouve.numPiece}" />
+                        <p:outputLabel value="#{msg['titre.dateExpiration']}" class="pull-left" />
+                        <h:outputText value="#{souscriptionEffectiveAsVieBean.receptionnaireTrouve.dateExpirationPiece}" />
+                    </p:panelGrid>
+                    <p:spacer />
+
+                    <p:outputPanel id="klm" rendered="#{souscriptionEffectiveAsVieBean.renderedProcurationPanel}">
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel  value="#{msg['titre.procuration']}" for="fileUpload" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:fileUpload id="fileUpload" required="true" fileUploadListener ="#{souscriptionEffectiveAsVieBean.handleFileUpload}"
+                                                  mode="advanced" 
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|bmp)$/"        
+                                                  label="#{msg['titre.veuillezAttacherLaProcuration']}" uploadLabel="#{msg['btn.telecharger']}" cancelLabel="#{msg['btn.annuller']}"       
+                                                  validatorMessage="#{msg['fichier.invalide']}"      
+                                                  dragDropSupport="false"      
+                                                  multiple="false"  
+                                                  disabled="false"
+                                                  update="messages"
+                                                  requiredMessage="#{msg['titre.veuillezAttacherLaProcuration']}"
+                                                  >
+                                    </p:fileUpload>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:message for="fileUpload" id="imageMessage" class="errorClass"/>
+                                    <p:growl id="messages" showDetail="false" globalOnly="true"/>
+                                </div>
+                            </div>
+                        </div> 
+                    </p:outputPanel>
+                    <div class="form-group">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:commandButton value="#{msg['btn.annuller']}" action="#{souscriptionEffectiveAsVieBean.closeDialog()}" oncomplete="PF('ajout').hide()" id="annuler" update="recherche:msgs,dataListeForm" class="btn btn-danger pull-left"/>
+                                <p:commandButton  value="#{msg['btn.enregistrer']}" oncomplete="PF('ajout').hide()" action="#{souscriptionEffectiveAsVieBean.receptionner()}" update="recherche:msgs,@form,dataListeForm" class="btn btn-success pull-right " onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </p:panel>
+            
+            
+            <p:panel id="proccuration" rendered="#{!souscriptionEffectiveAsVieBean.renderedPanel}" >
+                <h:form id="reception2" class="form-horizontal">      
+                    <p:growl id="msgs2"  globalOnly="true"  severity="info,warn"/>
+                    <div class="form-group">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <h:outputLabel for="nom2" value="#{msg['client.nom']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <p:inputText id="nom2" required="true" requiredMessage="#{msg['client.nom.requireMessage']}"  value="#{souscriptionEffectiveAsVieBean.receptionnaireProcuration.nom}" styleClass="form-control" a:placeholder="Nom">
+                                    <f:ajax event="keyup" render="nomMessage"/>
+                                </p:inputText>
+                            </div>
+                            <h:message for="nom2" id="nomMessage" class="errorClass"/>
+
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <h:outputLabel for="pnom2" value="#{msg['client.prenom']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <p:inputText id="pnom2" required="true" requiredMessage="#{msg['client.prenom.requiredMessage']}"  value="#{souscriptionEffectiveAsVieBean.receptionnaireProcuration.prenom}" styleClass="form-control" a:placeholder="Prenom">
+                                    <f:ajax event="keyup" render="prenomMessage"/>
+                                </p:inputText>
+                                <h:message for="pnom2" id="prenomMessage" class="errorClass"/>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <h:outputLabel for="tel2" value="#{msg['client.tel']}" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <p:inputMask id="tel2" required="false" mask="(999) 99-99-99-99" requiredMessage="#{msg['client.tel.requiredMessage']}"
+                                             value="#{souscriptionEffectiveAsVieBean.receptionnaireProcuration.telephone}" class="form-control" placeholder="Téléphone"
+                                             > 
+                                    <f:ajax event="keyup" render="telMessage"/>
+                                </p:inputMask>  
+                                <h:message for="tel2" id="telMessage" class="errorClass"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <h:outputLabel for="adr2" value="#{msg['titre.adresse']}" class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <p:inputText id="adr2" value="#{souscriptionEffectiveAsVieBean.receptionnaireProcuration.adresse}" styleClass="form-control" placeholder="Adresse"/>
+                            </div>
+                        </div> 
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <h:outputLabel  value="#{msg['client.piece']}"  for="piece2" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <h:selectOneMenu id="piece2" required="false" requiredMessage="#{msg['client.piece.requireMessage']}" value="#{souscriptionEffectiveAsVieBean.receptionnaireProcuration.piece}" class="form-control" >
+                                    <f:selectItem noSelectionOption="true" itemDisabled="true" itemLabel="Pièce"/> 
+                                    <f:selectItem itemValue="carte d'identité" itemLabel="#{msg['client.piece.carte']}"/>
+                                    <f:selectItem itemValue="passport" itemLabel="#{msg['client.piece.passport']}"/>
+                                    <f:selectItem itemValue="permis de conduite" itemLabel="#{msg['client.piece.permis']}"/>
+                                    <f:selectItem itemValue="autre" itemLabel="#{msg['client.piece.autre']}"/>
+
+                                    <f:ajax event="keyup" render="pieceMessage2"/>
+                                </h:selectOneMenu>
+                                <h:message for="piece2" id="pieceMessage2" class="errorClass"/>
+                            </div>
+
+                        </div> 
+                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12">                              
+                                <h:outputLabel  value="#{msg['client.numeropiece']}"  for="dateEmissionPiece2" class=" pull-left" />
+                                <p:inputText id="nump2" required="false" requiredMessage="#{msg['client.numeropiece.requireMessage']}" value="#{souscriptionEffectiveAsVieBean.receptionnaireProcuration.numPiece}" styleClass="form-control" placeholder="numeroPiece *">
+                                    <f:ajax event="keyup" render="numpMessage2"/>
+                                </p:inputText>
+                                <h:message for="nump2" id="numpMessage2" class="errorClass"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12">                         
+                                <h:outputLabel  value="#{msg['client.dateexpirationpiece']}"  for="dte2" class=" pull-left" />
+                                <p:calendar id="dte2" required="false" requiredMessage="#{msg['client.dateexpirationpiece.requiredMessage']}" value="#{souscriptionEffectiveAsVieBean.receptionnaireProcuration.dateExpirationPiece}" navigator="true" class="pull-left" locale="#{receptionnaireBeanGuichet.curentUserLocale}" pattern="dd-MM-yyyy" mask="true" placeholder="dateExpirationPiece*" >
+
+                                    <f:ajax event="keyup" render="dteMessage2"/>
+                                </p:calendar>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12">   
+                                <h:message for="dte2" id="dteMessage2" class="errorClass"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.procuration']}" for="fileUpload" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:fileUpload id="fileUpload" required="true" fileUploadListener ="#{souscriptionEffectiveAsVieBean.handleFileUpload}"
+                                              mode="advanced" 
+                                              allowTypes="/(\.|\/)(gif|jpe?g|png|bmp)$/"        
+                                              label="#{msg['titre.veuillezAttacherLaProcuration']}" uploadLabel="#{msg['btn.telecharger']}" cancelLabel="#{msg['btn.annuller']}"       
+                                              validatorMessage="#{msg['fichier.invalide']}"      
+                                              dragDropSupport="false"      
+                                              multiple="false"  
+                                              disabled="false"
+                                              update="messages"
+                                              requiredMessage="#{msg['titre.veuillezAttacherLaProcuration']}"
+                                              >
+                                </p:fileUpload>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:message for="fileUpload" id="imageMessage" class="errorClass"/>
+                                <p:growl id="messages" showDetail="false" globalOnly="true"/>
+                            </div>
+                        </div>
+
+                    </div> 
+
+                    <div class="form-group">
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+                            <div class="col-md-6 col col-lg-6">
+                                <p:commandButton value="#{msg['btn.annuller']}" type="reset" id="annuler2" update="recherche:msgs,dataListeForm" class="danger btn-danger pull-left"/>
+                            </div>
+
+                            <div class="col-md-6 col col-lg-6">
+                                <p:commandButton value="#{msg['btn.enregistrer']}" oncomplete="PF('ajout').hide()" action="#{souscriptionEffectiveAsVieBean.receptionner()}" update="recherche:msgs,@form,dataListeForm" class="success btn-success pull-right "/>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>           
+
+            </p:panel>
+        </p:outputPanel>
+    </ui:composition> 
+</html>
+

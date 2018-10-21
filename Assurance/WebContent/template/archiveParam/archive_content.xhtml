@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="Parametrage des sauvagardes"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="panel">
+                <h:form class="form-horizontal" id="formliste-ajout">
+                    <p:growl id="msgs" showDetail="false" globalOnly="true" />
+                    <div class="panel-body"> 
+                        <p:fieldset id="leg2" legend="Parametrer une sauvegarde" toggleable="true" collapsed="true" toggleSpeed="500" class="panel-default">                          
+                            <p:outputPanel id="ajout" >
+
+                                <div class="form-group">
+
+                                    <div class="col-md-2 col-lg-2 col-sm-6 col-xs-12" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="typ" value="Type" /><h:outputLabel value="*" class="etoile_rouge "/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu id="typ" required="true" class="form-control" value="#{archiveBean.periodeArchiveComptes.typePeriode}">
+                                                <f:selectItem  itemLabel="Année" itemValue="0" />
+                                                <f:selectItem  itemLabel="Mois" itemValue="1" />
+                                                <f:selectItem  itemLabel="Jour" itemValue="3" />
+                                                <f:selectItem itemLabel="Heure" itemValue="4" />
+                                                <f:selectItem  itemLabel="Minute" itemValue="5" />
+                                                <p:ajax update="formliste-ajout:pss2,formliste-ajout:pss3,formliste-ajout:pss31,formliste-ajout:pss4,formliste-ajout:pss5" listener="#{archiveBean.reinitialiserDateArret()}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="pss" value="Frequence de sauvegarde"/><h:outputLabel value="*" class="etoile_rouge"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText required="true"  id ="pss" value="#{archiveBean.periodeArchiveComptes.periodeArchivage}"  >
+                                                <p:ajax event="keyup" listener="#{archiveBean.calendarRestriction()}" update="formliste-ajout:pss4,formliste-ajout:pss2"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12 #{archiveBean.listPeriodeArchive.size() lt 1 ? true:false}" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{archiveBean.listPeriodeArchive.size() lt 1 ? true:false}"  for="pss2" value="Date debut"/><h:outputLabel value="*" rendered="#{archiveBean.listPeriodeArchive.size() lt 1 ? true:false}"  class="etoile_rouge"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <!--p:calendar id="pss2"  value="#{archiveBean.periodeArchiveComptes.firstDateArch}" mask="true" pattern="#{archiveBean.pattern}" -->
+                                            <p:calendar class="form-control" rendered="#{archiveBean.listPeriodeArchive.size() lt 1 ? true:false}" id="pss2" value="#{archiveBean.periodeArchiveComptes.firstDateArch}"  navigator="true" pattern="#{archiveBean.pattern}" >
+                                                <p:ajax event="dateSelect" listener="#{archiveBean.annulerFrequenceMa()}" update="formliste-ajout:pss3,formliste-ajout:pss4,formliste-ajout:pss5"/>
+                                            </p:calendar>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="pss3" value="Délai de lancement"/>
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-sm-4 col-xs-12">
+                                            <h:outputLabel value="Jour j -"/>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-sm-4 col-xs-12">
+                                            <p:inputText id="pss3" class="form-control"  value="#{archiveBean.periodeArchiveComptes.frequenceMa}" >
+                                                <p:ajax event="keyup" listener="#{archiveBean.calendarRestriction()}" update="formliste-ajout:pss4"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-sm-4 col-xs-12">
+                                            <h:outputLabel id='pss31' value="#{archiveBean.periodeArchiveComptes.typePeriodeName()}"/> 
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12 #{archiveBean.periodeArchiveComptes.periodeArchivage ne null and archiveBean.periodeArchiveComptes.frequenceMa ne null ?false:true}" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="pss4"  value="Date Arret"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:calendar class="form-control #{archiveBean.periodeArchiveComptes.periodeArchivage ne null and archiveBean.periodeArchiveComptes.frequenceMa ne null ?false:true}" disabled="#{archiveBean.periodeArchiveComptes.periodeArchivage ne null and archiveBean.periodeArchiveComptes.frequenceMa ne null ?false:true}" id="pss4" value="#{archiveBean.periodeArchiveComptes.dateArchivageMa}" pattern="dd/MM/yyyy HH:mm:ss" mindate="#{archiveBean.minDate}" maxdate="#{archiveBean.maxDate}" >
+                                                <!--p:ajax event="dateSelect" update="formliste-ajout"/-->
+                                            </p:calendar>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12" >
+
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="pss5" value="Activer la date d'arret"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:selectBooleanCheckbox  id="pss5" value="#{archiveBean.periodeArchiveComptes.dateArchivageMaActive}">
+
+                                            </p:selectBooleanCheckbox>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12" >
+                                        <div class="form-group" >
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <h:outputLabel for="pss6" value="Desactiver la sauvegarde"/>
+                                            </div>
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <p:selectBooleanCheckbox  id="pss6" value="#{archiveBean.periodeArchiveComptes.desactiveSauvegarde}">
+
+                                                </p:selectBooleanCheckbox>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                                    <div class="btn-toolbar ">
+                                        <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" action="#{archiveBean.annuler()}" update="formliste-ajout" rendered="#{(archiveBean.listPeriodeArchive.size() lt 1) or (archiveBean.periodeArchiveComptes.idPeriodeArchiveComptes ne null) ? true:false }"  id="annuler" class="btn btn-danger ">
+
+                                        </p:commandButton>
+
+
+                                        <p:commandButton value="#{msg['btn.enregistrer']}" rendered="#{(archiveBean.listPeriodeArchive.size() lt 1) or (archiveBean.periodeArchiveComptes.idPeriodeArchiveComptes ne null) ? true:false }" title="#{msg['btn.enregistrer']}"  action="#{archiveBean.saveOne()}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="btn btn-purple pull-right"  update="formliste:liste,formliste-ajout,msgs" >
+                                            <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert" />        
+                                        </p:commandButton>
+                                    </div>
+
+
+                                </div>
+
+
+                                <!-- Fin du dialogue--> 
+
+                            </p:outputPanel>
+                        </p:fieldset>
+                    </div> 
+                </h:form>       
+                <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                    <h:form>
+                        <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </h:form>
+                </p:confirmDialog>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <h:graphicImage library="images" name="ajax-loader.gif" />
+                </p:dialog>
+
+                <h:form  id="formliste" class="form-horizontal">
+
+                    <div class="panel panel-body">
+
+                        <p:outputPanel id="guarantie">
+                            <p:fieldset legend="Parametre de sauvegarde" class="panel-default">
+
+                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                    <div class="table-responsive">
+                                        <p:dataTable class="table table-bordered table-striped table-condensed " var="cca" rowKey="#{cca.idPeriodeArchiveComptes}" id="liste" reflow="true" rows="5" value="#{archiveBean.listPeriodeArchive}"
+                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     paginator="true" paginatorPosition="bottom"  scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                     rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg[tableau.vide]}" >                                                    
+
+                                            <p:columnGroup type="header">
+                                                <p:row>
+
+                                                    <p:column colspan="5" headerText="Periode de sauvegarde" />
+                                                    <p:column  colspan="3" headerText="Arreté de la sauvegarde" />
+                                                    <p:column rowspan="3" headerText="Date Reel de la derniere sauvegarde" />
+                                                    <p:column rowspan="3" headerText="Desactivation de la sauvegarde" />
+                                                    <p:column rowspan="3" headerText="Action" />
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column rowspan="2" headerText="Type" />
+                                                    <p:column rowspan="2" headerText="Frequence" />
+                                                    <p:column  rowspan="4" headerText="Date debut des opérations" />
+                                                    <p:column  colspan="2" headerText="Periode de la derniere sauvegarde" />
+                                                    <p:column  rowspan="2" headerText="Délai de lancement de la saubegarde" />
+                                                    <p:column rowspan="2" headerText="Date Arret de la prochaine sauvegarde" />
+                                                    <p:column rowspan="2" headerText="Activation" />
+
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column headerText="Debut" />
+                                                    <p:column headerText="Fin" />
+                                                </p:row>
+                                            </p:columnGroup>
+                                            <p:column headerText="Type de Periode">
+                                                <h:outputText value="#{cca.typePeriodeName()}" />
+                                            </p:column>
+                                            <p:column headerText="Periode de sauvegarde">
+                                                <h:outputText id="HH" value="#{cca.periodeArchivage}" >
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column >
+                                                <h:outputText id="gg" value="#{cca.firstDateArch}" />
+
+
+                                            </p:column>
+                                            <p:column headerText=" ">
+                                                <h:outputText value="#{cca.lastDateArchDebut}" />
+
+                                            </p:column>
+                                            <p:column headerText=" Date prevu de la derniere sauvegarde">
+                                                <h:outputLabel value="#{cca.lastDateArch}" />
+
+                                            </p:column>
+                                            <p:column headerText="Frequence">
+                                                <h:outputText id="HHf" value="J - #{cca.frequenceMa}  #{cca.typePeriodeName()} " >
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Jour Arreté">
+                                                <h:outputText id ="uu" value="#{cca.dateArchivageMa}" />
+
+                                            </p:column>
+
+
+                                            <p:column headerText="Activé le Jour arreté">
+                                                <!--h:outputText id="v" value="#{cca.dateArchivageMaActive}" /-->
+                                                <i class="text-green icon-default fa fa-check #{cca.dateArchivageMaActive}" />
+                                                <i class=" icon-default  text-red fa fa-close #{!cca.dateArchivageMaActive}" />
+
+                                            </p:column>
+
+
+
+                                            <p:column headerText=" Date Reel de la derniere sauvegarde">
+                                                <h:outputText value="#{cca.reelLastDateArch}" />
+                                            </p:column>
+
+                                            <p:column headerText="">
+                                                <!--h:outputText id="vg" value="#{cca.desactiveSauvegarde}" /-->
+                                                <i class="text-green icon-default fa fa-check #{cca.desactiveSauvegarde}" />
+                                                <i class=" icon-default  text-red fa fa-close #{!cca.desactiveSauvegarde}" />
+
+                                            </p:column>
+                                            <p:column headerText="Actions"  >
+                                                <div class="btn-toolbar">
+                                                    <p:commandButton action="#{archiveBean.editToUpdate()}" update="formliste-ajout"  icon="fa fa-edit" title="#{msg['btn.modifier']}" class="btn-primary btn ">
+                                                        <f:setPropertyActionListener value="#{cca}" target="#{archiveBean.periodeArchiveComptesToUpdate}" />
+                                                    </p:commandButton>
+                                                    <p:commandButton action="#{archiveBean.reinitialiser()}" update="formliste,formliste-ajout"  icon="fa fa-history" title="#{msg['btn.supprimer']}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="btn btn-purple">
+                                                        <f:setPropertyActionListener value="#{cca}" target="#{archiveBean.periodeArchiveComptesDelete}" />
+                                                        <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert" />    
+                                                    </p:commandButton>
+                                                </div>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                            </p:fieldset>
+                        </p:outputPanel>
+                    </div>
+                </h:form>
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+    </ui:composition> 
+
+</html>
+

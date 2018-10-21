@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition>
+
+        <p:panel header="Numero du contrat"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="4">
+                <p:outputLabel  value="numero  :"/>
+                <h:outputText  value="#{declarationSinistreBean.police}"/>
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="Nature de l'evenement"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="4">
+                <p:outputLabel  value="Nature de l'evenement :"/>
+                <h:outputText  value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.natureEvenementSinistreAsAuto.libelle}"/>
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="Circonstances du sinistre"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+            <p:panelGrid columns="6" class="table">
+                <p:outputLabel    value="Date / Heure de survenance du sinistre:"/>
+                <h:outputText class="text-right"  value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.dateSinistre}"/>
+                <p:outputLabel value="Lieu de survenance:"/>
+                <h:outputText class="text-right"  value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.lieuSurvenance}"/>
+                <p:outputLabel value="Code postal :"/>
+                <h:outputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.codePostal}"/>
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="Dommages vehicules /Tiers"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+            <p:panelGrid columns="6" class="table">
+                <p:outputLabel    value="Détail des dommages:"/>
+                <h:outputText class="text-right"  value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.degats}"/>
+                <p:outputLabel value="Autres tiers (hors vehicule) impliqués:"/>
+                <h:outputText class="text-right"  value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.lieuSurvenance}"/>
+            
+            </p:panelGrid>
+
+        </p:panel>
+     
+       <p:panel header="#{msg['message.client.titre']}"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel  value="Souscripteur :"/>
+                <h:outputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.declarantSinistre.nom} #{declarationSinistreBean.declaratonSinistreAssuranceAuto.declarantSinistre.prenom}" />
+                <p:outputLabel  value="Téléphone :"/>
+                <h:outputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.declarantSinistre.numPhone}"/>
+                <p:outputLabel  value="Adresse :"/>
+                <h:outputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.declarantSinistre.adresse}"/>
+                <p:outputLabel  value="Date de naissance :"/>
+                <h:outputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.declarantSinistre.dateNaissance}"/>
+                <p:outputLabel value="Email :"/>
+                <h:outputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.declarantSinistre.email}"/>
+
+            </p:panelGrid>
+
+        </p:panel>
+
+    </ui:composition> 
+
+</html>
+

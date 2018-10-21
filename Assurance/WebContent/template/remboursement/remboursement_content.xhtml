@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <div class="container-fluid" >
+            <div id="liste" class="row-fluid">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                    <div class="panel">
+                        <h:form  id="formliste" class="form-horizontal" >
+                            <div class="panel-heading"> 
+                                <fieldset>
+                                    <legend class=" police_label text-center"><p:outputLabel value="REMBOURSEMENT COMPTES "></p:outputLabel></legend>
+                                </fieldset>
+                            </div>
+                            <p:fieldset legend="effectuer un remboursement" toggleable="true" collapsed="false" style="margin: 20px;">
+                                <div class="panel panel-body " >
+                                    <ui:include src="remboursement_ajout.xhtml"/>   
+                                </div>
+                            </p:fieldset>
+                        </h:form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

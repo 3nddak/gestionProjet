@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="panel">
+            <!--div class="panel-heading bg-purple">  
+                <h:outputLabel class="" value="#{msg['titre.societeDeCourtage']}" ></h:outputLabel>
+            </div-->
+            <div  class="panel-heading bg-primary"> 
+                <h:form  class="form-horizontal " id="entetedetail">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                            <div class="col-md-2 pull-left">
+                                <div class="row">
+                                    <h:graphicImage alt="Logo compagnie" class=" img-responsive imgfacture" id="img1" value="/images/dynamic/?file=#{payementAsSanteBean.assuranceSante.compagnie.cheminImage}"/>
+
+                                </div>
+                                <div class="row">
+                                    <h:outputLabel  value="#{payementAsSanteBean.assuranceSante.compagnie.abbreviation}" class="text-uppercase" ></h:outputLabel>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 pull-right">
+                                <div class="row">
+                                    <h:graphicImage alt="Logo courtier"  class="img-responsive imgfacture  pull-right " id="img2" value="/images/dynamic/?file=#{payementAsSanteBean.assuranceSante.courtier.cheminImage}"/>
+                                </div>
+                                <div class="row">
+                                    <h:outputLabel  value="#{payementAsSanteBean.assuranceSante.courtier.abbreviation}" class="text-uppercase  " ></h:outputLabel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+            <div class="panel-body">
+                <h:form  class="form-horizontal " id="detail">
+                    <p:panel header="#{msg['message.client.titre']}"  toggleable="true" collapsed="true">
+
+                        <p:panelGrid columns="6" class="table">
+                            <h:outputLabel value="#{msg['titre.souscripteur']}"/>
+                            <h:outputText value="#{payementAsSanteBean.assuranceSante.client.nom} #{payementAsSanteBean.assuranceSante.client.prenom}"/>
+                            <h:outputLabel value="#{msg['client.datedenaissance']}"/>
+                            <h:outputText value="#{payementAsSanteBean.assuranceSante.client.dateNaissance}"/>
+                            <h:outputLabel value="#{msg['client.tel']}"/>
+                            <h:outputText  value="#{payementAsSanteBean.assuranceSante.client.telephoneMobile}"/>
+                            <h:outputLabel value="#{msg['titre.adresse']}"/>
+                            <h:outputText  value="#{payementAsSanteBean.assuranceSante.client.adresse}"/>
+                            <p:outputLabel value="#{msg['titre.profession']}"/>
+                            <h:outputText value="#{payementAsSanteBean.assuranceSante.client.profession}"/>
+
+                        </p:panelGrid>
+                    </p:panel>
+
+                    <p:panel header="Infos souscriptions"  toggleable="true" collapsed="true">
+
+                        <p:panelGrid columns="4" class="table">
+                            <p:outputLabel value="#{msg['titre.dateDebutDuContrat']}:"/>
+                            <h:outputText class="text-right"  value="#{payementAsSanteBean.assuranceSante.dateDebutContrat}"/>
+
+                        </p:panelGrid>
+                        <p:panelGrid class="table" columns="4">
+                            <p:outputLabel    value="Nombre d'enfants :"/>
+                            <h:outputText class="text-right"  value="#{payementAsSanteBean.assuranceSante.nombreEnfants}"/>
+                            <p:outputLabel    value="Prime annuelle enfants :"/>
+                            <h:outputText class="text-right"  value="#{payementAsSanteBean.assuranceSante.primeAnnuelleEnfant}"/>
+                            <p:outputLabel    value="Nombre d'adultes :"/>
+                            <h:outputText class="text-right"  value="#{payementAsSanteBean.assuranceSante.nombreAdultes}"/>
+                            <p:outputLabel    value="Prime annuelle adultes :"/>
+                            <h:outputText class="text-right"  value="#{payementAsSanteBean.assuranceSante.primeAnnuelleAdulte}"/>
+
+                        </p:panelGrid>
+
+                    </p:panel>
+
+                    <p:panel header="#{msg['titre.garantie']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+                        <div class="table-responsive">
+                            <p:dataTable class="table_label table-responsive" var="risque" reflow="true" rows="5" value="#{payementAsSanteBean.assuranceSante.risqueAsSantes}"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" 
+                                         rowsPerPageTemplate="5,10,15"  emptyMessage="#{msg[tableau.vide]}"  >                                                    
+                                <p:column headerText="#{msg['titre.categorie']}"   groupRow="true" >
+                                    <h:outputText value="#{risque.categorieGarantieAsSante.designation}" />
+                                </p:column>
+
+                                <p:column headerText="#{msg['titre.garantie']}" >
+                                    <h:outputText value="#{risque.garantieAsSante.designation}" />
+                                </p:column >
+                                <p:column headerText="#{msg['titre.taux.remboursement']}">
+                                    <h:outputText value="#{risque.tauxRemboursement}" />
+                                </p:column >
+                                <p:column headerText="#{msg['titre.plafond.remboursement']}">
+                                    <h:outputText value="#{risque.plafondRemboursement}" />
+                                </p:column >
+
+                            </p:dataTable>
+                        </div>
+
+                    </p:panel>
+                </h:form>
+                <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                    <h:form>
+                        <p:commandButton value="#{msg['supprimer.oui']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['supprimer.non']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </h:form>
+                </p:confirmDialog>
+                <h:form id="text" class="form-horizontal">
+                    <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                    <p:panel >
+                        <div class="panel-body"> 
+                            <div class="form-group" >
+                                <p:panelGrid columns="2"  layout="grid" >
+                                    <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.primenette']}:" for="ps"></p:outputLabel>
+                                    <p:outputLabel id="ps" class="text-right form-control"  value="#{payementAsSanteBean.assuranceSante.prixNette}"> 
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                    </p:outputLabel>
+
+                                    <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.remise']}:" for="psrr"></p:outputLabel>
+                                    <p:outputLabel id="psrr" class="text-right form-control"  value="#{payementAsSanteBean.assuranceSante.remise}"> 
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                    </p:outputLabel>
+
+                                    <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.reduction']}:" for="psr"></p:outputLabel>
+                                    <p:outputLabel id="psr" class="text-right form-control"  value="#{payementAsSanteBean.assuranceSante.valeurReduction()}"> 
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                    </p:outputLabel>
+
+                                    <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.majoration']}:" for="psrm"></p:outputLabel>
+                                    <p:outputLabel id="psrm" class="text-right form-control"  value="#{payementAsSanteBean.assuranceSante.valeurMajoration()}"> 
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                    </p:outputLabel>
+
+
+                                    <p:outputLabel  class="form-control bg-purple" value="#{msg['tableau.fraisGestion']}:" for="fdg"/>
+                                    <p:outputLabel id="fdg" class="text-right form-control" value="#{payementAsSanteBean.assuranceSante.accessoire}">
+
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                    </p:outputLabel>
+                                    <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.taxe']}:" for="tes"/>
+                                    <p:outputLabel id="tes" class="text-right form-control" value="#{payementAsSanteBean.assuranceSante.valeurTaxes()}">
+
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                    </p:outputLabel>
+
+                                    <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.primettc']}:" for="pttc"/>
+                                    <p:outputLabel id="pttc" class="text-right form-control"  value="#{payementAsSanteBean.assuranceSante.primeTTCS}">
+                                        <f:convertNumber pattern="###,##0" type="number" />
+                                    </p:outputLabel>
+                                </p:panelGrid>
+                            </div>
+
+                            <div class="form-group" >
+                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                    <p:commandButton  value="#{msg['btn.rejeter']}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" update="@form,detail,message1,vvv" action="#{payementAsSanteBean.rejetAssurance()}" class="btn-danger btn"  icon="fa fa-trash" >
+
+                                    </p:commandButton>
+                                    <p:commandButton  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"   class="btn-success btn pull-right" icon="fa fa-shopping-card" value="Valider" action="#{payementAsSanteBean.payerAssurance()}" update="@form,detail,message1,vvv">  
+                                        <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['question.etesVousSur']}" icon="ui-icon-alert"  />
+
+                                    </p:commandButton>
+                                </div>
+                                <p:growl for="somekey" id="vvv" />
+                            </div>
+                        </div> 
+                    </p:panel>
+
+                </h:form>
+            </div>
+        </div>
+        <p:dialog widgetVar="imprimerRecu" header="Imprimer le reçu">
+            <h:form class="form-horizontal">
+                <div class="btn-toolbar">
+                    <p:commandLink value="#{msg['btn.imprimer']}"  ajax="false" onstart="PF('imprimerRecu').hide()" class="btn btn-xs btn-imprimer"  target="/" action="#{payementAsSanteBean.printRecuDePayementAsSante()}" >
+                    </p:commandLink>
+                    <p:commandLink value="#{msg['titre.quitter']}"  oncomplete="PF('imprimerRecu').hide()"   class="btn btn-xs btn-danger pull-right" >
+                    </p:commandLink>
+                </div>
+
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

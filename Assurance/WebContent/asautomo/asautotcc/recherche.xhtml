@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <p:panel rendered="false" toggleable="true" collapsed="true" header="#{msg['recherche.titre']}">
+              <div class="panel-body">
+            <h:form  class="form-horizontal" id="recherche">
+              
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <h:outputLabel for="pays"  value="Pays" class="pull-left text-left"/>    
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{espaceCompagnieAsCompteBean.paysSelected}" >                                          
+                                <f:selectItem itemLabel="Tous les pays" itemDisabled="false" />
+                                <f:selectItems var="pays" value="#{espaceCompagnieAsCompteBean.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                            </h:selectOneMenu>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <h:outputLabel for="compagnie"  value="Compagnie" class="pull-left text-left"/>                              
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <h:selectOneMenu id="compagnie" value="#{espaceCompagnieAsCompteBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                <f:selectItem itemLabel="Tous les Compagnies" itemDisabled="false" />
+                                <f:selectItems value="#{espaceCompagnieAsCompteBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                            </h:selectOneMenu>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <h:outputLabel for="courtier"  value="Courtier"/>   
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <h:selectOneMenu id="courtier"  converter="entityConverter" value="#{espaceCompagnieAsCompteBean.courtierSelected}" class="form-control" >                                          
+                                <f:selectItem itemLabel="Type tiers" itemDisabled="false" />
+                                <f:selectItems var="courtier" value="#{espaceCompagnieAsCompteBean.listCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <h:outputLabel for="pv"  value="Point de vente" class="pull-left text-left"/>                          
+                        </div>  
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <h:selectOneMenu id="pv"  value="#{espaceCompagnieAsCompteBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                <f:selectItem itemLabel="Point de vente" itemDisabled="false" />
+                                <f:selectItems var="pv" value="#{espaceCompagnieAsCompteBean.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <h:outputLabel for="gt"  value="Guichet" class="pull-left text-left"/>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <h:selectOneMenu id="gt"  value="#{espaceCompagnieAsCompteBean.guichetSelected}"  converter="entityConverter" class="form-control" >                                          
+                                <f:selectItem itemLabel="Guichets" itemDisabled="false" />
+                                <f:selectItems var="guichet" value="#{espaceCompagnieAsCompteBean.listGuichet}" itemLabel="#{guichet.designation}" itemValue="#{guichet}" />            
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <p:outputLabel for="mask" value="DATE DEBUT" />
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <p:calendar id="mask"  pattern="dd-MM-yyyy" class="form-control" mask="true" value="#{espaceCompagnieAsCompteBean.dateDebut}" >
+                            </p:calendar>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <p:outputLabel for="mask" value="DATE FIN" />
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                            <p:calendar id="mask2"   pattern="dd-MM-yyyy" class="form-control" mask="true" value="#{espaceCompagnieAsCompteBean.dateFin}">
+                            </p:calendar>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:commandButton value="#{msg['btn.rechercher']}" update="message1:facture,@form" class="btn-imprimer btn btn-xs pull-right" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{espaceCompagnieAsCompteBean.trier()}"  />
+                        </div>
+                    </div>
+
+
+               
+            </h:form>
+             </div>
+        </p:panel>
+    </ui:composition> 
+</html>
+

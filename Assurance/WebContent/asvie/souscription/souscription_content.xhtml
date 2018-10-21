@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['client.souscription']}"></p:outputLabel></legend>
+            </fieldset>
+            <h:form id="formliste" class="form-horizontal ">
+                <p:growl id="msgsAux"  globalOnly="true"  severity="info,warn"/>   
+                <!--  <p:wizard flowListener="">-->
+                <p:wizard    flowListener="#{souscriptionBean.onFlowProcess2}"  nextLabel="#{msg['btn.suivant']}" backLabel="#{msg['btn.prescedent']}" >
+                    <!--p:tab id="typett"  title="Type Capitaux Garanties" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="typeCapitauxGarantie.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab-->
+                    <p:tab id="typet" title="#{msg['titre.type']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="type.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab id="creditGroupe" rendered="#{souscriptionBean.groupe eq 1 and souscriptionBean.genreGroup eq 0?true:false}" title="#{msg['titre.infogroupe']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="credit_groupe.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab id="creditEntreprise" rendered="#{souscriptionBean.groupe eq 1 and souscriptionBean.genreGroup eq 1 ?true:false}"  title="#{msg['titre.infoentreprise']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="credit_entreprise.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab  class="tab-pane " id="compcour" title="#{msg['titre.compagnieCourtier']}">
+
+                        <div class="panel" style="border:none">
+                            <div class="panel-body">
+
+                                <ui:include src="compcour.xhtml"/>
+
+                            </div>
+                        </div>
+                    </p:tab>
+                    <p:tab  class="tab-pane " id="credit" title="#{msg['titre.credit']}">
+
+                        <div class="panel" style="border:none">
+                            <div class="panel-body">
+
+                                <ui:include src="credit.xhtml"/>
+
+                            </div>
+                        </div>
+                    </p:tab>
+                    <p:tab id="personal"  title="#{souscriptionBean.groupe eq 1 and souscriptionBean.genreGroup eq 1 ? msg['titre.representant'] :msg['client.title']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="client.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab id="question" rendered="#{souscriptionBean.groupe eq 1?false:true}" title="#{msg['titre.questionnaire']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="questionnaire_medical_2.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+
+                    <p:tab rendered="#{souscriptionBean.groupe eq 0?false:true}" class="tab-pane " id="creditClient" title="#{msg['titre.creditClients']}">
+
+                        <div class="panel" style="border:none">
+                            <div class="panel-body">
+
+                                <ui:include src="credit_client.xhtml"/>
+
+                            </div>
+                        </div>
+                    </p:tab>
+                    <p:tab rendered="#{souscriptionBean.groupe eq 0?false:true}" class="tab-pane " id="questionGroupe" title="#{msg['titre.questionnaire']}">
+
+                        <div class="panel" style="border:none">
+                            <div class="panel-body">
+
+                                <ui:include src="questionnaire_medical_Group_2.xhtml"/>
+
+                            </div>
+                        </div>
+                    </p:tab>
+                    <p:tab class="tab-pane " rendered="#{souscriptionBean.groupe eq 0?true:false}" id="verification" title="#{msg['titre.verification']}">
+
+                        <div class="panel" style="border:none">
+                            <div class="panel-body">
+
+                                <ui:include src="verification.xhtml"/>
+
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                        <p:commandButton value="#{msg['btn.enregistrerTous']}" update="formliste,msgsAux" action="#{souscriptionBean.souscrireAssuranceListe()}" onstart="PF('loadProcess').block()" oncomplete="PF('loadProcess').unblock()" class="btn btn-success btn-xs pull-right">
+                                            <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['question.etesVousSur']}" icon="fa fa-trash"  />
+
+                                        </p:commandButton>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </p:tab>
+                    <p:tab class="tab-pane " rendered="#{souscriptionBean.groupe eq 0?false:true}" id="verificationGroup" title="#{msg['titre.verification']}">
+
+                        <div class="panel" style="border:none">
+                            <div class="panel-body">
+
+                                <ui:include src="verificationGroup.xhtml"/>
+
+
+                            </div>
+                        </div>
+                    </p:tab>
+
+
+
+                </p:wizard>
+            </h:form>
+        </div>
+        <pe:blockUI widgetVar="loadProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif"/>   
+            </h:panelGrid>  
+        </pe:blockUI>  
+    </ui:composition>
+</html>

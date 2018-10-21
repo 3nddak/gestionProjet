@@ -1,0 +1,822 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['commission.gestion']}"></p:outputLabel></legend>
+            </fieldset>
+            <sec:authorize ifAllGranted="COMMISSION">
+                <p:fieldset legend="Commission Courtier Compagnie" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                    <h:form id="fff" class="form-horizontal">
+                        <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                        <div class="panel panel-border-none">
+                            <div class="panel-body">
+                                <div class="form-group" >
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <div class="form-group" >
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/>
+                                            </div>
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                <h:selectOneMenu id="pays" value="#{commission_Courtier_CompagnieBean.paysSelect}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                                    <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" itemDisabled="true" />
+                                                    <f:selectItems value="#{commission_Courtier_CompagnieBean.listpays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                                    <p:ajax listener="#{commission_Courtier_CompagnieBean.trierPrametresByPays()}" update="court" />
+                                                    <p:ajax listener="#{commission_Courtier_CompagnieBean.cleanCompagnieListOnPaysChange()}" update="court,comp" />
+                                                </h:selectOneMenu> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <div class="form-group" >
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <p:outputLabel  value="Courtier" class="pull-left" />
+                                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <h:selectOneMenu class="form-control"  id="court" value="#{commission_Courtier_CompagnieBean.courtierSelected}" converter="omnifaces.SelectItemsConverter" >
+                                                    <f:selectItem itemLabel="Courtier" itemValue="" />
+                                                    <f:selectItems value="#{commission_Courtier_CompagnieBean.listCourtier}" var="c" itemLabel="#{c.designation}" itemValue="#{c}" />
+                                                    <p:ajax event="click" update="courtMessage" />
+                                                    <p:ajax listener="#{commission_Courtier_CompagnieBean.feshCompagnieByCourtier()}" update="court,comp" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <p:message id="courtMessage" for="court" class="errorClass" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <div class="form-group" >
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <h:outputLabel for="comp" value="Compagnie" class="pull-left" />
+                                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <p:selectCheckboxMenu filter="true" filterMatchMode="contains" class="form-control" id="comp" label="Compagnie" value="#{commission_Courtier_CompagnieBean.allCompagnieSelected}" converter="omnifaces.SelectItemsConverter">
+                                                    <f:selectItems value="#{commission_Courtier_CompagnieBean.listCompagnie}" var="com" itemLabel="#{com.designation}" itemValue="#{com}" />
+                                                </p:selectCheckboxMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <div class="form-group" >
+                                            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+                                                <h:outputLabel for="percent"  value="Commission"  />
+                                                <h:outputLabel value="*" class="etoile_rouge " />
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <p:outputPanel id="sg">
+                                                    <p:outputLabel id="tee" for="teep" value="En #{commission_Courtier_CompagnieBean.label}" class="" />
+                                                    <!--h:outputLabel value="*" class="etoile_rouge " /-->
+                                                </p:outputPanel>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+                                                <p:inputText id="percent" value="#{commission_Courtier_CompagnieBean.commissionValue}" required="true" requiredMessage="veuillez définir la commission" class="form-control" >
+                                                    <p:ajax event="keyup" update="msgs" />
+                                                    <pe:keyFilter  mask="num" />
+                                                </p:inputText>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <p:selectBooleanCheckbox id="teep"  value="#{commission_Courtier_CompagnieBean.commissionType}" >
+                                                    <p:ajax update="sg" listener="#{commission_Courtier_CompagnieBean.showLabel()}" />
+                                                </p:selectBooleanCheckbox>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <div class="form-group" >
+                                            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+                                                <h:outputLabel for="percentr" value="Reduction"   />
+                                                <h:outputLabel value="*" class="etoile_rouge " />
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <p:outputPanel >
+                                                    <p:outputLabel  for="red" value="En % " class="" />
+                                                    <!--h:outputLabel value="*" class="etoile_rouge " /-->
+                                                </p:outputPanel>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+                                                <p:inputText id="percentr" value="#{commission_Courtier_CompagnieBean.reduction}" required="true" requiredMessage="veuillez définir la commission" class="form-control" >
+                                                    <p:ajax event="keyup" update="msgs" />
+                                                    <pe:keyFilter  mask="num" />
+                                                </p:inputText>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <p:selectBooleanCheckbox id="red" value="#{commission_Courtier_CompagnieBean.reductionEnPourcentage}" >
+
+                                                </p:selectBooleanCheckbox>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <div class="form-group" >
+                                            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+                                                <h:outputLabel  value="Bonus"  for="percentb" />
+                                                <h:outputLabel value="*" class="etoile_rouge" />
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <p:outputPanel >
+                                                    <p:outputLabel for="bns" value="En % " class="" />
+                                                    <!--h:outputLabel value="*" class="etoile_rouge" /-->
+                                                </p:outputPanel>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+                                                <p:inputText id="percentb" value="#{commission_Courtier_CompagnieBean.bonus}" required="true" requiredMessage="veuillez définir la commission" class="form-control" >
+                                                    <p:ajax event="keyup" update="msgs" />
+                                                    <pe:keyFilter  mask="num" />
+                                                </p:inputText>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <p:selectBooleanCheckbox id="bns" value="#{commission_Courtier_CompagnieBean.bonusEnPourcentage}" >
+
+                                                </p:selectBooleanCheckbox>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                        <div class="form-group" >
+                                            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+                                                <h:outputLabel  value="Malus" class="pull-left" for="percentm" />
+                                                <h:outputLabel value="*" class="etoile_rouge" />
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <p:outputPanel >
+                                                    <p:outputLabel  for="mls" value="En % " />
+                                                    <!--h:outputLabel value="*" class="etoile_rouge pull-left" /-->
+                                                </p:outputPanel>
+                                            </div>
+
+                                            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+                                                <p:inputText id="percentm" value="#{commission_Courtier_CompagnieBean.malus}" required="true" requiredMessage="veuillez définir la commission" class="form-control" >
+                                                    <p:ajax event="keyup" update="msgs" />
+                                                    <pe:keyFilter  mask="num" />
+                                                </p:inputText>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <p:selectBooleanCheckbox id="mls" value="#{commission_Courtier_CompagnieBean.malusEnPourcentage}" >
+
+                                                </p:selectBooleanCheckbox>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div> 
+                            <div class="panel-footer"> 
+
+                                <div class="btn-toolbar">
+                                    <p:commandButton id="valid" value="#{msg['btn.valider']}" action="#{commission_Courtier_CompagnieBean.feshCompagnieGuarantieByCompagnie()}"  update="@form,cco,msgs" class="btn btn-xs btn-purple pull-right" />
+                                </div>
+                            </div> 
+                        </div> 
+
+
+                        <div class="panel panel-border-none">
+                            <!--div class="panel-heading">
+                                <h3 class="text-center text-uppercase">Commission à ajouter</h3>
+                            </div-->
+                            <div class="panel-body">
+
+                                <div class="table-responsive">
+                                    <p:dataTable id="cco" class="table table-bordered table-hover" rows="20" rowKey="#{co.hashCode}" 
+                                                 emptyMessage="#{msg['tableau.vide']}"
+                                                 paginator="true" paginatorPosition="bottom"  var="co" value="#{commission_Courtier_CompagnieBean.commission_Courtier_CompagnieList}" editable="true" editMode="cell">
+
+                                        <p:column class="bg-blue" headerText="Courtier" filterBy="#{co.courtier.designation}" >
+                                            <p:outputLabel value="#{co.courtier.designation}"/>
+                                        </p:column>
+                                        <p:column  class="bg-beige" headerText="#{msg['commission.compagnie']}" filterBy="#{co.compagnie_Guarantie.compagnie.designation}" >
+                                            <p:outputLabel value="#{co.compagnie_Guarantie.compagnie.designation}"/>
+                                        </p:column>
+                                        <p:column class="bg-green" headerText="Garantie" filterBy="#{co.compagnie_Guarantie.guarantie.symbole}"  >
+                                            <p:outputLabel value="#{co.compagnie_Guarantie.guarantie.symbole}"/>
+                                        </p:column>
+                                        <p:column class="bg-beige" headerText="Catégorie" filterBy="#{co.compagnie_Guarantie.categorie.libelle}" >
+                                            <p:outputLabel value="#{co.compagnie_Guarantie.categorie.libelle}"/>
+                                        </p:column>
+                                        <p:column  class="bg-blue" headerText="Commission" >
+                                            <p:cellEditor  >
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k1" value="#{co.commission}"/>
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText id="k11" value="#{(co.commission)}" >
+                                                        <p:ajax event="keyup" update="" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  class="bg-green" headerText="Commission en Somme ?"  >
+                                            <p:cellEditor>
+                                                <f:facet name="output"><p:outputLabel id="ss0" value="#{co.commissionEnPourcentage}" /></f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:selectBooleanCheckbox value="#{co.commissionEnPourcentage}" >
+                                                        <p:ajax update="ss0" />
+                                                    </p:selectBooleanCheckbox>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column  class="bg-blue" headerText="Reduction" >
+                                            <p:cellEditor  >
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k1r" value="#{co.reduction}"/>
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText id="k11r" value="#{(co.reduction)}" >
+                                                        <p:ajax event="keyup" update="k1r" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  class="bg-green" headerText="Reduction % ?"  >
+                                            <p:cellEditor>
+                                                <f:facet name="output"><p:outputLabel id="ss01" value="#{co.reductionEnPourcentage}" /></f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:selectBooleanCheckbox value="#{co.reductionEnPourcentage}" >
+                                                        <p:ajax update="ss01" />
+                                                    </p:selectBooleanCheckbox>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+
+                                        <p:column  class="bg-blue" headerText="Bonus" >
+                                            <p:cellEditor  >
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k1b" value="#{co.bonus}"/>
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText id="k11b" value="#{(co.bonus)}" >
+                                                        <p:ajax event="keyup" update="k1b" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  class="bg-green" headerText="Bonus % ?"  >
+                                            <p:cellEditor>
+                                                <f:facet name="output"><p:outputLabel id="ss02" value="#{co.bonusEnPourcentage}" /></f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:selectBooleanCheckbox value="#{co.bonusEnPourcentage}" >
+                                                        <p:ajax update="ss02" />
+                                                    </p:selectBooleanCheckbox>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+
+                                        <p:column  class="bg-blue" headerText="Malus" >
+                                            <p:cellEditor  >
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k1ml" value="#{co.malus}"/>
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText id="k11ml" value="#{(co.malus)}" >
+                                                        <p:ajax event="keyup" update="k1ml" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  class="bg-green" headerText="Mlus % ?"  >
+                                            <p:cellEditor>
+                                                <f:facet name="output"><p:outputLabel id="ss04" value="#{co.malusEnPourcentage}" /></f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:selectBooleanCheckbox value="#{co.malusEnPourcentage}" >
+                                                        <p:ajax update="ss04" />
+                                                    </p:selectBooleanCheckbox>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+
+
+                                        <p:column headerText="Option" width="8%" style="text-align: center;">
+                                            <p:commandButton icon="fa fa-remove" class="btn btn-danger danger" update="cco" action="#{commission_Courtier_CompagnieBean.removeOneLine()}" >
+                                                <f:setPropertyActionListener value="#{co}" target="#{commission_Courtier_CompagnieBean.commission_Courtier_CompagnieToRemove}" />
+                                                <p:confirm icon="ui-icon-alert"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="btn-toolbar">
+                                    <p:commandButton class="btn btn-purple pull-right" value="#{msg['btn.valider']}" update="@form,msgs,:f6,cco,:f6:cco2" action="#{commission_Courtier_CompagnieBean.saveCommissionCourtierCompagnie()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                    <p:commandButton class="btn btn-danger pull-right" value="#{msg['btn.annuller']}" update="@form" action="#{commission_Courtier_CompagnieBean.cancel()}" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </h:form>
+
+                    <h:form id="f6" class="form-horizontal">
+                        <p:growl id="msgs2" globalOnly="true" showDetail="false"  life="3000"/>
+                        <div class="panel panel-border-none">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <p:dataTable id="cco2" class="table table-bordered table-hover" rows="20" rowKey="#{co.idCommission_Courtier_Compagnie}" 
+                                                 emptyMessage="#{msg['tableau.vide']}"
+                                                 paginator="true" paginatorPosition="bottom" selection="#{commission_Courtier_CompagnieBean.selectedCommission_Courtier_Compagnie}"  var="co" value="#{commission_Courtier_CompagnieBean.commission_Courtier_CompagnieListClone}" editable="true" editMode="cell">
+
+                                        <p:column class="bg-blue" headerText="Courtier" filterBy="#{co.courtier.designation}" >
+                                            <p:outputLabel value="#{co.courtier.designation}"/>
+                                        </p:column>
+                                        <p:column  class="bg-beige" headerText="#{msg['commission.compagnie']}" filterBy="#{co.compagnie_Guarantie.compagnie.designation}" >
+                                            <p:outputLabel value="#{co.compagnie_Guarantie.compagnie.designation}"/>
+                                        </p:column>
+                                        <p:column class="bg-green" headerText="Garantie" filterBy="#{co.compagnie_Guarantie.guarantie.symbole}"  >
+                                            <p:outputLabel value="#{co.compagnie_Guarantie.guarantie.symbole}"/>
+                                        </p:column>
+                                        <p:column class="bg-info" headerText="Catégorie" filterBy="#{co.compagnie_Guarantie.categorie.libelle}" >
+                                            <p:outputLabel value="#{co.compagnie_Guarantie.categorie.libelle}"/>
+                                        </p:column>
+                                        <p:column  class="bg-blue" headerText="Commission" >
+                                            <p:cellEditor  >
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k1" value="#{co.commission}"/>
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText id="k11" value="#{(co.commission)}" >
+                                                        <p:ajax event="keyup" update="" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  class="bg-green" headerText="Commission en Somme ?"  >
+                                            <p:cellEditor>
+                                                <f:facet name="output"><p:outputLabel id="ss0" value="#{co.commissionEnPourcentage}" /></f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:selectBooleanCheckbox value="#{co.commissionEnPourcentage}" >
+                                                        <p:ajax update="ss0" />
+                                                    </p:selectBooleanCheckbox>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+
+                                        <p:column  class="bg-blue" headerText="Reduction" >
+                                            <p:cellEditor  >
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k1r" value="#{co.reduction}"/>
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText id="k11r" value="#{(co.reduction)}" >
+                                                        <p:ajax event="keyup" update="k1r" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  class="bg-green" headerText="Reduction % ?"  >
+                                            <p:cellEditor>
+                                                <f:facet name="output"><p:outputLabel id="ss01" value="#{co.reductionEnPourcentage}" /></f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:selectBooleanCheckbox value="#{co.reductionEnPourcentage}" >
+                                                        <p:ajax update="ss01" />
+                                                    </p:selectBooleanCheckbox>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+
+                                        <p:column  class="bg-blue" headerText="Bonus" >
+                                            <p:cellEditor  >
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k1b" value="#{co.bonus}"/>
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText id="k11b" value="#{(co.bonus)}" >
+                                                        <p:ajax event="keyup" update="k1b" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  class="bg-green" headerText="Bonus % ?"  >
+                                            <p:cellEditor>
+                                                <f:facet name="output"><p:outputLabel id="ss02" value="#{co.bonusEnPourcentage}" /></f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:selectBooleanCheckbox value="#{co.bonusEnPourcentage}" >
+                                                        <p:ajax update="ss02" />
+                                                    </p:selectBooleanCheckbox>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+
+                                        <p:column  class="bg-blue" headerText="Malus" >
+                                            <p:cellEditor  >
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k1ml" value="#{co.malus}"/>
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText id="k11ml" value="#{(co.malus)}" >
+                                                        <p:ajax event="keyup" update="k1ml" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  class="bg-green" headerText="Mlus % ?"  >
+                                            <p:cellEditor>
+                                                <f:facet name="output"><p:outputLabel id="ss04" value="#{co.malusEnPourcentage}" /></f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:selectBooleanCheckbox value="#{co.malusEnPourcentage}" >
+                                                        <p:ajax update="ss04" />
+                                                    </p:selectBooleanCheckbox>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+
+                                        <p:column headerText="Selection" selectionMode="multiple" style="width:100px;text-align:center"/>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="btn-toolbar">
+                                    <p:commandButton class="btn-primary btn pull-right" value="#{msg['btn.modifier']}" update="@form,cco2" action="#{commission_Courtier_CompagnieBean.updateCommissionCourtierCompagnie()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                    <p:commandButton class="btn-danger btn pull-right" value="#{msg['btn.annuller']}" update="@form" action="#{commission_Courtier_CompagnieBean.cancelUpdate()}" />
+                                </div>
+                            </div>
+                        </div>        
+                    </h:form>
+                </p:fieldset>
+
+                <h:form id="ff" class="form-horizontal">  
+                    <p:fieldset legend="#{msg['commission.transaction.compagnie']}" toggleable="true" collapsed="true" style="margin-bottom:20px">          
+                        <div class="panel panel-border-none">
+                            <div class="panel-body">  
+                                <div class="table-responsive">
+                                    <p:dataTable id="tt" class="table table-bordered table-hover" rows="20" rowKey="#{compagnieCourtier.hashCode}" 
+                                                 emptyMessage="#{msg['tableau.vide']}"
+                                                 paginator="true" paginatorPosition="bottom"  var="compagnieCourtier" value="#{commissionCompagnieCourtier.compagnieCourtierList}" editable="true" editMode="cell">
+                                        <p:columnGroup type="header">
+                                            <p:growl >
+                                                <p:column rowspan="2" headerText="#{msg['commission.compagnie']}"/>
+                                                <p:column headerText="Courtier" rowspan="2" />
+                                                <p:column colspan="2" headerText="#{msg['commission.prime']}"/>
+                                                <p:column colspan="2" headerText="#{msg['commission.accessoire']}"/>
+                                            </p:growl>
+                                            <p:row>
+                                                <p:column headerText="#{msg['commission.enpourcentage']}"/>
+                                                <p:column headerText="#{msg['commission.ensomme']}"/>
+                                                <p:column headerText="#{msg['commission.enpourcentage']}"/>
+                                                <p:column headerText="#{msg['commission.ensomme']}"/>
+                                            </p:row>
+                                        </p:columnGroup>
+                                        <p:column  class="bg-beige" >
+                                            <p:outputLabel value="#{compagnieCourtier.compagnie.abbreviation}"/>
+                                        </p:column>
+                                        <p:column class="bg-beige" >
+                                            <p:outputLabel value="#{compagnieCourtier.courtier.abbreviation}"/>
+                                        </p:column>
+                                        <p:column  class="bg-blue"  >
+                                            <p:cellEditor  >
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k1" value="#{compagnieCourtier.commission}"/>
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText id="k11" value="#{(compagnieCourtier.commission)}" rendered="#{(compagnieCourtier.commissionEnSOmme==null)?true:false}">
+                                                        <p:ajax event="keyup" update="k22" listener="#{commissionCompagnieCourtier.inits()}" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  class="bg-green" >
+                                            <p:cellEditor >
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k2" value="#{compagnieCourtier.commissionEnSOmme}" />
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText id="k22" value="#{compagnieCourtier.commissionEnSOmme}" rendered="#{(compagnieCourtier.commission==null)?true:false}">
+                                                        <p:ajax event="keyup" update="k2,k11" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  class="bg-blue"  >
+                                            <p:cellEditor  >
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k1a" value="#{compagnieCourtier.commissionAccessoire}"/>
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText id="k11a" value="#{(compagnieCourtier.commissionAccessoire)}" rendered="#{(compagnieCourtier.commissionEnSOmmeAccessoire==null)?true:false}">
+                                                        <p:ajax event="keyup" update="k1a,k22a" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  class="bg-green">
+                                            <p:cellEditor >
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k2a" value="#{compagnieCourtier.commissionEnSOmmeAccessoire}"/>
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText id="k22a" value="#{compagnieCourtier.commissionEnSOmmeAccessoire}" rendered="#{(compagnieCourtier.commissionAccessoire==null)?true:false}">
+                                                        <p:ajax event="keyup" update="k2a,k11a" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="btn-toolbar">
+                                    <p:commandButton class="btn-purple btn pull-right" value="#{msg['btn.valider']}" update="@form,dets" action="#{commissionCompagnieCourtier.saveAll()}" />
+                                    <p:commandButton class="btn-danger btn pull-right" value="#{msg['btn.annuller']}" update="@form" action="#{commissionCompagnieCourtier.annuler()}" />
+                                    <p:growl id="dets" for="somekey"/>
+                                </div>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </h:form>
+
+                <h:form class="form-horizontal">
+                    <p:fieldset legend="#{msg['commission.transaction.courtier']}" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                        <div class="panel panel-border-none">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <p:dataTable rows="11" rowKey="#{courtier.idCourtier}" class="table table-bordered table-hover"  paginator="true" paginatorPosition="bottom"  var="courtier" value="#{commissionNCPCourtierPV.courtierList}" selection="#{commissionNCPCourtierPV.courtierListclone}" editable="true" editMode="cell">
+
+                                        <p:columnGroup type="header">
+                                            <p:growl>
+                                                <p:column rowspan="2" headerText="#{msg['commission.courtier']}" />
+                                                <p:column colspan="3" headerText="#{msg['commission.pourcentage']}"/>
+                                                <p:column colspan="3" headerText="#{msg['commission.somme']}" />
+                                                <p:column rowspan="2" headerText="ACTIONS" />
+                                                <p:column rowspan="2" headerText="" />
+                                            </p:growl>
+                                            <p:row>
+                                                <p:column headerText="NCP"   />
+                                                <p:column headerText="#{msg['commission.courtier']}" />
+                                                <p:column headerText="#{msg['commission.pv']}"/>
+                                                <p:column headerText="NCP"  />
+                                                <p:column headerText="#{msg['commission.courtier']}" />
+                                                <p:column headerText="#{msg['commission.pv']}" />
+                                            </p:row>
+
+                                        </p:columnGroup>
+                                        <p:column class="bg-beige"  >
+                                            <p:outputLabel value="#{courtier.abbreviation}"  />
+                                        </p:column>
+                                        <p:column  width="5%" class="bg-blue" >
+                                            <p:cellEditor rendered="#{(courtier.commissionNCPSomme==null)?true:false}">
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k3" value="#{courtier.commissionNCP}"/>
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText   value="#{courtier.commissionNCP}">
+                                                        <p:ajax event="keyup" update="k3" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  width="10%" class="bg-blue" >
+                                            <p:cellEditor rendered="#{(courtier.commissionCourtierSomme==null)?true:false}">
+                                                <f:facet name="output" >
+                                                    <p:outputLabel id="k4" value="#{courtier.commissionCourtier}"/>
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText value="#{courtier.commissionCourtier}">
+                                                        <p:ajax event="keyup" update="k4" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column class="bg-blue" >
+                                            <p:cellEditor rendered="#{(courtier.commissionPointVenteSomme==null)?true:false}">
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k5" value="#{courtier.commissionPointVente}"/>
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText value="#{courtier.commissionPointVente}">
+                                                        <p:ajax event="keyup" update="k5" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  width="5%" class="bg-green" >
+                                            <p:cellEditor rendered="#{(courtier.commissionNCP==null)?true:false}">
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k6" value="#{courtier.commissionNCPSomme}"/>
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText value="#{courtier.commissionNCPSomme}">
+                                                        <p:ajax event="keyup" update="k6" />
+                                                        <pe:keyFilter  mask="num"  />
+                                                    </p:inputText>
+
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  width="10%" class="bg-green" >
+                                            <p:cellEditor rendered="#{(courtier.commissionCourtier==null)?true:false}">
+                                                <f:facet name="output">
+                                                    <p:outputLabel value="#{courtier.commissionCourtierSomme}"/>
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText   id="k7" value="#{courtier.commissionCourtierSomme}">
+                                                        <p:ajax event="keyup" update="k7" />
+
+                                                        <pe:keyFilter  mask="num" />
+
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column class="bg-green" >
+                                            <p:cellEditor rendered="#{(courtier.commissionPointVente==null)?true:false}" >
+                                                <f:facet name="output" >
+                                                    <p:outputLabel value="#{courtier.commissionPointVenteSomme}"/>
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText id="k8" value="#{courtier.commissionPointVenteSomme}">
+                                                        <p:ajax event="keyup" update="k8" />
+                                                        <pe:keyFilter  mask="num" />              
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column>
+                                            <p:commandButton title="#{msg['btn.enregistrer']}"  action="#{commissionNCPCourtierPV.saveOne()}"   class="btn btn-primary" icon="fa fa-save" update="@form" >
+                                                <f:setPropertyActionListener value="#{courtier}" target="#{commissionNCPCourtierPV.courtierSelected}" />
+                                            </p:commandButton>
+                                            <p:commandButton  title="#{msg['btn.annuller']}" action="#{commissionNCPCourtierPV.annuler()}"   class="btn btn-danger" icon="fa fa-close" update="@form" >
+                                                <f:setPropertyActionListener value="#{courtier}" target="#{commissionNCPCourtierPV.courtierSelected}" />
+                                            </p:commandButton>
+                                        </p:column>
+                                        <p:column width="5%"  selectionMode="multiple" style="width: 16px;text-align: center; color: black;" />
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="btn-toolbar">
+                                    <p:commandButton class="btn-purple btn pull-right" value="#{msg['btn.valider']}" update="@form,det" action="#{commissionNCPCourtierPV.saveAll()}" />
+                                    <p:commandButton class="btn-danger btn pull-right" value="#{msg['btn.annuller']}" update="@form" action="#{commissionNCPCourtierPV.annuler()}" />
+                                    <p:growl for="somekey" id="det" />
+                                </div>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </h:form>
+
+
+                <h:form class="form-horizontal">
+                    <p:fieldset legend="#{msg['commission.transaction.pv']}" toggleable="true" collapsed="false">
+                        <div class="panel panel-border-none">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <p:dataTable rows="20" rowKey="#{guichet.idGuichet}" class="table table-bordered table-hover"  paginator="true" paginatorPosition="bottom"  var="guichet" value="#{commisionPdvGuichetBean.guichetsList}" selection="#{commisionPdvGuichetBean.selectedGuichetsList}" editable="true" editMode="cell">
+                                        <p:columnGroup type="header">
+                                            <p:growl>
+                                                <p:column rowspan="2" headerText="#{msg['commission.guichet']}" />
+                                                <p:column rowspan="2" headerText="#{msg['commission.pv']}" />
+
+                                                <p:column colspan="2" headerText="#{msg['commission.pourcentage']}"/>
+                                                <p:column colspan="2" headerText="#{msg['commission.pourcentage']}" />
+                                                <p:column rowspan="2" headerText="ACTIONS" />
+                                                <p:column rowspan="2" headerText="" />
+                                            </p:growl>
+                                            <p:row>
+                                                <p:column headerText="#{msg['commission.guichet']}"  />
+                                                <p:column headerText="#{msg['commission.pv']}"/>
+
+                                                <p:column headerText="#{msg['commission.pv']}" />
+                                                <p:column headerText="#{msg['commission.guichet']}"  />
+
+                                            </p:row>
+                                        </p:columnGroup>
+                                        <p:column  class="bg-beige"  >
+                                            <p:outputLabel value="#{guichet.pointsVente.designation}"  />
+                                        </p:column>
+                                        <p:column  class="bg-beige"  >
+                                            <p:outputLabel value="#{guichet.designation}"  />
+                                        </p:column>
+                                        <p:column  width="5%" class="bg-blue" >
+                                            <p:cellEditor rendered="#{(guichet.commisionEnSommeGuichet==null)?true:false}">
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k33" value="#{guichet.commisionEnTauxGuichet}"/>
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText   value="#{guichet.commisionEnTauxGuichet}">
+                                                        <p:ajax event="keyup" update="k33" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  width="5%" class="bg-blue" >
+
+                                            <p:outputLabel  value="#{guichet.commisionEnTauxPDV}"/>
+
+                                        </p:column>
+                                        <p:column  width="5%" class="bg-blue" >
+                                            <p:cellEditor rendered="#{(guichet.commisionEnTauxGuichet==null)?true:false}">
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k32" value="#{guichet.commisionEnSommeGuichet}"/>
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText   value="#{guichet.commisionEnSommeGuichet}">
+                                                        <p:ajax event="keyup" update="k32" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column  width="5%" class="bg-blue" >
+                                            <p:cellEditor rendered="#{(guichet.commisionEnTauxPDV==null)?true:false}">
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="k32d" value="#{guichet.commisionEnSommePDV}"/>
+                                                </f:facet>
+
+                                                <f:facet name="input">
+                                                    <p:inputText   value="#{guichet.commisionEnSommePDV}">
+                                                        <p:ajax event="keyup" update="k32d" />
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column>
+                                            <div class="btn-toolbar">
+                                                <p:commandButton title="#{msg['btn.enregistrer']}"  action="#{commisionPdvGuichetBean.saveOneGuichetCommision()}"   class="btn btn-primary" icon="fa fa-save" update="@form" >
+                                                    <f:setPropertyActionListener value="#{guichet}" target="#{commisionPdvGuichetBean.guichetsSelected}" />
+                                                </p:commandButton>
+                                                <p:commandButton  title="#{msg['btn.annuller']}" action="#{commisionPdvGuichetBean.init()}"   class="btn btn-danger" icon="fa fa-close" update="@form" >
+                                                    <f:setPropertyActionListener value="#{guichet}" target="#{commisionPdvGuichetBean.guichetsSelected}" />
+                                                </p:commandButton>
+                                            </div>
+                                        </p:column>
+                                        <p:column width="5%"  selectionMode="multiple" style="width: 16px;text-align: center; color: black;" />
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="btn-toolbar">
+                                    <p:commandButton class="btn-purple btn pull-right" value="#{msg['btn.valider']}" update="@form,detss" action="#{commisionPdvGuichetBean.saveLisGuichetCommision()}" />
+                                    <p:commandButton class="btn-danger btn pull-right" value="#{msg['btn.annuller']}" update="@form" action="#{commisionPdvGuichetBean.init()}" />
+                                    <p:growl for="somekey" id="detss" />
+                                </div>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </h:form>
+            </sec:authorize>
+        </div>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset>
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['page.menu.validation']}"></p:outputLabel></legend>
+            </fieldset>
+            <h:form id="vf">
+                <p:fieldset legend="#{msg['page.menu.validation']}" style="margin-bottom:20px">
+                    <p:dataTable  paginator="true" paginatorPosition="bottom" rows="10" emptyMessage="#{msg['tableau.vide']}" value="#{validationCompagnieBean.factureList}"  var="facture" editMode="cell" editable="true">
+                        <p:columnGroup type="header">
+                            <p:growl>
+                                <p:column colspan="2" headerText="#{msg['client.information']}" />
+                                <p:column colspan="7" headerText="#{msg['vehicule.information']}" />
+                                <p:column rowspan="2" headerText="ACTIONS" width="13%" />
+                            </p:growl>
+                            <p:row>
+                                <p:column headerText="#{msg['client.nom']}" />
+                                <p:column headerText="#{msg['client.prenom']}" />
+                                <p:column headerText="#{msg['vehicule.marque']}" />
+                                <p:column headerText="#{msg['vehicule.type']}" />
+                                <p:column headerText="#{msg['vehicule.energie']}" />
+                                <p:column headerText="#{msg['vehicule.numerochassis']}" />
+                                <p:column headerText="#{msg['vehicule.genre']}" />
+                                <p:column headerText="#{msg['vehicule.categorie']}" />   
+                                <p:column headerText="#{msg['tableau.numeropolice']}" />   
+
+                            </p:row>
+                        </p:columnGroup>
+                        <p:column>
+                            <p:outputLabel value="#{facture.objetVoiture.client.nom}"/>
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="#{facture.objetVoiture.client.prenom}"/>
+                        </p:column>
+
+                        <p:column >
+                            <p:outputLabel value="#{facture.objetVoiture.marque}"/>
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="#{facture.objetVoiture.type}"/>
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="#{facture.objetVoiture.energie.libelleEn}"/>
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="#{facture.objetVoiture.numChassis}"/>
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="#{facture.objetVoiture.genre}"/>
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="#{facture.objetVoiture.categorie.libelle}"/>
+                        </p:column>
+                        <p:column id="bbb"  >
+                            <p:cellEditor  >
+                                <f:facet name="output">
+                                    <p:outputLabel id="VV" value="#{facture.objetVoiture.numeroPolice}"/>
+                                </f:facet>
+
+                                <f:facet name="input">
+                                    <p:inputText rendered="#{(facture.avenant==2)?false:true}" id="policeinput"   value="#{facture.objetVoiture.numeroPolice}" disabled="#{(validationCompagnieBean.idCompagnieU!=null)?false:true}" >
+                                        <p:ajax event="keyup" update="VV" />
+                                    </p:inputText>
+
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column>
+                            <p:commandLink  title="#{msg['tableaux.detail']}" class="btn-sm btn-sm sm  glyphicon glyphicon-search" oncomplete="PF('showdetail').show();"  update="detail" >
+                                <f:setPropertyActionListener target="#{validationCompagnieBean.factureSelect}" value="#{facture}" />
+                            </p:commandLink>
+
+                            <p:commandLink title="#{msg['btn.envoyer']}" rendered="#{(validationCompagnieBean.idCompagnieU!=null)?true:false}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="btn-sm btn-sm sm glyphicon glyphicon-send" update="@form,kk" action="#{validationCompagnieBean.envoyerAssurance()}">
+                                <f:setPropertyActionListener  target="#{validationCompagnieBean.factureSelect}" value="#{facture}" />
+                                <p:confirm header="Confirmation" message="#{msg['message.etesvoussur']}" icon="ui-icon-alert" />
+                            </p:commandLink>
+                            <p:growl for="somekey" id="kk" />
+                            <p:commandLink title="#{msg['client.email']}" rendered="#{(validationCompagnieBean.idCompagnieU==null)?true:false}"  oncomplete="PF('mailTo').show()"  update="mailto" class=" btn-sm btn-sm sm glyphicon glyphicon-envelope" style="" >
+                                <f:setPropertyActionListener target="#{validationCompagnieBean.factureSelect}" value="#{facture}" />
+                            </p:commandLink>
+                            <p:commandLink  title="#{msg['btn.imprimer']}" class="btn-sm btn-sm sm glyphicon glyphicon-print" action="#{validationCompagnieBean.doGetA()}" ajax="false" target="/"  >
+                                <f:setPropertyActionListener target="#{validationCompagnieBean.factureSelect}" value="#{facture}" />
+                            </p:commandLink>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:fieldset>
+
+
+            </h:form>
+            <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                <h:form>
+                    <p:commandButton value="#{msg['supprimer.oui']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{factureCourtierBean.comptabilite()}" />
+                    <p:commandButton value="#{msg['supprimer.non']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </h:form>
+            </p:confirmDialog>
+            <!--h:form id="f">
+                <p:remoteCommand name="newProposition"    process="f" partialSubmit="true"  actionListener ="#{validationCompagnieBean.ini()}"  update="vf" autoRun="false"/> 
+            </h:form-->
+
+
+            <p:dialog widgetVar="showdetail" width="800" height="450" id="sss" resizable="false" >
+                <ui:include src="detail.xhtml"/>
+            </p:dialog>
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <h:graphicImage library="images" name="ajax-loader.gif" />
+            </p:dialog>
+            <p:dialog widgetVar="mailTo">
+                <h:form id="mailto">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel for="destinataire" value="#{msg['message.destinataire']} :"/>
+                        <h:inputText id="destinataire" value="#{validationCompagnieBean.adresseRecepteur}"/>
+                        <p:outputLabel for="objet" value="#{msg['message.objet']}:"/>
+                        <p:inputText id="objet" value="#{validationCompagnieBean.objet}"/>
+                        <p:outputLabel for="message" value="#{msg['message.titre']}: "/>
+                        <p:inputTextarea id="message" value="#{validationCompagnieBean.message}"/>
+                        <p:commandButton   class="btn-danger  danger" icon="fa fa-close" oncomplete="PF('mailTo').hide()" value="#{msg['btn.fermer']}"/> 
+                        <p:commandButton  icon="fa fa-send" onstart="PF('mailTo').hide()"  actionListener="#{validationCompagnieBean.sendEmail()}" class="btn-success success"  value="#{msg['btn.envoyer']}"/> 
+
+                    </p:panelGrid>
+
+                </h:form>   
+            </p:dialog>
+        </div>
+    </ui:composition>
+</html>

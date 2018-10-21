@@ -1,0 +1,223 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <h:form id="detail" class="form-horizontal">
+
+            <div   class=" panel-heading bg-primary">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                        <div class="col-md-2 pull-left">
+                            <h:graphicImage class=" imgfacture pull-left" id="img1"  value="/images/dynamic/?file=#{demandeRejeteAsAutoBean.assuranceAuto.compagnie.cheminImage}"/>
+                            <h:outputLabel  value="#{demandeRejeteAsAutoBean.assuranceAuto.compagnie.abbreviation}" class="text-uppercase" ></h:outputLabel>
+
+                        </div>
+                        <div class="col-md-2 pull-right">
+
+                            <h:graphicImage class=" imgfacture pull-right" id="img2" value="/images/dynamic/?file=#{demandeRejeteAsAutoBean.assuranceAuto.courtier.cheminImage}">
+                            </h:graphicImage>
+                            <h:outputLabel  value="#{demandeRejeteAsAutoBean.assuranceAuto.courtier.abbreviation}" class="text-uppercase" ></h:outputLabel>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body"> 
+                <div class="row">
+                    <fieldset>
+                        <p:panel  header="INFO DU CLIENT" toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                            <h:panelGrid  columns="6" class="table table-bordered table-responsive">
+                                <h:outputLabel value="Souscripteur"/>
+                                <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.client.nom}"/>
+                                <h:outputLabel value="Téléphone"/> 
+                                <h:outputText  value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.client.telephoneMobile}"/>
+                                <h:outputLabel value="Adresse"/>
+                                <h:outputText  value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.client.adresse}"/>
+
+                            </h:panelGrid>
+
+                        </p:panel>
+                        <p:panel  header="TYPE D'OPPERATION" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                         
+                                    <h:panelGrid columns="6" class="table table-responsive table-bordered">
+                                            <p:outputLabel for="av" value="Avenant :"/>
+                                            <h:outputText id="av" value="#{demandeRejeteAsAutoBean.assuranceAuto.type}"/>
+                                            <p:outputLabel for="datedebut" value="Date debut :"/>
+                                            <h:outputText id="datedebut" value="#{demandeRejeteAsAutoBean.assuranceAuto.formatDate(demandeRejeteAsAutoBean.assuranceAuto.dateDebut)}"/>
+                                            <p:outputLabel for="datefin" value="Date Fin :"/>
+                                            <h:outputText id="datefin" value="#{demandeRejeteAsAutoBean.assuranceAuto.redateFin()}"/>
+                                            <p:outputLabel for="periode" value="Periode :"/>
+                                            <h:outputText id="periode" value="#{demandeRejeteAsAutoBean.assuranceAuto.periode}"/>
+                                            <p:outputLabel for="numPolice" value="Numero Police :"/>
+                                            <h:outputText id="numPolice" rendered="#{demandeRejeteAsAutoBean.assuranceAuto.affichePolice}" value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.numeroPolice}"/>
+                                        </h:panelGrid>
+                          
+
+                        </p:panel>
+                        <p:panel  header="INFO DU VEHICULE" toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                            <p:panelGrid columns="6" class="table table-responsive">
+                                <h:outputLabel  value="Immatriculation"/>
+                                <h:outputText  value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.numeroImmatriculation}"/>
+                                <h:outputLabel value="Genre"/>    
+                                <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.genre}"/>
+                                <h:outputLabel value="Marque"/> 
+                                <h:outputText  value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.marque}"/>
+                                <h:outputLabel value="Type"/> 
+                                <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.type}"/>
+                                <h:outputLabel value="Puissance"/>  
+                                <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.puissance}"/>
+                                <h:outputLabel value="Nombre de places"/>
+                                <h:outputText  value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.nombrePlaces}"/>
+                                <h:outputLabel value="N° Chassis"/>
+                                <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.numChassis}"/>
+                                <h:outputLabel value="N° Moteur"/>   
+                                <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.numMoteur}"/>
+                                <h:outputLabel value="Usage"/>    
+                                <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.usagev}"/>
+                                <h:outputLabel value="Année"/> 
+                                <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.miseEnCirculation}"/>
+                                <h:outputLabel value="Valeur neuve"/>
+                                <h:outputText  value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.valeurNeuve}" >
+                                 <f:convertNumber pattern="###,##0" type="number" />
+                                </h:outputText>
+                                <h:outputLabel value="Valeur déclarée"/>
+                                <h:outputText  value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.valeurvenale}" >
+                                 <f:convertNumber pattern="###,##0" type="number" />
+                                </h:outputText>
+                                <h:outputLabel value="Valeur Venale"/>
+                                <h:outputText  value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.valeurvenale}" >
+                                 <f:convertNumber pattern="###,##0" type="number" />
+                                </h:outputText>
+                                <h:outputLabel value="Categorie"/>
+                                <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.objetVoiture.categorie.libelle}"/>
+
+                            </p:panelGrid>
+
+                        </p:panel>
+
+                        <p:panel  header="GARANTIES SOUSCRITES" toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                            <p:dataTable id="g" var="proposition" editable="true" editMode="cell" scrollable="true" value="#{demandeRejeteAsAutoBean.assuranceAuto.propositions}">
+                                <p:columnGroup type="header">
+                                    <p:growl>
+                                        <p:column rowspan="2" headerText="Guarantie" />
+                                        <p:column rowspan="2" headerText="Prime annuelle" />
+                                        <p:column colspan="4" headerText="Reduction/majoration" />
+
+                                        <p:column rowspan="2" headerText="Taxe generique"  />
+                                        <p:column rowspan="2" headerText="Prime nette"  />
+                                    </p:growl>
+                                    <p:row>
+                                        <p:column headerText="BNS" />
+                                        <p:column headerText="RED" />
+                                        <p:column headerText="MLS" />
+                                        <p:column headerText="MONTANT" />
+                                    </p:row>
+                                </p:columnGroup>
+                                <p:column>
+                                    #{proposition.compagnieGuarantie.guarantie.libelle}
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(proposition.primePropose)}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(proposition.bonus)}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(proposition.reduction)}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(proposition.malus)}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(proposition.montant)}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(proposition.taxeGeneriqueValue)}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(proposition.prime)}"/>
+
+                                </p:column>
+                                <p:columnGroup type="footer" id="primeTotal1">
+                                    <p:row>
+                                        <p:column   style="text-align:right" footerText="Total :" />
+                                        <p:column   footerText="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(demandeRejeteAsAutoBean.assuranceAuto.totalnet)}" />
+                                        <p:column   footerText=""  />
+                                        <p:column   footerText=""  />
+                                        <p:column   footerText=""  />
+                                        <p:column   footerText=""  />
+                                        <p:column   footerText="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(demandeRejeteAsAutoBean.assuranceAuto.primeNettennuelle)}" id="primeTotal" />
+                                    </p:row>
+
+                                </p:columnGroup>
+                            </p:dataTable> 
+                        </p:panel>
+                        <p:panel  toggleable="true" collapsed="false" style="margin-bottom:20px">
+                            <p:panelGrid columns="2" id="calculTotal" layout="grid">
+                                <p:outputLabel class="form-control bg-purple"  value="Prime nette:" for="ps"></p:outputLabel>
+                                <p:outputLabel class="form-control text-right"  id="ps" value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(demandeRejeteAsAutoBean.assuranceAuto.primeNettennuelle)}"/>
+                                <p:outputLabel class="form-control bg-purple"  value="Bonus:" for="bn"></p:outputLabel>
+                                <p:outputLabel class="form-control text-right"  id="bn" value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(demandeRejeteAsAutoBean.assuranceAuto.bonusValue)}"/>
+                                <p:outputLabel class="form-control bg-purple" value="Red Exceptionnelle:" for="rede"></p:outputLabel>
+                                 <p:outputLabel class="form-control text-right" id="rede" value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(demandeRejeteAsAutoBean.assuranceAuto.reductionExceptionnelleValue)}"/>
+                                <p:outputLabel class="form-control bg-purple" value="Red flotte:" for="ref"></p:outputLabel>
+                                <p:outputLabel class="form-control text-right" id="ref" value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(demandeRejeteAsAutoBean.assuranceAuto.reductionFlotteValue)}"/>
+                                 <p:outputLabel class="form-control bg-purple" value="Fractionnement:" for="fract"></p:outputLabel>
+                                 <p:outputLabel class="form-control text-right" id="fract" value="#{demandeRejeteAsAutoBean.assuranceAuto.primeFracionne}">
+                                      <f:convertNumber pattern="###,##0" type="number" />
+                                 </p:outputLabel>
+                                <p:outputLabel class="form-control bg-purple" value="Prime apres red et frac:" for="fractS"></p:outputLabel>
+                                 <p:outputLabel class="form-control text-right" id="fractS" value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(demandeRejeteAsAutoBean.assuranceAuto.total)}"/>
+                                <p:outputLabel class="form-control bg-purple"  value="Accessoire:" for="acc"/>
+                                 <p:outputLabel class="form-control text-right"  id="acc" value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(demandeRejeteAsAutoBean.assuranceAuto.accessoire)}"/>
+                               <p:outputLabel class="form-control bg-purple" value=" Taxe FGA :" for="tes"/>
+                                <p:outputLabel class="form-control text-right" id="tes"  value="#{factureCourtierBean.selectedFacture.arrondireFormat2(demandeRejeteAsAutoBean.assuranceAuto.taxeFGAvalue)}">
+                                </p:outputLabel>
+
+                                <p:outputLabel class="form-control bg-purple" value=" Taux d'enregistrement:" for="te"/>
+                                <p:outputLabel class="form-control text-right"  id="te" value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(demandeRejeteAsAutoBean.assuranceAuto.tauxEnregistrementValue)}"/>
+
+                                 <p:outputLabel class="form-control bg-purple" value="Prime TTC:" for="pttc"/>
+                                <p:outputLabel class="form-control text-right"  id="pttc" value="#{demandeRejeteAsAutoBean.assuranceAuto.arrondireFormat2(demandeRejeteAsAutoBean.assuranceAuto.primeTtc)}"/>
+
+                            </p:panelGrid>
+                        </p:panel>
+                    </fieldset>
+                </div> 
+
+            </div>
+            <div class="panel-footer">
+                <div class="row" >
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-md-12" >
+                    <div class=" pull-left">
+                        <p:commandButton  class="btn-xs btn btn-danger" icon="fa fa-remove" iconPos="back" style="text-decoration: none" value="Quitter"  title="Quitter" oncomplete="PF('showdetail').hide();" ></p:commandButton>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:composition>
+</html>

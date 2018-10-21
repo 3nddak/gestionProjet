@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+
+
+        <p:outputPanel id="modification" style="text-align:center;">
+            <h:form class="form-horizontal" id="modif-zone" >
+                <p:growl id="msgs2" globalOnly="true" showDetail="false"  life="3000"/>
+                
+                <div class="form-group">
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="des" value="#{msg['vehicule.puissance']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:inputText id="des" required="true" value="#{tableauRCBean.tableauRCToUpdate.puissance}" requiredMessage="#{msg['vehicule.puissance.requiredMessage']}" styleClass="form-control"  title="Puissance" a:placeholder="Puissance" >
+                                     <f:ajax event="keyup" render="desMessage"/>
+                                    </p:inputText>
+                                      <pe:keyFilter for="des" mask="int"/>
+                                    <h:message for="des"  id="desMessage" class="errorClass" />
+                                </div>                        
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                <h:outputLabel  value="#{msg['vehicule.energie']}"  for="energie" class=" pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                <h:selectOneMenu id="energie" value="#{tableauRCBean.tableauRCToUpdate.energie}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                 requiredMessage="#{msg['vehicule.energie.requireMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['vehicule.energie']}" itemValue=""/>
+                                    <f:selectItems value="#{tableauRCBean.energieList}" var="en" itemLabel="#{en.libelleFr}" itemValue="#{en}" /> 
+                                    <f:ajax event="click" render="energieMessage" />
+                                </h:selectOneMenu>
+
+                                <h:message for="energie" id="energieMessage" class="errorClass" />
+
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="nplc" value="#{msg['vehicule.nombreplace']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:inputText id="nplc" required="true" requiredMessage="#{msg['vehicule.nombredeplace.requiredMessage']}" value="#{tableauRCBean.tableauRCToUpdate.nombreDePlace}" styleClass="form-control"  title="Nbr places" a:placeholder="Nbr places" >
+                                     <f:ajax event="keyup" render="nplcMessage"/>
+                                    </p:inputText>
+                                     <pe:keyFilter for="nplc" mask="int"/>
+                                     <h:message for="nplc"  id="nplcMessage" class="errorClass" />
+                                </div>                        
+                            </div>
+                        </div>
+                        <div class="form-group">                    
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="categorie" value="#{msg['vehicule.categorie']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:selectOneMenu id="categorie" value="#{tableauRCBean.tableauRCToUpdate.categorie}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                     requiredMessage="#{msg['vehicule.categorie.requiredMessage']}"
+                                                 >
+                                        <f:selectItem itemLabel="#{msg['vehicule.categorie']}" itemValue=""/>
+                                        <f:selectItems value="#{tableauRCBean.allCategorie}" var="cat" itemLabel="#{cat.libelle}" itemValue="#{cat}" /> 
+                                    <f:ajax event="click" render="categorieMessage" />
+                                </h:selectOneMenu> 
+                                     <h:message for="categorie"  id="categorieMessage" class="errorClass" />
+                                </div>                        
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-12">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="t5"  value="Prime mensuelle" class="pull-left" />
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:selectBooleanCheckbox id="t5"  value="#{tableauRCBean.tableauRCToUpdate.estMensuelle}"  class="pull-left" />
+                                </div>
+                            </div> 
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="prime" value="#{msg['garantie.prime']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:inputText id="prime" required="true" requiredMessage="#{msg['garantie.prime.requiredMessage']}" value="#{tableauRCBean.tableauRCToUpdate.prime}" styleClass="form-control"  title="Prime" a:placeholder="Prime RC" >
+                                   <f:ajax event="keyup" render="primeMessage"/>
+                                    </p:inputText>
+                                     <pe:keyFilter for="prime" mask="int"/>
+                                    <h:message for="prime"  id="primeMessage" class="errorClass" />
+                                </div>                        
+                            </div>
+                        </div>
+                
+                <div class="form-group">
+                    <div class="col-md-6 col col-lg-6 ">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:commandButton class="btn-danger danger pull-left col-md-4 btn-sm" update="msgs2,formliste,modif-zone" action="#{tableauRCBean.annuler()}" value="#{msg['btn.annuller']}" />
+                        </div>
+                    </div>
+                    <div class="col-md-6 col col-lg-6">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:commandButton class="btn-primary primary pull-right col-md-4 btn-sm" value="#{msg['btn.enregistrer']}" update="msgs2,formliste,modif-zone" action="#{tableauRCBean.modifier()}" oncomplete="PF('modifier').hide()" >
+                                <!--f:ajax execute="@form" render="@form" /-->
+                            </p:commandButton>
+                        </div>
+                    </div>
+
+
+                </div>
+            </h:form>
+        </p:outputPanel>
+
+
+
+
+    </ui:composition> 
+
+</html>

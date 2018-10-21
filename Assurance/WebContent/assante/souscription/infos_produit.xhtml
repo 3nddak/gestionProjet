@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <p:panel header="Informations sur le produit"  toggleable="true"  collapsed="false">
+            <p:dataTable class="table_label table-responsive" var="asSanteConf" id="display2Conf"  rows="5" value="#{souscriptionAsSanteBean.assuranceSanteList}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="dddConf" 
+                         rowsPerPageTemplate="2,3,4,5,6,7" emptyMessage="#{msg[tableau.vide]}" rowKey="#{asSante.idFacture}" >
+
+                <p:ajax event="rowToggle" listener="#{souscriptionAsSanteBean.onRowToggleForProduitDetail}" update="display2Conf,ggConf" />
+                <p:column style="width:50px" headerText="#{msg[tableau.detail]}">
+                    <p:rowToggler  />
+                </p:column>
+                <p:column headerText="Pays">
+                    <h:outputText value="#{asSanteConf.produitAsSante.compagnie.pays.designationPays}" />
+                </p:column>
+                <p:column headerText="Compagnie">
+                    <h:outputText value="#{asSanteConf.produitAsSante.compagnie.designation}" />
+                </p:column>
+                <p:column headerText="Produit">
+                    <h:outputText value="#{asSanteConf.produitAsSante.nom}" />
+                </p:column >
+                <p:column headerText="Prime Annuelle Adulte">
+                    <h:outputText value="#{asSanteConf.produitAsSante.primeAnnuelleAdulte}" >
+                     <f:convertNumber pattern="###,##0" type="number" />
+                    </h:outputText>
+                </p:column >
+                <p:column headerText="Prime Annuelle Mineur">
+                    <h:outputText value="#{asSanteConf.produitAsSante.primeAnnuelleMineur}" >
+                     <f:convertNumber pattern="###,##0" type="number" />
+                    </h:outputText>
+                </p:column >
+                <p:rowExpansion >
+                    <p:dataTable value="#{souscriptionAsSanteBean.garantieCategorieCompagnieProduit}" 
+                                 rowKey="#{catgarcompdet.idGarantieCategorieCompagnieProduit}" var="catgarcompdetConf" id="ggConf"
+                                 sortBy="#{catgarcompdet.categorieGarantieAsSante.idCategorieGarantieAsSante}"  
+                                 class="table table-bordered" >
+                        <p:columnGroup type="header">
+                            <p:growl>
+                                <p:column rowspan="2" headerText="Catégorie"/>
+                                <p:column rowspan="2" headerText="Garantie" class="col-md-3"/>
+                                <p:column rowspan="2" headerText="Taux remboursement" />
+                                <p:column rowspan="2" headerText="Plafond remboursement"  />
+                            </p:growl>
+                        </p:columnGroup>
+                        <p:column groupRow="true" >
+                            <h:outputText value="#{catgarcompdetConf.categorieGarantieAsSante.designation}" />
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{catgarcompdetConf.garantieAsSante.designation}" />
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{catgarcompdetConf.tauxRemboursement}" />
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{catgarcompdetConf.plafondRemboursement}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:rowExpansion>
+            </p:dataTable>
+        </p:panel>
+    </ui:composition> 
+</html>
+

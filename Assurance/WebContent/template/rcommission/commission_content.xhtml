@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset>
+                <legend class="text-center text-uppercase"> <p:outputLabel value="GESTION DES REMBOURSSEMENTS DE COMMISSIONS"></p:outputLabel></legend>
+            </fieldset>
+
+
+        <div id="listeR" class="row">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+                <div class="panel">
+                    <h:form  id="formlisteR" class="form-horizontal" enctype="multipart/form-data">
+                        <div class="panel-heading"> 
+                            <p:fieldset  legend="Effectuer une opération " toggleable="true"  collapsed="false" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                        <p:outputPanel id="ajout2" style="text-align:center;">
+                                            <p:growl id="msgs" showDetail="false" globalOnly="true" />
+                                            <div class="form-group">
+                                                <div class="col-lg-6 col-md-6 col-xs-12">
+                                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                                        <h:outputLabel value="Type déposit" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                                        <p:selectOneRadio id="typePointsVente" required="true" value="#{remboursementCommissionBean.typeDepositR}">
+                                                            <!--f:selectItem itemLabel="deposit envoyé" itemDisabled=" #{remboursementCommissionBean.estCompagnie}" itemValue="achatt" /-->
+                                                            <f:selectItem  itemLabel="deposit entrant" itemDisabled="#{remboursementCommissionBean.estCompagnie}" itemValue="achat" />
+                                                            <f:selectItem  itemLabel="deposit sortant" itemDisabled="#{remboursementCommissionBean.estGuichet}" itemValue="vente" />
+
+                                                            <p:ajax update="@form" />
+
+                                                        </p:selectOneRadio>
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                                    </div>
+                                                </div>    </div>
+                                            <div class="form-group">
+                                                <!--div class=" col-lg-6 ">
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <h:outputLabel  value="Reference"  class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" /> 
+                                                    </div>
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <p:inputText  required="true" value="#{remboursementCommissionBean.referenceR}" class="form-control" >
+
+                                                        </p:inputText>
+                                                    </div> 
+                                                </div-->
+                                                <div class=" col-lg-6 ">
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <h:outputLabel  value="Description" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" /> 
+                                                    </div>
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <p:inputText  required="true" value="#{remboursementCommissionBean.descriptionR}" class="form-control" >
+
+                                                        </p:inputText>
+                                                    </div> 
+
+                                                </div>
+
+
+                                            </div> 
+                                            <div class="form-group">
+                                                <div class=" col-lg-6 ">
+                                                    <h:outputLabel for="facAtt" value="Mode de règlements"   class=" pull-left" />
+                                                    <h:selectOneMenu  id="facAtt" value="#{remboursementCommissionBean.typePayementR}" class="form-control"
+                                                                      >
+                                                        <f:selectItem itemLabel="par Cheque " itemValue="1"/>
+                                                        <f:selectItem itemLabel="par Banque" itemValue="2"/>
+                                                        <f:selectItem itemLabel="espèce" itemValue="3"/>
+                                                        <f:selectItem itemLabel="autres" itemValue="4"/>
+                                                    </h:selectOneMenu>
+
+                                                </div>
+                                                <div class="col-md-4 col col-lg-4" >
+                                                    <h:outputLabel  value="Document justificatif" for="fileUpload" class=" pull-left" />
+                                                    <p:fileUpload id="fileUpload" required="true" fileUploadListener ="#{remboursementCommissionBean.handleFileUploadR}"
+                                                                  mode="advanced"
+
+                                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|bmp)$/"        
+                                                                  label="choisir le document" uploadLabel="#{msg['btn.telecharger']}" cancelLabel="#{msg['btn.annuller']}"       
+                                                                  validatorMessage="#{msg['fichier.invalide']}"      
+                                                                  dragDropSupport="true"      
+                                                                  multiple="true"  
+                                                                  disabled="false"
+                                                                  update="messages"
+                                                                  requiredMessage="#{msg['fichier.requiredMessage']}"
+                                                                  >
+                                                        <!--f:ajax event="blur" render="imageMessage"/-->
+                                                    </p:fileUpload>
+                                                    <p:message for="fileUpload" id="imageMessage" class="errorClass"/>
+                                                    <p:growl id="messages" showDetail="false" globalOnly="true"/>
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group" >
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <h:outputLabel  for="pss" value="Compagnie " rendered="#{remboursementCommissionBean.u.societe ne null  and remboursementCommissionBean.typeDepositR eq 'achat' ?true:false}" class="pull-left text-left"/>
+                                                        </div>
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <h:selectOneMenu required="true" rendered="#{remboursementCommissionBean.u.societe ne null  and remboursementCommissionBean.typeDepositR eq 'achat' ?true:false}"  class="form-control" converter="omnifaces.SelectItemsConverter"  id="pss" value="#{remboursementCommissionBean.compagnie}"  >
+                                                                <f:selectItem  itemLabel="Choisir compagnie" itemValue="" /> 
+                                                                <f:selectItems value="#{remboursementCommissionBean.listCompagnie}" var="compagnie"
+                                                                               itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                                            </h:selectOneMenu>
+                                                        </div>
+
+                                                    </div>
+                                                </div>  
+                                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group" >
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                                                            <h:outputLabel for="courtier" value="#{msg['titre.courtier']}"  rendered="#{remboursementCommissionBean.u.societe ne null  and remboursementCommissionBean.typeDepositR eq 'vente' ?true:false}"  class="pull-left text-left"/>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <h:selectOneMenu required="true"  rendered="#{remboursementCommissionBean.u.societe ne null  and remboursementCommissionBean.typeDepositR eq 'vente' ?true:false}"  id="courtier"  value="#{remboursementCommissionBean.courtier}" converter="omnifaces.SelectItemsConverter"
+                                                                             class="form-control" >
+                                                                <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""/>
+                                                                <f:selectItems itemLabel="#{courtier.designation}" var="courtier"  itemValue="#{courtier}" value="#{remboursementCommissionBean.listCourtier}"  />
+
+                                                            </h:selectOneMenu>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group" >
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                                                            <h:outputLabel for="pdv"   value="Points de vente" rendered="#{remboursementCommissionBean.u.courtier ne null and remboursementCommissionBean.typeDepositR eq 'vente' ?true:false }" class="pull-left text-left" />
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <h:selectOneMenu  required="true"  rendered="#{remboursementCommissionBean.u.courtier ne null and remboursementCommissionBean.typeDepositR eq 'vente' ?true:false }" id="pdv"  value="#{remboursementCommissionBean.pointVente}" converter="omnifaces.SelectItemsConverter"
+                                                                              class="form-control" >
+                                                                <f:selectItem itemLabel="Points de vente" itemValue=""/>
+                                                                <f:selectItems itemLabel="#{pdv.designation}" var="pdv"  itemValue="#{pdv}" value="#{remboursementCommissionBean.listPointVente}"  />
+
+                                                            </h:selectOneMenu>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                                    <div class="form-group" >
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                                                            <h:outputLabel for="gui"  rendered="#{remboursementCommissionBean.u.pointsVente ne null and remboursementCommissionBean.typeDepositR eq 'vente' and remboursementCommissionBean.u.guichets eq null ?true:false }"   value="Guichet" class="pull-left text-left" />
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <h:selectOneMenu required="true"  rendered="#{remboursementCommissionBean.u.pointsVente ne null and remboursementCommissionBean.typeDepositR eq 'vente' and remboursementCommissionBean.u.guichets eq null ?true:false }" id="gui"  value="#{remboursementCommissionBean.guichet}" converter="omnifaces.SelectItemsConverter"
+                                                                             class="form-control" >
+                                                                <f:selectItem itemLabel="Guichet" itemValue=""/>
+                                                                <f:selectItems itemLabel="#{gui.designation}" var="gui"  itemValue="#{gui}" value="#{remboursementCommissionBean.listGuichets}"  />
+
+                                                            </h:selectOneMenu>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                                        <h:outputLabel class="police_label pull-left" value="Valeur"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    </div>
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <p:inputText  required="true" value="#{remboursementCommissionBean.valeurR}" class="form-control" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                            <p:ajax event="blur" update="@this"  />
+                                                        </p:inputText>
+                                                    </div> 
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+
+                                                <div class="col-md-12 col col-lg-12">
+                                                    <div class="col-md-4 col col-lg-2 pull-left">
+                                                        <p:commandButton value="#{msg['btn.annuller']}" actionListener="#{remboursementCommissionBean.annuler()}" update="formlisteR" class="btn btn-danger danger form-control"/>
+                                                    </div>
+
+                                                    <div class="col-md-4 col col-lg-2 pull-right">
+                                                        <p:commandButton value="#{msg['btn.enregistrer']}" action="#{remboursementCommissionBean.gestionRembourssementCommission()}" update="form:conf" oncomplete="PF('enregistrerR').show()"   class="btn btn-success success form-control"/>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+
+                                        </p:outputPanel>
+                                    </div>
+                                </div>
+                            </p:fieldset>
+                            <h:form id="form" >
+                                <p:growl id="msgs3" showDetail="false" globalOnly="true" />
+
+
+                                <p:dialog class="police_label" id="conf" header="Confirmation" showEffect="fade"  widgetVar="enregistrerR" modal="true" width="800" minHeight="600" resizable="false">
+                                  
+
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="Description:" class=" police_label form-control bg-purple"  >
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{remboursementCommissionBean.descriptionR}" class=" police_label form-control text-right"  >
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="Mode de règlement:" class=" police_label form-control bg-purple"  >
+
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{remboursementCommissionBean.modeReglement(remboursementCommissionBean.typePayementR)}" class=" police_label form-control text-right"  >
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="Montant:" class=" police_label form-control bg-purple"  >
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{remboursementCommissionBean.valeurR}" class=" police_label form-control text-right"  >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="Compte à débiter:" class=" police_label form-control bg-purple"  >
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{remboursementCommissionBean.compteAdebiter.numCompte}" class=" police_label form-control text-right"  >
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="Compte à créditer:" class=" police_label form-control bg-purple"  >
+                                            </p:outputLabel>
+                                        </div> 
+                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                            <p:outputLabel value="#{remboursementCommissionBean.compteAcrediter.numCompte}" class=" police_label form-control text-right"  >
+                                            </p:outputLabel>
+
+                                        </div>  
+                                    </div>
+
+                                    <p:commandButton value="Non" onclick="PF('enregistrerR').hide();" type="button" class="btn-danger danger"  />
+                                    <p:commandButton value="Oui" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" update="formlisteR,msgs3" action="#{remboursementCommissionBean.enregistrerOperationR()}" class="btn-primary primary" oncomplete="PF('enregistrerR').hide()" styleClass="ui-priority-primary"/>
+
+                                </p:dialog></h:form>
+                            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                <h:graphicImage library="images" name="ajax-loader.gif" />
+                            </p:dialog>
+                        </div>
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+ 
+    
+
+        </div>
+    </ui:composition> 
+
+</html>
+

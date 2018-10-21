@@ -1,0 +1,356 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+        <div class="panel ">
+            <div class="panel-body">
+                <p:growl id="msgsAux3"  globalOnly="true"  severity="info,warn"/>   
+                <fieldset><legend><h:outputLabel value="#{msg['souscription.information']}"/></legend>
+                    <ui:include src="infos_2.xhtml"/>
+                    <div class="form-group">
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['question.periodeEnJour']}"  for="t5" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-9 col-lg-9 col-sm-9">
+                                <p:selectBooleanCheckbox id="t5"  value="#{objetBean.periodeEstJournalie}"  class="pull-left" >
+                                    <p:ajax update="periodeMessage,mask2" listener="#{objetBean.dateFin()}" />
+                                    <p:ajax listener="#{objetBean.rebuildList()}" update="formliste" />
+                                </p:selectBooleanCheckbox>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['souscription.periode']}"  for="periode" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="periode"  class="form-control" value="#{objetBean.periode}" placeholder="#{msg['souscription.periode']}" 
+                                             required="true"  requiredMessage="#{msg['souscription.periode.requireMessage']}" 
+                                             converterMessage="#{msg['souscription.periode.converterMessage']}"
+                                             validatorMessage="#{msg['souscription.periode.validatorMessage']}"
+                                             >
+                                    <f:validateLongRange minimum="1" />
+                                    <p:ajax event="keyup"  update="periodeMessage,mask2" listener="#{objetBean.dateFin()}" />
+                                    <p:ajax listener="#{objetBean.rebuildList()}" update="formliste" />
+
+                                </p:inputText>
+                                <pe:keyFilter for="periode" mask="int"/> 
+                            </div>
+                           
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="periode" id="periodeMessage" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['souscription.datedebut']}"  for="mask1" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:calendar id="mask1"  pattern="dd/MM/yyyy" value="#{objetBean.dateDebutRecherche}"   mask="true" placeholder="#{msg['souscription.datedebut']}"
+                                            required="true"
+                                            yearRange="c-100:c+10"
+                                            readonlyInput="true"
+                                            navigator="true"
+                                            requiredMessage="#{msg['souscription.datedebut.requireMessage']}" 
+                                            validatorMessage="#{msg['souscription.datedebut.validatorMessage']}"
+                                            converterMessage="#{msg['souscription.datedebut.converterMessage']}"
+                                            mindate="#{objetBean.datemax}"
+                                            >
+                                    <f:convertDateTime pattern="dd/MM/yyyy"  type="date"/>
+                                    <p:ajax event="keyup" update="dateMessage"/>
+                                    <p:ajax event="dateSelect" listener="#{objetBean.dateFin()}" update="mask2" />
+                                </p:calendar>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="mask1" id="dateMessage"/> 
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:outputLabel   value="#{msg['souscription.datefin']}"  for="mask2" />
+                            </div> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:outputLabel id="mask2"  value="#{objetBean.dateFins}"   />
+                            </div> 
+                        </div>
+                    </div>
+
+
+
+                    <!--div class="form-group"></div-->
+                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                        <div class="row ">
+                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                <h:outputLabel  value="#{msg['compagnie.selectionner']}"   /><h:outputLabel value="*" class="etoile_rouge" />                
+                                <p:selectCheckboxMenu   id="menu"  value="#{objetBean.compagnieListId}" label="#{msg['titre.compagnie']}"
+                                                        filter="true" filterMatchMode="startsWith" >
+
+                                    <f:selectItems value="#{objetBean.compagnieItems}"  />
+                                </p:selectCheckboxMenu>
+                                <p:commandButton  class="btn btn-xs btn-primary " value="OK" actionListener="#{objetBean.simuler()}" update="formliste:display2,formliste:courtierp,menu,sewa,msgsAux3" />
+
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                <p:outputPanel id="sewa" class="#{objetBean.renderedSouscriptionPanel}" >
+                                    <h:panelGrid id="scPanel" rendered="#{objetBean.renderedSouscriptionPanel}" columns="2" class="pull-right bg-green-active">
+                                        <p:outputLabel for="sc2" value="#{msg['simulation.auto.transformer']} &nbsp;" class=" text-bold" />
+                                        <p:selectBooleanCheckbox id="sc2"  value="#{objetBean.effectuerSouscription}" class="" >
+                                            <p:ajax listener="#{objetBean.activerSouscription()}" update="formliste,titreOp" />
+                                        </p:selectBooleanCheckbox>
+                                    </h:panelGrid>
+                                </p:outputPanel>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                        <div class="row">
+                            <p:outputPanel id="display22">
+                                <div class="table-responsive">
+                                    <p:dataTable class="table table-bordered" var="facture" id="display2"  rows="5" value="#{objetBean.factureList}"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                 rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg[tableau.vide]}"
+                                                 disabledSelection="#{!objetBean.effectuerSouscription}" selectionMode="single" selection="#{objetBean.factureChoisie}" rowKey="#{facture.hashCode()}"
+                                                 >                                                    
+
+                                        <p:column style="width:50px" headerText="#{msg[tableau.detail]}">
+                                            <p:rowToggler  />
+                                        </p:column>
+                                        <p:column headerText="#{msg['titre.compagnie']}">
+                                            <h:outputText value="#{facture.compagnie.abbreviation}" />
+                                        </p:column>
+
+                                        <p:column headerText="#{msg['tableau.primeannuelle']}">
+
+                                            <h:outputText value="#{facture.arrondireFormat(facture.primeSanTaxe)}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.fractionnement']}" class="text-right">
+
+                                            <h:outputText value="#{facture.primeFracionne}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="Periode de Fractionnement" class="text-right">
+
+                                            <h:outputText value="#{facture.periodeDeFractionnement()}" >
+
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.bonus']}" class="text-right">
+
+                                            <h:outputText value="#{facture.bonusValue}" >
+
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.reduction.exceptionnelle']}" class="text-right">
+
+                                            <h:outputText value="#{facture.reductionExceptionnelleValue}" >
+
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.reduction.flotte']}" class="text-right">
+
+                                            <h:outputText value="#{facture.reductionFlotteValue}" >
+
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.primeapres']}" class="text-right">
+
+                                            <h:outputText value="#{facture.arrondireFormat(facture.total)}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.accessoire']}" class="text-right">
+
+                                            <h:outputText value="#{facture.arrondireFormat(facture.accessoire)}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+
+                                        <p:column headerText="#{msg['tableau.taxeFGA']}" class="text-right">
+
+                                            <h:outputText value="#{facture.arrondireFormat(facture.taxeFGAvalue) }" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+
+                                        </p:column >
+                                        <p:column headerText="Taxe" class="text-right">
+
+                                            <h:outputText value="#{facture.arrondireFormat(facture.tauxEnregistrementValue)}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+
+                                        <p:column headerText="#{msg['tableau.primettc']}" class="text-right">
+
+                                            <h:outputText value="#{facture.arrondireFormat(facture.primeTtc)}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="Actions" width="15%" >
+                                            <p:commandLink  title="#{msg['btn.imprimer']}" class=" btn-sm btn-sm sm glyphicon glyphicon-print" ajax="false" target="/rapport"   action="#{objetBean.doGetA()}" >
+                                                <f:setPropertyActionListener target="#{objetBean.selectedFacture}" value="#{facture}" />
+                                            </p:commandLink>
+                                            <p:commandLink  title="Imprimer Proposition" class=" btn-sm btn-sm sm glyphicon glyphicon-file" ajax="false" target="/rapport"   action="#{objetBean.doGetPrintProposition()}" >
+                                                <f:setPropertyActionListener target="#{objetBean.selectedFacture}" value="#{facture}" />
+                                            </p:commandLink>
+                                            <p:commandLink  title="Supprimer" class=" btn-sm btn-sm sm glyphicon glyphicon-remove"  action="#{objetBean.delete()}"  update="formliste:display2,formliste:menu,formliste:sewa,formliste">
+                                                <f:setPropertyActionListener target="#{objetBean.selectedFacture}" value="#{facture}" />
+                                            </p:commandLink>
+                                        </p:column>
+
+                                        <p:rowExpansion >
+
+                                            <p:panel header="Detail">
+                                                <p:dataTable value="#{facture.propositions}" rowKey="#{ppp.idPropositions}" var="ppp" id="gg">
+                                                    <p:columnGroup type="header">
+                                                        <p:growl  >
+                                                            <p:column rowspan="2" headerText="#{msg['garantie.titre']}"/>
+                                                            <p:column rowspan="2" headerText="Capitaux assures" class="col-md-3"/>
+                                                            <p:column rowspan="2" headerText="#{msg['tableau.primeannuelle']}" />
+                                                            <p:column colspan="4" headerText="#{msg['tableau.redmaj']}" />
+                                                            <p:column rowspan="2" headerText="#{msg['tableau.generique']}"  />
+                                                            <p:column rowspan="2" headerText="#{msg['tableau.primenette']}"  />
+                                                        </p:growl>
+                                                        <p:row>
+                                                            <p:column headerText="#{msg['tableau.bns']}" />
+                                                            <p:column headerText="#{msg['tableau.red']}" />
+                                                            <p:column headerText="#{msg['tableau.mls']}" />
+                                                            <p:column headerText="#{msg['tableau.total']}" />
+                                                        </p:row>
+                                                    </p:columnGroup>
+                                                    <p:column  >
+                                                        <p:outputLabel value="#{ppp.compagnieGuarantie.guarantie.symbole}" />
+                                                    </p:column>
+                                                    <p:column >
+                                                        #{ppp.capitauxAssure}
+                                                    </p:column>
+                                                    <p:column class="text-right" >
+                                                        <p:outputLabel value="#{facture.arrondireFormat(ppp.primePropose)}" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </p:outputLabel>
+                                                    </p:column >
+
+                                                    <p:column  class="text-right" >
+                                                        <p:outputLabel value="#{facture.arrondireFormat(ppp.bonus)}" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </p:outputLabel>
+                                                    </p:column>
+                                                    <p:column  class="text-right" >
+                                                        <p:outputLabel value="#{facture.arrondireFormat(ppp.reduction)}" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </p:outputLabel>
+                                                    </p:column>
+                                                    <p:column  class="text-right" >
+                                                        <p:outputLabel value="#{facture.arrondireFormat(ppp.malus)}" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </p:outputLabel>
+                                                    </p:column>
+                                                    <p:column class="text-right">
+
+                                                        <h:outputText value="#{facture.arrondireFormat2(ppp.montant)}"/>
+
+                                                    </p:column>
+                                                    <p:column  class="text-right" >
+                                                        <p:outputLabel value="#{facture.arrondireFormat(ppp.taxeGeneriqueValue)}" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </p:outputLabel>
+                                                    </p:column>
+                                                    <p:column  class="text-right" >
+                                                        <p:outputLabel value="#{facture.arrondireFormat(ppp.prime)}" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </p:outputLabel>
+                                                    </p:column>
+
+                                                    <p:columnGroup type="footer" id="primeTotal1">
+                                                        <p:row>
+                                                            <p:column   style="text-align:right" footerText="#{msg['tableau.total']} :"/>
+                                                            <p:column   footerText="#{facture.totalnet}" />
+                                                            <p:column   footerText=""  />
+                                                            <p:column   footerText=""  />
+                                                            <p:column   footerText=""  />
+                                                            <p:column   footerText=""  />
+                                                            <p:column   footerText=""  />
+                                                            <p:column   footerText=""  />
+                                                            <p:column   footerText="#{facture.arrondireFormat2(facture.primeNettennuelle)}" id="primeTotal" />
+                                                        </p:row>
+
+                                                    </p:columnGroup>
+                                                </p:dataTable>
+                                            </p:panel>
+
+                                        </p:rowExpansion>
+
+                                    </p:dataTable>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:commandLink title="Imprimer" value="Imprimer"  action="#{objetBean.doGetPrintList()}" target="/"  class="btn btn-primary primary"  ajax="false" >
+
+                                        </p:commandLink>
+                                    </div>
+                                </div>
+                            </p:outputPanel>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <p:dialog  class="police_label" id="courtierp" header="Choix du courtier" showEffect="fade"  widgetVar="courtier" modal="true" width="500" minHeight="800" resizable="false">
+                        <div class="form-group">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                <div class="col-md-9 col-lg-9 col-sm-9">
+                                    <p:panel  >
+                                        <p:dataTable var="garantie" value="#{objetBean.selectedGuarantOption}" editMode="cell" rowKey="#{garantie.idGarantie}"  editable="true" editingRow="true" >
+                                            <p:column headerText="Garantie">
+                                                <p:outputLabel value="#{garantie.symbole}"/>
+                                            </p:column>
+
+                                            <p:column headerText="Choisir Option"  >
+                                                <p:cellEditor >
+                                                    <f:facet name="output" >
+                                                        <p:outputLabel id="HH" value="#{garantie.optionSelect}" />
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:selectOneMenu id="pss" value="#{garantie.optionSelect}" >
+                                                            <f:selectItem itemLabel="opt1: #{garantie.option1}" itemValue="1" />
+                                                            <f:selectItem itemLabel="opt2: #{garantie.option2}" itemValue="2" />
+                                                            <f:selectItem itemLabel="opt3: #{garantie.option3}" itemValue="3" />
+                                                            <p:ajax update="HH"/>
+                                                        </p:selectOneMenu>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:panel>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-3">
+                                    <p:commandButton value="#{msg['btn.valider']}" class="btn-success success" action="#{objetBean.factureCompagnie()}" oncomplete="PF('courtier').hide()" update="formliste:display2,menu" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </p:dialog> 
+                </fieldset>
+            </div>
+        </div>
+
+    </ui:composition> 
+
+</html>
+

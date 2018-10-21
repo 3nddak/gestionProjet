@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <p:panel header="#{msg['titre.typeDuClient']}"  toggleable="true" collapsed="true">
+         <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel  value="#{msg['voyage.type']}:"/>
+                <h:outputText value="#{souscriptionAsVoyageBean.groupe eq 0? msg['client.type.physique']: msg['client.type.morale']}" />
+               <p:outputLabel  rendered="#{souscriptionAsVoyageBean.groupe eq 1?true:false}" value="#{msg['titre.genre']} :"/>
+               <h:outputText rendered="#{souscriptionAsVoyageBean.groupe eq 1?true:false}"  value="#{souscriptionAsVoyageBean.genreGroup eq 0? msg['titre.groupe'] :msg['titre.entreprise']}"/>
+
+            </p:panelGrid>
+        </p:panel>
+        <p:outputPanel >
+            <div class="form-group">
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['titre.nomDuGroupe']}"  for="nomEg" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.nomGroup}" required="true"  requiredMessage="#{msg['client.nom.requiredMessage']}" 
+                                     id="nomEg" class="form-control" placeholder="#{msg['titre.nomDuGroupe']}">
+                            <p:ajax event="keyup" update="nomMessageEg"/>
+                        </p:inputText>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="nomEg"  id="nomMessageEg" class="errorClass" />
+                    </div> 
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['titre.descriptionDuGroupe']}"  for="domEg" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.descriptionGroup}" required="true"  requiredMessage="#{msg['titre.description.requiredMessage']} " 
+                                     id="domEg" class="form-control" placeholder="#{msg['titre.descriptionDuGroupe']}">
+                            <p:ajax event="keyup" update="domMessageEg"/>
+                        </p:inputText>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="domEg"  id="domMessageEg" class="errorClass" />
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.adresse']}"  for="faxeag" class=" pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.adresseGroup}" id="faxeag" styleClass="form-control" placeholder="adresse"/>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.numeroDeTelephone']}"  for="faxeatg" class=" pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.numeroTelephoneGroup}" id="faxeatg" styleClass="form-control" placeholder="telephone"/>
+                        </div>
+                    </div>
+                </div> 
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  id="dateNaicg" value="#{msg['titre.dateDeCreation']}"   for="dateNaissancec" class=" pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:calendar   id="dateNaissancecg" yearRange="c-100:c+10"  pattern="dd/MM/yyyy" maxdate="#{souscriptionAsVoyageBean.dateEmission}" readonlyInput="true" navigator="true" value="#{souscriptionAsVoyageBean.groupeAssuranceVoyage.dateCreationGroup}" mask="true" class="form-control" placeholder="#{msg['titre.dateDeCreation']}"
+
+                                      converterMessage="#{msg['titre.formatIncorrect']}">
+
+                            <f:convertDateTime pattern="dd/MM/yyyy"  type="date"/>
+                            <p:ajax event="dateSelect" update="datenMessagecg"/> 
+                        </p:calendar>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="dateNaissancecg" id="datenMessagecg" class="errorClass"/>
+                    </div>
+                </div>
+            </div>
+        </p:outputPanel>
+    </ui:composition>
+</html>

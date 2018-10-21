@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset>
+                <legend class="text-center text-uppercase"> <p:outputLabel value="Package unique garantie"></p:outputLabel></legend>
+            </fieldset>
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#tab0" aria-controls="tab0" role="tab" data-toggle="tab">Prime Pays</a>
+                </li>
+                <li role="presentation">
+                    <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Prime Compagnie</a>
+                </li>
+
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tab0">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <ui:include src="ajoutPUGP.xhtml"/>
+                            </div> 
+                            <div class="row">
+                                <ui:include src="listPUGP.xhtml"/>
+                            </div> 
+                        </div>
+                    </div>
+                </div>  
+                <div role="tabpanel" class="tab-pane" id="tab1">
+                    <div class="panel">
+                        <div class="panel-body">
+                             <div class="row">
+                                <ui:include src="optionC.xhtml"/>
+                            </div> 
+                            <div class="row">
+                                <ui:include src="ajoutPUGCOP1.xhtml"/>
+                            </div> 
+                            <div class="row">
+                                <ui:include src="ajoutPUGCOP2.xhtml"/>
+                            </div> 
+                            <div class="row">
+                                <ui:include src="listPUGC.xhtml"/>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+
+</html>

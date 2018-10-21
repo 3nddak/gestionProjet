@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['garantie.entete']}"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row">
+               
+
+
+                    <div class="panel">
+                        <h:form class="form-horizontal" id="garantie-ajout">
+                            <p:growl id="msgs" showDetail="false" globalOnly="true" />
+                            <div class="panel-heading"> 
+                                <p:fieldset id="leg2" legend="#{guarantieCategorieBean.legende2}" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                    <ui:include src="guarantie_ajout.xhtml"/>
+                                </p:fieldset>
+                            </div> 
+                        </h:form>                        
+
+                        <h:form  id="formliste" class="form-horizontal">
+
+                            <div class="panel panel-body">
+
+                                <p:outputPanel id="guarantie">
+                                    <p:fieldset legend="#{msg['garantie.liste']}" style="margin-bottom:20px">
+
+                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                            <!--div>
+                                                <h:commandLink  value="Print" title="IMPRIMER" class=" btn-info btn police_label  " style="color:#fff;background:#5bc0de;border-color:#46b8da" actionListener="#"   > 
+                                                    <i class=" glyphicon glyphicon-print"></i>
+                                                </h:commandLink>  
+                                            </div-->
+                                            <p:dataTable class="table_label table-bordered table-responsive" var="guarantie" rowKey="#{guarantie.idGarantie}" selection="#{guarantieCategorieBean.triGuarantieList}" id="guarantieliste" reflow="true" rows="5" value="#{guarantieCategorieBean.guarantieList}"
+                                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                         rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg[tableau.vide]}" >                                                    
+                                                
+                                                <!--f:facet name="header">
+                                                    <p:outputPanel >
+                                                        <p:outputLabel  value="Rechercher : " />
+                                                        <p:inputText id="globalFilter" onkeyup="ddd.filter()" style="width:150px" placeholder="Rechercher"/>
+                                                    </p:outputPanel>
+                                                </f:facet-->
+                                                <f:facet name="{Exporters}">
+                                                    <h:commandLink>
+                                                        <p:graphicImage library="img" name="/excel.png" width="24"/>
+                                                        <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                                    </h:commandLink>
+
+                                                    <h:commandLink>
+                                                        <p:graphicImage library="img" name="/pdf.png" width="24"/>
+                                                        <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                                    </h:commandLink>
+
+                                                    <h:commandLink>
+                                                        <p:graphicImage library="img" name="/csv2.png" width="24"/>
+                                                        <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                                                    </h:commandLink>
+
+                                                    <h:commandLink>
+                                                        <p:graphicImage library="img" name="/xml.png" width="24"/>
+                                                        <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                                                    </h:commandLink>
+                                                </f:facet>
+
+                                                <p:column headerText="pays" filterBy="#{guarantie.pays.designationPays}">
+                                                    <h:outputText value="#{guarantie.pays.designationPays}" />
+                                                </p:column>
+                                                <p:column headerText="#{msg['garantie.libelle']}" filterBy="#{guarantie.libelle}">
+                                                    <h:outputText value="#{guarantie.libelle}" />
+                                                </p:column>
+                                                <p:column headerText="#{msg['garantie.symbole']}" filterBy="#{guarantie.symbole}">
+                                                    <h:outputText value="#{guarantie.symbole}" />
+                                                </p:column>
+                                                <p:column headerText="#{msg['garantie.reglecalcul']}" filterBy="#{guarantieCategorieBean.regleIdentifier(guarantie.idRegle)}">
+                                                    <h:outputText value="#{guarantieCategorieBean.regleIdentifier(guarantie.idRegle)}" />
+                                                </p:column>
+                                                <p:column headerText="#{msg['garantie.statut']}" filterBy="#{guarantie.statut}">
+                                                    <h:outputText value="#{guarantie.statut}" />
+                                                </p:column>
+                                                <p:column headerText="Actions" class="col-lg-2">
+
+                                                    <p:commandButton action="#{guarantieCategorieBean.modifierGuarantie()}" rendered="#{sec:areAllGranted('MOD_GUARANTIES')}" update="formliste,garantie-ajout"  icon="fa fa-edit" title="#{msg['btn.modifier']}" class="form-control btn-primary primary btn-sm">
+                                                        <f:setPropertyActionListener value="#{guarantie}" target="#{guarantieCategorieBean.guarantieSelected}" />
+                                                    </p:commandButton>
+                                                    <p:commandButton rendered="#{sec:areAllGranted('DEL_GUARANTIES')}"  oncomplete="PF('supprimer').show()" icon="fa fa-trash" title="#{msg['btn.supprimer']}" class="form-control btn-danger danger btn-sm">
+                                                        <f:setPropertyActionListener value="#{guarantie}" target="#{guarantieCategorieBean.guarantieSelected}" />
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </p:fieldset>
+                                </p:outputPanel>
+                            </div>
+                        </h:form>
+                        <!--p:dialog  class="police_label" header="#{msg['garantie.title.ajouter']}" showEffect="fade"  widgetVar="ajouter" modal="true" width="500" minHeight="400" resizable="false">
+                            <ui:include src="guarantie_ajout.xhtml"/>
+                            <p:ajax update="garantie-ajout:libelleMessage" />
+                            <p:ajax update="garantie-ajout:symboleMessage" />
+                        </p:dialog--> 
+                        <!--p:dialog  class="police_label" header="#{msg['garantie.title.modifier']}" showEffect="fade"  widgetVar="modifier" modal="true" width="500" minHeight="500" resizable="false">
+                            <ui:include src="guarantie_modifier.xhtml"/>
+                        </p:dialog-->
+                        <h:form>
+                            <p:growl id="msgs3" showDetail="false" />
+                            <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                                             header="#{msg['btn.supprimer']}" severity="alert" 
+                                             widgetVar="supprimer">
+
+
+                                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-primary primary btn-xs"  />
+                                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste" action="#{guarantieCategorieBean.supprimerGuarantie()}"  oncomplete="PF('supprimer').hide()" class="btn-danger danger btn-xs" />
+                            </p:confirmDialog>
+                        </h:form>
+
+                        <!--div class="panel-footer"> 
+
+                        </div--> 
+                    </div>
+
+
+                </div>
+            </div>
+       
+
+
+
+
+
+
+    </ui:composition> 
+
+</html>
+

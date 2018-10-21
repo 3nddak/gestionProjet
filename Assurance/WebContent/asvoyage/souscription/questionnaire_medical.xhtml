@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition>
+        <ui:include src="infos_client.xhtml"/>
+
+        <p:panel id="questionnaireForm" header="#{msg['titre.questionnaire']}" toggleable="false"   >
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-12  ">
+                    <div class="panel" jsf:id="xxx">
+                        <div class="panel-heading bg-purple">
+                            <h3 class="panel-title">#{msg['liste.compagnie']}</h3> 
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <p:dataScroller class="panel-border-none" value="#{souscriptionAsVoyageBean.allAssuranceVoyage}" var="asv" chunkSize="25">
+                                    <p:commandLink value="#{asv.compagnie.abbreviation}"  onstart="PF('simulationrr').block()" oncomplete="PF('simulationrr').unblock()" class="" update="formliste:xxxdetail" action="#{souscriptionAsVoyageBean.initializeQuestionForCompagnie()}" >
+
+                                        <f:setPropertyActionListener value="#{asv}" target="#{souscriptionAsVoyageBean.assuranceVoyageSelected}"  />  
+                                    </p:commandLink>
+                                </p:dataScroller>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-9 col-md-9 col-sm-7 col-xs-12  "> 
+                    <div class="panel" jsf:id="xxxdetail">
+                        <div class="panel-heading bg-purple">
+                            <h3 class="panel-title">#{msg['titre.questionPour']} : #{souscriptionAsVoyageBean.assuranceVoyageSelected.compagnie.designation}</h3> 
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-condensed table-striped table-police">
+                                    <thead class="text-center bg-gray text-uppercase text-purple text-bold ">
+                                        <tr>
+                                           <td class="">#{msg['titre.numero']}</td>
+                                            <td class="col-lg-4 col-md-4 col-sm-6 col-xs-12">#{msg['titre.questionsUn']}</td>
+                                            <td class="col-lg-2 col-md-2 col-sm-6 col-xs-12">#{msg['titre.reponsesUn']}</td> 
+                                            <td class="col-lg-4 col-md-4 col-sm-6 col-xs-12">#{msg['titre.questionsDeux']}</td>
+                                            <td class="col-lg-2 col-md-2 col-sm-6 col-xs-12">#{msg['titre.reponsesDeux']}</td> 
+                                        
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="#{souscriptionAsVoyageBean.assuranceVoyageSelected.listQuestionResponse}" var="q" >
+                                            <tr jsf:id="ll#{souscriptionAsVoyageBean.assuranceVoyageToSave.hashCode()}#{q.id()}" jsf:rendered="#{q.question.booleanQuestion}">
+                                                <td class="text-justify">
+                                                    <h:outputLabel id="nn#{souscriptionAsVoyageBean.assuranceVoyageToSave.hashCode()}#{q.id()}" >#{q.question.getNumber()}</h:outputLabel>
+                                                </td>
+                                                <td class="text-justify">
+                                                    <h:outputLabel id="l#{souscriptionAsVoyageBean.assuranceVoyageToSave.hashCode()}#{q.id()}" >#{q.question.libelleQuestion}</h:outputLabel>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p:selectBooleanCheckbox id="a#{souscriptionAsVoyageBean.assuranceVoyageToSave.hashCode()}#{q.id()}" value="#{q.response}" >
+                                                        <p:ajax update="ll#{souscriptionAsVoyageBean.assuranceVoyageToSave.hashCode()}#{q.id()}"  />
+                                                    </p:selectBooleanCheckbox>
+                                                </td>
+                                                <td class="text-justify">
+                                                    <p:outputLabel id="c#{souscriptionAsVoyageBean.assuranceVoyageToSave.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" value="#{q.questionSecondaire()}" />
+                                                    <h:outputLabel rendered="#{q.response}" value="*" class="etoile_rouge pull-left" />
+                                                </td>
+                                                <td>
+                                                    <p:inputText required="#{q.response}" id="d#{souscriptionAsVoyageBean.assuranceVoyageToSave.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" class="form-control" value="#{q.precisions}" />
+                                                </td>
+                                            </tr>
+
+                                            <tr jsf:rendered="#{!q.question.booleanQuestion}">
+                                                <td> 
+                                                    <h:outputLabel >#{q.question.getNumber()}</h:outputLabel>
+                                                </td>
+                                                <td> 
+                                                    <h:outputLabel >#{q.question.libelleQuestion}</h:outputLabel>
+                                                </td> 
+                                                <td class="text-center">
+                                                    <p:inputText  class="form-control" value="#{q.precisions}" />
+                                                </td> 
+                                                <td></td> 
+                                                <td></td>
+                                            </tr>
+
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <pe:blockUI widgetVar="simulationrr"> 
+                <div class="table-responsive">
+                    <h:panelGrid columns="2">  
+                        <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                        <h:outputText value="#{msg['titre.chargementDuQuestionnaireEnCours']}" />  
+                    </h:panelGrid>
+                </div>
+            </pe:blockUI> 
+        </p:panel>
+    </ui:composition>
+</html>

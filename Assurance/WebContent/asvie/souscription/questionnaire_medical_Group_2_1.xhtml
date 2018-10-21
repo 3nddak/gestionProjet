@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:pe="http://primefaces.org/ui/extensions"
+          
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition>
+        <ui:include src="infos_clientChoix.xhtml"/>
+        <div id="liste1u" class="row">
+            <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4 well-lg">
+                <p:growl globalOnly="true" showDetail="false"/>
+                <p:panel  class="form-horizontal well-sm" id="message1u">
+                    <div class="panel-heading bg-primary"> 
+                        <p:outputLabel class="police_label" value="Nom - Prenom"></p:outputLabel>
+                    </div>
+                    <p:dataScroller class="police_label" value="#{souscriptionBean.listAssuranceCreditForQuestion}" var="ascr" chunkSize="6">
+                        <div class="table-responsive">
+                            <p:commandLink  onstart="PF('simulationrr').block()" oncomplete="PF('simulationrr').unblock()" class=" col-lg-12 lien_liste" update="formliste"  style="text-align:left; margin: 0px;padding:0px ">
+                                <div class="col-lg-10 pull-left">
+                                    <p:outputLabel class="col-lg-12" value="#{ascr.client.nom} - #{ascr.client.prenom}"/>
+                                </div>
+                                <f:setPropertyActionListener value="#{ascr}" target="#{souscriptionBean.assuranceCreditSelected}"  />  
+                            </p:commandLink>
+                        </div>
+                    </p:dataScroller>
+                </p:panel>
+
+
+            </div>
+            <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8 well-lg">
+                <div class="panel">
+                    <p:panel  class="form-horizontal well-sm" id="detailr">
+                        <div class="panel-heading bg-primary">  
+                            <h:outputLabel value="QUESTIONNAIRES POUR " class="text-uppercase" >
+                                <h:outputText value="#{souscriptionBean.assuranceCreditSelected.client.nom} - #{souscriptionBean.assuranceCreditSelected.client.prenom}" />
+                            </h:outputLabel>
+                        </div>
+
+                        <div class="panel-body"> 
+                            <div class="row">
+                                <fieldset><legend class="titre_entete text-left text-capitalize small" ></legend>
+                                    <c:forEach items="#{souscriptionBean.assuranceCreditSelected.listQuestionResponseAsVie}" var="q" >
+                                        <p:outputPanel id="ll#{souscriptionBean.assuranceCreditSelected.client.hashCode()}#{q.id()}" rendered="#{q.questionAsVie.booleanQuestion}">
+
+                                            <h:outputLabel id="l#{souscriptionBean.assuranceCreditSelected.client.hashCode()}#{q.id()}" >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                            <p:selectBooleanCheckbox id="a#{souscriptionBean.assuranceCreditSelected.client.hashCode()}#{q.id()}" value="#{q.response}" >
+                                                <p:ajax update="ll#{souscriptionBean.assuranceCreditSelected.client.hashCode()}#{q.id()}"  />
+                                            </p:selectBooleanCheckbox>
+                                            <p:outputLabel id="c#{souscriptionBean.assuranceCreditSelected.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" value="#{q.questionSecondaire()}" />
+
+                                            <p:inputText id="d#{souscriptionBean.assuranceCreditSelected.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" class="form-control" value="#{q.precisions}" />
+                                        </p:outputPanel>
+
+                                        <p:outputPanel rendered="#{!q.questionAsVie.booleanQuestion}">
+                                            <h:outputLabel >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                            <p:inputText  class="form-control" value="#{q.precisions}" />
+                                        </p:outputPanel>
+
+                                    </c:forEach>
+                                </fieldset>
+                            </div> 
+                        </div>
+                    </p:panel>
+                </div>
+            </div>
+        </div>
+
+        <pe:blockUI widgetVar="simulationrr">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                <h:outputText value="chargement du questionnaire en cours...." />  
+            </h:panelGrid>  
+        </pe:blockUI> 
+    </ui:composition> 
+</html>
+

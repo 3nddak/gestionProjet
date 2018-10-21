@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <ui:composition>
+        <div class="panel">
+            <h:form id="natureEv" class="form-horizontal ">
+
+                <div class="panel-body">
+                    <fieldset><legend class="text-uppercase" ><h:outputLabel class="police_label" value="Nature evenement"/></legend>
+                        <p:growl id="msgsll" globalOnly="true" showDetail="false"/>
+
+
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <!--h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                                    <p:selectOneRadio id="nat" value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.natureEvenementSinistreAsAuto}"  layout="grid" columns="3">
+                                        <f:selectItems value="#{declarationSinistreBean.listNatureES}" var="na" itemLabel="#{na.libelle}" itemValue="#{na}"/>
+                                        <p:ajax event="click" listener="#{declarationSinistreBean.listScenarioByNatureES()}"/>
+                                    </p:selectOneRadio>
+                                </h:panelGrid-->
+
+                                <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="nat" required="true" requiredMessage="Veuillez choisir la nature de l'evenement" value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.natureEvenementSinistreAsAuto}">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Choisir le type d'assurance" /> 
+                                    <f:selectItems value="#{declarationSinistreBean.listNatureES}" var="tas" itemLabel="#{tas.libelle}" itemValue="#{tas}"/>
+                                    <f:ajax event="keyup" render="policeMessage"/> 
+                                    <p:ajax listener="#{declarationSinistreBean.listScenarioByNatureES()}" />
+                                </h:selectOneMenu> 
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="nat" id="policeMessage"/>
+                            </div>
+                        </div> 
+                    </fieldset>   
+                </div> 
+            </h:form>
+        </div>
+    </ui:composition>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition>
+        <p:panel header="Information sur la flotte"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+                <p:outputLabel for="designationflotte2" value="Designation :"/>
+                <h:outputText id="designationflotte2" value="#{flotteBean.flotteToSave.designation}"/>
+                <p:outputLabel for="descriptionflotte2" value="Description :"/>
+                <h:outputText id="descriptionflotte2" value="#{flotteBean.flotteToSave.description}"/>
+                <p:outputLabel for="datecreationflotte2" value="Date création :"/>
+                <h:outputText id="datecreationflotte2" value="#{flotteBean.formatDate(flotteBean.flotteToSave.dateCreation)}"/>
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['message.client.titre']}"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel for="nom2ooo" value="Souscripteur :"/>
+                <h:outputText id="nom2ooo" value="#{flotteBean.clientSelected.nom} #{flotteBean.nom}"/>
+                <p:outputLabel for="tel2ooo" value="Téléphone :"/>
+                <h:outputText id="tel2ooo" value="#{flotteBean.clientSelected.telephoneMobile} #{flotteBean.telephoneMobile}"/>
+                <p:outputLabel for="addresse2ooo" value="Adresse :"/>
+                <h:outputText id="addresse2ooo" value="#{flotteBean.clientSelected.adresse} #{flotteBean.adresse}"/>
+
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="CATEGORIE-GARANTIES SELECTIONNEES"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel for="cat2ooo" value="Categorie:"/>
+                <h:outputText id="cat2ooo" value="#{flotteBean.categorie.libelle}"/>
+
+            </p:panelGrid>
+            <p:outputLabel value="Garanties:"/>
+            <p:dataGrid  value="#{flotteBean.selectedObjetGuaranties}" var="guarantie" columns="4" layout="grid" class="table"> 
+
+                #{guarantie.symbole}
+            </p:dataGrid>
+        </p:panel>
+        <p:panel header="CARACTERISTIQUES DU VEHICULE"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+            <p:panelGrid columns="8" class="table">
+
+                <p:outputLabel for="immooo" value="Immatriculation :"/>
+                <h:outputText id="immooo" value="#{flotteBean.voiture.numeroImmatriculation}"/>
+                <p:outputLabel for="pui2ooo" value="Puissance :"/>
+                <h:outputText id="pui2ooo" value="#{flotteBean.voiture.puissance}"/>
+                <p:outputLabel for="puiRooo" value="Puissance Reelle :"/>
+                <h:outputText id="puiRooo" value="#{flotteBean.voiture.puissanceReelle}"/>
+                <p:outputLabel for="vn2ooo" value="Valeur neuve :"/>
+                <h:outputText id="vn2ooo" value="#{flotteBean.voiture.valeurNeuve}">
+                    <f:convertNumber pattern="###,##0" type="number" />
+                </h:outputText>         
+                <p:outputLabel  for="vn12ooo" value="Valeur Venale:"/>
+                <h:outputText class="text-right" id="vn12ooo" value="#{flotteBean.voiture.valeurvenale}">
+                    <f:convertNumber pattern="###,##0" type="number" />
+                </h:outputText>    
+                <p:outputLabel for="ma2ooo" value="Marque :"/>
+                <h:outputText id="ma2ooo" value="#{flotteBean.voiture.marque}"/>
+                <p:outputLabel for="tm2ooo" value="Type marque:"/>
+                <h:outputText id="tm2ooo" value="#{flotteBean.voiture.typeMarqueVehicule}"/>
+                <p:outputLabel for="en2ooo" value="Energie :"/>
+                <h:outputText id="en2ooo" value="#{flotteBean.energ.libelleFr}"/>
+                <p:outputLabel for="ge2ooo" value="Genre :"/>
+                <h:outputText id="ge2ooo" value="#{flotteBean.voiture.genre}"/>
+                <p:outputLabel for="ty2ooo" value="Type Vitre:"/>
+                <h:outputText id="ty2ooo" value="#{flotteBean.voiture.typeVitre}"/>
+                <p:outputLabel for="np2ooo" value="Nombre de place :"/>
+                <h:outputText id="np2ooo" value="#{flotteBean.voiture.nombrePlaces}"/>
+                <p:outputLabel  for="numc2ooo" value="Numero chassis :"/>
+                <h:outputText class="text-right" id="numc2ooo" value="#{flotteBean.voiture.numChassis}"/>
+                <p:outputLabel  for="numm2ooo" value="Numero moteur :"/>
+                <h:outputText class="text-right" id="numm2ooo" value="#{flotteBean.voiture.numMoteur}"/>
+
+                <p:outputLabel for="dm2aooo" value="Date de Mise En circulation:"/>
+                <h:outputText class="text-right" id="dm2aooo" value="#{flotteBean.formatDate(flotteBean.voiture.miseEnCirculation)}"/>
+
+
+            </p:panelGrid>
+
+        </p:panel>
+    </ui:composition> 
+
+</html>
+

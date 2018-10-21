@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/includes/admin-top.xhtml"> <!--template="/admin-top.xhtml>" to use horizontal layout -->
+
+    <ui:define name="head">
+        <link rel="stylesheet" type="text/css" href="resources/css/starter.css" media="all"/>
+        <link rel="stylesheet" type="text/css" href="resources/css/theme.css" media="all"/>
+    </ui:define>
+
+    <ui:define name="logo">
+        Admin Starter
+    </ui:define>
+
+     <ui:define name="menu">
+         <ui:include src="/includes/menubar.xhtml"/>
+     </ui:define>
+
+    <ui:define name="top-menu">
+        <ui:include src="/includes/top-bar.xhtml"/>
+    </ui:define>
+    
+    <!-- below is just an example on how to define more tabs for control sidebar --> 
+    <ui:define name="controlsidebar-tabs">
+        <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+        <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ui:define>
+
+   <ui:define name="controlsidebar-content">
+        <ui:include src="/includes/controlsidebar-tabs-content.xhtml"/>
+    </ui:define>
+
+
+    <ui:define name="footer">
+          <a target="_blank"
+           href="https://github.com/adminfaces/">
+            Copyright (C) 2017 - AdminFaces
+        </a>
+
+        <div class="pull-right hidden-xs" style="color: gray">
+            <i>#{msg['starter.version']}</i>
+        </div>
+
+        <script type="text/javascript">
+            if(isMobile()) {
+                $('a.ui-link').click(function() {
+                    $(this).prop('disabled', true);
+                    showBar();
+                });
+            }
+        </script>
+    </ui:define>
+
+
+</ui:composition>

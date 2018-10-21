@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition template="../default/layout.xhtml">
+
+        <ui:define name="contenu"> 
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                <fieldset>
+                    <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['page.menu.espace.utilisateur']}"></p:outputLabel></legend>
+                </fieldset>
+            </div>
+
+            <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET,SOUSCRIPTION_ASVOYAGE">
+                <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <p:commandLink class=" text-center tile-stats bg-purple2" action="voyagesouscription" > 
+                        <span class="menu-page  text-center ">
+                            <i class=" fa fa-exchange" /> 
+                        </span> 
+                        <h3 class="text-center">#{msg['page.menu.souscription']}</h3>              
+                    </p:commandLink>
+                </div>   
+            </sec:authorize>
+
+            <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET,PAYEMENT_ASVOYAGE">
+                <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <p:commandLink class=" text-center tile-stats bg-purple2" action="validationasvoyagepayement" > 
+                        <span class="menu-page  text-center ">
+                            <i class=" fa fa-cart-plus" /> 
+                        </span> 
+                        <h3 class="text-center">#{msg['titre.payement']}</h3>              
+                    </p:commandLink>
+                </div> 
+            </sec:authorize>
+
+            <sec:authorize ifAllGranted="ETAT_OPERATION_ASVOYAGE">
+                <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <p:commandLink class=" text-center tile-stats bg-purple2" action="etatdesoperations" > 
+                        <span class="menu-page  text-center ">
+                            <i class=" fa fa-archive" /> 
+                        </span> 
+                        <h3 class="text-center">#{msg['liste.etatSurLesOperations']}</h3>              
+                    </p:commandLink>
+                </div> 
+            </sec:authorize>
+
+            <sec:authorize ifAllGranted="USER_CMP, ACCESS_ESPACE_COMPAGNIE,TRAITEMENT_COMPAGNIE_ASVOYAGE">
+                <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <p:commandLink class=" text-center tile-stats bg-purple2" action="nouvelleDemandeCompagnie" > 
+                        <span class="menu-page  text-center ">
+                            <i class=" fa fa-file-archive-o" /> 
+                        </span> 
+                        <h3 class="text-center">#{msg['titre.traitementCompagnie']}</h3>              
+                    </p:commandLink>
+                </div>
+            </sec:authorize>
+        </ui:define>
+    </ui:composition>
+</html>
+

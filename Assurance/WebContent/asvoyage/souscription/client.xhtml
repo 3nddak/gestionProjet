@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <ui:composition>
+        <div class="panel">
+            <div class="panel-body">
+                <p:outputPanel class="panel-border-none">
+                    <p:growl id="test"  globalOnly="true"  severity="info,warn"/>
+                    <ui:include src="infos_voyage.xhtml"/>
+                    <div class="row">
+                        <p:dataTable class="#{souscriptionAsVoyageBean.groupeClients.size() le 0 ?false:true}"  id="clienttable3"  value="#{souscriptionAsVoyageBean.groupeClients}"  var="client3" 
+                                     rows="5"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     paginator="true" paginatorPosition="bottom" style="margin-bottom:20px"
+                                     rowsPerPageTemplate="5,10,15,20"  emptyMessage="#{msg[tableau.vide]}" rowKey="#{client3.hashCode()}"
+                                     >
+
+                            <p:column headerText="#{msg['client.nom']}" filterBy="#{client3.nom}" filterMatchMode="contains">
+                                <h:outputText value="#{client3.nom}" />
+                            </p:column >
+                            <p:column headerText="#{msg['client.prenom']}" filterBy="#{client3.prenom}" filterMatchMode="contains">
+                                <h:outputText value="#{client3.prenom}" />
+                            </p:column >
+                            <p:column headerText="#{msg['client.datedenaissance']}" filterMatchMode="contains">
+                                <h:outputText value="#{client3.dateNaissance}" />
+                            </p:column >
+                            <p:column headerText="Action" width="10%">
+
+                                <p:commandButton title="#{msg['btn.supprimer']}" update="formliste"   icon="fa fa-remove"  class="btn btn-danger danger" action="#{souscriptionAsVoyageBean.deleteFromGroupList()}" >
+                                    <f:setPropertyActionListener target="#{souscriptionAsVoyageBean.clientGroupToDelete}" value="#{client3}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                    <p:outputPanel id="btn" rendered="#{!souscriptionAsVoyageBean.cacherTable}"  >
+                        <div class="row">
+                            <div class="btn-toolbar">
+                                <p:commandButton value="#{msg['btn.ajouter']}"  class="btn-success btn pull-right" update="formliste" action="#{souscriptionAsVoyageBean.ajouterClientGroupe()}" />
+                            </div>
+                        </div>
+                    </p:outputPanel>
+
+                    <p:panel class="#{souscriptionAsVoyageBean.cacherTable} panel-border-none" id="pan" rendered="#{!souscriptionAsVoyageBean.renderedClient}" >
+                        <fieldset>
+                            <legend class="text-uppercase small" ><h:outputLabel value="#{msg['client.title']}" /></legend>
+                            <fieldset>
+                                <legend class="text-uppercase small" ><h:outputLabel value="Option" />
+                                    <p:selectOneRadio  id="cons" value="#{souscriptionAsVoyageBean.option}" requiredMessage="#{msg['client.option.requiredMessage']}">
+                                        <f:selectItem  itemLabel="#{msg['client.choisir']}"  itemValue="choix" />
+                                        <f:selectItem itemLabel="#{msg['client.creer']}"  itemValue="creation" />
+                                        <p:ajax listener="#{souscriptionAsVoyageBean.choixOperation()}" update="choix,creation,formliste"/>
+                                    </p:selectOneRadio>
+                                </legend>
+                            </fieldset>
+                            <p:fieldset  id="creation" class="#{souscriptionAsVoyageBean.hideAjoutClientForm} panel-border-none">
+                                <p:panel rendered="#{souscriptionAsVoyageBean.hideAjoutClientForm}" class="panel-border-none" >
+                                    <ui:include src="client_ajout.xhtml"/>
+                                </p:panel>
+                            </p:fieldset>
+                            <p:fieldset  id="choix" class="#{!souscriptionAsVoyageBean.hideAjoutClientForm} panel-border-none" >
+                                <ui:include src="client_choix.xhtml"/>
+                            </p:fieldset>
+                        </fieldset>
+                    </p:panel>
+
+                </p:outputPanel>
+            </div>
+        </div> 
+    </ui:composition>
+</html>

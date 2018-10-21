@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+        <!--p:panel  header="Enregistrer un paquage de garantie " toggleable="true" collapsed="false" style="margin-bottom:20px"-->
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="package garantie auto"></p:outputLabel></legend>
+            </fieldset>
+
+            <div class="panel">
+                <div class="panel-body">
+                    <p:fieldset class="panel-border-none">
+
+                        <h:form class="form-horizontal">
+
+                            <div class="form-group">
+                                <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">   
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  value="Pays"  for="pays" class="pull-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu converter="entityConverter"  id="pays" value="#{paquegeGarantieAsAutoBean.paysSelected}"   class="form-control" >
+                                            <f:selectItem  itemLabel="Pays" noSelectionOption="true"/>
+                                            <f:selectItems  value="#{paquegeGarantieAsAutoBean.listPays}" var="pays" itemValue="#{pays}" itemLabel="#{pays.designationPays}" /> 
+                                            <p:ajax listener="#{paquegeGarantieAsAutoBean.initCategories()}" update="categorie,garantie" />
+
+                                        </h:selectOneMenu>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  value="Désignation"  for="designation" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText value="#{paquegeGarantieAsAutoBean.designation}" required="true"  requiredMessage="la designtion ne doit pas être nulle" 
+                                                     id="designation" class="form-control" placeholder="Désignation">
+                                            <p:ajax event="keyup" update="designationMessage"/>
+                                        </p:inputText>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:message for="designation"  id="designationMessage" class="errorClass" />
+                                    </div> 
+                                </div>
+
+
+                                <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">    
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  value="Descrition"  for="description" class=" pull-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText value="#{paquegeGarantieAsAutoBean.description}"  id="description" class="form-control" placeholder="Description">
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">    
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  value="Categorie"  for="categorie" class=" pull-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:selectCheckboxMenu converter="entityConverter"  class="form-control" id="categorie" label="Catégorie" value="#{paquegeGarantieAsAutoBean.listCategorieSelected}"
+                                                              filter="true" filterMatchMode="startsWith" >
+                                            <f:selectItems  value="#{paquegeGarantieAsAutoBean.listCategorie}" var="categorie" itemLabel="#{categorie.description}" itemValue="#{categorie}"/>
+                                            <p:ajax listener="#{paquegeGarantieAsAutoBean.initGaranties()}" update="garantie" />
+                                        </p:selectCheckboxMenu>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">   
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  value="garantie"  for="garantie" class=" pull-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:selectCheckboxMenu converter="entityConverter"  class="form-control" id="garantie" label="Garantie" value="#{paquegeGarantieAsAutoBean.listGarantieSelected}"
+                                                              filter="true" filterMatchMode="startsWith"  >
+                                            <f:selectItems  value="#{paquegeGarantieAsAutoBean.listGarantie}" var="garantie" itemLabel="#{garantie.libelle}" itemValue="#{garantie}"/>
+
+                                        </p:selectCheckboxMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="btn-toolbar">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:commandButton  class="btn btn-danger" value="Annuler" actionListener="#{paquegeGarantieAsAutoBean.annuller()}" update="@form" />
+
+                                    <p:commandButton class="pull-right btn btn-purple" value="Enregistrer" actionListener="#{paquegeGarantieAsAutoBean.savePaquegeGarantieAsAuto()}" update="@form,list" />
+                                </div>
+                            </div>
+                        </h:form>
+                        <!--/p:panel-->
+
+                    </p:fieldset> 
+                    <p:fieldset class="panel-border-none"> 
+                
+                <h:form id="list" class="form-horizontal">
+                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="table-responsive">
+                        <p:dataTable sortOrder="descending"  class="table table-bordered" var="paquetage"  rows="5" rowKey="#{paquetage.idPaquegeGarantieAsAuto}" selection="#{paquegeGarantieAsAutoBean.listPaquegeGarantieAsAutoSelected}" value="#{paquegeGarantieAsAutoBean.listPaquegeGarantieAsAuto}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" scrollWidth="50%" scrollHeight="150"  editable="true" editMode="cell">
+
+
+                            <p:column headerText="Designation">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel id="ss4" value="#{paquetage.designation}">
+
+                                        </p:outputLabel>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{paquetage.designation}">
+                                            <p:ajax event="keyup" update ="ss4"  />
+
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Description">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel id="ss5" value="#{paquetage.description}">
+
+                                        </p:outputLabel>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{paquetage.description}">
+                                            <p:ajax event="keyup" update ="ss5" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="categorie">
+                                <p:outputLabel value="#{paquetage.categorie.libelle}"/>
+                            </p:column>
+                            <p:column headerText="Garantie">
+                                <p:outputLabel value="#{paquetage.listGarantie()}"/>
+                            </p:column>
+                            <p:column headerText="Action" width="7%">
+                                <p:commandButton icon="fa fa-save" class="btn btn-danger" title="Enregistrer les modifications" action="#{paquegeGarantieAsAutoBean.updatePaquegeGarantieAsAuto()}" update="@form" >
+                                    <f:setPropertyActionListener value="#{paquetage}" target="#{paquegeGarantieAsAutoBean.paquegeGarantieAsAuto}" />
+                                </p:commandButton>
+                                <p:commandButton icon="fa fa-trash" class="btn btn-purple" title="Supprimer la ligne" action="#{paquegeGarantieAsAutoBean.deletePaquegeGarantieAsAuto()}"  update="@form">
+                                    <f:setPropertyActionListener value="#{paquetage}" target="#{paquegeGarantieAsAutoBean.paquegeGarantieAsAuto}" />
+                                </p:commandButton>
+                            </p:column>
+                            <p:column width="5%"  selectionMode="multiple" style="width: 16px;text-align: center; color: black;" />
+
+                        </p:dataTable>
+                    </div>
+                         </div>
+                    <div class="form-group">
+                        <div class="btn-toolbar">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:commandButton class="btn btn-danger" value="Supprimer" title="Suppprimer la selection" actionListener="#{paquegeGarantieAsAutoBean.deletePaquegeGarantieAsAutoList()}" update="@form" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                </p:fieldset> 
+
+            </div>
+        </div>
+        </div>
+    </ui:composition>
+</html>

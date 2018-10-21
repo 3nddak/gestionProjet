@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <h:form class="form-horizontal" id="modifier" >
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:growl id="msgsGeneral"  globalOnly="true"  severity="info,warn"/>
+                    <div class="form-group">
+                        <p:dataTable sortOrder="descending" class="table_label" paginator="true" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} 
+                                     {PageLinks} {NextPageLink} {LastPageLink}" 
+                                     lazy="false" rows="5" var="cReel" id="t1" value="#{comptesBean.allCompteReel}"
+                                     selection="#{comptesBean.selectedCompteReel}"  selectionMode="single"  
+                                     rowKey="#{cReel.idCompteReel}" reflow="true" >
+                            <f:facet name="header">
+                                Choisir un compte réel
+                            </f:facet>
+                            <p:ajax event="rowSelect" listener="#{comptesBean.onRowSelect}" update=":modifier" />
+
+                            <p:column style="width: 180px" filterBy="#{cReel.numero}" headerText="#{msg['comptabilite.compte.numero']}" >
+                                <h:outputText value="#{cReel.numero}" />
+                            </p:column>
+                            <p:column filterBy="#{cReel.intitule}" headerText="#{msg['comptabilite.compte.intitule']}">
+                                <h:outputText value="#{cReel.intitule}" />
+                            </p:column>
+                            <p:column style="width:150px" filterBy="#{cReel.reference}" headerText="Reference">
+                                <h:outputText value="#{cReel.reference}" />
+                            </p:column>
+                            <p:column style="width: 150px" filterBy="#{cReel.classe.numeroClasse}" headerText="#{msg['comptabilite.compte.classe']}">
+                                <h:outputText value="#{cReel.classe.libelleClasse}" />
+                            </p:column>
+                        </p:dataTable>
+                        
+                        
+                        
+                        
+                        <p:spacer width="100"/> 
+                        <div class="col-lg-4">
+                            <h:outputLabel  class="police_label pull-left" for="intituleCompteGeneral" value="Intitulé" /> <h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            <p:inputText id="intituleCompteGeneral" required="true" requiredMessage="Veuillez entrer l'intitulé" value="#{comptesBean.compteGeneralToUpdate.intitule}" 
+                                         styleClass="form-control" placeholder="Intitulé">
+                                <f:ajax event="keyup" render="intituleCompteGeneralMessage"/>
+                            </p:inputText>
+                            <h:message for="intituleCompteGeneral" id="intituleCompteGeneralMessage" class="errorClass"/>
+                        </div>
+                        <div class="col-lg-4">
+                            <h:outputLabel  class="police_label pull-left" for="numero" value="Numero Type compte" /> <h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            <p:inputText id="numero" required="true" maxlength="#{comptesBean.positionCompteGeneral}" validatorMessage="Veuillez choisir au moins #{comptesBean.positionCompteGeneral} chiffre" 
+                                         requiredMessage="veuillez entrer Numero Type compte" value="#{comptesBean.compteGeneralToUpdate.numeroOrdre}"  styleClass="form-control" placeholder="Numero Type compte">
+                                <f:ajax event="keyup" render="numeroMessage"/>
+                                <f:validateLength minimum="#{comptesBean.positionCompteGeneral}" />
+                            </p:inputText>
+                            <h:message for="numero" id="numeroMessage" class="errorClass"/>
+                        </div>   
+                    </div>
+                    <p:spacer width="10"/>
+                    <div class="form-group">
+                        <div class="col-lg-3 col-md-6 col-xs-6 col-sm-6">
+                            <p:commandButton id="generalCancel" value="#{msg['btn.annuller']}" 
+                                             action="#{comptesBean.cancelCompteGeneral()}" 
+                                             update=":generalDataTable,msgsGeneral"  class="btn-danger danger form-control" >
+                            </p:commandButton> 
+                        </div>
+                        <div class="col-lg-3 col-lg-push-6  col-md-6 col-xs-6 col-sm-6">
+                            <p:commandButton id="generalSave"  value="#{msg['btn.modifier']}" 
+                                             action="#{comptesBean.updateCompteGeneral()}" 
+                                             update="modifier,:generalDataTable,msgsGeneral" 
+                                             class="btn form-control btn-success pull-right" 
+                                             style="background: #5cb85c;color:#fff;border-color:#4cae4c; font-family: cursive;"
+                                             oncomplete="PF('modifier').hide()"
+                                             >
+                            </p:commandButton>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:composition> 
+</html>
+

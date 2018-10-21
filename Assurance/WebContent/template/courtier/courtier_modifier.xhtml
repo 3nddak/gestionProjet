@@ -1,0 +1,299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+
+
+        <p:outputPanel id="modification" style="text-align:center;">
+            <h:form class="form-horizontal">
+                <p:growl id="msgs2" showDetail="false" globalOnly="" />
+                <a href="courtier_modifier.xhtml"></a>
+                <div class="form-group">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="col-lg-12 col-md-12">
+                            <h:outputLabel  value="#{msg['courtier.abbreviation']}"  class=" pull-left"/><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <p:inputText id="abr" required="true" requiredMessage="#{msg['courtier.abbreviation.requireMessage']}" value="#{courtierBean.courtierSelected.abbreviation}"  class="form-control" a:placeholder="Abbreviation">
+                                <p:ajax event="keyup" update="abrMessage" />
+                            </p:inputText>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <p:message id="abrMessage" for="abr" class="errorClass" />
+                        </div>
+                    </div> 
+                    <div class="col-lg-6 col-md-6">
+                        <div class="col-lg-12 col-md-12">
+                            <h:outputLabel  value="#{msg['courtier.adresse']}"   class=" pull-left"  />
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <p:inputText value="#{courtierBean.courtierSelected.adresse}" class="form-control" a:placeholder="Adresse"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-4 col-md-4"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="pays"  value="Pays" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  id="pays" required="true" value="#{courtierBean.idpays}" class="form-control " 
+                                              requiredMessage="#{msg['compagnie.pays.requireMessage']}"      
+                                              >
+                                <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                <f:selectItems value="#{compagnieBean.paysItems}"/>
+                                <p:ajax event="click" update="paysMessage" />
+                                <p:ajax listener="#{courtierBean.configTelephone()}"  update="tel,telephone,telMessage" />
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="pays" id="paysMessage" />
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['courtier.telephone']}" for="telephone" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12 " style="padding-right: 0px">
+                            <h:outputLabel for="telephone" value="#{courtierBean.indicatifTelephone}" id="tel" class=" form-control label-primary" style="color: white"/>
+                        </div>
+                        <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
+                            <p:inputText id="telephone" required="true" requiredMessage="#{msg['courtier.telephone.requireMessage']}" value="#{courtierBean.courtierSelected.telephones}" class="form-control"
+                                         a:placeholder="#{msg['courtier.telephone']}"
+                                         converterMessage="#{msg['compagnie.tel.converterMessage']}" validatorMessage="#{msg['compagnie.tel.validatorMessage']}"
+                                         maxlength="#{courtierBean.longueurTelephone}"
+                                         >
+                                <p:ajax event="keyup" update="telMessage" />
+                                <f:validateLength minimum="#{courtierBean.longueurTelephone}"  maximum="#{courtierBean.longueurTelephone}"  />
+                                <f:validateLongRange minimum="1"  />
+                            </p:inputText>
+                            <pe:keyFilter for="telephone" mask="pint"/>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message id="telMessage" for="telephone" class="errorClass" />
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4"> 
+                        <div class="col-lg-12 col-md-12">
+                            <h:outputLabel  value="#{msg['courtier.designation']}"  for="designation" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <p:inputText id="designation" required="true" requiredMessage="#{msg['courtier.designation.requireMessage']}" value="#{courtierBean.courtierSelected.designation}" class="form-control" a:placeholder="#{msg['courtier.designation']}">
+                                <p:ajax event="blur" update="designationMessage" />
+                            </p:inputText>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <p:message id="designationMessage" for="designation" class="errorClass" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class=" col-lg-4 col-sm-6 col-xs-12">
+                        <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                            <h:outputLabel  value="Agrément"  for="agr2" class=" pull-left" />
+                        </div>
+                        <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                            <p:inputText id="agr2" value="#{courtierBean.courtierSelected.agrement}" title="Agrément" class="form-control" a:placeholder="Agrément">
+                            </p:inputText>
+                        </div> 
+                    </div>
+
+                    <div class=" col-lg-4 col-sm-6 col-xs-12">
+                        <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                            <h:outputLabel  value="Statut"  for="sta2" class=" pull-left" />
+                        </div>
+                        <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                            <p:inputText id="sta2" value="#{courtierBean.courtierSelected.statut}" title="Statut" class="form-control" a:placeholder="Statut">
+                            </p:inputText>
+                        </div> 
+                    </div>
+
+                    <div class=" col-lg-4 col-sm-6 col-xs-12">
+                        <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                            <h:outputLabel  value="Pieds de page"  for="pieds2" class=" pull-left" />
+                        </div>
+                        <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                            <p:inputText id="pieds2" value="#{courtierBean.courtierSelected.piedPageFacture}" title="Pieds de page" class="form-control" a:placeholder="Pieds de page">
+                            </p:inputText>
+                        </div> 
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-6">
+                        <div class="col-lg-12 col-md-12">
+                            <h:outputLabel  value="#{msg['courtier.type']}"  for="typeCourtier" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <p:selectOneRadio id="typeCourtier" value="#{courtierBean.typeCourtier}"
+                                              required="true" requiredMessage="#{msg['courtier.type.requireMessage']}">
+                                <f:selectItem itemLabel="#{msg['courtier.type.externe']}" itemValue="courtier externe" />
+                                <f:selectItem itemLabel="#{msg['courtier.type.propre']}" itemValue="courtier propre" />
+                                <p:ajax listener="#{courtierBean.choixTypeCourtier}" update="formliste,sel,menu,display2" />
+                            </p:selectOneRadio>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <p:message id="typeMessage" for="typeCourtier"/>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="col-lg-12 col-md-12">
+                            <h:outputLabel  value="#{msg['courtier.compagnie']}"  for="menu" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <p:selectCheckboxMenu id="menu" disabled="#{courtierBean.disabledext}" class="form-control"  value="#{courtierBean.selectedCompagnies}" label="Compagnies"
+                                                  required="true" requiredMessage="#{msg['courtier.compagnies.requireMessage']}"                 filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                                <f:selectItems value="#{courtierBean.compagnieList}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />
+                                <p:ajax listener="#{courtierBean.compagnieTrans}" update="formliste,display2" />
+                            </p:selectCheckboxMenu>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <h:selectOneMenu  id="sel" value="#{courtierBean.idcompagnie}" disabled="#{courtierBean.disabledpro}" class="form-control"
+                                              required="true"      requiredMessage="#{msg['courtier.compagnie.requireMessage']}"
+                                              >
+                                <f:selectItem itemLabel="Compagnie" itemValue=""/>
+                                <f:selectItems value="#{courtierBean.compagnieItems}"  />
+                                <p:ajax listener="#{courtierBean.compagnieTrans}" update="formliste,display2" />
+                                <p:ajax event="click" update="selMessage" />
+                            </h:selectOneMenu> 
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <p:message id="selMessage"  for="sel"  />
+                            <p:message id="menuMessage"  for="menu"  />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-12 col-md-12">
+                        <p:outputPanel id="display2" class="col-lg-12 col-md-12">
+                            <p:dataList  value="#{courtierBean.selectedObjetCompagnies}" var="compagnie" emptyMessage="#{msg['compagnie.nonselectionner']}">
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{msg['compagnie.selectionner']}" class="text-uppercase" style="font-size: 15px" />
+                                </f:facet>       
+                                #{compagnie.abbreviation}
+                            </p:dataList>
+                        </p:outputPanel>
+                    </div>
+                    <div class="col-md-6 col col-lg-6" >
+                        <div class="  col-lg-12">
+                            <p:fileUpload id="fileUpload" fileUploadListener ="#{courtierBean.handleFileUpload2}" mode="advanced"
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png|bmp)$/"        
+                                          label="#{msg['fichier.selection']}" uploadLabel="#{msg['btn.telecharger']}" cancelLabel="#{msg['btn.annuller']}"        
+                                          validatorMessage="#{msg['fichier.invalide']}"      
+                                          dragDropSupport="true"      
+                                          multiple="true"  
+                                          disabled="false"
+                                          update="messages"/>
+                            <p:growl id="messages" showDetail="false" globalOnly="true"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col col-lg-6" >
+                        <div class="  col-lg-12">
+                            <p:fileUpload id="fileUpload2" fileUploadListener ="#{courtierBean.handleSignatureElectroniqueOnUpdate}" mode="advanced"
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png|bmp)$/"        
+                                          label="Signature électronique" uploadLabel="#{msg['btn.telecharger']}" cancelLabel="#{msg['btn.annuller']}"        
+                                          validatorMessage="#{msg['fichier.invalide']}"      
+                                          dragDropSupport="true"      
+                                          multiple="true"  
+                                          disabled="false"
+                                          update="messages2"/>
+                            <p:growl id="messages2" showDetail="false" globalOnly="true"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!--div class="form-group">
+                    <div class=" col-lg-4">
+                        <h:outputLabel  value="Code Inscription" for ="CodeInscription" class=" pull-left" />
+                        <p:inputText value="#{courtierBean.courtierSelected.codeInscription}" class="form-control" a:placeholder="Code Inscription *"/>
+                    </div>
+                    <div class="col-lg-4">
+                        <h:outputLabel  value="CléInscription"  for ="cleInscription" class="pull-left" style="text-align:left;" />
+                        <p:inputText value="#{courtierBean.courtierSelected.cleInscription}" class="form-control" a:placeholder="Clé Inscription"/>
+                    </div>
+               
+                    <div class="col-lg-4">
+                        <h:outputLabel  value="Code" class="pull-left" style="text-align:left;" />
+                        <p:inputText value="#{courtierBean.courtierSelected.code}" class="form-control" a:placeholder="Code *"/>
+                    </div>
+
+                    <div class="col-lg-4">
+
+                        <div class="input-group">
+                            <p:outputLabel class=" police_label text-left form-control"  for ="tarifActifs" value="Tarif actifs"/>
+                            <span class="input-group-addon">
+                                <p:selectBooleanCheckbox id="tarifActifs" value="#{courtierBean.courtierSelected.tarifsActifs}"/>
+                            </span>
+
+                        </div>
+                    </div> 
+      
+                    <div class="col-lg-4">
+                        <div class="input-group">
+                            <p:outputLabel class=" police_label text-left form-control"  for ="taxePaysTTC" value="Taxes Pays TTC"/>
+                            <span class="input-group-addon">
+                                <p:selectBooleanCheckbox id="taxePaysTTC" value="#{courtierBean.courtierSelected.taxesPaysTTC}"/>
+                            </span>
+
+                        </div>
+                    </div>   
+                    <div class="col-lg-4">
+                        <div class="input-group">
+                            <p:outputLabel class=" form-control text-left form-control"  for ="plafondActifs" value="Plafond Actifs"/>
+                            <span class="input-group-addon">
+                                <p:selectBooleanCheckbox  id="plafondActifs" value="#{courtierBean.courtierSelected.plafondsActifs}"/>
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="input-group">
+                            <p:outputLabel class=" police_label text-left form-control"  for ="taxesZoneTTC" value="taxesZoneTTC"/>
+                            <span class="input-group-addon">
+                                <p:selectBooleanCheckbox id="taxesZoneTTC" value="#{courtierBean.courtierSelected.taxesZoneTTC}"/>
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="input-group">
+                            <p:outputLabel class=" police_label text-left form-control"  for ="taxesHorsZoneTTC" value="Taxes hors zone"/>
+                            <span class="input-group-addon">
+                                <p:selectBooleanCheckbox  id="taxesHorsZoneTTC" value="#{courtierBean.courtierSelected.taxesHorsZoneTTC}"/>
+                            </span>
+
+                        </div>
+                    </div>
+                </div-->
+                <div class="form-group">
+                    <div class="col-md-12 col col-lg-12">
+                        <div class="col-md-6 col col-lg-6">
+                            <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" type="reset" class="btn-danger danger pull-left col-md-4"/>
+                        </div>
+
+                        <div class="col-md-6 col col-lg-6">
+                            <p:commandButton value="#{msg['btn.enregistrer']}" title="#{msg['btn.enregistrer']}" update="msgs2,formliste" action="#{courtierBean.modifier()}"  oncomplete="PF('modifier').hide()" class="btn-primary primary col-md-4 pull-right"/>
+                        </div>
+                    </div>
+                </div>
+
+            </h:form>
+        </p:outputPanel>
+
+
+
+
+    </ui:composition> 
+
+</html>
+

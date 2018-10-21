@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <fieldset>
+                <legend class="text-center text-uppercase"> <p:outputLabel value="Liste des Courtiers "></p:outputLabel></legend>
+            </fieldset>
+            <div class="panel">
+                <div class="panel-body">
+                    <h:form id="f21" class="form-horizontal">
+                        <p:panel id="t6" header="Recherche" toggleable="true" collapsed="false" class="panel-default">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">                          
+                                        <h:outputLabel for="pays"  value="Pays" class="pull-left text-left"/>  
+
+                                        <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{etatCourtierBean.paysSelected}" >                                          
+                                            <f:selectItem itemLabel="Tout" itemDisabled="false" />
+                                            <f:selectItems var="pays" value="#{etatCourtierBean.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                                        </h:selectOneMenu>
+
+                                    </div> 
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">                         
+                                        <h:outputLabel for="compagnie"  value="Compagnie" class="pull-left text-left"/>                          
+                                        <h:selectOneMenu id="compagnie" value="#{etatCourtierBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                            <f:selectItem itemLabel="Tout" itemDisabled="false" />
+                                            <f:selectItems value="#{etatCourtierBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                                        </h:selectOneMenu>
+
+
+                                    </div>
+
+
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">                        
+                                        <h:outputLabel for="tpv"  value=" Type de points de vente" class="pull-left text-left"/>                         
+                                        <h:selectOneMenu id="tpv"  value="#{etatCourtierBean.typePointVente}" class="form-control" >                                          
+                                            <f:selectItem itemLabel="Tout" itemDisabled="false" />
+                                            <f:selectItem itemLabel="Point de vente Externe" itemValue="point de vente externe" /> 
+                                            <f:selectItem itemLabel="Point de vente Propre" itemValue="point de vente propre" />
+                                            <p:ajax listener="#{etatCourtierBean.sortPointsVente()}" update="pv" />
+                                        </h:selectOneMenu>
+
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+                                        <h:outputLabel for="pv"  value="Point de vente" class="pull-left text-left"/>                            
+                                        <h:selectOneMenu id="pv"  value="#{etatCourtierBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                            <f:selectItem itemLabel="Tout" itemDisabled="false" />
+                                            <f:selectItems var="pv" value="#{etatCourtierBean.sortedListPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                                        </h:selectOneMenu>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="btn-toolbar pull-right">
+                                            <p:commandButton class="btn btn-imprimer" value="Rechercher" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{etatCourtierBean.trier()}"  update="f1,f21" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel>
+
+                    </h:form>
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <h:graphicImage library="images" name="ajax-loader.gif" />
+                    </p:dialog>
+                    <h:form id="f1" class="form-horizontal">
+                        <p:panel id="t1" header="Liste des Courtiers" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="btn-toolbar">
+                                        <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-imprimer btn-xs" actionListener="#{etatCourtierBean.doGetA()}"   > 
+                                            <i class=" glyphicon glyphicon-print"></i>
+                                        </h:commandLink>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="table-responsive">
+                                        <p:dataTable sortOrder="descending" sortBy="#{courtier.idCourtier}" class="table_label" var="courtier" rowKey="#{courtier.idCourtier}" 
+                                                     id="courtierlistes" reflow="true" rows="100" 
+                                                     value="#{etatCourtierBean.listCourtier}" emptyMessage="#{msg['tableau.vide']}"
+                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                     paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" > 
+
+
+                                            <p:column headerText="#{msg['courtier.abbreviation']}" filterBy="#{courtier.abbreviation}">
+                                                <h:outputText value="#{courtier.abbreviation}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['courtier.designation']}" filterBy="#{courtier.designation}">
+                                                <h:outputText value="#{courtier.designation}" />
+                                            </p:column>
+
+                                            <p:column headerText="#{msg['courtier.adresse']}" filterBy="#{courtier.adresse}">
+                                                <h:outputText value="#{courtier.adresse}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['courtier.telephone']}" filterBy="#{courtier.telephones}">
+                                                <h:outputText value="#{courtier.telephones}" />
+                                            </p:column>
+
+                                            <p:column headerText="#{msg['courtier.type']}" filterBy="#{courtier.typeCourtier}">
+                                                <h:outputText value="#{courtier.typeCourtier}"  />
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

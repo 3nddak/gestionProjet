@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"  
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+            <h:form  id="formliste" class="form-horizontal">
+                <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>   
+                <fieldset>
+                    <legend class="police_label text-center "><p:outputLabel value="#{msg['liste.etatSurLesOperations']}"></p:outputLabel></legend>
+
+                </fieldset>
+
+                <p:panel id="t6" header="#{msg['recherche.titre']}" toggleable="true" collapsed="true" class="panel">
+                    <div class="panel-default" >
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                                    <h:outputLabel for="pays"  value="Pays" class="pull-left text-left"/>                              
+                                    <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{etatDesOperationsAsVieBean.paysSelect}" >                                          
+                                        <f:selectItem itemLabel="Tous les pays" itemDisabled="false" />
+                                        <f:selectItems var="pays" value="#{etatDesOperationsAsVieBean.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />    
+                                        <p:ajax listener="#{etatDesOperationsAsVieBean.trierPrametresByPays()}" update="t6" />
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="compagnie"  value="#{msg['titre.compagnie']}" class="pull-left text-left"/>                              
+                                    <h:selectOneMenu id="compagnie" value="#{etatDesOperationsAsVieBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.tousLesCompagnies']}" itemDisabled="false" />
+                                        <f:selectItems value="#{etatDesOperationsAsVieBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                                    </h:selectOneMenu>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="courtier"  value="#{msg['titre.courtier']}" class="pull-left text-left"/>                               
+                                    <h:selectOneMenu id="courtier"  converter="entityConverter" value="#{etatDesOperationsAsVieBean.courtierSelected}" class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.courtier']}" itemDisabled="false" />
+                                        <f:selectItems var="courtier" value="#{etatDesOperationsAsVieBean.listCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="pv"  value="#{msg['titre.pdv']}" class="pull-left text-left"/>                          
+                                    <h:selectOneMenu id="pv"  value="#{etatDesOperationsAsVieBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.pdv']}" itemDisabled="false" />
+                                        <f:selectItems var="pv" value="#{etatDesOperationsAsVieBean.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                                    </h:selectOneMenu>
+                                </div>
+
+
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="gt"  value="#{msg['titre.guichet']}" class="pull-left text-left"/>                            
+                                    <h:selectOneMenu id="gt"  value="#{etatDesOperationsAsVieBean.guichetSelected}"  converter="entityConverter" class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.guichet']}" itemDisabled="false" />
+                                        <f:selectItems var="guichet" value="#{etatDesOperationsAsVieBean.listGuichet}" itemLabel="#{guichet.designation}" itemValue="#{guichet}" />            
+                                    </h:selectOneMenu>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                    <p:outputLabel for="mask" value="#{msg['titre.dateDebut']}" />
+                                    <p:calendar id="mask" class="form-control"  pattern="dd-MM-yyyy" mask="true" value="#{etatDesOperationsAsVieBean.dateDebutRecherche}" >
+                                    </p:calendar>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+
+                                    <p:outputLabel for="mask" value="#{msg['titre.dateFin']}" />
+                                    <p:calendar id="mask2" class="form-control"   pattern="dd-MM-yyyy" mask="true" value="#{etatDesOperationsAsVieBean.dateFinRecherche}">
+                                    </p:calendar>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="btn-toolbar pull-right">
+                                        <p:commandButton class="btn btn-purple" value="#{msg['btn.rechercher']}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{etatDesOperationsAsVieBean.rechercheAvance()}"  update="facture,t6" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div> 
+                </p:panel>
+
+                <p:panel   toggleable="true" collapsed="false" class="panel" >
+                    <div class="panel-default">
+                        <div class="panel-heading bg-purple-active">
+                            <div class="form-group">
+                                <div class="btn-toolbar">
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <p:outputLabel for="sc1" value="#{msg['titre.operationsDuJour']} &nbsp;" />
+                                        <p:selectBooleanCheckbox id="sc1"   value="#{etatDesOperationsAsVieBean.operationsJours}"  >
+                                            <p:ajax listener="#{etatDesOperationsAsVieBean.imprimerOperationsDuJour()}" update="sc1,sc2,sc3,sc4,facture" />
+                                        </p:selectBooleanCheckbox>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <p:outputLabel for="sc2" value="#{msg['titre.operationsDeLaSemaine']} &nbsp;"  />
+                                        <p:selectBooleanCheckbox id="sc2"  value="#{etatDesOperationsAsVieBean.operationsSemaine}" class="" >
+                                            <p:ajax listener="#{etatDesOperationsAsVieBean.imprimerOperationsDeLaSemaine()}" update="sc1,sc2,sc3,sc4,facture" />
+                                        </p:selectBooleanCheckbox>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <p:outputLabel for="sc3" value="#{msg['titre.operationsDuMois']} &nbsp;"  />
+                                        <p:selectBooleanCheckbox id="sc3"  value="#{etatDesOperationsAsVieBean.operationsMois}" class="" >
+                                            <p:ajax listener="#{etatDesOperationsAsVieBean.imprimerOperationsDuMois()}" update="sc1,sc2,sc3,sc4,facture" />
+                                        </p:selectBooleanCheckbox>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <p:outputLabel for="sc4" value="#{msg['titre.operationsDeLAnnee']} &nbsp;" />
+                                        <p:selectBooleanCheckbox  id="sc4"  value="#{etatDesOperationsAsVieBean.operationsAnnee}" class="" >
+                                            <p:ajax listener="#{etatDesOperationsAsVieBean.imprimerOperationsdeLannee()}" update="sc1,sc2,sc3,sc4,facture" />
+                                        </p:selectBooleanCheckbox>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="btn-toolbar">
+                                    <p:commandLink  title="#{msg['titre.exporterEnExcel']}" value="#{msg['titre.exporterEnExcel']}" ajax="false"  action="#{etatDesOperationsAsVieBean.doGetAexel()}" target="/"  class="btn btn-xs btn-purple"   >
+                                      
+                                    </p:commandLink>
+                                </div>
+                            </div>
+                            <div class="form-group table-responsive">
+
+                                <p:dataTable id="facture" editable="true" editMode="cell"
+                                             resizableColumns="true"
+                                             class="table" 
+                                             paginator="true" rows="20" emptyMessage="#{msg['tableau.vide']}"  paginatorPosition="bottom" value="#{etatDesOperationsAsVieBean.listAssuranceCredit}" var="facture"    style="padding:0px;margin: 0px; ">
+
+                                    <p:column headerText="#{msg['titre.dateValidation']}" filterBy="#{facture.datePayementOUrejetTransaction}">
+                                        <p:outputLabel id="K" value="#{facture.datePayementOUrejetTransaction}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="#{msg['titre.numeroPolice']}"  class="col-md-2 col-lg-2"  filterBy="#{facture.numeroPolice}"  >
+                                        <h:outputText  value="#{facture.numeroPolice}" />
+                                    </p:column>
+
+                                    <p:column class="col-md-2 col-lg-2"  headerText="#{msg['titre.codeTransaction']}" filterBy="#{facture.codeTransaction}">
+                                        <h:outputText value="#{facture.codeTransaction}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg['titre.compagnie']}"   filterBy="#{facture.compagnie.abbreviation}">
+                                        <h:outputText value="#{facture.compagnie.abbreviation}" />
+                                    </p:column>
+                                    <p:column headerText="#{msg['titre.courtier']}"  filterBy="#{facture.courtier.abbreviation}">
+                                        <h:outputText value="#{facture.courtier.abbreviation}" />
+                                    </p:column>
+
+                                    <p:column  headerText="#{msg['control.client.nom']}"  filterBy="#{facture.client.nom}"  >
+                                        <h:outputText value="#{facture.client.nom}" />
+                                    </p:column>
+
+                                    <p:column  headerText="#{msg['titre.montantDuPret']}"  filterBy="#{facture.montantPret}" > 
+                                        <h:outputText value="#{facture.arrondireFormat2(facture.montantPret)}" class="form-control text-right" />
+                                    </p:column>
+                                    <p:column  headerText="#{msg['tableau.primenette']}"  filterBy="#{facture.montantPret}" > 
+                                        <h:outputText value="#{facture.arrondireFormat2(facture.prixNette)}" class="form-control text-right" />
+                                    </p:column>
+                                    <p:column  headerText="#{msg['titre.fraisDeGestion']}"  filterBy="#{facture.montantPret}" > 
+                                        <h:outputText value="#{facture.arrondireFormat2(facture.commissionCompagnie)}" class="form-control text-right" />
+                                    </p:column>
+
+                                    <p:column filterBy="#{facture.primeTTC}
+                                              " headerText="#{msg['tableau.primettc']}"  >
+                                        <p:outputLabel value="#{facture.arrondireFormat2(facture.primeTTC)}" class="form-control text-right" />
+                                    </p:column>
+                                    <p:columnGroup type="footer" id="primeTotal1">
+                                        <p:row>
+                                            <p:column   style="text-align:right" footerText="#{msg['tableau.total']} :"/>
+                                            <p:column   footerText="" />
+                                            <p:column   footerText=""  />
+
+                                            <p:column   footerText=""  />
+                                            <p:column   footerText=""  />
+                                            <p:column   footerText=""  />
+                                            <p:column  style="text-align:right" footerText="#{etatDesOperationsAsVieBean.arrondireFormat2(etatDesOperationsAsVieBean.totauxmontantPre)}"  />
+                                            <p:column style="text-align:right"  footerText="#{etatDesOperationsAsVieBean.arrondireFormat2(etatDesOperationsAsVieBean.totauxprimeNette)}" />
+                                            <p:column style="text-align:right" footerText="#{etatDesOperationsAsVieBean.arrondireFormat2(etatDesOperationsAsVieBean.totauxFrais)}" />
+
+                                            <p:column style="text-align:right"  footerText="#{etatDesOperationsAsVieBean.arrondireFormat2(etatDesOperationsAsVieBean.totaux)}" id="primeTotal" />
+                                        </p:row>
+
+                                    </p:columnGroup>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </div> 
+                </p:panel>
+
+            </h:form>
+
+
+
+
+
+        </div>
+
+
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+
+
+
+    </ui:composition> 
+
+</html>
+

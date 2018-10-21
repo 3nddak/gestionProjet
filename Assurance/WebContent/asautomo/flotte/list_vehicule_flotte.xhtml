@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <p:dataTable id="vehiclesTable" var="vehicle" value="#{flotteBean.flotteListeFacture}" rowKey="#{vehicle.idFacture}" emptyMessage="#{msg['tableau.vide']}">  
+                    <p:ajax event="rowToggle" listener="#{flotteBean.onRowToggle2}" update="display" />  
+
+                    <p:column style="width:5%" exportable="false">  
+                        <p:rowToggler />  
+                    </p:column>  
+                    <p:column headerText="Immatriculation" >
+                        <h:outputText value="#{vehicle.objetVoiture.numeroImmatriculation}" />
+                    </p:column>
+                    <p:column headerText="Genre" >
+                        <h:outputText value="#{vehicle.objetVoiture.genre}" />
+                    </p:column>
+                    <p:column headerText="Marque" >
+                        <h:outputText value="#{vehicle.objetVoiture.marque}" />
+                    </p:column>
+                    <p:column headerText="Type marque" >
+                        <h:outputText value="#{vehicle.objetVoiture.typeMarqueVehicule}" />
+                    </p:column>
+                    <p:column headerText="Energie" >
+                        <h:outputText value="#{vehicle.objetVoiture.energie.libelleFr}" />
+                    </p:column>
+                    <p:column headerText="Type vitre" >
+                        <h:outputText value="#{vehicle.objetVoiture.typeVitres.typeVitre}" />
+                    </p:column>
+                    <p:column headerText="Nbre de place" >
+                        <h:outputText value="#{vehicle.objetVoiture.nombrePlaces}" />
+                    </p:column>
+                    <p:column headerText="P. fiscale" >
+                        <h:outputText value="#{vehicle.objetVoiture.puissance}" />
+                    </p:column>
+                    <p:column headerText="P. reelle" >
+                        <h:outputText value="#{vehicle.objetVoiture.puissanceReelle}" />
+                    </p:column>
+                    <p:column headerText="V.N" >
+                        <h:outputText value="#{vehicle.objetVoiture.valeurNeuve}" />
+                    </p:column>
+                    <p:column headerText="V.V" >
+                        <h:outputText value="#{vehicle.objetVoiture.valeurvenale}" />
+                    </p:column>
+                    <p:column headerText="N° chassi" >
+                        <h:outputText value="#{vehicle.objetVoiture.numChassis}" />
+                    </p:column>
+                    <p:column headerText="N° moteur" >
+                        <h:outputText value="#{vehicle.objetVoiture.numMoteur}" />
+                    </p:column>
+
+                    <p:column headerText="Actions">
+                        <p:commandButton title="#{msg['btn.modifier']}" rendered="false" update="formliste" immediate="true" action="#{flotteBean.editFlotte()}" icon="fa fa-edit" class="btn-primary primary btn-sm">
+                            <f:setPropertyActionListener value="#{vehicle}" target="#{flotteBean.factureToEdit}" />
+                        </p:commandButton>
+                        <p:commandButton title="#{msg['btn.supprimer']}" oncomplete="PF('supprimer').show()" icon="fa fa-trash" immediate="true" class="btn btn-danger" 
+                                         style="background: #d9534f;color:#fff;border-color: #d43f3a;">
+                            <f:setPropertyActionListener value="#{vehicle}" target="#{flotteBean.factureToRemove}" />
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:rowExpansion>  
+                        <p:dataTable id="display" var="categar" value="#{vehicle.propositions}" sortBy="#{categar.compagnieGuarantie.categorie.poids}" >  
+                            <f:facet name="header">  
+                                <h:outputText value="Catégories et garanties"></h:outputText>  
+                            </f:facet>  
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Catégorie"></h:outputText>  
+                                </f:facet>  
+                                <h:outputText  value="#{categar.compagnieGuarantie.categorie.libelle}" />  
+                            </p:column>
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Garanties"></h:outputText>  
+                                </f:facet>  
+                                <h:outputText  value="#{categar.compagnieGuarantie.guarantie.symbole}" />  
+                            </p:column>  
+                        </p:dataTable>  
+                    </p:rowExpansion>  
+                </p:dataTable>   
+            </div>
+        </div>
+        <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                         header="Suppression" severity="alert" widgetVar="supprimer">
+            <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+            <p:commandButton value="#{msg['supprimer.oui']}" update="formliste" immediate="true" action="#{flotteBean.removeVehiculeFromFlotte()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+        </p:confirmDialog>
+    </ui:composition> 
+</html>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['client.souscription']}"></p:outputLabel></legend>
+              
+            </fieldset>
+            <h:form id="formliste" class="form-horizontal ">
+                <p:growl id="msgsAux"  globalOnly="true"  severity="info,warn"/>   
+                <p:wizard   flowListener="#{souscriptionAsSanteBean.onFlowProcess}"  nextLabel="#{msg['btn.suivant']}" backLabel="#{msg['btn.prescedent']}" >
+                    <p:tab id="personal"  title="#{msg['client.title']}" class="police_label">
+                        <p:growl id="test"  globalOnly="true"  severity="info,warn"/>
+                        <div class="panel">
+                            <div class="panel-body">
+                                <fieldset> <legend class="text-uppercase small" ><h:outputLabel value="#{msg['client.title']}" /></legend>
+                                    <legend class="text-uppercase small" ><h:outputLabel value="Option" />
+                                        <p:selectOneRadio  id="cons" value="#{souscriptionAsSanteBean.option}" requiredMessage="#{msg['client.option.requiredMessage']}">
+                                            <f:selectItem  itemLabel="#{msg['client.choisir']}"  itemValue="choix" />
+                                            <f:selectItem itemLabel="#{msg['client.creer']}"  itemValue="creation" />
+                                            <p:ajax listener="#{souscriptionAsSanteBean.choixOperation()}" update="choix,creation"/>
+                                        </p:selectOneRadio>
+                                    </legend>
+                                    <p:fieldset id="creation" class="#{souscriptionAsSanteBean.hideAjoutClientForm} panel-border-none" >
+                                        <p:panel  rendered="#{souscriptionAsSanteBean.hideAjoutClientForm}" class="panel-border-none">
+                                            <ui:include src="client_ajout.xhtml"/>
+                                        </p:panel>
+                                    </p:fieldset>
+                                    <p:fieldset id="choix"  class="#{!souscriptionAsSanteBean.hideAjoutClientForm} panel-border-none">
+                                        <ui:include src="client_choix.xhtml"/>
+                                    </p:fieldset>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </p:tab>
+                    <p:tab  id="comprod" title="Informations sur le produit">
+                        <p:growl id="test2"  globalOnly="true"  severity="info,warn"/>
+                        <div class="panel">
+                            <div class="panel-body">
+                                <ui:include src="compagnie_produit.xhtml"/>
+                            </div>
+                        </div>
+                    </p:tab>
+                    <p:tab  id="listbenef" title="Bénéficiaires">
+                        <p:growl id="testb"  globalOnly="true"  severity="info,warn"/>
+                        <div class="panel">
+                            <div class="panel-body">
+                                <fieldset> <legend class="text-uppercase small" ><h:outputLabel value="#{msg['client.title']}" /></legend>
+                                    <legend class="text-uppercase small" ><h:outputLabel value="Option" />
+                                        <p:selectOneRadio  id="consb" value="#{souscriptionAsSanteBean.optionb}" requiredMessage="#{msg['client.option.requiredMessage']}">
+                                            <f:selectItem  itemLabel="#{msg['client.choisir']}"  itemValue="choix" />
+                                            <f:selectItem itemLabel="#{msg['client.creer']}"  itemValue="creation" />
+                                            <p:ajax listener="#{souscriptionAsSanteBean.choixOperationBeneficiaire()}" update="choixb,creationb"/>
+                                        </p:selectOneRadio>
+                                    </legend>
+                                    <p:fieldset id="creationb" class="#{souscriptionAsSanteBean.hideAjoutBeneficiaireForm} panel-border-none" >
+                                        <p:panel  rendered="#{souscriptionAsSanteBean.hideAjoutBeneficiaireForm}" class="panel-border-none">
+                                            <ui:include src="beneficiaire_ajout.xhtml"/>
+                                        </p:panel>
+                                    </p:fieldset>
+                                    <p:fieldset id="choixb"  class="#{!souscriptionAsSanteBean.hideAjoutBeneficiaireForm} panel-border-none">
+                                        <ui:include src="beneficiaire_choix.xhtml"/>
+                                    </p:fieldset>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="btn-toolbar pull-right">
+                                    <p:commandButton value="Ajouter bénéficiaire" update="listb,ddob,consb,formliste" actionListener="#{souscriptionAsSanteBean.addBeneficiaire()}" class="btn btn-success" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-body">
+                                <p:fieldset id="listb">
+                                    <legend>Liste des bénéficiaires</legend>
+                                    <ui:include src="beneficiaire_list.xhtml"/>
+                                </p:fieldset> 
+                            </div>
+                        </div>
+                    </p:tab>
+                    <p:tab  id="confirm" title="Confirmation">
+                        <div class="panel-body">
+                            <ui:include src="infos_client.xhtml"/>
+                        </div>
+                        <div class="panel-body">
+                            <ui:include src="infos_produit.xhtml"/>
+                        </div>
+                        <div class="panel-body">
+                            <ui:include src="infos_beneficiaire.xhtml"/>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                <p:commandButton value="#{msg['btn.enregistrer']}" update="" action="#{souscriptionAsSanteBean.enregistrerSouscriptionAsSante()}" onstart="PF('loadProcess').block()" oncomplete="PF('loadProcess').unblock()" class="btn btn-success btn-xs pull-right"/>
+                            </div>
+                        </div>
+                        <fieldset>
+                            <legend>Simulation</legend>
+                            <ui:include src="simulation.xhtml"/>
+                        </fieldset>
+                    </p:tab>
+                </p:wizard>
+            </h:form>  
+        </div>
+        <pe:blockUI widgetVar="loadProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>   
+            </h:panelGrid>  
+        </pe:blockUI>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+        <p:confirmDialog header="Etes-vous sûr ?"  global="true" showEffect="fade" hideEffect="fade">
+            <h:form>
+                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes btn-xs btn btn-primary" icon="fa fa-check"  />
+                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no btn-xs btn btn-danger" icon="fa fa-close" />
+            </h:form>
+        </p:confirmDialog>
+    </ui:composition>
+</html>

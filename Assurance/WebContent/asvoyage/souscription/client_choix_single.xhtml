@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+       
+        <p:panel rendered="#{souscriptionAsVoyageBean.groupe eq 0?true:false}" header="#{msg['liste.client']}" >
+            <p:dataTable rendered="#{souscriptionAsVoyageBean.hideChoixClientForm}"  widgetVar="clientsTable" id="clienttable"  value="#{souscriptionAsVoyageBean.listClient}" selectionMode="single" var="client" 
+                         selection="#{souscriptionAsVoyageBean.clientOld}" rowKey="#{client.idClient}" 
+                         emptyMessage="#{msg['tableau.vide']}" 
+                         rows="8"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         paginator="true" paginatorPosition="bottom" rowsPerPageTemplate="8,15,20">
+
+                <p:ajax event="rowSelect" listener="#{souscriptionAsVoyageBean.onRowSelect}" />
+                <p:ajax event="rowToggle" listener="#{souscriptionAsVoyageBean.onRowToggle}" update="clienttable" />
+                <f:facet name="header">
+                    <p:outputPanel >
+                        <div class="btn-toolbar">
+                            <div class="pull-right">
+                                <h:outputText value="#{msg['client.recherche.unclient']}:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('clientsTable').filter()"  placeholder="Entrer les infos" />
+                            </div>
+                        </div>  
+                    </p:outputPanel>
+                </f:facet>
+                <p:column style="width:50px">
+
+                    <p:rowToggler/>
+                </p:column>
+                <p:column headerText="#{msg['client.code']}" filterBy="#{client.numeroPiece}" filterMatchMode="contains">
+                    <h:outputText value="#{client.numeroPiece}" />
+                </p:column>
+                <p:column filterBy="#{client.type}" headerText="#{msg['client.type']}">
+                    <f:facet name="filter">
+                        <h:selectOneMenu style="color: black" onchange="PF('clientsTable').filter()" >
+                            <f:selectItem itemLabel="#{msg['client.type']}" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItem itemLabel="#{msg['client.type.physique']}" itemValue="1"/>
+                            <f:selectItem itemLabel="#{msg['client.type.morale']}" itemValue="2" />
+                        </h:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{client.type}" />
+                </p:column>
+                <p:column headerText="#{msg['client.nom']}" filterBy="#{client.nom}" filterMatchMode="contains">
+                    <h:outputText value="#{client.nom}" />
+                </p:column >
+                <p:column headerText="#{msg['client.prenom']}" filterBy="#{client.prenom}" filterMatchMode="contains">
+                    <h:outputText value="#{client.prenom}" />
+                </p:column >
+                <p:column headerText="#{msg['client.datedenaissance']}" filterMatchMode="contains">
+                    <h:outputText value="#{client.dateNaissance}" />
+                </p:column >
+                <p:rowExpansion >
+                    <div class="form-group">
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.type']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.fax}"  />
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.nom']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.nom}"  />
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.prenom']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.prenom}"  />
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.lieuemission']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.lieuEmission}"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.bp']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.codeZip}"  />
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.email']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.email}"  />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.pays']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.pays}" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.lieudenaissance']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.lieuNaissance}"  />
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.datedenaissance']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.dateNaissance}"  />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.nationalite']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.nationalite}"  />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.adresse']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.adresse}"/> 
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.piece']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.typePiece}"  />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.numeropiece']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.numeroPiece}"  />
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.dateemissionpiece']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.dateEmissionPiece}"  />
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="#{msg['client.dateexpirationpiece']}"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.dateExpirationPiece}" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group hide">
+
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="Pseudo"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.pseudo}"  />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-lg-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <h:outputText value="Password"/>
+                                </span>
+                                <h:outputLabel class="form-control"  value="#{souscriptionAsVoyageBean.clientOld.password}" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </p:rowExpansion>
+            </p:dataTable>
+        </p:panel>
+       
+    </ui:composition>
+</html>

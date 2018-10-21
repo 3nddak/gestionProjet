@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <h:form id="validation" class="form-horizontal">
+            <p:growl id="msgsR" globalOnly="true" showDetail="false"  life="3000"/>
+            <p:panel  toggleable="true" collapsed="false" style="margin-bottom:20px" id="cccc">
+                <p:panelGrid columns="2"  layout="grid" id="calculTotal" class="table table-responsive">
+
+                    <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.primenette']} :" for="ps"></p:outputLabel>
+                    <h:outputText id="ps" class="form-control text-right" value="#{renouvellementAsVieBean.assuranceCreditSelected.prixNette}" >
+                        <f:convertNumber pattern="###,##0" type="number" />
+                    </h:outputText>
+
+                    <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.remise']}:" for="psrr"></p:outputLabel>
+                    <h:outputText id="psrr" class="text-right form-control"  value="#{renouvellementAsVieBean.assuranceCreditSelected.remise}" >
+                        <f:convertNumber pattern="###,##0" type="number" />
+                    </h:outputText> 
+
+                    <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.reduction']}:" for="psr"></p:outputLabel>
+                    <h:outputText id="psr" class="text-right form-control"  value="#{renouvellementAsVieBean.assuranceCreditSelected.valeurReduction()}" >
+                        <f:convertNumber pattern="###,##0" type="number" />
+                    </h:outputText> 
+
+                    <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.majoration']}:" for="psrm"></p:outputLabel>
+                    <h:outputText id="psrm" class="text-right form-control"  value="#{renouvellementAsVieBean.assuranceCreditSelected.valeurMajoration()}" >
+                        <f:convertNumber pattern="###,##0" type="number" />
+                    </h:outputText> 
+
+                    <p:outputLabel class="form-control bg-purple"  value="#{msg['tableau.accessoire']}:" for="acc"/>
+                    <h:outputText class="form-control text-right"  id="acc" value="#{renouvellementAsVieBean.assuranceCreditSelected.accessoire}" >
+                        <f:convertNumber pattern="###,##0" type="number" />
+                    </h:outputText>
+
+                    <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.primettc']}:" for="pttc"/>
+                    <h:outputText class="form-control text-right" id="pttc" value="#{renouvellementAsVieBean.assuranceCreditSelected.primeTTC}" >
+                        <f:convertNumber pattern="###,##0" type="number" />
+                    </h:outputText>
+
+                </p:panelGrid>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" title="#{msg['btn.annuller']}" value="#{msg['btn.annuller']}" action="#{renouvellementAsVieBean.reset()}" update="detail,formliste,recherche,validation,msgsR" class="btn-danger danger " ></p:commandButton>
+                        <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" title="#{msg['btn.valider']}"  value="#{msg['btn.valider']}" action="#{renouvellementAsVieBean.saveFacture()}" update="detail,formliste,recherche,vvv,validation,msgsR" class="btn-success success" >
+                            <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['question.etesVousSur']}" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </div>
+                </div>
+                <p:growl for="somekey" id="vvv" />
+            </p:panel>
+        </h:form>
+    </ui:composition>
+</html>

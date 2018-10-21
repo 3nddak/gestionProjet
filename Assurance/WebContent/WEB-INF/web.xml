@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <context-param>
+        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+        <param-value>/WEB-INF/springsecurity.taglib.xml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <!--param-value>Development</param-value-->
+        <param-value>Development</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>bootstrap</param-value>
+    </context-param>
+    <servlet>
+        <servlet-name>dynamic</servlet-name>
+        <servlet-class>simplereport_step10.FactureCourtierBean</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dynamic</servlet-name>
+        <url-pattern>/PdfReportServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>AfficheImage</servlet-name>
+        <servlet-class>com.ncp.assurance.entities.heritage.viewutils.AfficheImage</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>AfficheImage</servlet-name>
+        <url-pattern>/images/dynamic/*</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet>
+        <servlet-name>AffichePDF</servlet-name>
+        <servlet-class>com.ncp.assurance.entities.heritage.viewutils.PdfDeclarationSinnistreAsAuto</servlet-class>
+    </servlet>
+    
+    
+    <servlet-mapping>
+        <servlet-name>AffichePDF</servlet-name>
+        <url-pattern>/declaration_sinistre.pdf</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <param-name>primefaces.FONT_AWESOME</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+    
+    <mime-mapping>
+        <extension>manifest</extension>
+        <mime-type>text/cache-manifest</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>docx</extension>
+        <mime-type>application/vnd.openxmlformats-officedocument.wordprocessingml.document</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>xlsx</extension>
+        <mime-type>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>pptx</extension>
+        <mime-type>application/vnd.openxmlformats-officedocument.presentationml.presentation</mime-type>
+    </mime-mapping>
+    <servlet>
+        <servlet-name>rest</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>rest</servlet-name>
+        <url-pattern>/api/mobiledevice/*</url-pattern>
+    </servlet-mapping>
+   
+    <filter>
+        <filter-name>UrlRewriteFilter</filter-name>
+        <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UrlRewriteFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+
+    <listener>
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>commons</param-value>
+    </context-param>
+    <filter>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>
+            org.primefaces.webapp.filter.FileUploadFilter
+        </filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    
+    
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+        <url-pattern>/assuranceauto/*</url-pattern>
+        <url-pattern>/assurancevie/*</url-pattern>
+        <url-pattern>/assurancevoyage/*</url-pattern>
+        <url-pattern>/assurancecompte/*</url-pattern>
+        <url-pattern>/assurancemrh/*</url-pattern>
+        <url-pattern>/assurancesante/*</url-pattern>
+    </servlet-mapping>
+    <mime-mapping>
+        <extension>eot</extension>
+        <mime-type>application/vnd.ms-fontobject</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>otf</extension>
+        <mime-type>font/opentype</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>ttf</extension>
+        <mime-type>application/x-font-ttf</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>woff</extension>
+        <mime-type>application/x-font-woff</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>svg</extension>
+        <mime-type>image/svg+xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>woff2</extension>
+        <mime-type>application/x-font-woff2</mime-type>
+    </mime-mapping>
+    <!--servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/assurancevie/*</url-pattern>
+    </servlet-mapping-->
+    
+    <!--error-page>
+        <error-code>403</error-code>
+        <location>/faces/template/error/error_403.xhtml</location>
+    </error-page-->
+    
+    <!--error-page>
+        <error-code>404</error-code>
+        <location>/faces/template/error/error_404.xhtml</location>
+    </error-page-->
+    
+    <!--error-page>
+        <error-code>500</error-code>
+        <location>/faces/template/error/error_500.xhtml</location>
+    </error-page-->
+    
+    <error-page>
+        <error-code>500</error-code>
+        <location>/faces/index.xhtml</location>
+    </error-page>
+    
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/faces/index.xhtml</location>
+    </error-page>
+   
+</web-app>

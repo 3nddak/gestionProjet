@@ -1,0 +1,424 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div class="panel-heading"> 
+                <fieldset>
+                    <legend class="text-center"><p:outputLabel value="RENOUVELLEMENT"></p:outputLabel></legend>
+                </fieldset>
+            </div>
+            <h:form id="recherche" class="form-horizontal">
+                <p:panel  header="Recherche avancée" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                    <div class="row">
+                        <p:panelGrid columns="4" class="table table-responsive" >
+                            <p:outputLabel for="pays" value="Pays :"/>
+                            <h:selectOneMenu class="form-control" converter="entityConverter"  id="pays" value="#{renouvelementBean.listerParametreByUserService.paysSelect}"  >
+
+                                <f:selectItems value="#{renouvelementBean.listerParametreByUserService.listpays}" var="pays"
+                                               itemLabel="#{pays.designationPays}" itemValue="#{pays}"/>
+                                <p:ajax listener="#{renouvelementBean.listerParametreByUserService.trierPrametresByPays()}" update="pss,courtier" />
+                            </h:selectOneMenu>
+                            <p:outputLabel for="pss" value="Compagnie :"/>
+                            <h:selectOneMenu class="form-control"  converter="entityConverter"  id="pss" value="#{renouvelementBean.compagnieSelected}"  >
+
+                                <f:selectItems value="#{renouvelementBean.listerParametreByUserService.listCompagnie}" var="compagnie"
+                                               itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                            </h:selectOneMenu>
+                  
+                            <p:outputLabel for="courtier" value="courtier :"/>
+                            <h:selectOneMenu class="form-control"  converter="entityConverter"  id="courtier" value="#{renouvelementBean.courtierSelected}"  >
+
+                                <f:selectItems value="#{renouvelementBean.listerParametreByUserService.listCourtier}" var="courtier"
+                                               itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}"/>
+                            </h:selectOneMenu>
+                            
+                            <p:outputLabel for="numPolice" value="Numéro Police"/>
+                            <p:inputText id="numPolice" value="#{renouvelementBean.numeroPolice}" class="form-control" />
+                            
+                            <p:outputLabel for="nom" value="Nom"/>
+                            <p:inputText id="nom" value="#{renouvelementBean.nom}" class="form-control" />
+                            
+                            <p:outputLabel for="prenom" value="Prenom"/>
+                            <p:inputText id="prenom" value="#{renouvelementBean.prenom}" class="form-control" />
+                            
+                            <p:outputLabel for="numPiece" value="Numéro Piece"/>
+                            <p:inputText id="numPiece" value="#{renouvelementBean.numeroPiece}" class="form-control" />
+
+                        </p:panelGrid>
+                    </div>
+                    <div class="row">
+                        <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  icon="fa fa-search" update="formliste" actionListener="#{renouvelementBean.trierParParamettre()}" value="Rechercher" title="Rechercher" class="btn btn-success pull-right" >
+                        </p:commandButton>
+                        <p:commandButton icon="fa fa-times" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  value="Annuler" title="Annuler" action="#{renouvelementBean.annulerRec()}" update="@form" class="btn btn-danger pull-right" >
+                        </p:commandButton>
+
+
+                    </div>
+                </p:panel>
+            </h:form>
+
+            <div id="liste">
+
+                <h:form  id="formliste" class="form-horizontal">
+
+                    <p:panel header ="Liste des Voitures assurées" toggleable="true">
+                        <p:dataTable rows="8" paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" class="table table-responsive" var="facture" value="#{renouvelementBean.listeFactureDsplay}" rowKey="#{facture.idFacture}" selection="#{renouvelementBean.lastFacture}">
+
+                            <p:column headerText="Renouveler" >
+                                <p:commandLink title="renouveler" class=" btn-sm btn-info info glyphicon glyphicon-refresh"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" update="detail"  action ="#{renouvelementBean.listener()}">
+                                    <f:setPropertyActionListener target="#{renouvelementBean.lastFacture}" value="#{facture}"/>
+                                </p:commandLink>
+                            </p:column>
+                            <p:column headerText="NumPolice" filterBy="#{facture.objetVoiture.numeroPolice}" >
+                                <h:outputText value="#{facture.objetVoiture.numeroPolice}"/>
+                            </p:column>
+                            <p:column headerText="Compagnie" filterBy="#{facture.compagnie.abbreviation}">
+                                <h:outputText value="#{facture.compagnie.abbreviation}"/>
+                            </p:column>
+                            <p:column headerText="Nom" >
+                                <h:outputText value="#{facture.objetVoiture.client.nom}"/>
+                            </p:column>
+                            <p:column  headerText="Prenom">
+                                <h:outputText value="#{facture.objetVoiture.client.prenom}"/>
+                            </p:column>
+                            <p:column headerText="Immatricutlation">
+                                <h:outputText value="#{facture.objetVoiture.numeroImmatriculation}"/>
+                            </p:column>
+                            <p:column  headerText="Numéro Série">
+                                <h:outputText value="#{facture.objetVoiture.numSerie}"/>
+                            </p:column>
+                            <p:column headerText="Marque" >
+                                <h:outputText value="#{facture.objetVoiture.marque}"/>
+                            </p:column>
+                            <p:column headerText="Numéro Chassie">
+                                <h:outputText value="#{facture.objetVoiture.numChassis}"/>
+                            </p:column>
+                            <p:column headerText="Catégorie" >
+                                <h:outputText value="#{facture.objetVoiture.categorie.libelle}"/>
+                            </p:column>
+                        </p:dataTable>
+
+
+                    </p:panel>
+
+
+                </h:form>
+
+
+            </div>
+
+            <div>
+                <h:form id="detail" class="form-horizontal">
+
+
+
+
+                    <div class="panel-body"> 
+                        <div class="row">                               
+                            <p:fieldset style="margin-bottom:20px">   
+                                <p:panel header="REFERENCES DU CLIENT" toggleable="true" collapsed="true" style="margin-bottom:20px">                                     
+                                    <p:panelGrid  columns="6" layout="grid" class="table table-responsive">
+                                        <p:outputLabel  class="police_label" for="souscripteur:" value="Souscripteur:"/>
+                                        <p:outputLabel id="souscripteur" class="form-control" value="#{renouvelementBean.clientSelect.nom}"/>
+
+                                        <p:outputLabel class="police_label" for="telephone" value="Téléphone: "/>
+                                        <p:outputLabel id="telephone" value="#{renouvelementBean.clientSelect.telephoneMobile}" class="form-control"/>
+
+                                        <p:outputLabel class="police_label" for="addresse" value="Adresse:"/>
+                                        <h:outputLabel id="addresse" value="#{renouvelementBean.clientSelect.adresse}" class="form-control"/>
+                                    </p:panelGrid>
+                                </p:panel>
+
+                                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                    <h:graphicImage library="images" name="ajax-loader.gif" />
+                                </p:dialog>
+                                <p:panel header="CARACTERISTIQUES DU VEHICULE" toggleable="true" collapsed="false" style="margin-bottom:20px">                                                                
+                                    <p:panelGrid columns="6"   class="table table-responsive table-bordered">
+                                        <p:outputLabel class="police_label" for="immatriculation" value="Immatriculation:"/>
+                                        <h:outputText id="immatriculation" value="#{renouvelementBean.voitureSelect.numeroImmatriculation}"/>
+                                        <p:outputLabel class="police_label" for="puissance" value="Puisance:"/>
+                                        <h:outputText id="puissance" value="#{renouvelementBean.voitureSelect.puissance}"/>
+
+                                        <p:outputLabel class="police_label" for="valeurNeuve" value="Valeur à neuf:"/>
+                                        <h:outputText id="valeurNeuve" class="text-right" value="#{renouvelementBean.factureselected.arrondireFormat2(renouvelementBean.voitureSelect.valeurNeuve)}"/>
+                                        <p:outputLabel class="police_label" for="valeurvenale" value="Valeur à neuf:"/>
+                                        <h:outputText class="text-right" id="valeurvenale" value="#{renouvelementBean.factureselected.arrondireFormat2(renouvelementBean.voitureSelect.valeurvenale)}"/>
+
+                                        <p:outputLabel class="police_label" for="marque" value="Marque: "/>
+                                        <h:outputText id="marque" value="#{renouvelementBean.voitureSelect.marque}"/>
+                                        <p:outputLabel class="police_label" for="genre" value="Genre:"/>
+                                        <h:outputText id="genre" value="#{renouvelementBean.voitureSelect.genre}"/>
+
+                                        <p:outputLabel class="police_label" for="type"  value="Type:"/>
+                                        <h:outputText id="type" value="#{renouvelementBean.voitureSelect.type}"/>
+                                        <p:outputLabel class="police_label" for="NombrePlace" value="Nombre de place:"/>
+                                        <h:outputText id="NombrePlace" value="#{renouvelementBean.voitureSelect.nombrePlaces}"/>
+
+                                        <p:outputLabel class="police_label" for="Numc" value="Numéro chassis"/>
+                                        <h:outputText id="Numc" value="#{renouvelementBean.voitureSelect.numChassis}"/>
+                                        <p:outputLabel class="police_label" for="Numm" value="Numéro moteur:"/>
+                                        <h:outputText id="Numm" value="#{renouvelementBean.voitureSelect.numMoteur}"/>
+
+                                        <p:outputLabel class="police_label" for="usage" value="Usage:"/>
+                                        <h:outputLabel id="usage" value="#{renouvelementBean.voitureSelect.usagev}"/>
+                                        <p:outputLabel class="police_label" for="dmc" value="Date de Mise En circulation:"/>
+                                        <h:outputText id="dmc" value="#{renouvelementBean.voitureSelect.miseEnCirculation}"/>
+
+
+                                    </p:panelGrid> 
+                                </p:panel>                                
+                                <p:panel header="POLICE,  DATE ECHEANCE ASSURANCE :#{renouvelementBean.lastFacture.redateFin()}" toggleable="true" collapsed="false" style="margin-bottom:20px">  
+                                    <p:panelGrid columns="2" layout="grid" class="table table-responsive">
+
+                                        <p:outputLabel  class="form-control bg-purple" for="assureur" value="Assureur:" />
+                                        <h:outputText  id="assureur" class="form-control"  value="#{renouvelementBean.lastFacture.compagnie.abbreviation}"/>
+                                        <p:outputLabel class="form-control bg-purple" for="police" value="Police:"/>
+                                        <h:outputText id="police" class="form-control "  value="#{renouvelementBean.voitureSelect.numeroPolice}"/>
+                                        <p:outputLabel class="form-control bg-purple" for="periode" value="Periode En Jour ?:"/>
+                                        <p:selectBooleanCheckbox id="t5"  value="#{renouvelementBean.periodeEstJournalie}"  >
+                                            <p:ajax update="dateFin,cccc" listener="#{renouvelementBean.dateFin()}"/>
+                                        </p:selectBooleanCheckbox>
+
+                                        <p:outputLabel class="form-control bg-purple" for="periode" value="Période:"/>
+                                        <p:inputText id="periode" class="form-control" value="#{renouvelementBean.factureselected.periode}" >
+                                            <p:ajax event="keyup" update="dateFin,cccc" listener="#{renouvelementBean.dateFin()}"  />
+                                            <pe:keyFilter  mask="num" />
+                                        </p:inputText>
+
+                                        <p:outputLabel class="form-control bg-purple" for="dateDebut" value="Date début:"/>
+                                        <p:calendar id="dateDebut" class="form-control" value="#{renouvelementBean.dateDebut}"  pattern="dd/MM/yyyy">
+                                            <p:ajax event="dateSelect" update="dateFin,cccc" listener="#{renouvelementBean.dateFin()}" />
+                                        </p:calendar>
+                                        <p:outputLabel class="form-control bg-purple" for="dateFin" value="Date Fin:"/>
+                                        <p:outputLabel class="form-control"  id="dateFin" value="#{renouvelementBean.dateFins}"/>
+
+                                        <p:outputLabel for="cou" class="form-control bg-purple" value="Courtier :"/>
+                                        <h:selectOneMenu  class="form-control"  converter="entityConverter" id="cou" value="#{renouvelementBean.courtier}"  >
+                                            <f:selectItem itemValue="" itemLabel="Choisir courtier"/> 
+                                            <f:selectItems value="#{renouvelementBean.courtierList}" var="courtier"
+                                                           itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}"/>
+
+                                        </h:selectOneMenu>
+
+                                    </p:panelGrid>
+                                </p:panel>   
+                                <p:panel header="GARANTIES SOUSCRITES" toggleable="true" collapsed="false" style="margin-bottom:20px">                          
+                                    <p:commandButton value="Ajouter" title="Ajouter" icon="fa fa-plus" class="btn-success success" oncomplete="PF('addGarantie').show()" update="detail2"  action="#{renouvelementBean.listener2()}" >
+                                    </p:commandButton>
+
+                                    <p:dataTable id="tab" class="table table-responsive" editMode="cell" editable="true" editingRow="true" emptyMessage="" paginator="true" var="proposition"  rowKey="#{proposition.idPropositions}" value="#{renouvelementBean.listPropositionSelect}">
+                                        <p:columnGroup type="header">
+                                            <p:growl  >
+                                                <p:column rowspan="2" headerText="#{msg['garantie.titre']}"/>
+
+                                                <p:column rowspan="2" headerText="#{msg['tableau.primeannuelle']}" />
+                                                <p:column rowspan="2" headerText="Choisir Option" ></p:column>
+                                                <p:column rowspan="2" headerText="Choisir tranche" />
+                                                <p:column rowspan="2" headerText="Autre tranche" />
+                                                <p:column colspan="4" headerText="#{msg['tableau.redmaj']}" />
+                                                <p:column rowspan="2" headerText="#{msg['tableau.generique']}"  />
+                                                <p:column rowspan="2" headerText="#{msg['tableau.primenette']}"  />
+                                                <p:column rowspan="2" headerText="Actions"  />
+                                            </p:growl>
+                                            <p:row>
+                                                <p:column headerText="#{msg['tableau.bns']}" />
+                                                <p:column headerText="#{msg['tableau.red']}" />
+                                                <p:column headerText="#{msg['tableau.mls']}" />
+                                                <p:column headerText="#{msg['tableau.total']}" />
+                                            </p:row>
+                                        </p:columnGroup>
+
+
+                                        <p:column  headerText="GUARANTIE" >
+                                            <h:outputText  value="#{proposition.compagnieGuarantie.guarantie.symbole}" />
+                                        </p:column>
+                                        <p:column id="JJ"  headerText="PRIME ANNUELLE" class="text-right" >
+                                            <h:outputText value="#{renouvelementBean.factureselected.arrondireFormat2(proposition.primePropose)}"/>
+
+                                        </p:column>
+
+
+                                        <p:column  >
+                                            <p:cellEditor >
+                                                <f:facet name="output" >
+                                                    <p:outputLabel id="HH" value="#{proposition.optionActive}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:selectOneMenu rendered="#{proposition.compagnieGuarantie.option}" id="pss1" value="#{proposition.optionActive}" >
+                                                        <f:selectItem itemLabel="opt1: #{proposition.compagnieGuarantie.option1}" itemValue="1" />
+                                                        <f:selectItem itemLabel="opt2: #{proposition.compagnieGuarantie.option2}" itemValue="2" />
+                                                        <f:selectItem itemLabel="opt3: #{proposition.compagnieGuarantie.option3}" itemValue="3" />
+                                                        <p:ajax update="HH,tab" listener="#{renouvelementBean.updateTable()}" />
+                                                    </p:selectOneMenu>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column   >
+                                            <p:cellEditor >
+                                                <f:facet name="output" >
+                                                    <p:outputLabel id="HH11" value="#{proposition.optionActive}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:selectOneMenu rendered="#{proposition.compagnieGuarantie.option and proposition.compagnieGuarantie.guarantie.idRegle eq 7}" id="pss" value="#{proposition.optionActive}" >
+                                                        <f:selectItem itemLabel="tranche1: #{proposition.compagnieGuarantie.capitaleGarantieOp1} prime: #{proposition.compagnieGuarantie.option1}" itemValue="1" />
+                                                        <f:selectItem itemLabel="tranche1: #{proposition.compagnieGuarantie.capitaleGarantieOp2} prime: #{proposition.compagnieGuarantie.option2}" itemValue="2" />
+                                                        <f:selectItem itemLabel="tranche1: #{proposition.compagnieGuarantie.capitaleGarantieOp3} prime: #{proposition.compagnieGuarantie.option3}" itemValue="3" />
+                                                        <p:ajax update="HH11,tab" listener="#{renouvelementBean.updateTable()}" />
+                                                    </p:selectOneMenu>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column  >
+                                            <p:cellEditor rendered="#{proposition.compagnieGuarantie.guarantie.idRegle==7}" >
+                                                <f:facet name="output" >
+                                                    <p:outputLabel id="bb" value="#{proposition.compagnieGuarantie.capitaleGarantieAutre}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText value="#{proposition.compagnieGuarantie.capitaleGarantieAutre}" >
+                                                        <p:ajax event="keyup" update="bb" listener="#{renouvelementBean.updateTable()}"/>
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+
+                                        </p:column>
+                                        <p:column  class="text-right">
+                                            <p:outputLabel value="#{renouvelementBean.factureselected.arrondireFormat2(proposition.bonus)}" />
+                                        </p:column>
+                                        <p:column  class="text-right">
+                                            <p:outputLabel value="#{renouvelementBean.factureselected.arrondireFormat2(proposition.reduction)}" />
+                                        </p:column>
+
+                                        <p:column  class="text-right">
+                                            <p:outputLabel value="#{renouvelementBean.factureselected.arrondireFormat2(proposition.malus)}" />
+                                        </p:column>
+                                        <p:column  class="text-right" >
+                                            <p:outputLabel value="#{renouvelementBean.factureselected.arrondireFormat2(proposition.montant)}" />
+                                        </p:column>
+                                        <p:column id="JJ1"  class="text-right" >
+                                            <h:outputText value="#{renouvelementBean.factureselected.arrondireFormat2(proposition.taxeGeneriqueValue)}"/>
+
+                                        </p:column>
+                                        <p:column id="JJ2"  class="text-right" width="20%">
+                                            <h:outputText value="#{renouvelementBean.factureselected.arrondireFormat2(proposition.prime)}"/>
+
+                                        </p:column>
+                                        <p:column  headerText="SUPPRIMER" width="10%" >
+                                            <p:commandButton icon="fa fa-trash" title="Supprimer" class="btn-danger danger"  action="#{renouvelementBean.supprimer()}" update="detail">
+                                                <f:setPropertyActionListener target="#{renouvelementBean.propositionSelect}" value="#{proposition}"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                        <p:columnGroup type="footer" id="primeTotal1">
+                                            <p:row>
+                                                <p:column   style="text-align:right" footerText="#{msg['tableau.total']} :"/>
+                                                <p:column   footerText="#{facture.totalnet}" />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                  <p:column   footerText="#{renouvelementBean.factureselected.arrondireFormat2(renouvelementBean.factureselected.primeNettennuelle)}" id="primeTotal" />
+                                                <p:column   footerText=""  />
+                                               
+                                              
+                                            </p:row>
+
+                                        </p:columnGroup>
+                                    </p:dataTable>
+
+                                </p:panel>
+
+                            </p:fieldset>
+                        </div> 
+
+                    </div>
+                    <p:panel  toggleable="true" collapsed="false" style="margin-bottom:20px" id="cccc">
+                        <p:panelGrid columns="2"  layout="grid" id="calculTotal" class="table table-responsive">
+                            <p:outputLabel class="form-control bg-purple" value="Prime nette:" for="ps"></p:outputLabel>
+                            <h:outputText id="ps" class="form-control text-right" value="#{renouvelementBean.factureselected.arrondireFormat2(renouvelementBean.factureselected.primeNettennuelle)}"/>
+                            <p:outputLabel class="form-control bg-purple" value="Durrée de fractionnement:" for="fractd"></p:outputLabel>
+                            <p:outputLabel class="form-control text-right" id="fractd" value="#{renouvelementBean.factureselected.periodeDeFractionnement()}"></p:outputLabel>
+                            <p:outputLabel class="form-control bg-purple" value="Fractionnement:" for="fract"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="fract" value="#{renouvelementBean.factureselected.primeFracionne}">
+                                <f:convertNumber pattern="###,##0" type="number" />
+                            </h:outputText>
+                            <p:outputLabel class="form-control bg-purple" value="Bonus:" for="bn"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="bn" value="#{renouvelementBean.factureselected.arrondireFormat2(renouvelementBean.factureselected.bonusValue)}"/>
+                            <p:outputLabel class="form-control bg-purple" value="Red Exceptionnelle:" for="rede"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="rede" value="#{renouvelementBean.factureselected.arrondireFormat2(renouvelementBean.factureselected.reductionExceptionnelleValue)}"/>
+                            <p:outputLabel class="form-control bg-purple" value="Red flotte:" for="ref"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="ref" value="#{renouvelementBean.factureselected.arrondireFormat2(renouvelementBean.factureselected.reductionFlotteValue)}"/>
+                            <p:outputLabel class="form-control bg-purple" value="Prime apres red et frac:" for="fractS"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="fractS" value="#{renouvelementBean.factureselected.arrondireFormat2(renouvelementBean.factureselected.total)}"/>
+                            <p:outputLabel class="form-control bg-purple"  value="Accessoire:" for="acc"/>
+                            <h:outputText class="form-control text-right"  id="acc" value="#{renouvelementBean.factureselected.arrondireFormat2(renouvelementBean.factureselected.accessoire)}"/>
+                            <p:outputLabel class="form-control bg-purple" value=" Taxe FGA :" for="tes"/>
+                            <h:outputText  id="tes" class="form-control text-right"   value="#{renouvelementBean.factureselected.arrondireFormat2(renouvelementBean.factureselected.taxeFGAvalue)}">
+                            </h:outputText>
+
+                            <p:outputLabel class="form-control bg-purple" value=" Taux d'enregistrement:" for="te"/>
+                            <h:outputText class="form-control text-right"  id="te" value="#{renouvelementBean.factureselected.arrondireFormat2(renouvelementBean.factureselected.tauxEnregistrementValue)}"/>
+
+                            <p:outputLabel class="form-control bg-purple" value="Prime TTC:" for="pttc"/>
+                            <h:outputText class="form-control text-right" id="pttc" value="#{renouvelementBean.factureselected.arrondireFormat2(renouvelementBean.factureselected.primeTtc)}"/>
+
+                        </p:panelGrid>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" title="Annuler" value="Annuler" action="#{renouvelementBean.reset()}" update="detail,formliste,recherche" class="btn-danger danger " ></p:commandButton>
+                                <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" title="Valider"  value="Valider" action="#{renouvelementBean.saveFacture()}" update="detail,formliste,recherche,vvv" class="btn-success success" >
+                                    <p:confirm header="Confirmation" message="Etes-vous sûr ?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </div>
+                        </div>
+                        <p:growl for="somekey" id="vvv" />
+                    </p:panel>
+                </h:form>
+                <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                    <h:form>
+                        <p:commandButton value="Oui" type="button" class="ui-confirmdialog-yes btn btn-primary " icon="ui-icon-check"  />
+                        <p:commandButton value="Non" type="button" class="ui-confirmdialog-no btn btn-danger " icon="ui-icon-close" />
+                    </h:form>
+                </p:confirmDialog>
+            </div>
+
+
+            <p:dialog widgetVar="addGarantie" class="police_label" header="#{msg['garantie.title.ajouter']}" showEffect="fade" modal="true" width="500" minHeight="500" resizable="false">
+                <!--h:panelGrid-->
+                <h:form id="detail2" class="form-horizontal" >
+                    <div class="form-group col-lg-12">
+                        <p:pickList value="#{renouvelementBean.objetGurantie}"  class="" itemValue="#{garantie}" var="garantie" converter="entityConverter"
+                                    itemLabel="#{garantie.libelle}"  >
+                            <f:facet name="sourceCaption">Disponibles</f:facet>
+                            <f:facet name="targetCaption">Sélectionnées</f:facet>
+                        </p:pickList>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  class="pull-left btn-danger danger" value="Annuler" title="Annuler"  oncomplete="PF('addGarantie').hide();" actionListener="#{renouvelementBean.annuler()}"  >
+                        </p:commandButton>
+                        <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  class="pull-right btn-success success" value="#{msg['btn.ajouter']}" oncomplete="PF('addGarantie').hide();"  update="detail" actionListener="#{renouvelementBean.valider()}" >
+                        </p:commandButton>
+                    </div>
+                </h:form>
+                <!--/h:panelGrid-->
+            </p:dialog>
+
+        </div>
+
+
+    </ui:composition> 
+
+</html>
+

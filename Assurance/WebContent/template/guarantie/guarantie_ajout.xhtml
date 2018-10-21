@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <p:outputPanel id="ajout" style="text-align:center;">
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12">
+                    <div class="form-group">
+                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="pays" value="#{guarantieCategorieBean.pays}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                 requiredMessage="#{msg['compagnie.pays.requireMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                    <f:selectItems value="#{guarantieCategorieBean.paysList}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                    <f:ajax event="click" render="paysMessage" />
+                                </h:selectOneMenu> 
+                                <h:message for="pays"  id="paysMessage" class="errorClass" />
+                            </div>                        
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-lg-6 col-sm-6"> 
+                            <h:outputLabel for="libelle" value="#{msg['garantie.libelle']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                            <p:inputText id="libelle" required="true" value="#{guarantieCategorieBean.libelleGuaratie}" styleClass="form-control" placeholder="#{msg['garantie.libelle']}"
+                                         requiredMessage="#{msg['garantie.libelle.requireMessage']}"
+                                         >
+                                <f:ajax event="blur" render="libelleMessage"/>
+                            </p:inputText>
+                            <h:message for="libelle" id="libelleMessage" class="errorClass" />
+                        </div> 
+
+                        <div class="col-md-6 col-lg-6 col-sm-6"> 
+                            <h:outputLabel for="symbole" value="#{msg['garantie.symbole']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                            <p:inputText id="symbole" required="true" value="#{guarantieCategorieBean.symbole}" styleClass="form-control" placeholder="#{msg['garantie.symbole']}"
+                                         requiredMessage="#{msg['garantie.symbole.requireMessage']}"     
+                                         >
+                                <f:ajax event="blur" render="symboleMessage"/>
+                            </p:inputText>
+                            <h:message for="symbole" id="symboleMessage" class="errorClass"/>
+                        </div> 
+                        <div class="col-md-6 col-lg-6 col-sm-6"> 
+                            <h:outputLabel for="poids" value="Poids" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                            <p:inputText id="poids" required="true" value="#{guarantieCategorieBean.poids}" styleClass="form-control" placeholder="Poids"
+                                         requiredMessage="Veuillez saisir le poids"     
+                                         >
+                                <f:ajax event="blur" render="poidsMessage"/>
+                            </p:inputText>
+                            <h:message for="poids" id="poidsMessage" class="errorClass"/>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-lg-6 col-sm-6"> 
+                            <h:outputLabel for="regle" value="#{msg['garantie.reglecalcul']}" class=" pull-left" />
+                            <h:selectOneMenu id="regle" value="#{guarantieCategorieBean.idRegle}"  required="true" title="Regle de Calcul" class=" form-control " >
+                                <f:selectItem itemLabel="Taux%*RC" itemValue="0" />
+                                <f:selectItem itemLabel="Taux%*VV" itemValue="1" />
+                                <f:selectItem itemLabel="Taux%*VN" itemValue="2" />
+                                <f:selectItem itemLabel="Constante*nbs" itemValue="3" />
+                                <f:selectItem itemLabel="Constante" itemValue="4" />
+                                <f:selectItem itemLabel="Lecture Directe" itemValue="5" />
+                                <f:selectItem itemLabel="(captAss/tranche)*prime" itemValue="7" />
+                            </h:selectOneMenu>
+
+                        </div>
+
+                        <div class="col-md-6 col-lg-6 col-sm-6"> 
+                            <h:outputLabel for="stat" value="#{msg['garantie.statut']}" class=" pull-left" />
+                            <h:selectOneMenu id="stat" value="#{guarantieCategorieBean.statut}"  required="true" title="Statut" class=" form-control " >
+                                <f:selectItem itemLabel="#{msg['garantie.statut.obligatoire']}" itemValue="obligatoire" />
+                                <f:selectItem itemLabel="#{msg['garantie.statut.optionnelle']}" itemValue="optionnelle" />
+                            </h:selectOneMenu>
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <div class="col-md-3 col col-lg-6">
+                            <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" action="#{guarantieCategorieBean.annuler()}" update="garantie-ajout" id="annuler" class="btn-danger pull-left danger col-md-6">
+                                <p:ajax update="libelleMessage" />
+                                <p:ajax update="symboleMessage" />
+                            </p:commandButton>
+                        </div>
+
+                        <div class="col-md-3 col col-lg-6">
+                            <p:commandButton value="#{msg['btn.enregistrer']}" title="#{msg['btn.enregistrer']}" update="msgs,formliste,garantie-ajout" action="#{guarantieCategorieBean.ajouterGuarantie()}"  class="btn-success success pull-right col-md-6">
+
+                            </p:commandButton>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Fin du dialogue--> 
+
+        </p:outputPanel>
+
+    </ui:composition> 
+
+</html>
+

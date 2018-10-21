@@ -1,0 +1,198 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <div class="panel">
+            <h:form id="detail" class="form-horizontal well-sm">
+                <div   class="panel-heading bg-primary"> 
+                    <div class="row">
+                        <h:outputLabel  value="#{clientBean.factureCompagnieSelected.compagnie.abbreviation}" class="text-uppercase" ></h:outputLabel> <br/>  <br/> 
+                        <h:graphicImage class=" imgfacture img-circle table-bordered  pull-left" id="img1"  library="images" name="#{clientBean.factureCompagnieSelected.compagnie.cheminImage}">         
+                        </h:graphicImage>
+
+                        <h:graphicImage class=" imgfacture img-circle table-bordered  pull-right" id="img2" library="images" name="#{clientBean.factureCompagnieSelected.courtier.cheminImage}">                           
+                        </h:graphicImage>
+
+                    </div>
+                </div>
+
+                <div   class="panel-heading text-center police_label bg-danger "> 
+                    <div class="row">
+
+                        <h:outputLabel  value="PROPOSITION  " >
+                            <h:outputText value="#{clientBean.statut}" />
+                        </h:outputLabel>
+
+                    </div>
+                </div>
+
+                <div class="panel-body"> 
+                    <div class="row">
+
+                        <p:fieldset legend="REFERENCES DU CLIENT" toggleable="true" collapsed="true" style="margin: 2px;" >
+                            <p:panelGrid  columns="4">
+
+                                <p:outputLabel for="nom" value="Souscripteur :"/>
+                                <h:outputText id="nom" value="#{clientBean.clientSelected.nom}"/>
+                                <p:outputLabel for="tel" value="Téléphone :"/>
+                                <h:outputText id="tel" value="#{clientBean.clientSelected.telephoneMobile}"/>
+
+                                <p:outputLabel for="addresse" value="Adresse :"/>
+                                <h:outputText id="addresse" value="#{clientBean.clientSelected.adresse}"/>
+
+
+                            </p:panelGrid>
+
+                        </p:fieldset>
+
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                            <h:graphicImage library="images" name="ajax-loader.gif" />
+                        </p:dialog>
+
+                        <p:fieldset legend="CARACTERISTIQUES DU VEHICULE" toggleable="true" collapsed="true" style="margin: 2px;" >
+
+                            <p:panelGrid columns="4">
+
+                                <p:outputLabel for="imm" value="Immatriculation :"/>
+                                <h:outputText id="imm" value="#{clientBean.vehiculeSelected.numeroImmatriculation}"/>
+                                <p:outputLabel for="pui" value="Puisance :"/>
+                                <h:outputText id="pui" value="#{clientBean.vehiculeSelected.puissance}"/>
+
+                                <p:outputLabel for="vn" value="Valeur neuve :"/>
+                                <h:outputText id="vn" value="#{factureCourtierBean.voiture.valeurNeuve}"/>
+                                <p:outputLabel for="po" value="Numéro de police :"/>
+                                <h:outputText id="po" value="#{clientBean.vehiculeSelected.numeroPolice}"/>
+
+                                <p:outputLabel for="ma" value="Marque :"/>
+                                <h:outputText id="ma" value="#{clientBean.vehiculeSelected.marque}"/>
+                                <p:outputLabel for="ge" value="Genre :"/>
+                                <h:outputText id="ge" value="#{clientBean.vehiculeSelected.genre}"/>
+
+                                <p:outputLabel for="ty" value="Type :"/>
+                                <h:outputText id="ty" value="#{clientBean.vehiculeSelected.type}"/>
+                                <p:outputLabel for="np" value="Nombre de place :"/>
+                                <h:outputText id="np" value="#{clientBean.vehiculeSelected.nombrePlaces}"/>
+
+                                <p:outputLabel for="numc" value="Numero chassis :"/>
+                                <h:outputText id="numc" value="#{clientBean.vehiculeSelected.numChassis}"/>
+                                <p:outputLabel for="numm" value="Numero moteur :"/>
+                                <h:outputText id="numm" value="#{clientBean.vehiculeSelected.numMoteur}"/>
+
+                                <p:outputLabel for="usa" value="Usage :"/>
+                                <h:outputText id="usa" value="#{clientBean.vehiculeSelected.usagev}"/>
+                                <p:outputLabel for="dma" value="Date de Mise En circulation :"/>
+                                <h:outputText id="dma" value="#{clientBean.vehiculeSelected.miseEnCirculation}"/>
+
+                            </p:panelGrid>
+
+                        </p:fieldset>
+
+                        <p:fieldset  style="margin: 2px;" >
+                            <legend >
+                                <p:outputLabel value="GARANTIES SOUSCRITES" class="police_label text-center"></p:outputLabel>
+                            </legend>
+                            <p:dataTable id="g" var="proposition" editable="true" editMode="cell" emptyMessage="#{msg['tableau.vide']}" scrollable="true" value="#{clientBean.listPropositionselect}">
+                                <p:columnGroup type="header">
+                                    <p:growl  >
+                                        <p:column rowspan="2" headerText="GUARANTIE" />
+                                        <p:column rowspan="2" headerText="PRIME ANNUELE" />
+                                        <p:column colspan="4" headerText="REDUCTION OU MAJORATION" />
+                                        <p:column rowspan="2" headerText="PRIME NETTE"  />
+                                    </p:growl>
+                                    <p:row>
+                                        <p:column headerText="BNS" />
+                                        <p:column headerText="RED" />
+                                        <p:column headerText="MLS" />
+                                        <p:column headerText="MONTANT" />
+                                    </p:row>
+                                </p:columnGroup>
+                                <p:column>
+                                    #{proposition.compagnieGuarantie.guarantie.libelle}
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{proposition.compagnieGuarantie.primePropose}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{proposition.bonus}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{proposition.reduction}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{proposition.malus}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{proposition.montant}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{proposition.prime}"/>
+
+                                </p:column>
+                                <p:columnGroup type="footer" id="primeTotal1">
+                                    <p:row>
+                                        <p:column   style="text-align:right" footerText="Total :" />
+                                        <p:column   footerText="#{facture.totalnet}" />
+                                        <p:column   footerText=""  />
+                                        <p:column   footerText=""  />
+                                        <p:column   footerText=""  />
+                                        <p:column   footerText=""  />
+                                        <p:column   footerText=""  />
+                                        <p:column   footerText="#{factureCourtierBean.selectedFacture.total}" id="primeTotal" />
+                                    </p:row>
+
+                                </p:columnGroup>
+                            </p:dataTable>  
+                            <p:panelGrid columns="4" id="calculTotal">
+                                <p:outputLabel value="Prime nette:" for="ps"></p:outputLabel>
+                                <h:outputText id="ps" value="#{clientBean.factureCompagnieSelected.total}"/>
+                                <p:outputLabel  value="Accessoire:" for="acc"/>
+                                <h:outputText  id="acc" value="#{clientBean.factureCompagnieSelected.accessoire}"/>
+
+                                <p:outputLabel value=" Taux d'enregistrement:" for="te"/>
+                                <h:outputText  id="te" value="#{clientBean.factureCompagnieSelected.tauxEnregistrement}"/>
+
+                                <p:outputLabel value="Prime TTC:" for="pttc"/>
+                                <h:outputText  id="pttc" value="#{clientBean.factureCompagnieSelected.primeTtc}"/>
+                            </p:panelGrid>
+                          
+                            <p:panel header="Informations Relatives aux attestation" rendered="#{factureCourtierBean.showDialog()}">
+                                <p:outputLabel for="co" value="Avez-vous deja payer une caution ?:"/>
+                                <p:selectOneRadio id="co"  value="#{factureCourtierBean.pin}">
+                                    <f:selectItem itemLabel="Oui" itemValue="OUI"  />
+                                    <f:selectItem itemLabel="Non" itemValue="NON"  />
+                                    <p:ajax update="@form"/>
+                                </p:selectOneRadio>
+                                <p:outputLabel rendered="#{(factureCourtierBean.pin==factureCourtierBean.pin2)?true:false}"   id="fr"  for="ou" value="Si oui veillez donner le codeAtt:"/>
+                                <p:inputText rendered="#{(factureCourtierBean.pin==factureCourtierBean.pin2)?true:false}"  id="ou" required="true" value="#{factureCourtierBean.codeFac}"/>
+                            </p:panel>
+
+                        </p:fieldset>
+                        <div class="bg-info">
+
+                        </div>
+                    </div> 
+
+                </div>
+
+            </h:form>
+        </div>
+    </ui:composition>
+
+</html>
+

@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+         <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu id="pays" value="#{selfUserBean.paysSelect}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                <f:selectItems value="#{selfUserBean.listpays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                <p:ajax listener="#{selfUserBean.trierPrametresByPays()}" update="pdv" />
+                            </h:selectOneMenu> 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="pdv" value="Point de vente" class="pull-left text-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="pdv" value="#{selfUserBean.pointsVenteSelected}"  >
+                                <f:selectItem noSelectionOption="true" itemLabel="Choisir le point de vente" /> 
+                                <f:selectItems value="#{selfUserBean.allCourtierPointsVente}" var="pdv" itemLabel="#{pdv.designation}" itemValue="#{pdv}"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="pdr" value="Point de retrait" class="pull-left text-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  class="form-control"  id="pdr" converter="omnifaces.SelectItemsConverter" value="#{selfUserBean.pointDeRetraitSelected}"  >
+                                <f:selectItem noSelectionOption="true" itemLabel="Choisir" /> 
+                                <f:selectItems value="#{selfUserBean.allPointDeRetrait}" var="pd" itemLabel="#{pd.libelle}" itemValue="#{pd}"  /> 
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group ">
+                    <div class="col-lg-12  col-md-12 col-xs-12 col-sm-12">
+                        <div class="col-lg-2 col-md-12 pull-right col-xs-12 col-sm-12">
+                            <p:commandButton rendered="#{!selfUserBean.afficherTout}" id="search" action="#{selfUserBean.searchMethod()}" update="@form" value="Rechercher" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="btn-success success form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+
+</html>
+

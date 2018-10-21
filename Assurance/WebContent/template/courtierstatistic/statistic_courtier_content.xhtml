@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <fieldset><legend class="text-center text-uppercase"><p:outputLabel value="#{msg['titre.statistiqueCourtier']}"/></legend>
+                <p:panel header="#{msg['recherche.titre']}" collapsed="true" toggleable="true" toggleTitle="#{msg['recherche.titre']}" toggleSpeed="500" >
+                        <div class="panel-body">
+                            <ui:include src="recherche.xhtml"/>
+                        </div>
+                    </p:panel>
+                <br/>
+                <p:panel header="#{msg['titre.resultatsDeLaRecherche']}" collapsed="false" toggleable="true">
+                        <div class="panel-body">
+                            <ui:include src="list.xhtml"/>
+                        </div>
+                    </p:panel>
+       
+              </fieldset>
+        </div>
+    </ui:composition>
+
+</html>

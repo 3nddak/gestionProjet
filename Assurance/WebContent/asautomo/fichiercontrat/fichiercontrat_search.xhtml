@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+        <p:fieldset  legend="Rechercher un contrat" toggleable="true" collapsed="true" toggleSpeed="500" >                          
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <h:outputLabel for="pays"  value="#{msg['titre.pays']}" class="pull-left text-left"/>                              
+                        <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{fichiercontratBean.paysSelect}" >                                          
+                            <f:selectItem itemLabel="#{msg['titre.tousLesPays']}" itemDisabled="false" />
+                            <f:selectItems var="pays" value="#{fichiercontratBean.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />    
+                            <p:ajax update="compagnie" />
+                        </h:selectOneMenu>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <h:outputLabel for="compagnie"  value="#{msg['titre.compagnie']}" class="pull-left text-left"/>                              
+                        <h:selectOneMenu id="compagnie" value="#{fichiercontratBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                            <f:selectItem itemLabel="#{msg['titre.tousLesCompagnies']}" itemDisabled="false" />
+                            <f:selectItems value="#{fichiercontratBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                        </h:selectOneMenu>
+
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <h:outputLabel for="courtier"  value="#{msg['titre.courtier']}" class="pull-left text-left"/>                               
+                        <h:selectOneMenu id="courtier"  converter="entityConverter" value="#{fichiercontratBean.courtierSelected}" class="form-control" >                                          
+                            <f:selectItem itemLabel="#{msg['titre.courtier']}" itemDisabled="false" />
+                            <f:selectItems var="courtier" value="#{fichiercontratBean.listCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <h:outputLabel for="pv"  value="#{msg['titre.pdv']}" class="pull-left text-left"/>                          
+                        <h:selectOneMenu id="pv"  value="#{fichiercontratBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                            <f:selectItem itemLabel="#{msg['titre.pdv']}" itemDisabled="false" />
+                            <f:selectItems var="pv" value="#{fichiercontratBean.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                        </h:selectOneMenu>
+
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <h:outputLabel   value="Numéro de police" class="pull-left text-left"/>
+                        <p:inputText value="#{fichiercontratBean.numeroPolice}" class="form-control" />
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+
+                        <p:outputLabel for="mask5" class="control-label" value="Date debut" />
+                        <p:calendar id="mask5" class="form-control" pattern="dd-MM-yyyy" mask="true" value="#{fichiercontratBean.dateDebutRecherche}" >
+                        </p:calendar>
+                    </div>
+
+                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                        <p:outputLabel for="mask25" class="control-label" value="Date fin" />
+                        <p:calendar id="mask25" class="form-control" pattern="dd-MM-yyyy" mask="true" value="#{fichiercontratBean.dateFinRecherche}">
+                        </p:calendar>
+
+                    </div>
+
+                    <!--div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="Etat"  for="branche2" class="pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  value="#{fichiercontratBean.statutt}" class="form-control">
+                                <f:selectItem itemValue="" itemLabel="Tout"/> 
+                                <f:selectItems value="#{fichiercontratBean.statuts}" /> 
+                            </h:selectOneMenu>
+                        </div>
+                    </div-->
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:commandButton value="#{msg['btn.annuller']}" type="reset" action="#{fichiercontratBean.annulerRechercheSinistre()}" id="annuler2" class="btn btn-danger btn-xs col-md-3 pull-left" />
+
+                            <p:commandButton value="Rechercher" update="formliste"  action="#{fichiercontratBean.rechercheAvanceFacture()}"  class="btn-success btn btn-xs col-md-3 pull-right" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </p:fieldset>
+        <p:fieldset legend="Liste des contrats" style="margin-bottom:20px">
+            <p:messages id="messages3" showDetail="true" autoUpdate="true"  closable="true" />                   
+
+            <div class="table-responsive">
+                <p:dataTable id="facture" selectionMode="single" rowKey="#{facture.idFacture}" selection="#{fichiercontratBean.factureSelected}"
+                             class="table" 
+                             paginator="true" rows="20" emptyMessage="#{msg['tableau.vide']}"  paginatorPosition="bottom" value="#{fichiercontratBean.listAssurance}" var="facture"    style="padding:0px;margin: 0px; ">
+                    <p:column  headerText="Branche"  filterBy="#{facture.branche}" > 
+                        <h:outputText value="#{facture.branche}" />
+                    </p:column>
+                    <p:column headerText="Date Echéance" filterBy="#{facture.dateFinContrat}">
+                        <p:outputLabel id="K" value="#{facture.dateFinContrat}" />
+
+                    </p:column>
+
+                    <p:column headerText="Numero Police"  class="col-md-2 col-lg-2"  filterBy="#{facture.numeroPolice}"  >
+                        <h:outputText  value="#{facture.numeroPolice}" />
+                    </p:column>
+
+                    <p:column headerText="Compagnie"   filterBy="#{facture.compagnie.abbreviation}">
+                        <h:outputText value="#{facture.compagnie.abbreviation}" />
+                    </p:column>
+                    <p:column headerText="Courtier"  filterBy="#{facture.courtier.abbreviation}">
+                        <h:outputText value="#{facture.courtier.abbreviation}" />
+                    </p:column>
+
+                    <p:column  headerText="Nom du client"  filterBy="#{facture.client.nom}"  >
+                        <h:outputText value="#{facture.client.nom}" />
+                    </p:column>
+                    <p:column  headerText="Prime nette"  filterBy="#{facture.prixNette}" class="text-right" > 
+                        <h:outputText value="#{facture.arrondireFormat2(facture.prixNette)}"  />
+                    </p:column>
+                    <p:column  headerText="Accessoire"  filterBy="#{facture.accessoire}" class="text-right" > 
+                        <h:outputText value="#{facture.arrondireFormat2(facture.accessoire)}"  />
+                    </p:column>
+
+                    <p:column filterBy="#{facture.primeTTCS}" headerText="PrimeTTC"  class="text-right" >
+                        <h:outputText value="#{facture.arrondireFormat2(facture.primeTTCS)}"  />
+                    </p:column>
+                    <p:column  headerText="Echéance" class="text-right"   >
+                        <h:outputText value="#{facture.labelEcheance}" />
+                    </p:column>
+
+                </p:dataTable>
+            </div>
+
+        </p:fieldset>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <p:outputPanel id="benelistForm">
+            <div class="panel ">
+                <div class="panel-body">
+                    <fieldset><legend class="text-uppercase" ><h:outputLabel  value="#{msg['titre.informationSurLesBeneficiaires']}"/></legend>
+                      <p:growl id="msgsb" globalOnly="true" showDetail="false"/>
+                        <div class="form-group">
+                            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel  value="#{msg['titre.informationSurLesBeneficiaires']}"  for="optionBeneficiaire" class=" pull-left" />
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:selectBooleanCheckbox id="optionBeneficiaire"  value="#{souscriptionAsVoyageBean.renderedBeneficiaireInfoValue}" >
+                                        <p:ajax update="benelistForm" listener="#{souscriptionAsVoyageBean.beneficiaireManager()}" />
+                                    </p:selectBooleanCheckbox>
+                                </div>
+                            </div>
+                        </div>
+                        <p:outputPanel id="beneficiairePanel" rendered="#{souscriptionAsVoyageBean.renderedBeneficiaireInfo}" >
+                            <div class="form-group">
+                                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  value="#{msg['client.nom']}"  for="nomB" class=" pull-left" /><!--h:outputLabel value="*" class="etoile_rouge pull-left" /-->
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText value="#{souscriptionAsVoyageBean.beneficiaireAsVoyageToSave.nom}" required="false"  requiredMessage="#{msg['client.nom.requireMessage']}" 
+                                                     id="nomB" class="form-control" placeholder="#{msg['client.nom']}">
+                                            <p:ajax event="keyup" update="nomBMessage"/>
+                                        </p:inputText>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:message for="nomB"  id="nomBMessage" class="errorClass" />
+                                    </div> 
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  value="#{msg['client.prenom']}"  for="prenomB" class=" pull-left" /><!--h:outputLabel value="*" class="etoile_rouge pull-left" /-->
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText value="#{souscriptionAsVoyageBean.beneficiaireAsVoyageToSave.prenom}" required="false" id="prenomB" styleClass="form-control" placeholder="#{msg['client.prenom']}"
+                                                     requiredMessage="#{msg['client.prenom.requiredMessage']}" >
+                                            <p:ajax  event="keyup" update="prenomBMessage"/>
+                                        </p:inputText>  
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:message  id="prenomBMessage" for="prenomB"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12"> 
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  value="#{msg['client.datedenaissance']}"   for="dateNaissanceB" class=" pull-left" /><!--h:outputLabel value="*" class="etoile_rouge pull-left" /-->
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:calendar   id="dateNaissanceB" yearRange="c-100:c+10"  pattern="dd/MM/yyyy" maxdate="#{souscriptionAsVoyageBean.dateEmission}" readonlyInput="true" navigator="true" value="#{souscriptionAsVoyageBean.beneficiaireAsVoyageToSave.dateNaissance}" mask="true" class="form-control" placeholder="Date de naissance"
+                                                      required="false"
+                                                      requiredMessage="#{msg['client.datedenaissance.requireMessage']}" 
+                                                      converterMessage="#{msg['titre.formatIncorrect']}" >
+
+                                            <f:convertDateTime pattern="dd/MM/yyyy"  type="date"/>
+                                            <p:ajax event="dateSelect" update="datenBMessage"/> 
+                                        </p:calendar>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:message for="dateNaissanceB" id="datenBMessage" class="errorClass"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <div class="btn-toolbar">
+                                            <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" update="formliste:benelistPanel,formliste:benelistForm,formliste:msgsAux" class="btn btn-xs btn-danger pull-left" action="#{souscriptionAsVoyageBean.cleanBeneficiaireAddForm()}" style="background: #d9534f;color:#fff;border-color: #d43f3a; font-family: cursive;"/>
+                                            <p:commandButton value="#{msg['btn.ajouter']}" title="#{msg['btn.ajouter']}" update="formliste:benelistPanel,formliste:benelistForm,formliste:msgsAux" class="btn btn-success btn-xs pull-right" action="#{souscriptionAsVoyageBean.createBeneficiaireTemporalList()}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:outputPanel>
+                    </fieldset>
+                </div>
+            </div>
+            <p:outputPanel id="benelistPanel" rendered="#{souscriptionAsVoyageBean.renderedBeneficiaireInfo}">
+                <div class="form-group">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="panel">
+                            <div class="panel-heading text-uppercase"> <h:outputLabel class="panel-title" value="#{msg['titre.listeDesBeneficiaires']}" /> </div>
+                            <div class="panel-body">
+                                <p:dataTable class=" table-responsive"  var="benefice" id="benelistData" reflow="true" rows="5" value="#{souscriptionAsVoyageBean.allBeneficiaireAsVoyages}"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                             rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg[tableau.vide]}" rowKey="#{benefice.hashCode()}"  >                                                    
+                                    <p:column headerText="#{msg['client.nom']}">
+                                        <h:outputText value="#{benefice.nom}" />
+                                    </p:column>
+                                    <p:column headerText="#{msg['client.prenom']}">
+                                        <h:outputText value="#{benefice.prenom}" />
+                                    </p:column>
+                                    <p:column headerText="#{msg['client.datedenaissance']}">
+                                        <h:outputText value="#{benefice.dateNaissance}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg['titre.actions']}">
+                                        <p:commandButton icon="fa fa-trash" update="formliste:benelistPanel" action="#{souscriptionAsVoyageBean.removeBeneficiaireFromTemporalList()}" title="#{msg['btn.supprimer']}" class="btn btn-danger">
+                                            <f:setPropertyActionListener value="#{benefice}" target="#{souscriptionAsVoyageBean.beneficiaireAsVoyageToRemove}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p:outputPanel>
+        </p:outputPanel>
+
+    </ui:composition>
+</html>

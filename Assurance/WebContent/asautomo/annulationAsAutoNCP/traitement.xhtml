@@ -1,0 +1,89 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <div id="liste">
+
+            <h:form  id="formliste3" class="form-horizontal">
+
+                <p:panel header ="#{msg['titre.traitementDeLaDemande']}" toggleable="true">
+                    <div class="form-group">
+
+
+                        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
+                                <h:outputLabel rendered="#{annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.isExist}"  value="Etat de la demande: "  for="motifrff" class=" pull-left" />
+                            </div>
+                            <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
+                                <h:outputLabel rendered="#{annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.isExist}"  value="#{annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.libelleEtaDemandeNCP}"  id="motifrff" class=" pull-left" />
+                            </div>
+                            <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                <p:panel id="motif" header ="#{msg['titre.motifDeDaDemande']}" toggleable="true">
+                                    <p jsf:id="sta" title="#{msg['titre.motifDeDaDemande']}" >
+                                        #{annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.motifDemandePV}
+                                    </p>
+
+                                </p:panel>
+
+                            </div> 
+                            <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                <h:outputLabel  value="#{msg['btn.annuller']}"  for="autorisers" class=" pull-left" rendered="#{!annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.trateParNCP()}" />
+                            </div>
+                            <div class=" col-lg-12 col-md-12 col-sm-12"> 
+
+                                <p:selectBooleanCheckbox id="autorisers" rendered="#{!annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.trateParNCP()}" value="#{annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.annuler}"  class="form-control" >
+                                    <p:ajax update="@form"/>
+                                </p:selectBooleanCheckbox>
+                            </div> 
+                            <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                <h:outputLabel id="motifl" rendered="#{!annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.annuler}"  value="Motif du refus"  for="motifr" class=" pull-left" />
+                            </div>
+                            <div class=" col-lg-12 col-md-12 col-sm-12"> 
+
+                                <p:inputTextarea id="motifr" requiredMessage="#{msg['titre.motifDuRefus.requiredMessage']}" required="true" rendered="#{!annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.trateParNCP1()}" value="#{annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.motifRefusNCP}" title="motif refus" class="form-control" >
+
+                                    <p:ajax event="keyup" update="telMessage"/>
+
+                                </p:inputTextarea>
+                            </div> 
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:message for="motifr" id="telMessage" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <p:panel id="motifg" header ="#{msg['titre.motifDuRefus']}" toggleable="true" rendered="#{annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.refuser()}">
+                                <p jsf:id="stag" title="#{msg['titre.motifDuRefus']}" >
+                                    #{annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.motifRefusNCP}
+                                </p>
+
+                            </p:panel>
+
+                        </div> 
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:commandLink  rendered="#{!annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto.trateParNCP()}" title="#{msg['btn.enregistrer']} " value="#{msg['btn.enregistrer']}
+                                            " update="formliste2" onsuccess="PF('traiter').hide()"  action="#{annulationDemandeNCPAsAutoBean.operationDecritureCompatable()}"   class="btn btn-success success"   >
+                                <p:confirm header="Confirmation" message="#{msg['message.etesvoussur']} "  icon="ui-icon-alert" />
+                            </p:commandLink>
+                        </div>
+                    </div>
+                </p:panel>
+
+
+            </h:form>
+
+
+        </div>
+    </ui:composition>
+
+
+</html>
+

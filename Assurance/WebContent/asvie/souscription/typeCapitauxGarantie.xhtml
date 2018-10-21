@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+
+    <ui:composition>
+        <p:growl   globalOnly="true"  severity="info,warn"/>
+
+        <div class="row">
+            <div class="form-group">
+
+                <div class="col-md-4 col-lg-3 col-sm-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="piececa" value="#{msg['titre.typeCapitauxGaranties']}"   class="pull-left text-left" />
+                    </div> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu id="piececa" value="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite}" required="true"  class="form-control"
+                                         requiredMessage="#{msg['titre.typeCapitauxGaranties.requiredMessage']}">
+                            <f:selectItems value="#{souscriptionBean.listTypeCapitaux}" /> 
+                            <p:ajax event="click" update="pieceMessageca"/> 
+                            <!--p:ajax update="formliste" listener="" /-->
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="piececa" id="pieceMessageca"/>
+                    </div>
+                </div> 
+
+            </div>
+
+
+        </div>
+
+    </ui:composition>
+</html>

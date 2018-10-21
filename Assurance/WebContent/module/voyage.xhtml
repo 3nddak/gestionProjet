@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html manifest="demo.appcache" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/tags"
+          
+      xmlns:jsf="http://xmlns.jcp.org/jsf"> 
+
+    <ui:composition>
+         <tr jsf:rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VOYAGE')}">
+            <td>Interface Voyage</td>
+            <td>
+                <h:selectOneMenu class="form-control"   id="voyage" requiredMessage="Veuillez renseigner le theme"   value="#{userThemeBean.utilisateur.couleur}" converter="entityConverter"  >
+                    <f:selectItem itemLabel="Liste des themes" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{userThemeBean.listCouleur}" var="c" itemLabel="#{c.description}" itemValue="#{c}"  />
+                    <p:ajax event="click" listener="#{userThemeBean.afficherVoyage()}" update="voyagec,voyaget"  />
+                </h:selectOneMenu>
+            </td>
+            <td >
+                <p:outputPanel id="voyagec" class="#{userThemeBean.voyage}"  >
+                    <span  class="btn-lg btn pull-right"  style="background-color: #{userThemeBean.utilisateur.couleur.codeCouleur}"/>
+                </p:outputPanel>
+                <p:outputPanel id="voyaget" class="#{!userThemeBean.voyage}" >
+                    <span  class="btn-lg btn pull-right"  style="background-color: #{userThemeBean.retournerCouleur(userThemeBean.utilisateur.themeVoyage).codeCouleur}"/>
+                </p:outputPanel>
+            </td>
+
+        </tr>
+    </ui:composition>
+
+</html>

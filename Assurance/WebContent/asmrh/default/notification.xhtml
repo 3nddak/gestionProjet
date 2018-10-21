@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="sms1" class="">
+        <div class="navbar-custom-menu">
+            <div class="navbar bg-under-head">
+                <sec:authorize ifAllGranted="NOTIFICATION"> 
+                    <ul class="nav navbar-nav">
+                        <sec:authorize ifAllGranted="USER_GUICHET">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.enCoursDeValidation']}"  style="color:#ffffff " /> <sup><h:outputLabel class="badge small" value="#{notificationAsMrhBean.demandeTraitee}"  style="background-color:red" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  action="#{notificationAsMrhBean.getPagesDemandeTraitee()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}" > 
+                                            <h:outputLabel value="#{notificationAsMrhBean.demandeTraitee}" style="background-color:#ec971f" class="pull-right badge" />                                           
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAnyGranted="USER_GUICHET,USER_PVT,USER_CRT">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle" title="#{msg['notification.de']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                    <h:outputLabel value="#{msg['notification.de']}"  style="color:#ffffff" /><sup><h:outputLabel class="badge small" value="#{notificationAsMrhBean.nouvelleDemande}" style="background-color:#ec971f" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  value="#{msg['notification.menu.sousrenouv']}" action="#{notificationAsMrhBean.getPagesNouvelleD()}"  title="#{msg['notification.de']}"  >
+                                            <h:outputLabel value="#{notificationAsMrhBean.nouvelleDemande}" style="background-color: #ec971f" class="pull-right badge" />                
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAnyGranted="USER_GUICHET,USER_PVT,USER_CRT,USER_CMP">
+                            <li class="">
+
+                                <a href="#" class="dropdown-toggle" title="Demandes Validée"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                    <h:outputLabel value="Demandes Validée"  style="color:#ffffff" /><sup><h:outputLabel class="badge small" value="#{notificationAsMrhBean.demandeValidee}" style="background-color:#FFE495" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+
+
+                                    <li>
+                                        <h:commandLink  value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.de']}"  action="#{notificationAsMrhBean.getPagesDemandeValideParClient()}" >
+                                            <h:outputLabel value="#{notificationAsMrhBean.demandeValidee}" style="background-color: #ec971f" class="pull-right badge" />                
+                                           
+                                        </h:commandLink>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAllGranted="USER_CMP ">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.nouvelleDemande']}"  style="color:#ffffff" /> <sup><h:outputLabel class="badge small" value="#{notificationAsMrhBean.nouvelleDemande}" style="background-color:red" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  action="#{notificationAsMrhBean.getPagesNouvelleD()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}" > 
+                                            <h:outputLabel value="#{notificationAsMrhBean.nouvelleDemande}" style="background-color:#ec971f" class="pull-right badge" />                                           
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAllGranted="USER_CMP">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.demandeTraitee']}"  style="color:#ffffff" /> <sup><h:outputLabel class="badge small" value="#{notificationAsMrhBean.demandeTraitee}" style="background-color: #00733e"  /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  action="#{notificationAsMrhBean.getPagesDemandeTraitee()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}" > 
+                                            <h:outputLabel value="#{notificationAsMrhBean.demandeTraitee}" style="background-color:#ec971f" class="pull-right badge" />                                           
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAllGranted="SOUSCRIPTION_EFFECTIVE_ASMRH">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.rp']}"  style="color:#ffffff" /> <sup><h:outputLabel class="badge small" value="#{notificationAsMrhBean.souscriptioneffective}" style="background-color:lawngreen"  /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  action="#{notificationAsMrhBean.getPagesSouscriptionEffective()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}" > 
+                                            <h:outputLabel value="#{notificationAsMrhBean.souscriptioneffective}" style="background-color:#ec971f" class="pull-right badge" />                                           
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        
+                        <sec:authorize ifAllGranted="DEMANDE_REJETE_ASMRH">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.demandeRejete']}"  style="color:#ffffff" /> <sup><h:outputLabel class="badge small" value="#{notificationAsMrhBean.demandeRejetee}" style="background-color: slategrey" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  action="#{notificationAsMrhBean.getPagesDemandeRejete()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}" > 
+                                            <h:outputLabel value="#{notificationAsMrhBean.demandeRejetee}" style="background-color:#ec971f" class="pull-right badge" />                                           
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                    </ul>
+                </sec:authorize>   
+            </div>
+        </div>
+    </h:form>
+    <h:form>
+        <p:remoteCommand name="newSms" process="@this" partialSubmit="true"  action="#{notificationAsMrhBean.init()}" update="sms1" autoRun="false"/>
+    </h:form>
+</ui:composition>

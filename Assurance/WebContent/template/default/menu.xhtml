@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="menu-form" >
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+
+                <ul class="sidebar-menu">
+                    <li>
+                        <h:commandLink action="avmenug">
+                            <i class="fa fa-windows"></i> <span>#{msg['menu.haut.user.menuprincipal']}</span> 
+                        </h:commandLink>
+                    </li>
+                    <!--li>
+                        <h:commandLink action="acvie">
+                            <i class="fa fa-home"></i> <span>ACCUEIL</span>
+                        </h:commandLink>
+                    </li-->
+
+                    <!--sec:authorize ifAllGranted="ACCES_PARAMETRE"-->
+                    <li class="treeview" jsf:rendered="#{sec:areAllGranted('ACCES_PARAMETRE')}">
+                        <a>
+                            <i class="fa fa-cogs"></i>
+                            <span>#{msg['page.menu.parametres']}</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+
+                        <ul class="treeview-menu">
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('PROFIL')}"  action="profils"  ><i class="fa fa-circle-o"/>#{msg['menu.profil']}</h:commandLink></li>                                       
+                            <li > <h:commandLink rendered="#{sec:areAllGranted('DEVISE')}"  action="devise"><i class="fa fa-circle-o"/>#{msg['menu.devise']}</h:commandLink></li>
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ZONE')}"  action="zonemonetaire" ><i class="fa fa-circle-o"/>#{msg['menu.zone']}</h:commandLink></li> 
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('PAYS')}"  action="pays" ><i class="fa fa-circle-o"/>#{msg['menu.pays']}</h:commandLink></li>                                      
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('TC')}" action="typeComptes"><i class="fa fa-circle-o"/>#{msg['menu.type.compte']}</h:commandLink></li>                               
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('PC')}"  action="paramcompte"><i class="fa fa-circle-o"/>#{msg['menu.parametre.compte']}</h:commandLink></li>
+                            <li ><h:commandLink  action="archive"><i class="fa fa-circle-o"/>#{msg['menu.journal.sauvegarde']}</h:commandLink></li>
+                            <li ><h:commandLink  action="typeAss"><i class="fa fa-circle-o"/>#{msg['assurance.typeassurance']}</h:commandLink></li>
+                            <li ><h:commandLink   action="commissionmanager" ><i class="fa fa-circle-o"/>#{msg['menu.gestion.commission']}</h:commandLink></li>
+                            <li ><h:commandLink   action="packageunique" ><i class="fa fa-circle-o"/>#{msg['menu.packageUniqueGarantie']}</h:commandLink></li>
+                            <li ><h:commandLink   action="conditiongeneral" ><i class="fa fa-circle-o"/>#{msg['menu.conditionGeneral']}</h:commandLink></li>
+                        </ul>
+                    </li>
+                    <!--/sec:authorize-->
+
+                    <sec:authorize ifAllGranted="ACCES_ADMINISTRATION">
+                        <li class="treeview">
+                            <a >
+                                <i class="fa fa-user "></i> 
+                                <span>#{msg['page.menu.admimistration']}</span><i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu" >
+                                <li> <h:commandLink rendered="#{sec:areAllGranted('COMPAGNIE')}"  action="societe"><i class="fa fa-circle-o"/>#{msg['titre.societe']}</h:commandLink></li>                
+                                <li> <h:commandLink rendered="#{sec:areAllGranted('COMPAGNIE')}"  action="compagnie"><i class="fa fa-circle-o"/>#{msg['menu.compagnie']}</h:commandLink></li>                
+                                <li><h:commandLink rendered="#{sec:areAllGranted('COURTIER')}"  action="courtier"><i class="fa fa-circle-o"/>#{msg['menu.courtier']}</h:commandLink></li>
+                                <li><h:commandLink rendered="#{sec:areAllGranted('POINT_DE_VENTE')}"  action="pointsvente"><i class="fa fa-circle-o"/>#{msg['menu.pdv']}</h:commandLink></li>
+                                <li><h:commandLink rendered="#{sec:areAllGranted('GUICHET')}" action="guichet"><i class="fa fa-circle-o"/>#{msg['menu.guichet']}</h:commandLink></li>
+                                <li><h:commandLink rendered="#{sec:areAllGranted('PDR')}"  action="retrai"><i class="fa fa-circle-o"/>#{msg['menu.pointderetrait']}</h:commandLink></li>                            
+                                <li> <h:commandLink rendered="#{sec:areAllGranted('UTILISATEUR')}"  title="#{msg['titre.utilisateur']}" action="utilisateur"><i class="fa fa-circle-o"/>#{msg['menu.utilisateur']}</h:commandLink></li>
+                            </ul>
+                        </li>
+                    </sec:authorize>
+
+                    <sec:authorize ifAllGranted="ROLE_USER_CRT">
+                        <li class="treeview">
+                            <a><i class="fa fa-user"></i> 
+                                <span>#{msg['titre.gestionUtilisateur']}</span><i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu" >
+                                <li><h:commandLink  action="editselfuser"><i class="fa fa-circle-o"/> #{msg['mdp.reinitialiser']}</h:commandLink></li>
+                            </ul>
+                        </li>
+                    </sec:authorize>
+
+                    <!--  DEBUT BRANCHE !-->
+                    <li class="treeview">
+                        <a>
+                            <i class="fa fa-asterisk "></i> 
+                            <span>#{msg['titre.lesbranche']}</span><i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu" >
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_AUTO')}" action="acauto" ><i class="fa fa-circle-o"/>#{msg['assurance.automobile']}</h:commandLink></li>                                       
+                            <li > <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VIE')}"  action="acvie" ><i class="fa fa-circle-o"/>#{msg['assurance.credit']}</h:commandLink></li>
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VOYAGE')}" action="acvoyage"><i class="fa fa-circle-o"/>#{msg['assurance.voyage']}</h:commandLink></li> 
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_COMPTE')}" action="accompte"  ><i class="fa fa-circle-o"/>#{msg['assurance.compte']}</h:commandLink></li> 
+                            <li ><h:commandLink  action="acmrh"><i class="fa fa-circle-o"/>#{msg['assurance.habitation']}</h:commandLink></li> 
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VOYAGE')}" action="acsante"><i class="fa fa-circle-o"/>#{msg['assurance.sante']}</h:commandLink></li> 
+                        </ul>
+                    </li>
+
+                    <!--  FIN BRANCHE !-->
+                    <!--  DEBUT COMPTABILITE !-->
+                    <sec:authorize ifAllGranted="ACCESS_COMPTABILITE">
+
+                        <li class="treeview">
+                            <a  ><i class="fa fa-file"></i> 
+                                <span>#{msg['page.menu.comptabilite']}</span><i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu" >
+                                <sec:authorize ifAllGranted="ACCOUNT_CREATION"><li><h:commandLink  action="compte"><i class="fa fa-circle-o"/>#{msg['menu.comptabilite.compte']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="DEPOSIT"><li><h:commandLink  action="deposite"><i class="fa fa-circle-o"/>#{msg['menu.comptabilite.deposit']}</h:commandLink></li></sec:authorize>                  
+                                <sec:authorize ifAllGranted="AUTORISER_DEPOSIT"><li><h:commandLink  action="autoriserdeposit"><i class="fa fa-circle-o"/>#{msg['titre.Autoriser.deposit']}</h:commandLink></li></sec:authorize>      
+                                <sec:authorize ifAllGranted="ROLE_REMBOURSEMENT_COMMISSION"><li><h:commandLink action="cmm"><i class="fa fa-circle-o"/>#{msg['menu.comptabilite.remboursement.commission']}</h:commandLink></li></sec:authorize>                  
+                                <sec:authorize ifAllGranted="VALIDATION_OPD"><li><h:commandLink  action="trsfr"><i class="fa fa-circle-o"/>#{msg['menu.comptabilite.compte.validerDeposit']}</h:commandLink></li></sec:authorize> 
+                                <sec:authorize ifAllGranted="VALIDATION_OPD"><li><h:commandLink  action="annulDeposit"><i class="fa fa-circle-o"/>#{msg['menu.comptabilite.compte.annulerDeposit']}</h:commandLink></li></sec:authorize> 
+                                
+                                <sec:authorize ifAllGranted="ACCOUNT_DETAILS"><li><h:commandLink  action="proprietecompte"><i class="fa fa-circle-o"/>#{msg['menu.comptabilite.compte.propriete']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="ACCOUNT_DETAILS"><li><h:commandLink  action="allcomptestructure"><i class="fa fa-circle-o"/> #{msg['titre.Comptes.sousagents']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="ETAT_COMPTE"><li><h:commandLink action="etcompte"><i class="fa fa-circle-o"/>#{msg['menu.comptabilite.compte.situation']}</h:commandLink></li></sec:authorize>                                                    
+                                <sec:authorize ifAllGranted="ACCOUNT_JOURNAL"><li> <h:commandLink  action="journal"><i class="fa fa-circle-o"/>#{msg['menu.comptabilite.journal']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="ACCOUNT_GRANDLIVRE"><li> <h:commandLink action="grandlivre"><i class="fa fa-circle-o"/>#{msg['menu.comptabilite.grandlivre']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="ACCOUNT_BALANCE"><li><h:commandLink action="balance"><i class="fa fa-circle-o"/>#{msg['menu.comptabilite.balance']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="LIST_SAUVEGARDE"><li ><h:commandLink  action="listSauv" ><i class="fa fa-circle-o"/> #{msg['liste.sauvegarde']} </h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="SAUVEGARDE_MANUELLES"><li ><h:commandLink  action="acManuel" ><i class="fa fa-circle-o"/>#{msg['menu.sauvegardeManuelle']}</h:commandLink></li></sec:authorize>
+
+                            </ul>
+                        </li>
+                    </sec:authorize>
+                    <!--  FIN COMPTABILITE -->
+
+                    <!--   DEBUT STATISTIQUE -->
+                    <sec:authorize ifAllGranted="ACCESS_STATISTIQUE">
+
+                        <li class="treeview">
+                            <a  ><i class="fa fa-bar-chart"></i> 
+                                <span>#{msg['page.menu.statistique']}</span><i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu" >
+                                <sec:authorize ifAllGranted="STATISTIQUE"><li><h:commandLink  action="st"><i class="fa fa-circle-o"/>#{msg['titre.statistique']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="STATISTIQUE_LIST_COMPAGNIE"><li><h:commandLink  action="xxfCompagnie"><i class="fa fa-circle-o"/>#{msg['liste.compagnie']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAllGranted="STATISTIQUE_LIST_COURTIER"><li><h:commandLink  action="zzaCourtier"><i class="fa fa-circle-o"/>#{msg['liste.courtier']}</h:commandLink></li></sec:authorize>                              
+                                <sec:authorize ifAnyGranted="STATISTIQUE_LIST_PDV"><li><h:commandLink  action="petatpdv"><i class="fa fa-circle-o"/>#{msg['liste.pdv']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAnyGranted="STATISTIQUE_LIST_CLIENT"><li><h:commandLink action="xetclient"><i class="fa fa-circle-o"/>#{msg['liste.client']}</h:commandLink></li></sec:authorize>                              
+                                <sec:authorize ifAnyGranted="STATISTIQUE_BORDERAU"><li> <h:commandLink action="lesetat"><i class="fa fa-circle-o"/>#{msg['menu.bordereau']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAnyGranted="STATISTIQUE_ETAT_OPERATION"><li> <h:commandLink  action="printOperationDuJour"><i class="fa fa-circle-o"/>#{msg['liste.etatSurLesOperations']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAnyGranted="STATISTIQUE_LIST_CONTRAT"><li> <h:commandLink  action="echuouechoircontrat"><i class="fa fa-circle-o"/>#{msg['liste.contrat']}</h:commandLink></li></sec:authorize>
+                                <sec:authorize ifAnyGranted="STATISTIQUE_LIST_CONTRAT"><li> <h:commandLink  action="echeance"><i class="fa fa-circle-o"/>#{msg['contrat.echus']} </h:commandLink></li></sec:authorize>
+                            </ul>
+                        </li>
+
+                    </sec:authorize>
+
+
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+    </h:form> 
+</ui:composition>

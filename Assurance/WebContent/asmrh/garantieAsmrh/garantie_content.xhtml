@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+
+
+    <ui:composition >
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['titre.gestionDesGaranties']}"></p:outputLabel></legend>
+            </fieldset>
+            <p:panel  header="#{msg['garantie.title.ajouter']}" toggleable="true" collapsed="true" toggleSpeed="500" >                         
+                <div class="panel-body">
+                    <ui:include src="garantie_ajout.xhtml"/>
+                </div>
+            </p:panel> 
+            <br/>
+            <p:panel  header="#{msg['titre.recherches']}" toggleable="true" collapsed="true"  >  
+                <div class="panel-body">
+                    <ui:include src="garantieSearch.xhtml"/>
+                </div>
+            </p:panel> 
+            <p:panel  header="#{msg['garantie.liste']}" toggleable="true" collapsed="false"  >  
+                <div class="panel-body">
+                    <ui:include src="garantie_list.xhtml"/>
+                </div>
+            </p:panel> 
+
+        </div>
+
+    </ui:composition>
+
+</html>

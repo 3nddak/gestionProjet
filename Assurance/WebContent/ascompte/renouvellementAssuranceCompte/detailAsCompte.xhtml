@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <h:form  id="detail" class="form-horizontal">
+            <p:panel header="#{msg['souscription.information']} #{renouvellementAsCompteBean.assuranceCompteSelected.dateOuvertureCompte}" toggleable="true" collapsed="false" style="margin-bottom:20px">  
+                <p:panelGrid columns="2" layout="grid" class="table table-responsive">
+
+                    <p:outputLabel  class="form-control bg-purple" for="assureur" value="#{msg['titre.compagnie']}:" />
+                    <h:outputText  id="assureur" class="form-control"  value="#{renouvellementAsCompteBean.assuranceCompteSelected.compagnie.abbreviation}"/>
+                    
+                    <p:outputLabel class="form-control bg-purple" for="police" value="#{msg['titre.numeroPolice']} :"/>
+                    <h:outputText id="police" class="form-control "  value="#{renouvellementAsCompteBean.assuranceCompteSelected.numeroPolice}"/>
+
+                    <p:outputLabel class="form-control bg-purple" for="code" value="#{msg['banque.code']}"/>
+                    <h:outputText id="code" class="form-control "  value="#{renouvellementAsCompteBean.assuranceCompteSelected.code}"/>
+                    
+                    <p:outputLabel class="form-control bg-purple" for="rib" value="#{msg['banque.rib']}"/>
+                    <h:outputText id="rib" class="form-control "  value="#{renouvellementAsCompteBean.assuranceCompteSelected.rib}"/>
+
+                    <p:outputLabel class="form-control bg-purple" for="agence" value="#{msg['banque.agence']}"/>
+                    <h:outputText id="agence" class="form-control "  value="#{renouvellementAsCompteBean.assuranceCompteSelected.agence}"/>
+
+                    <p:outputLabel class="form-control bg-purple" for="codeGuichet" value="#{msg['titre.Codeguichet']}"/>
+                    <h:outputText id="codeGuichet" class="form-control "  value="#{renouvellementAsCompteBean.assuranceCompteSelected.codeGuichet}"/>
+
+                    <p:outputLabel class="form-control bg-purple" for="intituleCompte" value="#{msg['compte.intitule']}"/>
+                    <h:outputText id="intituleCompte" class="form-control "  value="#{renouvellementAsCompteBean.assuranceCompteSelected.intituleCompte}"/>
+                    
+                    <p:outputLabel class="form-control bg-purple" for="periode" value="#{msg['contrat.periode']}"/>
+                    <p:inputText id="periode" class="form-control" value="#{renouvellementAsCompteBean.assuranceCompteSelected.periode}" >
+                        <p:ajax event="keyup" update="dateFin,validation:cccc" listener="#{renouvellementAsCompteBean.dateFin()}"  />
+                        <p:ajax event="keyup" update="dateFin,validation:cccc" listener="#{renouvellementAsCompteBean.processVerifications()}"  />
+                        <pe:keyFilter  mask="num" />
+                    </p:inputText>
+                    
+                    <p:outputLabel class="form-control bg-purple" for="dateDebut" value="#{msg['titre.dateDebut']}:"/>
+                    <p:calendar id="dateDebut" class="form-control" value="#{renouvellementAsCompteBean.dateDebut}"  pattern="dd/MM/yyyy">
+                        <p:ajax event="dateSelect" update="dateFin,validation:cccc" listener="#{renouvellementAsCompteBean.dateFin()}" />
+                       
+                    </p:calendar>
+                    <p:outputLabel class="form-control bg-purple" for="dateFin" value="#{msg['titre.dateFin']}:"/>
+                    <p:outputLabel class="form-control"  id="dateFin" value="#{renouvellementAsCompteBean.dateFins}"/>
+                    
+                    <p:outputLabel class="form-control bg-purple" for="typeCompte" value="#{msg['titre.typecompte']}"/>
+                    <h:outputText id="typeCompte" class="form-control " value="#{renouvellementAsCompteBean.assuranceCompteSelected.typeCompte == null ? null :  renouvellementAsCompteBean.assuranceCompteSelected.typeCompte.toString()}" />
+
+                    <p:outputLabel for="cou" class="form-control bg-purple" value="#{msg['titre.courtier']} :"/>
+                    <h:selectOneMenu  class="form-control"  converter="entityConverter" id="cou" value="#{renouvellementAsCompteBean.courtier}"  >
+                        <f:selectItem itemValue="" itemLabel="#{msg['pv.courtier.requireMessage']}"/> 
+                        <f:selectItems value="#{renouvellementAsCompteBean.courtierList}" var="courtier"
+                                       itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}"/>
+                    </h:selectOneMenu>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:composition>
+</html>

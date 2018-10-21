@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <p:panel rendered="#{!souscriptionAsSanteBean.hideAjoutBeneficiaireForm}" class="panel-border-none" header="Recherche"  toggleable="true" collapsed="true" >
+            <div class="form-group">
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="Branche"  for="brancheb" class="pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu id="brancheb"  value="#{souscriptionAsSanteBean.brancheRechercher}" class="form-control" requiredMessage="Veuillez choisir la branche">
+                            <f:selectItem itemValue="" itemLabel="Tout"/> 
+                            <f:selectItems value="#{souscriptionAsSanteBean.BRANCHES}" /> 
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.type']}"  for="typeClientb" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu id="typeClientrb" value="#{souscriptionAsSanteBean.typeClientRechercher}" title="#{msg['client.type']}"  class="form-control">
+                            <!--f:selectItem itemValue="" itemLabel="Type"/-->
+                            <f:selectItem itemValue="Client physique" itemLabel="#{msg['client.type.physique']}"/>
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.nom']}"  for="nomb" class=" pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{souscriptionAsSanteBean.nomRechercher}"
+                                     id="nomrb" class="form-control" placeholder="#{msg['client.nom']}">
+
+                        </p:inputText>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.prenom']}"  for="prenomrb" class=" pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{souscriptionAsSanteBean.prenomRechercher}" id="prenomrb" styleClass="form-control" placeholder="#{msg['client.prenom']}"  >
+                        </p:inputText>  
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                        <h:outputLabel  value="#{msg['client.pays']}"  for="designationPaysrb" class=" pull-left" style=""/>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                        <p:autoComplete id="designationPaysrb"  class="pull-left" value="#{souscriptionAsSanteBean.paysClientCRechercher}" forceSelection="true"  completeMethod="#{souscriptionAsSanteBean.completeMethod}"  >
+                        </p:autoComplete>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.numeropiece']}" for="numpiecerb" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{souscriptionAsSanteBean.numeroPieceRechercher}"  id="numpiecerb" class="form-control" placeholder="#{msg['client.numeropiece']}" >
+
+                        </p:inputText> 
+                    </div>
+                </div>
+            </div> 
+
+            <div class="form-group">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="btn-toolbar pull-right">
+                        <p:commandButton onstart="PF('statusDialog2b').show()" onsuccess="PF('statusDialog2b').hide()" value="#{msg['btn.rechercher']}" update="clienttableb" actionListener="#{souscriptionAsSanteBean.rechercheAvanceForBeneficiaire()}" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+            <p:dialog widgetVar="statusDialog2b" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <h:graphicImage library="images" name="ajax-loader.gif" />
+            </p:dialog>
+        </p:panel>
+
+        <p:dataTable rendered="#{souscriptionAsSanteBean.hideChoixBeneficiaireForm}" widgetVar="clientsTableb" 
+                     rowExpandMode="single" id="clienttableb" 
+                     var="clientb" 
+                     value="#{souscriptionAsSanteBean.beneficiaireList}"
+                     selection="#{souscriptionAsSanteBean.beneficiaireSelectedList}" rowKey="#{clientb.idClient}" 
+                     emptyMessage="#{msg['tableau.vide']}" 
+                     rows="8"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     paginator="true" paginatorPosition="bottom" rowsPerPageTemplate="8,15,20">
+            <p:ajax event="rowSelect" listener="#{souscriptionAsSanteBean.onRowSelect}" />
+            <p:ajax event="rowToggle" listener="#{souscriptionAsSanteBean.onRowToggle}" update="clienttableb" />
+            <f:facet name="header">
+                <p:outputPanel>
+                    <h:outputText value="Recherche d'un client:" />
+                    <p:inputText id="globalFilter" onkeyup="PF('clientsTableb').filter()" style="width:500px" placeholder="Entrer les infos"/>
+                </p:outputPanel>
+            </f:facet>
+            <p:column style="width:50px">
+
+                <p:rowToggler/>
+            </p:column>
+            <p:column headerText="#{msg['client.code']}" filterBy="#{clientb.numeroPiece}" filterMatchMode="contains">
+                <h:outputText value="#{clientb.numeroPiece}" />
+            </p:column>
+            <p:column filterBy="#{clientb.type}" headerText="#{msg['client.type']}" class="col-lg-2">
+                <f:facet name="filter">
+                    <h:selectOneMenu class="form-control" onchange="PF('clientsTableb').filter()" >
+                        <f:selectItem itemLabel="#{msg['client.type']}" itemValue="#{null}" noSelectionOption="true" />
+                        <f:selectItem itemLabel="#{msg['client.type.physique']}" itemValue="1"/>
+                        <!--f:selectItem itemLabel="#{msg['client.type.morale']}" itemValue="2" /-->
+                    </h:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{clientb.type}" />
+            </p:column>
+            <p:column headerText="#{msg['client.nom']}" filterBy="#{clientb.nom}" filterMatchMode="contains">
+                <h:outputText value="#{clientb.nom}" />
+            </p:column >
+            <p:column headerText="#{msg['client.prenom']}" filterBy="#{clientb.prenom}" filterMatchMode="contains">
+                <h:outputText value="#{clientb.prenom}" />
+            </p:column >
+            <p:column headerText="#{msg['client.datedenaissance']}" filterMatchMode="contains">
+                <h:outputText value="#{clientb.dateNaissance}" />
+            </p:column >
+
+            <p:rowExpansion >
+                <div class="form-group">
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.type']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.fax}"  />
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.nom']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.nom}"  />
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.prenom']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.prenom}"  />
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.lieuemission']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.lieuEmission}"/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.bp']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.codeZip}"  />
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.email']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.email}"  />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.pays']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.pays}" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.lieudenaissance']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.lieuNaissance}"  />
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.datedenaissance']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.dateNaissance}"  />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.nationalite']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.nationalite}"  />
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.adresse']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.adresse}"/> 
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.piece']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.typePiece}"  />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.numeropiece']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.numeroPiece}"  />
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.dateemissionpiece']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.dateEmissionPiece}"  />
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="#{msg['client.dateexpirationpiece']}"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.dateExpirationPiece}" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group hide">
+
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="Pseudo"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.pseudo}"  />
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <h:outputText value="Password"/>
+                            </span>
+                            <h:outputLabel class="form-control"  value="#{souscriptionAsSanteBean.clientSelected.password}" />
+                        </div>
+                    </div>
+
+                </div>
+
+            </p:rowExpansion> 
+            <p:column headerText="Selection" selectionMode="multiple" width="8%" style="text-align: center;" />
+        </p:dataTable>
+
+    </ui:composition>
+</html>

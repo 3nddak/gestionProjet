@@ -1,0 +1,92 @@
+ 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+
+    <ui:composition>
+
+        <h:form id="recherche" class="form-horizontal">
+            <p:panel  header="Recherche avancée" toggleable="true"  style="margin-bottom:20px">
+                <div class="row">
+                    <p:panelGrid columns="4" class="table table-responsive" >
+                        <p:outputLabel for="pays" value="Pays :"/>
+                        <h:selectOneMenu class="form-control" converter="entityConverter"  id="pays" value="#{autorisationDemandeAnnulationCourtierAsAuto.listerParametreByUserService.paysSelect}"  >
+
+                            <f:selectItems value="#{autorisationDemandeAnnulationCourtierAsAuto.listerParametreByUserService.listpays}" var="pays"
+                                           itemLabel="#{pays.designationPays}" itemValue="#{pays}"/>
+                            <p:ajax listener="#{autorisationDemandeAnnulationCourtierAsAuto.listerParametreByUserService.trierPrametresByPays()}" update="pss,courtier" />
+                        </h:selectOneMenu>
+                        <p:outputLabel for="pss" value="Compagnie :"/>
+                        <h:selectOneMenu class="form-control"  converter="entityConverter"  id="pss" value="#{autorisationDemandeAnnulationCourtierAsAuto.compagnieSelected}"  >
+                            <f:selectItem itemLabel="Toutes les compagnies" itemDisabled="false" />
+                            <f:selectItems value="#{autorisationDemandeAnnulationCourtierAsAuto.listerParametreByUserService.listCompagnie}" var="compagnie"
+                                           itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                        </h:selectOneMenu>
+
+                        <p:outputLabel for="courtier" value="courtier :"/>
+                        <h:selectOneMenu class="form-control"  converter="entityConverter"  id="courtier" value="#{autorisationDemandeAnnulationCourtierAsAuto.courtierSelected}"  >
+
+                            <f:selectItems value="#{autorisationDemandeAnnulationCourtierAsAuto.listerParametreByUserService.listCourtier}" var="courtier"
+                                           itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}"/>
+                        </h:selectOneMenu>
+
+                        <p:outputLabel for="numPolice" value="Numéro Police"/>
+                        <p:inputText id="numPolice" value="#{autorisationDemandeAnnulationCourtierAsAuto.police}" class="form-control" />
+
+                        <p:outputLabel for="nom" value="Nom"/>
+                        <p:inputText id="nom" value="#{autorisationDemandeAnnulationCourtierAsAuto.nom}" class="form-control" />
+
+                        <p:outputLabel for="prenom" value="Prenom"/>
+                        <p:inputText id="prenom" value="#{autorisationDemandeAnnulationCourtierAsAuto.prenom}" class="form-control" />
+
+                        <p:outputLabel for="numPiece" value="Numéro Piece"/>
+                        <p:inputText id="numPiece" value="#{autorisationDemandeAnnulationCourtierAsAuto.numeroPiece}" class="form-control" />
+
+                        <p:outputLabel for="immatriculation" value="Numéro d'immatriculation"/>
+                        <p:inputText id="immatriculation" value="#{autorisationDemandeAnnulationCourtierAsAuto.immatriculation}" class="form-control" />
+
+                        <p:outputLabel for="chassis" value="Numéro Chassis"/>
+                        <p:inputText id="chassis" value="#{autorisationDemandeAnnulationCourtierAsAuto.numChassis}" class="form-control" />
+
+                        <p:outputLabel for="autorise" value="Autoriser"/>
+                        <p:selectBooleanCheckbox id="autorise" value="#{autorisationDemandeAnnulationCourtierAsAuto.autoriser}" class="form-control" />
+
+
+                        <p:outputLabel for="annuler" value="Annuler"/>
+                        <p:selectBooleanCheckbox id="annuler" value="#{autorisationDemandeAnnulationCourtierAsAuto.annuler}" class="form-control" />
+
+                        <p:outputLabel for="dateDmin" value="Date demande Min:"/>
+                        <p:calendar id="dateDmin" value="#{autorisationDemandeAnnulationCourtierAsAuto.dateDemandeMin}" class="form-control" />
+                        <p:outputLabel for="dateDmax" value="Date demande Max:"/>
+                        <p:calendar id="dateDmax" value="#{autorisationDemandeAnnulationCourtierAsAuto.dateDemandeMax}" class="form-control" />
+
+                        <p:outputLabel for="dateAuMin" value="Date Autorisation Min:"/>
+                        <p:calendar id="dateAuMin" value="#{autorisationDemandeAnnulationCourtierAsAuto.dateAurorisationMin}" class="form-control" />
+                        <p:outputLabel for="dateAuMax" value="Date Autorisation Max:"/>
+                        <p:calendar id="dateAuMax" value="#{autorisationDemandeAnnulationCourtierAsAuto.dateAutoristionMax}" class="form-control" />
+
+                        <p:outputLabel for="dateAnMin" value="Date Annulation Min:"/>
+                        <p:calendar id="dateAnMin" value="#{autorisationDemandeAnnulationCourtierAsAuto.dateAnnulationMin}" class="form-control" />
+                        <p:outputLabel for="dateAnMax" value="Date Annulation Max:"/>
+                        <p:calendar id="dateAnMax" value="#{autorisationDemandeAnnulationCourtierAsAuto.dateAnnulationMax}" class="form-control" />
+
+
+                    </p:panelGrid>
+                </div>
+                <div class="row">
+                    <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  icon="fa fa-search" update="formliste2" actionListener="#{autorisationDemandeAnnulationCourtierAsAuto.rechercher()}" value="Rechercher" title="Rechercher" class="btn btn-success pull-right" >
+                    </p:commandButton>
+
+
+
+                </div>
+            </p:panel>
+        </h:form>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+        <div class="panel well">
+            <div class="panel-body">
+                <fieldset><legend class="text-uppercase" style="font-size: 15px"><h:outputLabel class="police_label" value="Caractéristique véhicule"/></legend>
+                    <p:growl id="msgsl" globalOnly="true" showDetail="false"/>
+                    <div class="form-group">
+                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="pays" value="#{flotteBean.paysSouscription}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                 requiredMessage="#{msg['compagnie.pays.requireMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['compagnie.pays']}"  itemValue=""/>
+                                    <f:selectItems value="#{guarantieCategorieBean.paysList}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                    <p:ajax listener="#{flotteBean.categorieByPays}" update="cat"/> 
+                                    <f:ajax event="click" render="paysMessage" />
+                                </h:selectOneMenu> 
+                                <h:message for="pays"  id="paysMessage" class="errorClass" />
+                            </div>                        
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <h:outputLabel for="cat" value="#{msg['vehicule.categorie']}"   class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            <h:selectOneMenu id="cat" value="#{flotteBean.idcategorie}" required="true" class="form-control"
+                                             requiredMessage="#{msg['vehicule.categorie.requiredMessage']}"
+                                             >
+                                <f:selectItem itemLabel="#{msg['vehicule.categorie']}" itemValue=""/>
+                                <f:selectItems value="#{flotteBean.categorieItems}"/> 
+                                <p:ajax  listener="#{flotteBean.guarantiesByCategorie}" update="formliste:display2,formliste:courtierp" />
+                                <f:ajax event="click" render="catMessage" />
+                            </h:selectOneMenu>
+                            <p:message for="cat"  id="catMessage" class="errorClass"/>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <h:outputLabel  value="#{msg['vehicule.remorque']}"   class=" pull-left" />
+                            <p:selectBooleanCheckbox value="#{flotteBean.remorque}" />
+                        </div> 
+                        <div class="col-md-3 col-lg-3 col-sm-3"> 
+                            <h:outputLabel  value="#{msg['vehicule.immatriculation']}"  for="numeroImmatriculation" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            <p:inputText value="#{flotteBean.voiture.numeroImmatriculation}"  id="numeroImmatriculation" class="form-control" placeholder="#{msg['vehicule.immatriculation']}"
+                                         required="true" requiredMessage="#{msg['vehicule.immatriculation.requiredMessage']}"
+                                         >
+                                <f:ajax event="keyup" render="imaMessage"/>
+                            </p:inputText>
+                            <p:message for="numeroImmatriculation"  id="imaMessage" class="errorClass"/>
+                        </div> 
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <h:outputLabel  value="#{msg['vehicule.carrosserie']}"  for="carrosserieConduitesInterieure" class=" pull-left" />
+                            <p:inputText id="carrosserieConduitesInterieure" value="#{flotteBean.voiture.carrosserieConduitesInterieure}" class="form-control" placeholder="#{msg['vehicule.carrosserie']}"
+                                         >
+                            </p:inputText>
+
+                        </div> 
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <h:outputLabel  value="#{msg['vehicule.poids']}"  for="poids" class=" pull-left" />
+                            <p:inputText id="poids" value="#{flotteBean.voiture.poids}" class="form-control" placeholder="#{msg['vehicule.poids']}"
+                                         >
+                            </p:inputText>
+
+                        </div> 
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <h:outputLabel  value="#{msg['vehicule.vitre']}"  for="vitre" class=" pull-left" />
+                            <p:inputText id="vitre" value="#{flotteBean.voiture.typeVitre}" class="form-control" placeholder="#{msg['vehicule.vitre']}"
+                                         >
+                            </p:inputText>
+
+                        </div>
+
+                        <div class="col-md-3 col-lg-3 col-sm-3"> 
+                            <h:outputLabel  value="#{msg['vehicule.energie']}"  for="energie" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+
+                            <h:selectOneMenu id="energie" value="#{flotteBean.idEnergie}" required="true" class="form-control"
+                                             requiredMessage="#{msg['vehicule.energie.requireMessage']}"
+                                             >
+                                <f:selectItem itemLabel="#{msg['vehicule.energie']}" itemValue=""/>
+                                <f:selectItems value="#{flotteBean.energieItems}"/> 
+                                <f:ajax event="click" render="energieMessage" />
+                                <f:ajax  listener="#{flotteBean.energieObject()}" />
+                            </h:selectOneMenu>
+
+                            <p:message for="energie" id="energieMessage" />
+
+                        </div>
+                        <!--div class="col-md-3 col-lg-3 col-sm-3">
+                 <h:outputLabel for="plL" value="#{msg['vehicule.energie']}"    class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                 <h:selectOneMenu id="plL" value="#{flotteBean.idEnergie}" required="true" class="form-control"
+                                  requiredMessage="#{msg['vehicule.energie.requireMessage']}"
+                                  >
+                     <f:selectItem itemLabel="#{msg['vehicule.energie']}" itemValue=""/>
+                     <f:selectItems value="#{flotteBean.energieItems}"/> 
+                 </h:selectOneMenu>
+
+             </div-->
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <h:outputLabel for="pui" value="#{msg['vehicule.puissance']}"   class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            <h:selectOneMenu id="pui" value="#{flotteBean.voiture.puissance}" required="true" class="form-control"
+                                             requiredMessage="#{msg['vehicule.puissance.requiredMessage']}" 
+                                             >
+                                <f:selectItem itemLabel="#{msg['vehicule.puissance']}" itemValue=""/>
+                                <f:selectItems value="#{flotteBean.puissanceItems}"/> 
+
+                            </h:selectOneMenu>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3 col-lg-3 col-sm-3"> 
+                            <h:outputLabel  value="#{msg['vehicule.miseencirculation']}"  for="miseEnCirculation" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            <p:inputMask  value="#{flotteBean.voiture.miseEnCirculation}" mask="9999" class="form-control"  id="miseEnCirculation"     placeholder="#{msg['vehicule.miseencirculation']}" 
+                                          required="true"
+                                          requiredMessage="#{msg['vehicule.miseencirculation.requiredMessage']}"
+                                          converterMessage="#{msg['vehicule.miseencirculation.converterMessage']}"
+                                          validatorMessage="#{msg['vehicule.miseencirculation.validatorMessage']}"
+                                          >
+                                <f:validateLongRange minimum="1980"  maximum="#{flotteBean.annee}"/>
+                                <f:ajax event="keyup" render="miseMessage"/>
+                            </p:inputMask>
+                            <p:message for="miseEnCirculation" id="miseMessage"/>
+                            <!--p:calendar  value="#{flotteBean.voiture.miseEnCirculation}" yearRange="c-25:c+1000" mode="popup" navigator="true" mask="true" widgetVar="Mise en cir" id="miseEnCirculaton" locale="fr" lang="#{flotteBean.symbole}" pattern="yyyy"   placeholder="Date de miseEnCirculation" /-->             
+                        </div> 
+                        <div class="col-md-6 col-lg-3 col-sm-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <h:outputLabel  value="#{msg['vehicule.marque']}"  for="marque" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <p:autoComplete  id="marque" required="true" forceSelection="true"  requiredMessage="#{msg['vehicule.marque.requiredMessage']}" class="pull-left" value="#{flotteBean.voiture.marque}" completeMethod="#{flotteBean.completeMethod2}"  >
+
+                                    <f:ajax event="keyup" render="marqueMessage"/>
+                                </p:autoComplete>
+                                <p:message for="marque"  id="marqueMessage"/>
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <h:outputLabel for="pl" value="#{msg['vehicule.nombreplace']}"   class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            <h:selectOneMenu id="pl" value="#{flotteBean.voiture.nombrePlaces}" required="true" class="form-control"
+                                             requiredMessage="#{msg['vehicule.nombredeplace.requiredMessage']}"
+                                             >
+                                <f:selectItem itemLabel="#{msg['vehicule.nombreplace']}" itemValue=""/>
+                                <f:selectItems value="#{flotteBean.nbPlace}"/> 
+                            </h:selectOneMenu>
+
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-3">  
+                            <h:outputLabel  value="#{msg['vehicule.numerochassis']}"  for="numChassis" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            <p:inputText value="#{flotteBean.voiture.numChassis}" id="numChassis" styleClass="form-control" placeholder="#{msg['vehicule.numerochassis']}"
+                                         required="true" requiredMessage="#{msg['vehicule.numerosChassis.requiredMessage']}"  >
+                                <p:ajax event="keyup" update="numChassisMessage"/>                                          
+                            </p:inputText>
+                            <p:message for="numChassis" id="numChassisMessage"/>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+
+
+                        <div class="col-md-3 col-lg-3 col-sm-3"> 
+                            <h:outputLabel  value="#{msg['vehicule.numeromoteur']}"  for="numMoteur" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            <p:inputText value="#{flotteBean.voiture.numMoteur}" id="numMoteur" class="form-control" placeholder="#{msg['vehicule.numeromoteur']}"
+                                         required="true" requiredMessage="#{msg['vehicule.numeroMoteur.requiredMessage']}"  >
+                                <p:ajax event="keyup" update="numMoteurMessage"/>
+                            </p:inputText>
+                            <p:message for="numMoteur" id="numMoteurMessage"/>
+                        </div> 
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <h:outputLabel  value="#{msg['vehicule.genre']}"  for="genre" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            <p:inputText id="genre" value="#{flotteBean.voiture.genre}"  class="form-control" placeholder="#{msg['vehicule.genre']}"
+                                         required="true"  
+                                         requiredMessage="#{msg['vehicule.genre.requiredMessage']}"
+                                         >
+                                <f:ajax event="keyup" render="genreMessage"/>
+                            </p:inputText>
+                            <p:message for="genre" id="genreMessage"/>
+                        </div> 
+
+                        <div class="col-md-3 col-lg-3 col-sm-3"> 
+                            <h:outputLabel  value="#{msg['vehicule.puissancereelle']}"  for="puissanceReelle" class=" pull-left" />
+                            <p:inputText value="#{flotteBean.voiture.puissanceReelle}" id="puissanceReelle" styleClass="form-control" placeholder="#{msg['vehicule.puissancereelle']}"/>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-3"> 
+                            <h:outputLabel  value="#{msg['vehicule.poidsvide']}"  for="poidsVide" class=" pull-left" />
+                            <p:inputText value="#{flotteBean.voiture.poidsVide}" id="poidsVide" styleClass="form-control" placeholder="#{msg['vehicule.poidsvide']}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-3 col-lg-3 col-sm-3">                        
+                            <h:outputLabel  value="ChargeUtile"  for="chargeUtile" class=" pull-left" />
+                            <p:inputText value="#{flotteBean.voiture.chargeUtile}" id="ChargeUtile" styleClass="form-control" placeholder="chargeUtile"/>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-3">  
+                            <h:outputLabel  value="#{msg['vehicule.ptac']}"  for="ptac" class=" pull-left" />
+                            <p:inputText value="#{flotteBean.voiture.ptac}" id="ptac" styleClass="form-control" placeholder="#{msg['vehicule.ptac']}"/>
+
+                        </div> 
+                        <div class="col-md-3 col-lg-3 col-sm-3"> 
+                            <h:outputLabel  value="#{msg['vehicule.type']}"  for="type" class=" pull-left" />
+                            <p:inputText value="#{flotteBean.voiture.type}"  id="type" styleClass="form-control" placeholder="#{msg['vehicule.type']}"/>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <h:outputLabel  value="#{msg['vehicule.numeroserie']}"  for="num Serie" class=" pull-left" />
+                            <p:inputText value="#{flotteBean.voiture.numSerie}" styleClass="form-control" placeholder="#{msg['vehicule.numeroserie']}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <h:outputLabel  value="#{msg['vehicule.valeurneuf']}"  for="valeurneuf" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            <p:inputText value="#{flotteBean.voiture.valeurNeuve}"  id="valeurneuf" styleClass="form-control" placeholder="#{msg['vehicule.valeurneuf']}"
+                                         required="true"  requiredMessage="#{msg['vehicule.valeurneuf.requiredMessage']}"  
+                                         >
+                                <p:ajax event="keyup" update="valeurneufMessage"/>
+                            </p:inputText>
+                            <pe:keyFilter for="valeurneuf" mask="int"/>
+                            <p:message for="valeurneuf" id="valeurneufMessage"/>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <h:outputLabel  value="#{msg['vehicule.valeurvenale']}"  for="valeurvenale" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            <p:inputText value="#{flotteBean.voiture.valeurvenale}"  id="valeurvenale" styleClass="form-control" placeholder="#{msg['vehicule.valeurvenale']}"
+                                         required="true"  requiredMessage="#{msg['vehicule.valeurvenale.requiredMessage']}"  
+                                         >
+                                <p:ajax event="keyup" update="valeurvenaleMessage"/>
+                            </p:inputText>
+                            <pe:keyFilter for="valeurvenale" mask="int"/>
+                            <p:message for="valeurvenale" id="valeurvenaleMessage"/>
+                        </div>
+
+                    </div>
+                    <p:commandButton id="btn_reset" class="btn-danger danger" value="#{msg['btn.annuller']}" type="reset"/>
+                </fieldset> 
+            </div>
+        </div>
+    </ui:composition> 
+</html>

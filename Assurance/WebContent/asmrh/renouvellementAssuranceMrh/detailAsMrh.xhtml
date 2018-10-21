@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <h:form  id="detail" class="form-horizontal">
+            <p:panel header=" #{msg['titre.policeEcheance']}: #{renouvellementAsMrhBean.assuranceMrhSelected.dateFinContrat}" toggleable="true" collapsed="false" style="margin-bottom:20px">  
+                <p:panelGrid columns="2" layout="grid" class="table table-responsive">
+
+                    <p:outputLabel  class="form-control bg-purple" for="assureur" value="#{msg['sinistre.assureur']}:" />
+                    <h:outputText  id="assureur" class="form-control"  value="#{renouvellementAsMrhBean.assuranceMrhSelected.compagnie.abbreviation}"/>
+                    
+                    <p:outputLabel class="form-control bg-purple" for="police" value="#{msg['titre.periode']}:"/>
+                    <h:outputText id="police" class="form-control "  value="#{renouvellementAsMrhBean.assuranceMrhSelected.numeroPolice}"/>
+                    
+                    <p:outputLabel class="form-control bg-purple" for="dateDebut" value="#{msg['titre.dateDebut']}:"/>
+                    <p:calendar id="dateDebut" class="form-control" value="#{renouvellementAsMrhBean.dateDebut}"  pattern="dd/MM/yyyy">
+                        <p:ajax event="dateSelect" update="dateFin,validation:cccc" listener="#{renouvellementAsMrhBean.dateFin()}" />
+                       
+                    </p:calendar>
+                    <p:outputLabel class="form-control bg-purple" for="dateFin" value="#{msg['titre.dateFin']}:"/>
+                    <p:outputLabel class="form-control"  id="dateFin" value="#{renouvellementAsMrhBean.dateFins}"/>
+
+                    <p:outputLabel for="cou" class="form-control bg-purple" value="#{msg['titre.courtier']} :"/>
+                    <h:selectOneMenu  class="form-control"  converter="entityConverter" id="cou" value="#{renouvellementAsMrhBean.courtier}"  >
+                        <f:selectItem itemValue="" itemLabel="#{msg['courtier.requireMessage']}"/> 
+                        <f:selectItems value="#{renouvellementAsMrhBean.courtierList}" var="courtier"
+                                       itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}"/>
+                    </h:selectOneMenu>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:composition>
+</html>

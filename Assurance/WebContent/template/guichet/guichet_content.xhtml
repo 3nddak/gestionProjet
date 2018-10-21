@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['guichet.gestion']}" ></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row">
+             
+
+                    <p:outputPanel id="devise"> 
+                        <div class="panel">
+                            <div class="panel-heading"> 
+                                <sec:authorize ifAllGranted="ADD_GUICHET">
+                                <p:fieldset  legend="#{msg['guichet.ajouter']}" toggleable="true" collapsed="true" toggleSpeed="500" >                          
+                                    <ui:include src="guichet_ajout.xhtml"/>
+                                </p:fieldset>
+                                </sec:authorize>
+                            </div>
+                            <h:form  id="formliste">
+                                <!--div class="panel-heading"> 
+    
+                                    <fieldset>
+                                        <legend class="text-center"><p:outputLabel value="GESTION DES GUICHETS"></p:outputLabel></legend>
+                                        <div class="form-horizontal">
+                                            <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8">
+                                                <div class="col-lg-2 small col-md-2 col-xs-2 col-sm-2">
+                                                    <p:commandButton rendered="#{sec:areAllGranted('ADD_GUICHET')}" value="Ajouter" icon="fa fa-plus" class=" police_label btn btn-success btn-lg btn-sm btn-xs" type="button" onclick="PF('ajouter').show();"/>
+                                                </div>
+    
+    
+                                            </div>
+                                        </div> 
+    
+    
+    
+                                    </fieldset>
+    
+                                </div--> 
+
+                                <div class="panel-body">
+
+                                    <sec:authorize ifAllGranted="GUICHET">
+                                    <p:fieldset legend="#{msg['guichet.liste']}" style="margin-bottom:20px">
+                                        <div class="form-group">
+                                            <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-xs btn-imprimer" actionListener="#{guichetsBean.doGetA()}"   > 
+                                                <i class=" glyphicon glyphicon-print"></i>
+                                            </h:commandLink>  
+                                        </div>
+                                        <div class="table-responsive">
+                                        <p:dataTable sortOrder="descending" sortBy="#{guichets.idGuichet}" class="table table-bordered" paginatorPosition="bottom" var="guichets" id="deviseliste" reflow="true" rows="10" value="#{guichetsBean.guichetsList}" 
+                                                     emptyMessage="#{msg['tableau.vide']}"
+                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                     paginator="true" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" > 
+                                            <f:facet name="{Exporters}">
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/excel.png" width="24"/>
+                                                    <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/pdf.png" width="24"/>
+                                                    <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/csv2.png" width="24"/>
+                                                    <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/xml.png" width="24"/>
+                                                    <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+                                            </f:facet>
+
+                                            <!--p:column headerText="Code Guichet">
+                                                <h:outputText value="#{guichets.code}" />
+                                            </p:column-->
+
+                                            <p:column headerText="#{msg['guichet.designation']}" filterBy="#{guichets.designation}">
+                                                <h:outputText value="#{guichets.designation}" />
+                                            </p:column>
+
+                                            <p:column headerText="#{msg['guichet.pv']}" filterBy="#{guichets.pointsVente.designation}">
+                                                <h:outputText value="#{guichets.pointsVente.designation}" />
+                                            </p:column>
+                                            
+                                            <p:column headerText="Guichet Externe" class="text-center">
+                                                <i class="text-green icon-default fa fa-check #{guichets.guichetExterne}" />
+                                                <i  class=" icon-default  text-red fa fa-close #{!guichets.guichetExterne}" />
+                                            </p:column>
+                                            
+                                            <p:column headerText="Point de Retrait" class="text-center">
+                                                    <i class="text-green icon-default fa fa-check #{guichets.pointsDeRetrait}" />
+                                                    <i  class=" icon-default  text-red fa fa-close #{!guichets.pointsDeRetrait}" />
+                                            </p:column>
+                                            <p:column headerText="Actions">
+
+                                                <p:commandButton rendered="#{sec:areAllGranted('MOD_GUICHET')}" update="modification" oncomplete="PF('modifier').show()" class="btn-primary" icon="fa fa-edit" title="Modifier" style="background: #337ab7;color:#fff;border-color: #337ab7;">
+                                                    <f:setPropertyActionListener value="#{guichets}" target="#{guichetsBean.guichetsSelected}" />
+                                                </p:commandButton>
+
+
+
+                                                <p:commandButton rendered="#{sec:areAllGranted('DEL_GUICHET')}"  oncomplete="PF('supprimer').show()" class="btn-danger" icon="fa fa-trash" title="Supprimer" style="background: #d9534f;color:#fff;border-color: #d43f3a;">
+                                                    <f:setPropertyActionListener value="#{guichets}" target="#{guichetsBean.guichetsSelected}" />
+                                                </p:commandButton>
+                                            </p:column>
+
+                                        </p:dataTable>
+                                             </div>
+                                    </p:fieldset>
+                                        </sec:authorize>
+                                </div>
+                            </h:form>
+                            <!--p:dialog  header="AJOUT" showEffect="fade"  widgetVar="ajouter" modal="true" width="400" minHeight="800" resizable="false">
+                                <ui:include src="guichet_ajout.xhtml"/>
+                            </p:dialog-->
+                            <p:dialog  header="#{msg['btn.modifier']}" showEffect="fade"  widgetVar="modifier" modal="true" width="400" minHeight="500" resizable="false">
+                                <ui:include src="guichet_modifier.xhtml"/>
+                            </p:dialog>
+                            <h:form>
+                                <p:growl id="msgs3" showDetail="false" globalOnly="true" />
+                                <p:confirmDialog id="confirmation" message="#{msg['supprimer.message']}"
+                                                 header="#{msg['btn.supprimer']}" severity="alert" 
+                                                 widgetVar="supprimer">
+
+                                    <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger btn btn-xs"  />
+                                    <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste" action="#{guichetsBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn-primary btn btn-xs"/>
+                                </p:confirmDialog>
+                            </h:form>
+
+                            <!--div class="panel-footer"> 
+    
+                            </div--> 
+                        </div>
+                    </p:outputPanel>
+
+                </div>
+            </div>
+      
+
+    </ui:composition> 
+
+</html>
+

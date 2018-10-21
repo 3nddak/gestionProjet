@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <fieldset>
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['compagnie.liste']}"></p:outputLabel></legend>
+            </fieldset>
+            <div class="panel">
+                <div class="panel-body">
+                    <h:form id="f21" class="form-horizontal">
+                        <p:growl id="alerte"  globalOnly="true"  severity="warn"/>
+                        <p:panel id="t6" header="Recherche" toggleable="true" collapsed="false" class="panel-default" >
+
+                            <div class="panel-body">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">                          
+                                    <h:outputLabel for="pays"  value="Pays" class=""/>                                                     
+                                    <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{etatCompBean.paysSelected}" >                                          
+                                        <f:selectItem itemLabel="Tout" itemDisabled="false" />
+                                        <f:selectItems var="pays" value="#{etatCompBean.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                                    </h:selectOneMenu>
+                                </div>   
+
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">                
+                                    <h:outputLabel for="Type courtier"  value="Type Courtier" class="pull-left text-left"/>                            
+                                    <h:selectOneMenu id="compagnie" value="#{etatCompBean.typeCourtier}"  class="form-control" >                                          
+                                        <f:selectItem itemLabel="Tout" itemDisabled="false" />
+                                        <f:selectItem itemLabel="Courtier Externe" itemValue="courtier externe" /> 
+                                        <f:selectItem itemLabel="Courtier Propre" itemValue="courtier propre" /> 
+                                        <p:ajax listener="#{etatCompBean.sortCourtier()}" update="courtier,alerte" />
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">                       
+                                    <h:outputLabel for="courtier"  value="Courtier" class="pull-left text-left"/>                           
+                                    <h:selectOneMenu id="courtier" converter="entityConverter" value="#{etatCompBean.courtierSelected}" 
+                                                     class="form-control" >                                          
+                                        <f:selectItem itemLabel="Tout" itemDisabled="false" />
+                                        <f:selectItems var="courtier" value="#{etatCompBean.sortedListCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                                    </h:selectOneMenu>
+
+                                </div>
+
+
+
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">                         
+                                    <h:outputLabel for="tpv"  value=" Type PDV" class="pull-left text-left"/>                            
+                                    <h:selectOneMenu id="tpv"  value="#{etatCompBean.typePointVente}" class="form-control" >                                          
+                                        <f:selectItem itemLabel="Tout" itemDisabled="false" />
+                                        <f:selectItem itemLabel="Point de vente Externe" itemValue="point de vente externe" /> 
+                                        <f:selectItem itemLabel="Point de vente Propre" itemValue="point de vente propre" />
+                                        <p:ajax listener="#{etatCompBean.sortPointsVente()}" update="pv" />
+                                    </h:selectOneMenu>                          
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">                          
+                                    <h:outputLabel for="pv"  value="Point de vente" class="pull-left text-left"/>                            
+                                    <h:selectOneMenu id="pv"  value="#{etatCompBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                        <f:selectItem itemLabel="Tout" itemDisabled="false" />
+                                        <f:selectItems var="pv" value="#{etatCompBean.sortedListPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                                    </h:selectOneMenu>
+                                </div>
+
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="btn-toolbar pull-right">
+                                        <p:commandButton class="btn-imprimer btn" value="Rechercher" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{etatCompBean.trier()}"  update="f1,f21" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </p:panel>
+
+                    </h:form>
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <h:graphicImage library="images" name="ajax-loader.gif" />
+                    </p:dialog>
+                    <h:form id="f1" class="form-horizontal">
+                        <p:panel id="t1" header="#{msg['compagnie.liste']}" toggleable="true" collapsed="false" class="panel-default">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="btn-toolbar">
+                                            <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn-imprimer btn btn-xs" actionListener="#{etatCompBean.doGetA()}"   > 
+                                                <i class=" fa fa-print"></i>
+                                            </h:commandLink>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="table-responsive">
+                                            <p:dataTable sortOrder="descending" sortBy="#{compagnie.idCompagnie}" class="table table-bordered table-striped"  var="compagnie" rowExpandMode="single" 
+                                                         rowKey="#{compagnie.idCompagnie}" 
+                                                         selection="#{compagnieBean.triCompagnieList}" id="compagnieliste" rows="25" value="#{etatCompBean.listCompagnie}" 
+                                                         emptyMessage="#{msg['tableau.vide']}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                         paginator="true" paginatorPosition="bottom"  scrollWidth="50%" scrollHeight="150" widgetVar="ddd" > 
+
+                                                <p:column headerText="#{msg['compagnie.abbreviation']}" filterBy="#{compagnie.abbreviation}" >
+                                                    <h:outputText value="#{compagnie.abbreviation}" />
+                                                </p:column>
+                                                <p:column headerText="#{msg['compagnie.designation']}" filterBy="#{compagnie.designation}">
+                                                    <h:outputText value="#{compagnie.designation}" />
+                                                </p:column>
+
+                                                <p:column headerText="#{msg['compagnie.adresse']}" filterBy="#{compagnie.adresse}">
+                                                    <h:outputText value="#{compagnie.adresse}" />
+                                                </p:column>
+                                                <p:column headerText="#{msg['compagnie.tel']}" filterBy="#{compagnie.telephones}">
+                                                    <h:outputText value="#{compagnie.telephones}" />
+                                                </p:column>
+                                                <p:column headerText="#{msg['compagnie.pays']}" filterBy="#{compagnie.pays.designationPays}">
+                                                    <h:outputText value="#{compagnie.pays.designationPays}"  />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <p:outputPanel id="ajout">
+                    <h:form class="form-horizontal" id="zone-ajout"> 
+                        <div class="row">
+                            <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge "/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu id="pays" value="#{conditionGBean.pays}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                         requiredMessage="#{msg['compagnie.pays.requireMessage']}"
+                                                         >
+                                            <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                            <f:selectItems value="#{conditionGBean.listPays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                            <f:ajax event="click" render="paysMessage" />
+                                            <p:ajax update="pss" listener="#{conditionGBean.compagnieByPays()}"/>
+                                        </h:selectOneMenu> 
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="pays"  id="paysMessage" class="errorClass" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12" >
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="pss" value="Compagnie"/><h:outputLabel value="*" class="etoile_rouge"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  class="form-control" required="true" requiredMessage="Veuillez choisir la compagnie" converter="entityConverter"  id="pss" value="#{conditionGBean.CGToSave.compagnie}"  >
+                                            <f:selectItem itemDisabled="true" itemLabel="Choisir compagnie" /> 
+                                            <f:selectItems value="#{conditionGBean.listCompagnie}" var="compagnie"
+                                                           itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                            <f:ajax event="click" render="pssMessage" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="pss"  id="pssMessage" class="errorClass" />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                <div class="form-group">     
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="desi" value="Designation" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText id="desi" required="true"  requiredMessage="veuillez entrer la Designation" value="#{conditionGBean.CGToSave.designation}" styleClass="form-control"  title="designation" a:placeholder="designation" >
+                                            <f:ajax event="keyup" render="desiMessage"/>
+                                        </p:inputText>
+
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="desi"  id="desiMessage" class="errorClass" />
+                                    </div>  
+                                </div> 
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                <div class="form-group">     
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="des" value="Description" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText id="des" required="true"  requiredMessage="veuillez entrer la Description" value="#{conditionGBean.CGToSave.description}" styleClass="form-control"  title="description" a:placeholder="description" >
+                                            <f:ajax event="keyup" render="desMessage"/>
+                                        </p:inputText>
+
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="des"  id="desMessage" class="errorClass" />
+                                    </div>  
+                                </div> 
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                <div class="form-group">     
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="valeur" value="Valeur" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText id="valeur" required="true" converterMessage="#{msg['format.integer.converterMessage']}"  requiredMessage="veuillez entrer la valeur" value="#{conditionGBean.CGToSave.valeur}" styleClass="form-control"  title="valeur" a:placeholder="Valeur" >
+                                            <f:ajax event="keyup" render="valeurMessage"/>
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                            <p:ajax event="blur" update="@this" />
+                                        </p:inputText>
+                                        <pe:keyFilter for="valeur" mask="int"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="valeur"  id="valeurMessage" class="errorClass" />
+                                    </div>  
+                                </div> 
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="func" value="Fonction"/><h:outputLabel value="*" class="etoile_rouge"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  class="form-control" required="true" requiredMessage="Veuillez choisir la fonction" id="func" value="#{conditionGBean.CGToSave.function}"  >
+                                            <f:selectItem itemLabel="Fonction" itemValue="" itemDisabled="true"/>
+                                            <f:selectItems value="#{conditionGBean.fonctionItems}"/>
+                                            <f:ajax event="click" render="funcMessage" />
+                                        </h:selectOneMenu>
+
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="pss"  id="funcMessage" class="errorClass" />
+                                    </div>  
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="t5"  value="Activer" class="pull-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:selectBooleanCheckbox id="t5"  required="true" value="#{conditionGBean.CGToSave.activer}"  />
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="btn-toolbar">
+                                    <p:commandButton value="#{msg['btn.annuller']}" ajax="true" action="#{conditionGBean.cancel()}" update="zone-ajout,formliste,"  class="btn btn-danger pull-left" />
+                                    <p:commandButton  value="#{msg['btn.enregistrer']}" onstart="PF('statusDialog2').show()" onsuccess="PF('statusDialog2').hide()" action="#{conditionGBean.saveOne()}" update="zone-ajout,formliste"  class="btn btn-purple pull-right"/>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <p:dialog widgetVar="statusDialog2" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                            <h:graphicImage library="images" name="ajax-loader.gif" />
+                        </p:dialog>
+                    </h:form>
+
+                </p:outputPanel>
+            </div>
+        </div>
+    </ui:composition> 
+
+</html>
+

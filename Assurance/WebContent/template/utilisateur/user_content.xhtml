@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <p:outputPanel id="usercontent" >
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <fieldset> 
+                    <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['utilisateur.entete']}"></p:outputLabel></legend>
+                </fieldset>
+                <div id="liste">
+
+                    <div class="panel-heading"> 
+                        <sec:authorize ifAllGranted="ADD_UTILISATEUR">
+                            <p:fieldset  legend="#{msg['utilisateur.ajouter']}" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <ui:include src="user_ajout.xhtml"/>
+                            </p:fieldset>
+                        </sec:authorize>
+                    </div>
+
+                    <div class="panel-heading">
+                        <sec:authorize ifAllGranted="UTILISATEUR"> 
+                            <p:fieldset  legend="Liste des utilisateurs" toggleable="true" collapsed="false" toggleSpeed="500"  style="margin-bottom:20px">     
+                                <ui:include src="listUtilisateur.xhtml"/>
+                            </p:fieldset>
+                        </sec:authorize>
+                    </div>
+
+                    <div class="panel-heading">
+                        <p:fieldset  legend="Mise à jour Permission" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">     
+                            <ui:include src="quickdEdit.xhtml"/>
+                        </p:fieldset>
+                    </div>
+
+                    <div class="panel-heading">
+                        <p:fieldset  legend="Utilisateurs Connectés" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">     
+                            <ui:include src="connectedUser.xhtml"/>
+                        </p:fieldset>
+                    </div>
+
+                </div>
+            </div>
+            <p:dialog  header="#{msg['titre.operation.modification']}" class="" showEffect="fade"  widgetVar="modifier" modal="true" resizable="false" width="900"   >
+                <div class="modal-body">
+                    <ui:include src="user_modifier.xhtml"/>
+                </div>
+            </p:dialog>
+            <p:dialog  header="#{msg['titre.operation.creation.pass']}" showEffect="fade"  widgetVar="pass" modal="true"   width="400" height="250" resizable="false">
+                <ui:include src="user_pass.xhtml"/>
+            </p:dialog>
+
+            <h:form>
+                <p:growl id="msgs3" showDetail="false" globalOnly="true" />
+                <p:confirmDialog id="confirmation" message="Voulez vous vraiment supprimer cette ligne"
+                                 header="#{msg['titre.operation.suppression']}" severity="alert" widgetVar="supprimer">
+                    <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                    <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste" action="#{gestionUtilisateurBean.deleteUtilisateur()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+                </p:confirmDialog>
+            </h:form>
+        </p:outputPanel>
+        <pe:blockUI widgetVar="loadProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                <h:outputText value="#{msg['btn.chargementencour']}..." />  
+            </h:panelGrid>  
+        </pe:blockUI>  
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+    </ui:composition>
+</html>
+

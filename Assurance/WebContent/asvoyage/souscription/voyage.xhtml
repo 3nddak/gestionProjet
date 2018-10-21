@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <div class="panel">
+            <div class="panel-body">
+                <fieldset><legend class="text-uppercase" ><h:outputLabel  value="#{msg['voyage.informationSurLAssuranceVoyage']}"/></legend>
+                    <p:growl id="msgsl" globalOnly="true" showDetail="false"/>
+                    <ui:include src="infos_type.xhtml"/>
+                    <div class="form-group">
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['voyage.typeVoyage']}"  for="tyv" class=" pull-left" /> <h:outputLabel value="*"  class="etoile_rouge pull-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="tyv"  value="#{souscriptionAsVoyageBean.assuranceVoyageToSave.typeVoyage}" required="true"  class="form-control"
+                                                 requiredMessage="#{msg['voyage.typeVoyage.requiredMessage']}">
+                                    <f:selectItem itemValue="" itemLabel="#{msg['voyage.typeVoyage']}"/> 
+                                    <f:selectItems value="#{souscriptionAsVoyageBean.typeVoyage}" /> 
+                                    <p:ajax event="click" update="tyvMessage"/> 
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="tyv" id="tyvMessage"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                                <h:outputLabel  value="#{msg['voyage.paysDeDestination']}"  for="paysDesignation" class=" pull-left" style=""/><h:outputLabel value="*"  class="etoile_rouge pull-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                                <p:autoComplete id="paysDesignation" class="pull-left" required="true" value="#{souscriptionAsVoyageBean.nomP}" forceSelection="true" requiredMessage="#{msg['voyage.paysDeDestination.requiredMessage']}"  completeMethod="#{souscriptionAsVoyageBean.completeMethod}"  >
+                                    <p:ajax event="itemSelect" listener="#{souscriptionAsVoyageBean.find()}"/>
+                                </p:autoComplete>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="paysDesignation" id="paysDesignationMessage"/>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['voyage.dateDeDepart']}"  for="dateDepart" class="pull-left"  /> <h:outputLabel value="*"  class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:calendar value="#{souscriptionAsVoyageBean.assuranceVoyageToSave.dateDepart}" navigator="true" readonlyInput="true" class="form-control"  required="true" requiredMessage="#{msg['voyage.dateDeDepart.requiredMessage']}"  id="dateDepart"  pattern="dd/MM/yyyy"   mindate="#{souscriptionAsVoyageBean.dateDepart}" mask="true" placeholder="Date de depart" >
+                                    <p:ajax event="dateSelect" update="dateDepart"/> 
+                                </p:calendar>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="dateDepart" id="dateDepartMessage"/> 
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['voyage.dateDeretour']}"  for="dateRetour" class="pull-left"  /> <h:outputLabel value="*"  class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:calendar  value="#{souscriptionAsVoyageBean.assuranceVoyageToSave.dateRetour}" class=" form-control" navigator="true" readonlyInput="true"   required="true" requiredMessage="#{msg['voyage.dateDeretour.requiredMessage']}"   id="dateRetour"  pattern="dd/MM/yyyy" mindate="#{souscriptionAsVoyageBean.dateRetour}"  mask="true" placeholder="Date de retour" >
+                                    <p:ajax event="dateSelect" update="dateRetourMessage"/>
+                                </p:calendar>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="dateRetour" id="dateRetourMessage"/> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['voyage.regionDeDestination']}"  for="red" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="red" class="form-control" value="#{souscriptionAsVoyageBean.assuranceVoyageToSave.regionDestination}" />
+                            </div>
+                        </div>  
+                      <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['voyage.villeDeDestination']}"  for="vd" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="vd" class="form-control" value="#{souscriptionAsVoyageBean.assuranceVoyageToSave.villeDestination}" />
+                            </div>
+                        </div>  
+                    </div>
+                </fieldset>
+                <p:separator />
+
+                <div class="form-group">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                            <div class="form-group" >
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:outputPanel id="tt">
+                                        <h:outputLabel for="pss" value="#{msg['titre.compagnie']}"/><h:outputLabel id="etoile" rendered="#{souscriptionAsVoyageBean.req}" value="*" class="etoile_rouge"/>
+                                    </p:outputPanel>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:selectOneMenu  class="form-control" required="#{souscriptionAsVoyageBean.req}" requiredMessage="#{msg['courtier.compagnie.requireMessage']}" converter="entityConverter"  id="pss" value="#{souscriptionAsVoyageBean.assuranceVoyageToSave.compagnie}"  >
+                                        <f:selectItem noSelectionOption="true" itemLabel="#{msg['titre.choisirCompagnie']}" /> 
+                                        <f:selectItems value="#{souscriptionAsVoyageBean.listCompagnieAssuranceVoyage}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                        <f:ajax event="click" render="pssMessage" />
+                                        <p:ajax   listener="#{souscriptionAsVoyageBean.listCourtierByCompagnie()}"  update="formliste:display2,formliste:courtierp"/>
+
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:message for="pss"  id="pssMessage" class="errorClass" />
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+                            <p:outputPanel id="display22">
+                                <p:dataTable class="table_label table-responsive" var="compcour" id="display2" reflow="true" rows="5" value="#{souscriptionAsVoyageBean.allAssuranceVoyage}"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                             rowsPerPageTemplate="10,20,25,50,100"  emptyMessage="#{msg[tableau.vide]}" rowKey="#{compcour.compagnie.idCompagnie}"  >                                                    
+                                    <p:column headerText="#{msg['titre.compagnie']}">
+                                        <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                                    </p:column>
+
+                                    <p:column headerText="#{msg['titre.courtier']}">
+                                        <h:outputText value="#{compcour.courtier.abbreviation}" />
+                                    </p:column >
+
+                                    <p:column headerText="#{msg['titre.actions']}">
+                                        <p:commandButton icon="fa fa-trash" update="display2,formliste:pss,formliste:tt" action="#{souscriptionAsVoyageBean.removeCompagnieCourtierFromList()}" title="Supprimer" class="btn btn-danger">
+                                            <f:setPropertyActionListener value="#{compcour}" target="#{souscriptionAsVoyageBean.assuranceVoyageSelected}" />
+                                        </p:commandButton>
+
+                                    </p:column>
+                                </p:dataTable>
+                            </p:outputPanel>
+                        </div>
+                    </div>
+                </div>
+                <p:dialog id="courtierp" header="Choix du courtier" showEffect="fade"  widgetVar="courtier" modal="true" width="625" minHeight="800" resizable="false">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label >#{msg['titre.courtier']}</label><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  required="true" id="courtier"  value="#{souscriptionAsVoyageBean.assuranceVoyageToSave.courtier}" converter="omnifaces.SelectItemsConverter"
+                                                  requiredMessage="#{msg['pv.courtier.requireMessage']}"  class="form-control" >
+                                    <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""/>
+                                    <f:selectItems itemLabel="#{courtier.designation}" var="courtier"  itemValue="#{courtier}" value="#{souscriptionAsVoyageBean.listCourtier}"  />
+                                    <p:ajax event="click" update="courtierMessage"/>
+                                </h:selectOneMenu>
+                                <h:message for="courtier"  id="courtierMessage" class="errorClass" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                <h:message id="courMessage" for="courtier"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="btn-toolbar">
+                            <p:commandButton value="#{msg['btn.valider']}" class="btn-purple btn pull-right" action="#{souscriptionAsVoyageBean.addCompagnieCourtierToList()}" oncomplete="PF('courtier').hide()" 
+                                             update="formliste:display2,pss,tt" />
+                        </div>
+                    </div>
+                </p:dialog>
+            </div> 
+        </div>
+    </ui:composition>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <div class="panel">
+            <ui:include src="infos_verification.xhtml"/>
+
+            <div class="panel-body">
+                <fieldset><legend class="text-uppercase"><h:outputLabel class="police_label" value="#{msg['credit.info']}"/></legend>
+
+
+                    <div class="form-group">
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+
+                            <p:growl id="msgsll" globalOnly="true" showDetail="false"/>
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <p:outputPanel id="disp">
+                                    <p:dataTable class="table_label table-responsive" var="compcour" id="ver" reflow="true" rows="5" value="#{souscriptionAsCompteBean.listAssuranceCompteTosave}"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                 rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg[tableau.vide]}" 
+                                                 > 
+                                        <p:ajax event="rowToggle" listener="#{souscriptionAsCompteBean.onRowToggle2}" update="ver" />
+                                        <p:column style="width:50px"  headerText="#{msg['tableaux.detail']}">
+                                            <p:rowToggler/>
+                                        </p:column>
+                                        <p:column headerText="#{msg['titre.compagnie']}">
+                                            <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                                        </p:column>
+
+                                        <p:column headerText="#{msg['titre.courtier']}">
+                                            <h:outputText value="#{compcour.courtier.abbreviation}" />
+                                        </p:column >
+
+                                        <p:column headerText="#{msg['tableau.primenette']}">
+                                            <h:outputText value="#{compcour.prixNette}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+
+                                        <p:column headerText="#{msg['tableau.reduction']}">
+                                            <h:outputText value="#{compcour.valeurReduction()}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.majoration']}">
+                                            <h:outputText value="#{compcour.valeurMajoration()}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.taxe']}">
+                                            <h:outputText value="#{compcour.valeurTaxes()}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.primettc']}">
+                                            <h:outputText value="#{compcour.primeTTCS}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+
+                                        <p:column  headerText="#{msg['titre.actions']}" width="100" >
+                                            <!--p:tooltip id="ok" for="e" >
+                                                Enrégistrer
+                                            </p:tooltip-->
+                                            <p:commandLink id="e" class="btn btn-purple fa fa-send-o" title="#{msg['btn.enregistrer']}"  rendered ="#{souscriptionAsCompteBean.willSave(compcour.compagnie.idCompagnie)}" action="#{souscriptionAsCompteBean.souscrireAssurance()}" update="@form"
+                                                           >
+                                                <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['message.etesvoussur']}?" icon="fa fa-trash"  />
+                                                <f:setPropertyActionListener value="#{compcour}" target="#{souscriptionAsCompteBean.assuranceCompteSelected}" />
+                                            </p:commandLink>
+
+                                            <!--p:tooltip id="nnok" for="n" >
+                                                Forcer l'enrégistrement
+                                            </p:tooltip-->
+                                            <p:commandLink  id="n" class="btn btn-danger fa fa-send-o" title="#{msg['btn.enregistrerForce']}" rendered ="#{!souscriptionAsCompteBean.willSave(compcour.compagnie.idCompagnie)}" action="#{souscriptionAsCompteBean.souscrireAssurance()}" update="@form" >
+                                                <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['message.etesvoussur']}?" icon="fa fa-trash"  />
+                                                <f:setPropertyActionListener value="#{compcour}" target="#{souscriptionAsCompteBean.assuranceCompteSelected}" />
+                                            </p:commandLink>
+
+                                        </p:column >
+                                        <p:column rendered="false" headerText="#{msg['titre.actions']}" >
+                                            <p:commandLink title="#{msg['btn.valider']}"  action="#{souscriptionAsCompteBean.souscrireAssurance()}" class="btn btn-purple fa fa-send-o" update="@form" >
+                                                <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['message.etesvoussur']}?" icon="ui-icon-alert"  />
+                                                <f:setPropertyActionListener target="#{souscriptionAsCompteBean.assuranceCompteSelected}" value="#{compcour}" />
+                                            </p:commandLink>
+
+                                        </p:column>
+                                        <p:rowExpansion >
+                                            <p:dataTable class="table_label table-responsive" var="condition" id="cd" reflow="true" rows="10" value="#{compcour.listConditionGenerale}"
+                                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         paginator="true" paginatorPosition="bottom" style="margin-bottom:20px"
+                                                         rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg[tableau.vide]}" >
+                                                <p:column headerText="#{msg['titre.conditionGneneral']}" class="text-center">
+                                                    <p:outputLabel value="#{condition.designation}"/>
+                                                </p:column>
+                                                <p:column headerText="#{msg['titre.verification']}" class="text-center">
+                                                    <i class="text-green icon-default fa fa-check #{condition.isVerifier}" />
+                                                    <i  class=" icon-default  text-red fa fa-close #{!condition.isVerifier}" />
+
+                                                </p:column>
+                                            </p:dataTable>
+
+                                            <p:panel header="#{msg['titre.garantie']}"   style="margin-bottom:20px">
+
+                                                <p:dataGrid  value="#{souscriptionAsCompteBean.garantiesList}" var="guarantie" columns="4" layout="grid" class="table"> 
+                                                    #{guarantie.abbreviation}
+                                                </p:dataGrid>
+                                            </p:panel>
+                                        </p:rowExpansion>
+
+                                    </p:dataTable>
+                                    <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                                        <h:form>
+                                            <p:commandButton value="#{msg['supprimer.oui']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="#{msg['supprimer.non']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </h:form>
+                                    </p:confirmDialog>
+                                </p:outputPanel>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </fieldset>   
+            </div> 
+        </div>
+    </ui:composition>
+</html>

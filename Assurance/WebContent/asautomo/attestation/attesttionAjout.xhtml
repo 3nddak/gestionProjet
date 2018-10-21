@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <div class=" col-lg-12 col-md-12 col-xm-12 col-sm-12">
+        <h:form id="vf" class="form-horizontal">
+
+            <fieldset>
+                <legend class="text-center text-uppercase"> <p:outputLabel value=" Demandes d'attestations "></p:outputLabel></legend>
+            </fieldset>
+            <p:panel header="#{msg['nouveau.client']}"  toggleable="true" collapsed="true" style="margin-bottom:20px" class="panel">
+
+                <div class=" panel-body">
+                    <div class="col-lg-10 col-md-8 col-sm-12 col-xs-12">
+                        <p:growl id="nouveauSms" globalOnly="true" showDetail="false"/>
+                        <div class="form-group">
+                            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                                <h:outputLabel  value="#{msg['client.type']}"  for="typeClient" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                <h:selectOneMenu id="typeClient" value="#{voitureNonImmatriculeBean.clientSelect.type}" required="true" title="#{msg['client.type']}"  class="form-control" requiredMessage="#{msg['client.type.requireMessage']}">
+                                    <f:selectItem itemValue="1" itemLabel="#{msg['client.type.physique']}"/>
+                                    <f:selectItem itemValue="2" itemLabel="#{msg['client.type.morale']}"/> 
+                                    <f:ajax event="click" render="typeMessage" />
+                                    <!--p:ajax update="formliste:prenomMessage" /-->
+                                </h:selectOneMenu>
+                                <h:message for="typeClient" id="typeMessage" styleClass="error"/>
+                            </div> 
+                            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                                <h:outputLabel  value="#{msg['client.nom']}"  for="nom" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.nom}" required="true"  requiredMessage="#{msg['client.nom.requiredMessage']}" 
+                                             id="nom" class="form-control" placeholder="#{msg['client.nom']}">
+                                    <p:ajax event="keyup"  listener="#{voitureNonImmatriculeBean.affiche()}" update="nomMessage,fff:t1"/>
+                                </p:inputText>
+                                <p:message for="nom"  id="nomMessage" class="errorClass" />
+                            </div> 
+                            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                                <h:outputLabel  value="#{msg['client.prenom']}"  for="prenom" class=" pull-left" /><h:outputLabel value="*" id="etoileprenom" class="etoile_rouge pull-left" rendered="#{voitureNonImmatriculeBean.clientSelect.type}"/>
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.prenom}" required="#{voitureNonImmatriculeBean.clientSelect.type}"  id="prenom" styleClass="form-control" placeholder="#{msg['client.prenom']}"
+                                             requiredMessage="#{msg['client.prenom.requiredMessage']}" >
+                                    <p:ajax  event="keyup" update="prenomMessage"/>
+                                </p:inputText>  
+                                <p:message  id="prenomMessage" for="prenom"/>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-3">
+                                <h:outputLabel  value="#{msg['client.lieuemission']}"  for="lieuemission" class=" pull-left" />
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.lieuEmission}"  id="lieuemission" styleClass="form-control" placeholder="#{msg['client.lieuemission']}"/>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-3 col-lg-3 col-sm-3">  
+                                <h:outputLabel  value="#{msg['client.faxe']}"  for="faxe" class=" pull-left" />
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.fax}" id="faxe" styleClass="form-control" placeholder="#{msg['client.faxe']}"/>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-3">
+                                <h:outputLabel  value="#{msg['client.bp']}"  for="codeZip" class=" pull-left" />
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.codeZip}" id="codeZip" styleClass="form-control" placeholder="#{msg['client.bp']}"/>
+                            </div>
+
+                            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                                <h:outputLabel  value="#{msg['client.email']}"  for="email" class=" pull-left" />
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.email}" id="email" styleClass="form-control" placeholder="#{msg['client.email']}"/>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                                <h:outputLabel  value="#{msg['client.pays']}"  for="pays" class=" pull-left" />
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.pays}" id="pays" styleClass="form-control" placeholder="#{msg['client.pays']}"/>
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-md-3 col-lg-3 col-sm-3">
+
+                                <h:outputLabel  value="#{msg['client.lieudenaissance']}"  for="lieunaissance" class=" pull-left" />
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.lieuNaissance}" id="lieunaissance" styleClass="form-control" placeholder="#{msg['client.lieudenaissance']}"/>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                                <h:outputLabel  value="#{msg['client.datedenaissance']}"  for="dateNaissance" class=" pull-left" />
+                                <p:calendar  style="font-size: 10px;" value="#{voitureNonImmatriculeBean.clientSelect.dateNaissance}" class="pull-left"  id="dateNaissance" pattern="dd-MM-yyyy" mask="true" placeholder="#{msg['client.datedenaissance']}" />
+                            </div> 
+                            <div class="col-md-3 col-lg-3 col-sm-3">
+                                <h:outputLabel  value="#{msg['client.nationalite']}"  for="nationalite" class=" pull-left" />
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.nationalite}" id="nationalite" styleClass="form-control" placeholder="#{msg['client.nationalite']}" />
+                            </div>
+
+
+                            <div class="col-md-3 col-lg-3 col-sm-3">
+                                <h:outputLabel  value="#{msg['client.adresse']}"   for="Adresse" class=" pull-left" />
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.adresse}" id="Adresse" styleClass="form-control" placeholder="#{msg['client.adresse']}"/>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                                <h:outputLabel  value="#{msg['client.piece']}"  for="piece" class=" pull-left" />
+                                <h:selectOneMenu id="piece" value="#{voitureNonImmatriculeBean.clientSelect.typePiece}"  class="form-control" >
+                                    <f:selectItem itemValue="" itemLabel="#{msg['client.piece']}"/> 
+                                    <f:selectItem itemValue="#{msg['client.piece.carte']}" itemLabel="#{msg['client.piece.carte']}"/>
+                                    <f:selectItem itemValue="#{msg['client.piece.passport']}" itemLabel="#{msg['client.piece.passport']}"/>
+                                    <f:selectItem itemValue="#{msg['client.piece.permis']}" itemLabel="#{msg['client.piece.permis']}"/>
+                                    <f:selectItem itemValue="#{msg['client.piece.autre']}" itemLabel="#{msg['client.piece.autre']}"/>
+                                </h:selectOneMenu>
+                            </div> 
+
+                            <div class="col-md-3 col-lg-3 col-sm-3"> 
+                                <h:outputLabel  value="#{msg['client.numeropiece']}" for="dateEmissionPiece" class=" pull-left" />
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.numeroPiece}" styleClass="form-control" placeholder="#{msg['client.numeropiece']}"/> 
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-3">  
+                                <h:outputLabel  style="font-size: 13px;" value="#{msg['client.dateemissionpiece']}"  for="dateEmissionPiece" class=" pull-left" />
+                                <p:calendar style="font-size: 10px;" value="#{voitureNonImmatriculeBean.clientSelect.dateEmissionPiece}" id="dateEmissionPiece" class="pull-left" pattern="dd-MM-yyyy" mask="true" placeholder="#{msg['client.piece.autre']}" />
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-3">
+                                <h:outputLabel  style="font-size: 12px;" value="#{msg['client.dateexpirationpiece']}"  for="dateExpirationPiece" class=" pull-left" />
+                                <p:calendar  style="font-size: 10px;" value="#{voitureNonImmatriculeBean.clientSelect.dateExpirationPiece}"  id="dateExpirationPiece" class="pull-left" pattern="dd-MM-yyyy" mask="true" placeholder="#{msg['client.dateexpirationpiece']}"  />
+                            </div>
+
+
+                        </div> 
+                        <div class="form-group">
+                            <div class="col-md-3 col-lg-3 col-sm-3">      
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.pseudo}" styleClass="form-control hide" placeholder="pseudo *"/>
+
+                            </div> 
+                            <div class="col-md-3 col-lg-3 col-sm-3">      
+                                <p:inputText value="#{voitureNonImmatriculeBean.clientSelect.password}"  class="form-control hide" placeholder="password *"/>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </p:panel>
+        </h:form>
+
+        <h:form id="fff" class="form-horizontal">
+            <p:panel header="Selectionner Clients"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                <p:dataTable class="table-bordered table table-responsive" id="t1" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             paginatorPosition="bottom" value="#{voitureNonImmatriculeBean.clientList}" rowKey="#{client.idClient}" selectionMode="single"  var="client" selection="#{voitureNonImmatriculeBean.clientSelectOrNew}" >
+                    <p:ajax event="rowSelect"  listener="#{voitureNonImmatriculeBean.newClien1t()}" update="vf" />
+                    <p:column headerText="NOM" filterBy="#{client.nom}">
+                        <p:outputLabel value="#{client.nom}"/>                      
+                    </p:column>
+                    <p:column headerText="PRENOM" filterBy="#{client.prenom}">
+                        <p:outputLabel value="#{client.prenom}"/>                      
+                    </p:column>
+                    <p:column headerText="DATE NAISSANCE" filterBy="#{client.dateNaissance}">
+                        <p:outputLabel value="#{client.dateNaissance}"/>                      
+                    </p:column>
+                    <p:column headerText="NUM PIECE" filterBy="#{client.numeroPiece}">
+                        <p:outputLabel value="#{client.numeroPiece}"/>                      
+                    </p:column>
+                    <p:column headerText="ADRESSE" filterBy="#{client.adresse}">
+                        <p:outputLabel value="#{client.adresse}"/>                      
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+            <p:separator style="background-color: #265a88"/>        
+            <p:panel header="Informations du vehicule"  toggleable="true" collapsed="false" style="margin-bottom:20px" class="panel">
+                <div class="form-group panel-body" >
+                    <div class="col-lg-3 col-md-6" >
+                        <div class="col-lg-12 col-md-12" >
+                            <p:outputLabel for="mq" value="Marque :"/>
+                        </div>
+                        <div class="col-lg-12 col-md-12" >
+                            <p:autoComplete  id="mq" required="true" forceSelection="true"  requiredMessage="#{msg['vehicule.marque.requiredMessage']}" class="pull-left" value="#{voitureNonImmatriculeBean.demandeAttestation.marque}" completeMethod="#{objetBean.completeMethod2}"  >
+                                <f:ajax event="keyup" render="mqMessage"/>
+                            </p:autoComplete>
+                        </div>
+                        <div class="col-lg-12 col-md-12" >
+                            <p:message for="mq"  id="mqMessage"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6" >
+                        <div class="col-lg-12 col-md-12" >
+                            <p:outputLabel for="mc" value="Num Chassis :"/>
+                        </div>
+                        <div class="col-lg-12 col-md-12" >
+                            <p:inputText id="mc" value="#{voitureNonImmatriculeBean.demandeAttestation.numChassi}" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6" >
+                        <div class="col-lg-12 col-md-12" >
+                            <p:outputLabel for="ene" value="Energie :"/>
+                        </div>
+                        <div class="col-lg-12 col-md-12" >
+                            <p:selectOneMenu id="ene" value="#{voitureNonImmatriculeBean.demandeAttestation.ennergie}" converter="entityConverter" >
+                                <f:selectItem itemLabel="Choisir l'énergie" itemValue="" />
+                                <f:selectItems value="#{voitureNonImmatriculeBean.energieList}" var="energie"
+                                               itemLabel="#{energie.libelleFr}" itemValue="#{energie}"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6" >
+                        <div class="col-lg-12 col-md-12" >
+                            <p:outputLabel for="pss" value="Puissance :"/>
+                        </div>
+                        <div class="col-lg-12 col-md-12" >
+                            <p:selectOneMenu id="pss" value="#{voitureNonImmatriculeBean.demandeAttestation.puissance}" >
+                                <f:selectItem itemLabel="Choisir la puissance" itemValue="" />
+                                <f:selectItems value="#{voitureNonImmatriculeBean.puissancelist}" var="puissance"
+                                               itemLabel="#{puissance}" itemValue="#{puissance}"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
+
+                </div>
+
+            </p:panel>
+            <p:panel header="Selectionner Compagnies"  toggleable="true" collapsed="false" style="margin-bottom:20px" class="panel">
+                <div class="form-group panel-body ">
+                    <div class="col-lg-12 col-md-12" >
+                        <div class="col-lg-4 col-md-6" >
+                            <p:selectCheckboxMenu label="Selectionner Compagnies" value="#{voitureNonImmatriculeBean.target}" converter="entityConverter"  >                  
+                                <f:selectItems value="#{voitureNonImmatriculeBean.source}"  var="compagnie"
+                                               itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />
+                            </p:selectCheckboxMenu>
+                        </div>
+                    </div>
+                </div>
+            </p:panel>
+            <div class="form-group col-lg-12">
+                <p:commandButton class="pull-left btn-danger danger" update="@form" value="Annuler"   actionListener="#{voitureNonImmatriculeBean.annuler()}"  >
+                </p:commandButton>
+                <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" icon="fa fa-send" class="btn-success success"  value="Envoyer"  actionListener="#{voitureNonImmatriculeBean.valider()}" update="@form,dd" />
+                <p:growl for="somekey" id="dd" />
+            </div>
+
+
+        </h:form>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+            </div>
+    </ui:composition>
+</html>

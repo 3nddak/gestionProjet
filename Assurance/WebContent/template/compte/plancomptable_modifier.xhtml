@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <p:outputPanel id="modification" style="text-align:center;">
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12">
+
+                    <h:form class="form-horizontal" id="typecompte-ajout" > 
+                        <p:focus context="typecompte-ajout"/>
+                        <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>
+                        <div class="form-group">
+                            <div class="col-lg-8">
+                                <h:outputLabel  class="police_label pull-left" for="classeplancomptable" value="Classe" /> <h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                <h:selectOneMenu id="classeplancomptable" value="#{comptesBean.classeSelected}" required="true" requiredMessage="Veuillez choisir la classe" converter="omnifaces.SelectItemsConverter" class="form-control" >
+
+                                    <f:selectItems value="#{comptesBean.allClasses}"  var="c" itemLabel="#{c.libelleClasse}" itemValue="#{c}" />
+                                    <p:ajax listener="#{comptesBean.configureStartNumber()}" update="numeroplancomptable"  />
+                                    <f:ajax event="click" render="classeplancomptableMessage"  />
+                                </h:selectOneMenu>
+                                <p:message for="classeplancomptable" id="classeplancomptableMessage" class="errorClass"/>        
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-8">
+                           <h:outputLabel  class="police_label pull-left" for="numeroplancomptable" value="#{msg['comptabilite.compte.numero']}" /> <h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            <p:inputText id="numeroplancomptable" required="true"  validatorMessage="Veuillez choisir au moins 4 chiffre" requiredMessage="veuillez entrer le numéro du compte" value="#{comptesBean.numero}" maxlength="4" styleClass="form-control" placeholder="Numero de Compte">
+                                <f:ajax event="keyup" render="numeroplancomptableMessage"/>
+                                <f:validateLength minimum="4" maximum="4"  />
+                            </p:inputText>
+                            <p:message for="numeroplancomptable" id="numeroplancomptableMessage" class="errorClass"/> 
+                           </div>   
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-8">
+                                <h:outputLabel for="intitule" class=" police_label pull-left" value="Intitule"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-8">
+                                <p:inputText id="intitule" required="true"  value="#{comptesBean.plancomptableSelected.intitule}" class="form-control" placeholder="Libelle *">
+                                </p:inputText>                             
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-8 ">
+                                <p:commandButton value="Annuler" action="#{planComptableBean.annuler()}" type="reset" id="annuler" class="btn btn-danger pull-left" style="background: #d9534f;color:#fff;border-color: #d43f3a; font-family: cursive;">           
+                                </p:commandButton>
+                                <p:commandButton value="Modifier" action="#{comptesBean.modifierCompteReal()}" update=":realDataTable, msgs" class="btn btn-success   pull-right" oncomplete="PF('modifier').hide()" style="background: #5cb85c;color:#fff;border-color:#4cae4c; font-family: cursive;">                                    
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+            <!-- Fin du dialogue--> 
+        </p:outputPanel>
+    </ui:composition> 
+</html>
+
+
+

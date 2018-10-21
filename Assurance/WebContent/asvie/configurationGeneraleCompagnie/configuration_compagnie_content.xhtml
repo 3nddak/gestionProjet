@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <fieldset> 
+                    <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['titre.configurationCompagnie']}"></p:outputLabel></legend>
+                </fieldset>
+                <p:fieldset legend="#{msg['titre.ajouterUneConfiguration']}" toggleable="true" collapsed="false" toggleSpeed="500"  style="margin-bottom:20px">  
+                    <h:form id="configurationCreateForm" class="form-horizontal" enctype="multipart/form-data" >
+                        <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                        <div class="form-group" >
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:outputLabel  value="#{msg['titre.compagnie']}" class="pull-left" />
+                                    <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:selectOneMenu  class="form-control" id="comp" required="true" requiredMessage="Veuillez selectionner une compagnie" label="Compagnie" value="#{configurationGeneraleCompagnieAsvieBean.configurationGeneraleCompagnieAsvieToSave.compagnie}" converter="omnifaces.SelectItemsConverter">
+                                        <f:selectItem itemLabel="#{msg['titre.compagnie']}" noSelectionOption="true" />
+                                        <f:selectItems value="#{configurationGeneraleCompagnieAsvieBean.listCompagnie}" var="com" itemLabel="#{com.designation}" itemValue="#{com}" />
+                                        <p:ajax event="click" update="compagnieMessage" />
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:message id="compagnieMessage" for="comp" class="errorClass" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class=" col-lg-12 col-md-12 col-sm-12" align="left"> 
+                                    <h:outputLabel  value="#{msg['titre.declaration']}"  for="dec" class=" pull-left" />
+                                </div>
+                                <div class=" col-lg-12 col-md-12 col-sm-12" align="left"> 
+                                    <p:inputTextarea id="dec" value="#{configurationGeneraleCompagnieAsvieBean.configurationGeneraleCompagnieAsvieToSave.declaration_1}"  rows="5" cols="65" placeholder="Déclaration" class="form-control" />
+                                </div> 
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class=" col-lg-12 col-md-12 col-sm-12" align="left"> 
+                                    <h:outputLabel  value="#{msg['titre.piedsDePageContrat']}"  for="pieds" class=" pull-left" />
+                                </div>
+                                <div class=" col-lg-12 col-md-12 col-sm-12" align="left"> 
+                                    <p:inputTextarea id="pieds" value="#{configurationGeneraleCompagnieAsvieBean.configurationGeneraleCompagnieAsvieToSave.piedsDePage}"  rows="5" cols="65" placeholder="Pieds de pages contrat" class="form-control" />
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel  value="#{msg['titre.contrat']}" for="fileUpload" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:fileUpload id="fileUpload" required="true" fileUploadListener ="#{configurationGeneraleCompagnieAsvieBean.handleFileUpload}"
+                                                  mode="advanced" 
+                                                  class="form-control"
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|bmp)$/"        
+                                                  label="Veuillez choisir le fichier" uploadLabel="#{msg['btn.telecharger']}" cancelLabel="#{msg['btn.annuller']}"       
+                                                  validatorMessage="#{msg['fichier.invalide']}"      
+                                                  dragDropSupport="false"      
+                                                  multiple="true"  
+                                                  disabled="false"
+                                                  update="messages"
+                                                  requiredMessage="#{msg['fichier.requiredMessage']}"
+                                                  >
+                                    </p:fileUpload>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:message for="fileUpload" id="imageMessage" class="errorClass"/>
+                                    <p:growl id="messages" showDetail="false" globalOnly="true"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel  value="#{msg['titre.signatureElectronique']}" for="signe" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:fileUpload id="signe" required="true" fileUploadListener ="#{configurationGeneraleCompagnieAsvieBean.handleSignature}"
+                                                  mode="advanced" 
+                                                  class="form-control"
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|bmp)$/"        
+                                                  label="#{msg['titre.veuillezChoisirLeFichier']}" uploadLabel="#{msg['btn.telecharger']}" cancelLabel="#{msg['btn.annuller']}"       
+                                                  validatorMessage="#{msg['fichier.invalide']}"      
+                                                  dragDropSupport="false"      
+                                                  multiple="true"  
+                                                  disabled="false"
+                                                  update="messages"
+                                                  requiredMessage="#{msg['fichier.requiredMessage']}"
+                                                  >
+                                    </p:fileUpload>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:message for="signe" id="signeMessage" class="errorClass"/>
+                                    <p:growl id="messages4" showDetail="false" globalOnly="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <p:spacer width="100"/>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
+                                <div class=" col-lg-12 col-md-12 col-sm-12" align="left"> 
+                                    <h:outputLabel  value="#{msg['titre.deuxiemePageContrat']}"  for="pge" class=" pull-left" />
+                                </div>
+                                <div class=" col-lg-12 col-md-12 col-sm-12" align="left"> 
+                                    <p:inputTextarea autoResize="true" id="pge" value="#{configurationGeneraleCompagnieAsvieBean.configurationGeneraleCompagnieAsvieToSave.deuxiemePage}"  placeholder="#{msg['titre.deuxiemePage']}" class="form-control" />
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12  col-md-12 col-xs-12 col-sm-12">
+                                <div class="col-lg-2 col-md-12 pull-right col-xs-12 col-sm-12">
+                                    <p:commandButton id="ajouter" rendered="#{configurationGeneraleCompagnieAsvieBean.displaySaveButton}" action="#{configurationGeneraleCompagnieAsvieBean.save()}"  update="@form,msgs,configurationListForm" value="#{msg['btn.enregistrer']}"  class="btn-success success form-control" />
+                                    <p:commandButton id="modifier" rendered="#{configurationGeneraleCompagnieAsvieBean.displayUpdateButton}" action="#{configurationGeneraleCompagnieAsvieBean.update()}" update="@form,msgs,configurationListForm" value="#{msg['btn.modifier']}"  class="btn-success success form-control" />
+                                </div>
+                                <div class="col-lg-2 col-md-12 pull-right col-xs-12 col-sm-12">
+                                    <p:commandButton id="annuler" action="#{configurationGeneraleCompagnieAsvieBean.cancel()}" update="@form,configurationListForm" value="#{msg['btn.annuller']}"  class="btn-danger danger form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+                </p:fieldset>    
+            </div>
+
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:fieldset legend="#{msg['titre.listeDesConfigurations']}" toggleable="true" collapsed="false" toggleSpeed="500"  style="margin-bottom:20px">
+                    <h:form id="configurationListForm" class="form-horizontal">
+                        <p:dataTable id="listConfiguration" class="table table-bordered table-hover" rows="6" rowKey="#{clist.idConfigurationGeneraleCompagnieAsvie}" 
+                                     emptyMessage="#{msg['tableau.vide']}"
+                                     paginator="true" paginatorPosition="bottom"  var="clist" value="#{configurationGeneraleCompagnieAsvieBean.listConfigurationGeneraleCompagnieAsvie}" >
+
+                            <p:column headerText="#{msg['titre.compagnie']}" filterBy="#{clist.compagnie.abbreviation}" >
+                                <p:outputLabel value="#{clist.compagnie.abbreviation}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['titre.declaration']}" >
+                                <p:outputLabel value="#{clist.declaration_1}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['titre.piedsDePage']}" >
+                                <p:outputLabel value="#{clist.piedsDePage}"/>
+                            </p:column>
+
+                            <p:column style="text-align: center" width="10%" headerText="Option"  >
+                                <p:commandButton update="configurationCreateForm,configurationCreateForm:msgs" action="#{configurationGeneraleCompagnieAsvieBean.edit()}" icon="fa fa-edit" class="btn btn-xs btn-primary" >
+                                    <f:setPropertyActionListener value="#{clist}" target="#{configurationGeneraleCompagnieAsvieBean.configurationGeneraleCompagnieAsvieToEdit}" />
+                                </p:commandButton>
+                                <p:commandButton  update="@form,configurationCreateForm:msgs"  action="#{configurationGeneraleCompagnieAsvieBean.delete()}" icon="fa fa-trash" class="btn btn-danger btn-xs">
+                                    <f:setPropertyActionListener value="#{clist}" target="#{configurationGeneraleCompagnieAsvieBean.configurationGeneraleCompagnieAsvieToDelete}" />
+                                    <p:confirm icon="ui-icon-alert"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:fieldset> 
+            </div>
+        </div>
+    </ui:composition>
+</html>

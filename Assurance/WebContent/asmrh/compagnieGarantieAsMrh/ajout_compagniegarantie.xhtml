@@ -1,0 +1,518 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <h:form id="compagnieGarantieCreateForm" class="form-horizontal">
+                    <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                    <div class="form-group" >
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pays" value="#{msg['titre.pays']}" class="pull-left text-left"/>
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="pays" value="#{compagnieGarantieAsMrhBean.paysSelected}" required="true" requiredMessage="#{msg['titre.champsObligatoire']}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                    <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                    <f:selectItems value="#{compagnieGarantieAsMrhBean.listPays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                    <p:ajax listener="#{compagnieGarantieAsMrhBean.initCompagnieByPaysAndBranche()}" update="comp,gar,cat" />
+                                    <f:ajax event="click" render="paysMessage" />
+                                </h:selectOneMenu> 
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pays"  id="paysMessage" class="errorClass" />
+                            </div> 
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="#{msg['titre.compagnie']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" class="form-control" required="true" requiredMessage="#{msg['titre.champsObligatoire']}" id="comp" label="#{msg['titre.compagnie']}" value="#{compagnieGarantieAsMrhBean.allCompagnieSelected}" converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItems value="#{compagnieGarantieAsMrhBean.listCompagnie}" var="com" itemLabel="#{com.designation}" itemValue="#{com}" />
+                                    <f:ajax event="change" render="compMessage" />
+                                </p:selectCheckboxMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="comp"  id="compMessage" class="errorClass" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="#{msg['titre.categorie']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu class="form-control" id="cat" label="#{msg['titre.categorie']}" required="true" requiredMessage="Champ Obligatoire" value="#{compagnieGarantieAsMrhBean.categorieAsMrhSelected}" converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem itemLabel="#{msg['titre.categorie']}" noSelectionOption="true" />
+                                    <f:selectItems value="#{compagnieGarantieAsMrhBean.listCategorie}" var="ca" itemLabel="#{ca.designation}" itemValue="#{ca}" />
+                                    <p:ajax listener="#{compagnieGarantieAsMrhBean.feshGarantieByCategorie()}" update="gar" />
+                                    <f:ajax event="click" render="catMessage" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="cat"  id="catMessage" class="errorClass" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="#{msg['titre.garantie']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" required="true" requiredMessage="#{msg['titre.champsObligatoire']}" class="form-control" id="gar" label="#{msg['titre.garantie']}" value="#{compagnieGarantieAsMrhBean.listGarantieSelected}" converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItems value="#{compagnieGarantieAsMrhBean.listGarantie}" var="ga" itemLabel="#{ga.designation}" itemValue="#{ga}" />
+                                    <f:ajax event="change" render="garMessage" />
+                                </p:selectCheckboxMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="gar"  id="garMessage" class="errorClass" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel value="#{msg['titre.initial']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:selectBooleanCheckbox value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.initial}" >
+
+                                </p:selectBooleanCheckbox>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel value="#{msg['titre.classic']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:selectBooleanCheckbox value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.classic}" >
+
+                                </p:selectBooleanCheckbox>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel value="#{msg['titre.integral']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:selectBooleanCheckbox value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.integral}" >
+
+                                </p:selectBooleanCheckbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="#{msg['titre.franchiseMinimalInitial']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:inputText id="fmini" value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.franchiseMinimalInitial}" required="true" requiredMessage="champ obligatoire" class="form-control" >
+
+                                    <pe:keyFilter  mask="num" />
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="Franchise Minimal Classic" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:inputText id="fmc" value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.franchiseMinimalClassic}" required="true" requiredMessage="champ obligatoire" class="form-control" >
+
+                                    <pe:keyFilter  mask="num" />
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="#{msg['titre.franchiseMinimalIntegral']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:inputText id="fmint" value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.franchiseMinimalIntegral}" required="true" requiredMessage="champ obligatoire" class="form-control" >
+
+                                    <pe:keyFilter  mask="num" />
+                                </p:inputText>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="#{msg['titre.capitalGarantieInitial']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:inputText id="cgini" value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.capitalGarantieInitial}" required="true" requiredMessage="champ obligatoire" class="form-control" >
+
+                                    <pe:keyFilter  mask="num" />
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="#{msg['titre.capitalGarantieClassic']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:inputText id="cgc" value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.capitalGarantieClassic}" required="true" requiredMessage="champ obligatoire" class="form-control" >
+
+                                    <pe:keyFilter  mask="num" />
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="#{msg['titre.capitalGarantieIntegral']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:inputText id="cgint" value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.capitalGarantieIntegral}" required="true" requiredMessage="champ obligatoire" class="form-control" >
+
+                                    <pe:keyFilter  mask="num" />
+                                </p:inputText>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="#{msg['titre.descriptionInitial']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:inputText id="desini" value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.descriptionInitial}" required="true" requiredMessage="champ obligatoire" class="form-control" >
+
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="#{msg['titre.descriptionClassic']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:inputText id="desc" value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.descriptionClassic}" required="true" requiredMessage="champ obligatoire" class="form-control" >
+
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="#{msg['titre.integral']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:inputText id="desint" value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.descriptionIntegral}" required="true" requiredMessage="champ obligatoire" class="form-control" >
+
+                                </p:inputText>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel value="#{msg['titre.optionInitial']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:selectBooleanCheckbox value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.optionInitial}" >
+
+                                </p:selectBooleanCheckbox>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel value="#{msg['titre.optionClassic']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:selectBooleanCheckbox value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.optionClassic}" >
+
+                                </p:selectBooleanCheckbox>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel value="#{msg['titre.optionIntegral']}" class="pull-left" />
+                                <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:selectBooleanCheckbox value="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToSave.optionIntegral}" >
+
+                                </p:selectBooleanCheckbox>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-sm-6 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:outputLabel  value="#{msg['btn.valider']}" class="pull-right" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:commandButton class="btn btn-success pull-right " id="valid" value="#{msg['titre.ok']}" action="#{compagnieGarantieAsMrhBean.createGarantieCompagnieTemporalList()}"  update="@form" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                            <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                                <fieldset> 
+                                    <legend class=""> <p:outputLabel value="#{msg['titre.listeDesCompagniesGarantieAEnregistrer']}"></p:outputLabel></legend>
+
+                                    <div class="table-responsive">
+                                        <p:dataTable id="cco" class="table table-hover table-striped" rows="15" rowKey="#{comG.hashCode()}" 
+                                                     emptyMessage="#{msg['tableau.vide']}"
+                                                     paginator="true" paginatorPosition="bottom"  var="comG" value="#{compagnieGarantieAsMrhBean.firstTemporalCompagnieGarantieAsMrhList}" editable="true" editMode="cell" 
+                                                     selection="#{compagnieGarantieAsMrhBean.temporalCompagnieGarantieAsMrhListSelected}"
+                                                     >
+
+                                            <p:column  class="" headerText="#{msg['commission.compagnie']}" filterBy="#{comG.compagnie.designation}" >
+                                                <p:outputLabel value="#{comG.compagnie.designation}"/>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['listeDesCompagniesGarantieAEnregistrer']}" filterBy="#{comG.garantieAsmrh.categorieAsMrh.designation}" >
+                                                <p:outputLabel value="#{comG.garantieAsmrh.categorieAsMrh.designation}"/>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.garantie']}" filterBy="#{comG.garantieAsmrh.designation}" >
+                                                <p:outputLabel value="#{comG.garantieAsmrh.designation}"/>
+                                            </p:column>
+                                            <!-- Franchise -->
+                                            <p:column  class="" headerText="#{msg['titre.franchiseMinimalInitial']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="A"  value="#{comG.franchiseMinimalInitial}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.franchiseMinimalInitial)}" >
+                                                            <p:ajax event="keyup" update="A" />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.franchiseMinimalClassic']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="B"  value="#{comG.franchiseMinimalClassic}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.franchiseMinimalClassic)}" >
+                                                            <p:ajax event="keyup" update="B" />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.franchiseMinimalIntegral']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="C"  value="#{comG.franchiseMinimalIntegral}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.franchiseMinimalIntegral)}" >
+                                                            <p:ajax event="keyup" update="C" />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <!--Capital Garantie -->
+                                            <p:column  class="" headerText="Capital Garantie Initial" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="D"  value="#{comG.capitalGarantieInitial}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.capitalGarantieInitial)}" >
+                                                            <p:ajax event="keyup" update="D" />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.capitalGarantieClassic']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="E" value="#{comG.capitalGarantieClassic}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.capitalGarantieClassic)}" >
+                                                            <p:ajax event="keyup" update="E" />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.capitalGarantieIntegral']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="F"  value="#{comG.capitalGarantieIntegral}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.capitalGarantieIntegral)}" >
+                                                            <p:ajax event="keyup" update="F" />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <!--Description -->
+                                            <p:column  class="" headerText="#{msg['titre.descriptionInitial']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="G" value="#{comG.descriptionInitial}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.descriptionInitial)}" >
+                                                            <p:ajax event="keyup" update="G" />
+
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.descriptionClassic']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="H"  value="#{comG.descriptionClassic}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.descriptionClassic)}" >
+                                                            <p:ajax event="keyup" update="H" />
+
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="" headerText="#{msg['titre.descriptionIntegral']}" >
+                                                <p:cellEditor  >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="I" value="#{comG.descriptionIntegral}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText  value="#{(comG.descriptionIntegral)}" >
+                                                            <p:ajax event="keyup" update="I" />
+
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <!--Boolean Initial -->
+                                            <p:column  class="bg-purple3" style="text-align: center;" headerText="#{msg['titre.initial']}"  >
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="JYes" class="#{comG.initial}" ><i class="fa fa-check text-green" /></p:outputLabel>
+                                                        <p:outputLabel id="JNo" class="#{!comG.initial}" ><i class="fa fa-close text-red" /></p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input"> 
+                                                        <p:selectBooleanCheckbox value="#{comG.initial}" >
+                                                            <p:ajax update="JYes,JNo" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="bg-purple3" style="text-align: center;" headerText="#{msg['titre.classic']}"  >
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="KYes" class="#{comG.classic}" ><i class="fa fa-check text-green" /></p:outputLabel>
+                                                        <p:outputLabel id="KNo" class="#{!comG.classic}" ><i class="fa fa-close text-red" /></p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input"> 
+                                                        <p:selectBooleanCheckbox value="#{comG.classic}" >
+                                                            <p:ajax update="KYes,KNo" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="bg-purple3" style="text-align: center;" headerText="#{msg['titre.integral']}"  >
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="LYes" class="#{comG.integral}" ><i class="fa fa-check text-green" /></p:outputLabel>
+                                                        <p:outputLabel id="LNo" class="#{!comG.integral}" ><i class="fa fa-close text-red" /></p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input"> 
+                                                        <p:selectBooleanCheckbox value="#{comG.integral}" >
+                                                            <p:ajax update="LYes,LNo" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <!--Boolean Option -->
+                                            <p:column  class="bg-purple3" style="text-align: center;" headerText="#{msg['titre.optionInitial']}"  >
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="MYes" class="#{comG.optionInitial}" ><i class="fa fa-check text-green" /></p:outputLabel>
+                                                        <p:outputLabel id="MNo" class="#{!comG.optionInitial}" ><i class="fa fa-close text-red" /></p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input"> 
+                                                        <p:selectBooleanCheckbox value="#{comG.optionInitial}" >
+                                                            <p:ajax update="MYes,MNo" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="bg-purple3" style="text-align: center;" headerText="#{msg['titre.optionClassic']}"  >
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="NYes" class="#{comG.optionClassic}" ><i class="fa fa-check text-green" /></p:outputLabel>
+                                                        <p:outputLabel id="NNo" class="#{!comG.optionClassic}" ><i class="fa fa-close text-red" /></p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input"> 
+                                                        <p:selectBooleanCheckbox value="#{comG.optionClassic}" >
+                                                            <p:ajax update="NYes,NNo" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column  class="bg-purple3" style="text-align: center;" headerText="Option Intégral"  >
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="OYes" class="#{comG.optionIntegral}" ><i class="fa fa-check text-green" /></p:outputLabel>
+                                                        <p:outputLabel id="ONo" class="#{!comG.optionIntegral}" ><i class="fa fa-close text-red" /></p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input"> 
+                                                        <p:selectBooleanCheckbox value="#{comG.optionIntegral}" >
+                                                            <p:ajax update="OYes,ONo" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+
+                                            <p:column headerText="Option" width="8%" style="text-align: center;">
+                                                <p:commandButton icon="fa fa-remove" class="btn btn-danger danger" update="compagnieGarantieCreateForm:msgs,compagnieGarantieCreateForm:cco" action="#{compagnieGarantieAsMrhBean.removeOneLine()}" >
+                                                    <f:setPropertyActionListener value="#{comG}" target="#{compagnieGarantieAsMrhBean.compagnieGarantieAsMrhToRemoveFromTemporalList}" />
+                                                    <p:confirm icon="ui-icon-alert"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                            <p:column headerText="#{msg['titre.selection']}" selectionMode="multiple" width="8%" style="text-align: center;" />
+                                        </p:dataTable>
+                                    </div>
+                                    <div class="btn-toolbar">
+                                        <p:commandButton class="btn-danger btn" value="#{msg['btn.annuller']}" update="@form" action="#{compagnieGarantieAsMrhBean.cancel()}" />
+                                        <p:commandButton class="btn-imprimer btn pull-right" value="#{msg['btn.enregistrer']}" update="@form,listCompagnieGarantieForm:listCompagnieGarantie" action="#{compagnieGarantieAsMrhBean.saveCompagnieGarantie}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                        <p:commandButton class="btn-imprimer btn pull-right" value="#{msg['titre.retirerDeLaListe']}" update="@form" action="#{compagnieGarantieAsMrhBean.removeMultipleLine()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" >
+                                            <p:confirm icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </ui:composition>
+</html>

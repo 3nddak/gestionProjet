@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+
+        <div class="panel">
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
+                        <h:outputLabel for="compagnie"  value="#{msg['titre.compagnie']}" class=""/>                              
+
+                        <h:selectOneMenu  id="compagnie" value="#{sinistreAsAutoBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                            <f:selectItem itemLabel="#{msg['titre.compagnie']}"  />
+                            <f:selectItems value="#{sinistreAsAutoBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                        </h:selectOneMenu>
+
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
+                        <h:outputLabel for="police"  value="#{msg['tableau.numeropolice']}" class=""/>                              
+                        <h:inputText class="form-control" id="police" value="#{sinistreAsAutoBean.imatriculation}"/>
+
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
+                        <h:outputLabel for="immatricule"  value="#{msg['tableau.immatricule']}" class=""/>                              
+                        <h:inputText class="form-control" id="immatricule" value="#{sinistreAsAutoBean.imatriculation}"/>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
+                        <h:outputLabel for="nom"  value="#{msg['client.nom']}" class=""/>                              
+                        <h:inputText class="form-control" id="nom" value="#{sinistreAsAutoBean.nom}"/>
+
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
+                        <h:outputLabel for="prenom"  value="#{msg['client.prenom']}" class=""/>                              
+                        <h:inputText class="form-control" id="prenom" value="#{sinistreAsAutoBean.prenom}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer ">
+                <div class="row ">
+                    <div class="btn-box-tool pull-right">
+                        <p:commandButton value="#{msg['btn.rechercher']}" class="btn btn-purple btn-xs" update="listas" actionListener="#{sinistreAsAutoBean.rechercheAvance()}" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <p:messages id="messages1" showDetail="true" autoUpdate="true" globalOnly="true" closable="true" />                   
+
+        <div class="panel">
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <p:dataTable id="listas"  selectionMode="single" rowKey="#{assurance.idFacture}" selection="#{sinistreAsAutoBean.facture}" sortOrder="descending" sortBy="#{id}" class="table table-bordered table-condensed" paginatorPosition="bottom" var="assurance" reflow="true" rows="10" value="#{sinistreAsAutoBean.listFacture}" 
+                                 emptyMessage="#{msg['tableau.vide']}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                 paginator="true" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" > 
+                        <p:column headerText="#{msg['titre.compagnie']}">
+                            <h:outputText value="#{assurance.compagnie.abbreviation}" />
+                        </p:column>
+                        <p:column headerText="#{msg['titre.courtier']}">
+                            <h:outputText value="#{assurance.courtier.abbreviation}" />
+                        </p:column>
+                        <p:column headerText="#{msg['tableau.numeropolice']}">
+                            <h:outputText value="#{assurance.objetVoiture.numeroPolice}" />
+                        </p:column>
+                        <p:column headerText="#{msg['tableau.immatricule']}">
+                            <h:outputText value="#{assurance.objetVoiture.numeroImmatriculation}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['client.nom']}">
+                            <h:outputText value="#{assurance.objetVoiture.client.nom}" />
+                        </p:column>
+                        <p:column headerText="#{msg['client.prenom']}">
+                            <h:outputText value="#{assurance.objetVoiture.client.prenom}" />
+                        </p:column>
+                        <p:column headerText="#{msg['assurance.dateEcheance']}">
+                            <h:outputText value="#{assurance.dateFinContrat}" />
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+
+</html>

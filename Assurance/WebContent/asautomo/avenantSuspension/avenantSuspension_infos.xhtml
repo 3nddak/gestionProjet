@@ -1,0 +1,65 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      >
+    <ui:composition>
+        <div class="panel">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <h:outputLabel for="dti"  value="Date debut de la suspension" class=""/>                              
+                            <p:calendar id="dti" class="form-control" requiredMessage="#{msg['sinistre.dateIncident.requiredMessage']}" required="=true" value="#{avenantSuspensionBean.avenantSuspension.dateDebutSuspension}" pattern="dd/MM/yyyy" mindate="#{avenantSuspensionBean.dateMin}" maxdate="#{avenantSuspensionBean.dateMax}" mask="true"/>
+                            <p:message for="dti" />
+                        </div>
+
+                        <div class="form-group">
+                            <h:outputLabel for="nc"  value="Durée de la suspension" class=""/>                              
+                            <h:inputText class="form-control" id="nc" value="#{avenantSuspensionBean.avenantSuspension.duree}"/>
+                        </div>
+
+                        <div class="form-group">
+                            <h:outputLabel for="msg"  value="motif" class="pull-left text-left"/>                              
+                            <h:inputTextarea  id="msg" class="form-control" value="#{avenantSuspensionBean.avenantSuspension.motif}"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <!--div class="panel"-->
+
+                    <div class="panel-body">
+
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h:outputLabel   value="Lettre de demande de suspension" /> 
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:fileUpload class=" text-purple" label="lettre demande de suspension"  value="#{avenantSuspensionBean.fileLettreDemandeSuspension}" mode="simple" allowTypes="/(\.|\/)(pdf)$/" skinSimple="true" />
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel   value="Autres documents"  class=""/> 
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:fileUpload class="text-purple" label="autres documents"  value="#{avenantSuspensionBean.fileAUtre}" mode="simple" allowTypes="/(\.|\/)(pdf)$/" skinSimple="true" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+    </ui:composition> 
+
+</html>
+

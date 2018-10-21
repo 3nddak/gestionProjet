@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <ui:include src="infos_client.xhtml"/>
+        <p:panel header="#{msg['titre.compagnie']}"  toggleable="true" collapsed="true" >
+            <div class="table-responsive">
+                <p:dataTable class="table table-condensed table-striped" var="compcour" reflow="true" rows="10" value="#{souscriptionBean.listAssuranceCredit}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" 
+                             rowsPerPageTemplate="10,15,20,25,30"  emptyMessage="#{msg[tableau.vide]}"  >                                                    
+                    <p:column headerText="#{msg['titre.compagnie']}">
+                        <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                    </p:column>
+
+                    <p:column >
+                        <p:commandButton value="#{msg['titre.selection']}" update="formliste:questionnaireForm" action="#{souscriptionBean.initializeQuestionForClient()}" >
+                            <f:setPropertyActionListener value="#{compcour}" target="#{souscriptionBean.assuranceCreditSelect}" />
+                        </p:commandButton>
+                    </p:column >
+
+                </p:dataTable>
+            </div>
+
+        </p:panel>
+        <p:panel id="questionnaireForm" header="#{msg['titre.questionnaire']}" toggleable="false"   >
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-12  ">
+                    <div class="panel" jsf:id="xxx">
+                        <div class="panel-heading bg-purple">
+                            <h3 class="panel-title">#{msg['liste.compagnie']}</h3> 
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <p:dataScroller class="panel-border-none" value="#{souscriptionBean.listAssuranceCredit}" var="ascr" chunkSize="25">
+                                    <!--f:facet name="header">
+                                      Afficher plus
+                                   </f:facet>
+                                    <f:facet name="loader">
+                                        <p:commandButton type="button" value="Plus" icon="fa fa-plus-circle" class="btn btn-purple"/>
+                                    </f:facet-->
+                                    <p:commandLink value="#{ascr.compagnie.abbreviation}"  onstart="PF('simulationrr').block()" oncomplete="PF('simulationrr').unblock()" class="" update="formliste:xxxdetail" action="#{souscriptionBean.initializeQuestionForCompagnie()}" >
+                                        <!--div class="col-lg-10 ">
+                                            <p:outputLabel class="col-lg-12" />
+                                        </div-->
+                                        <f:setPropertyActionListener value="#{ascr}" target="#{souscriptionBean.assuranceCreditSelect}"  />  
+                                    </p:commandLink>
+                                </p:dataScroller>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-7 col-xs-12  "> 
+                    <!--p:outputPanel  class="panel-border-none"-->
+                    <div class="panel" jsf:id="xxxdetail">
+                        <div class="panel-heading bg-purple">
+                            <h3 class="panel-title">#{msg['titre.reponsesAuxQuestions']}</h3> 
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-condensed table-striped table-police">
+                                    <thead class="text-center bg-gray text-uppercase text-purple text-bold ">
+                                        <tr>
+                                            <td class="">#{msg['titre.numero']}</td>
+                                            <td class="col-lg-4 col-md-4 col-sm-6 col-xs-12">#{msg['titre.questionsUn']}</td>
+                                            <td class="col-lg-2 col-md-2 col-sm-6 col-xs-12">#{msg['titre.reponsesUn']}</td> 
+                                            <td class="col-lg-4 col-md-4 col-sm-6 col-xs-12">#{msg['titre.questionsDeux']}</td>
+                                            <td class="col-lg-2 col-md-2 col-sm-6 col-xs-12">#{msg['titre.reponsesDeux']}</td> 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="#{souscriptionBean.assuranceCreditSelect.listQuestionResponseAsVie}" var="q" >
+                                            <tr jsf:id="ll#{souscriptionBean.assuranceCredit.hashCode()}#{q.id()}" jsf:rendered="#{q.questionAsVie.booleanQuestion}">
+                                                <td class="text-justify">
+                                                    <h:outputLabel id="nn#{souscriptionBean.assuranceCredit.hashCode()}#{q.id()}" >#{q.questionAsVie.getNumber()}</h:outputLabel>
+                                                </td>
+                                                <td class="text-justify">
+                                                    <h:outputLabel id="l#{souscriptionBean.assuranceCredit.hashCode()}#{q.id()}" >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p:selectBooleanCheckbox id="a#{souscriptionBean.assuranceCredit.hashCode()}#{q.id()}" value="#{q.response}" >
+                                                        <p:ajax update="ll#{souscriptionBean.assuranceCredit.hashCode()}#{q.id()}"  />
+                                                    </p:selectBooleanCheckbox>
+                                                </td>
+                                                <td class="text-justify">
+                                                    <p:outputLabel id="c#{souscriptionBean.assuranceCredit.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" value="#{q.questionSecondaire()}" />
+                                                    <h:outputLabel rendered="#{q.response}" value="*" class="etoile_rouge pull-left" />
+                                                </td>
+                                                <td>
+                                                    <p:inputText required="#{q.response}" id="d#{souscriptionBean.assuranceCredit.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" class="form-control" value="#{q.precisions}" />
+                                                </td>
+                                            </tr>
+
+                                            <tr jsf:rendered="#{!q.questionAsVie.booleanQuestion}">
+                                                <td> 
+                                                    <h:outputLabel >#{q.questionAsVie.getNumber()}</h:outputLabel>
+                                                </td>
+                                                <td> 
+                                                    <h:outputLabel >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                                </td> 
+                                                <td class="text-center">
+                                                    <p:inputText  class="form-control" value="#{q.precisions}" />
+                                                </td> 
+                                                <td></td> 
+                                                <td></td>
+                                            </tr>
+
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+
+                            </div> 
+                        </div>
+                    </div>
+                    <!--/p:outputPanel-->
+                </div>
+            </div>
+            <!--/p:panel-->
+            <pe:blockUI widgetVar="simulationrr"> 
+                <div class="table-responsive">
+                    <h:panelGrid columns="2">  
+                        <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                        <h:outputText value="#{msg['titre.chargementDuQuestionnaireEnCours']}" />  
+                    </h:panelGrid>
+                </div>
+            </pe:blockUI> 
+        </p:panel>
+    </ui:composition>
+</html>

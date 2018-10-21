@@ -1,0 +1,731 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+
+            <h:form id="categorieForm" class="form-horizontal">
+                <div class="panel-heading"> 
+                    <fieldset >
+                        <legend class="text-center text-uppercase"><p:outputLabel value="#{msg['comptabilite.compte.gestion']}"></p:outputLabel></legend>
+                        <div class="form-group">
+
+                            <div class="col-lg-3">
+                                <h:outputLabel  class="police_label pull-left" for="categorieCompte" value="#{msg['comptabilite.compte.categorie']}" /> <h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                <h:selectOneMenu  id="categorieCompte" value="#{comptesBean.consoleCategorieCompte}" required="true" requiredMessage="#{msg['comptabilite.compte.categorie.reqiredMessage']}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                    <f:selectItem itemLabel="#{msg['comptabilite.compte.categorie']}" itemDisabled="true" />
+                                    <f:selectItem itemLabel="#{msg['comptabilite.compte.reel']}" itemValue="real" />
+                                    <f:selectItem itemLabel="#{msg['comptabilite.compte.general']}" itemValue="general" />
+                                    <f:selectItem itemLabel="#{msg['comptabilite.compte.auxilliaire']}" itemValue="auxiliaire" />
+                                    <p:ajax listener="#{comptesBean.choixCategorieCompte()}" update=":real,:general,:formliste,:realDataTable,:generalDataTable" />
+                                </h:selectOneMenu>
+                                <h:message for="categorieCompte" id="categorieCompteMessage" class="errorClass"/>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </h:form>
+            <p:separator/>                                                    <!-- Compte réel -->
+
+
+            <h:form id="real" class="form-horizontal">
+                <p:growl id="msgsReal"  globalOnly="true"  severity="info,warn"/>
+                <p:fieldset collapsed="#{comptesBean.collapseValue}" toggleable="true" rendered="#{comptesBean.hideCompteRealFieldset}" legend="#{comptesBean.legendeTexte}" id="creationCompteReal" >
+
+                    <div class="form-group">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:selectOneRadio  class="police_label" id="creationChoice"  value="#{comptesBean.creationChoice}" >
+                                <f:selectItem itemDisabled="#{comptesBean.disableRadioButton0}" itemLabel="A base d'une classe" itemValue="0" />
+                                <f:selectItem itemDisabled="#{comptesBean.disableRadioButton1}" itemLabel="A base d'un autre compte réel" itemValue="1" />
+                                <p:ajax listener="#{comptesBean.optionChoisie()}" update="label1,label2,choicePanel,numeroplancomptable"  />
+                            </p:selectOneRadio>
+                        </div>
+                    </div> 
+                   
+                    <p:panel id="choicePanel">
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <h:outputLabel class="police_label pull-left" for="formaNum" value="#{msg['comptabilite.compte.format']}" /> <h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                <h:selectOneMenu disabled="#{comptesBean.disableParametreMenu}" id="formaNum" value="#{comptesBean.compteReelToSave.parametre}" required="true" requiredMessage="#{msg['comptabilite.compte.format.requiredMessage']}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                    <f:selectItem itemLabel="#{msg['comptabilite.compte.format.choisir']}" itemDisabled="true" />
+                                    <f:selectItems value="#{comptesBean.allParametre}"  var="p" itemLabel="#{p.libelle}" itemValue="#{p}" />
+                                    <p:ajax listener="#{comptesBean.configureNumberFormat()}" update="classeplancomptable,numeroplancomptable"  />
+                                    <f:ajax event="click" render="formaNumMessage"  />
+                                </h:selectOneMenu>
+                                <h:message for="formaNum" id="formaNumMessage" class="errorClass"/>
+                            </div>
+
+                            <div class="col-lg-3">
+                                <h:outputLabel id="labelClassMenu" rendered="#{comptesBean.hideClassMenu}"  class="police_label pull-left" for="classeplancomptable" value="#{msg['comptabilite.compte.classe']}"  />
+                                <h:outputLabel rendered="#{comptesBean.hideClassMenu}" class="etoile_rouge pull-left" value="*"/>
+                                <h:selectOneMenu id="classeplancomptable" value="#{comptesBean.compteReelToSave.classe}" required="true" requiredMessage="#{msg['comptabilite.compte.classe.requiredMessage']}" converter="omnifaces.SelectItemsConverter" class="form-control" rendered="#{comptesBean.hideClassMenu}" >
+                                    <f:selectItem itemLabel="#{msg['comptabilite.compte.classechoix']}" itemDisabled="true" />
+                                    <f:selectItems value="#{comptesBean.allClasse}"  var="c" itemLabel="#{c.libelleClasse}" itemValue="#{c}" />
+                                    <p:ajax listener="#{comptesBean.configureStartNumber()}" update="numeroplancomptable"  />
+                                    <f:ajax event="click" render="classeplancomptableMessage"  />
+                                </h:selectOneMenu>
+                                <h:message for="classeplancomptable" id="classeplancomptableMessage" class="errorClass"/>
+
+                                <!-- Liste compte père reel -->
+                                
+                                <h:outputLabel id="label1" rendered="#{comptesBean.hideCompteReelMenu}" class="police_label pull-left" for="compteReelList" value="Compte reel père"  /> 
+                                <h:outputLabel id="label2" rendered="#{comptesBean.hideCompteReelMenu}" class="etoile_rouge pull-left" value="*"/>
+                                <h:selectOneMenu  id="compteReelList" value="#{comptesBean.compteReelToSave.compteReelPere}" required="true" requiredMessage="Veuillez choisir le compte père" converter="omnifaces.SelectItemsConverter" class="form-control" rendered="#{comptesBean.hideCompteReelMenu}" >
+                                    <f:selectItem itemLabel="Choisir un compte réel" itemDisabled="true" />
+                                    <f:selectItems value="#{comptesBean.listCompteReel}"  var="cr" itemLabel="#{cr.numero } -- #{cr.intitule}" itemValue="#{cr}" />
+                                    <p:ajax listener="#{comptesBean.configureNumberFormatIfBasedOnCompteReelPere()}" update="numeroplancomptable"  />
+                                    <p:ajax listener="#{comptesBean.prepareNumberToComplet()}" update="numeroplancomptable"  />
+                                    <f:ajax event="click" render="compteReelListMessage"  />
+                                </h:selectOneMenu>
+                                <h:message for="compteReelList" id="compteReelListMessage" class="errorClass"/>
+                                
+                                <!-- Liste compte père reel -->
+                            </div> 
+
+                            <div class="col-lg-3">
+                                <h:outputLabel  class="police_label pull-left" for="numeroplancomptable" value="#{msg['comptabilite.compte.numero']}" /> <h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                <p:inputText id="numeroplancomptable" required="true" 
+                                             converterMessage="#{msg['format.integer.converterMessage']}"  
+                                             validatorMessage="#{msg['comptabilite.compte.numero.validatorMessage']}" 
+                                             requiredMessage="#{msg['comptabilite.compte.numero.requiredMessage']}" 
+                                             value="#{comptesBean.compteReelToSave.numero}" 
+                                             maxlength="#{comptesBean.maxlenthNumer}" styleClass="form-control" 
+                                             placeholder="Numero de Compte">
+                                    <f:ajax event="keyup" render="numeroplancomptableMessage"/>
+                                    <f:ajax event="keyup" listener="#{comptesBean.prepareNumberToComplet()}" render="numeroplancomptableMessage"/>
+
+                                </p:inputText>
+
+                                <h:message for="numeroplancomptable" id="numeroplancomptableMessage" class="errorClass"/>
+                                <pe:keyFilter for="numeroplancomptable"   preventPaste="true" mask="num"/>
+                            </div>
+                            <div class="col-lg-3">
+                                <h:outputLabel for="intitule" class=" police_label pull-left" value="#{msg['comptabilite.compte.intitule']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                <p:inputText id="intitule" value="#{comptesBean.compteReelToSave.intitule}" required="true" requiredMessage="#{msg['comptabilite.compte.intitule.requiredMessage']}"  styleClass="form-control" placeholder="#{msg['comptabilite.compte.numero']}">
+                                    <f:ajax event="keyup" render="intituleMessage"/>
+                                </p:inputText> 
+                                <h:message for="intitule" id="intituleMessage" class="errorClass"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-lg-3">
+                                <h:outputLabel for="reference" class=" pull-left" value="#{msg['comptabilite.compte.reference']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                <p:inputText id="reference" value="#{comptesBean.compteReelToSave.reference}" required="true" requiredMessage="#{msg['comptabilite.compte.reference.requiredMessage']}"  styleClass="form-control" placeholder="reference">
+                                    <f:ajax event="keyup" render="referenceMessage"/>
+                                </p:inputText> 
+                                <h:message for="reference" id="referenceMessage" class="errorClass"/>
+                                <pe:keyFilter for="reference"   preventPaste="true" mask="alpha"/>
+                            </div>
+                        </div>
+                    </p:panel>
+                    <div class="form-group">
+                        <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+                            <div class="col-lg-3 col-md-6 col-xs-6 col-sm-6">
+                                <p:commandButton id="realCancel" value="#{msg['btn.annuller']}" action="#{comptesBean.cancelCompteReal()}" update="real,msgsReal,:realDataTable"  class="btn-danger danger form-control" >
+                                </p:commandButton> 
+                            </div>
+                            <div class="col-lg-3 col-lg-push-6  col-md-6 col-xs-6 col-sm-6">
+                                <p:commandButton id="realSave" rendered="#{comptesBean.hideSaveButton}" value="#{msg['btn.enregistrer']}" action="#{comptesBean.saveCompteReal()}" update="real,msgsReal,:realDataTable,compteReelList" class="btn form-control btn-primary primary" >
+                                </p:commandButton>
+                                <p:commandButton id="realUpdate" rendered="#{comptesBean.hideUpdateButton}" value="#{msg['btn.modifier']}" action="#{comptesBean.modifierCompteReal()}" update="real,msgsReal,:realDataTable" class="btn form-control btn-success   pull-right" style="background: #5cb85c;color:#fff;border-color:#4cae4c; font-family: cursive;">                                    
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </div>
+                </p:fieldset>
+            </h:form>
+
+
+
+            <p:spacer width="10" />
+            <h:form id="realDataTable">
+                <p:growl id="msgsrealDataTable"  globalOnly="true"  severity="info,warn"/>
+                <p:fieldset rendered="#{comptesBean.hideCompteRealFieldset}" legend="#{msg['compte.reel.liste']}" >
+                    <p:dataTable emptyMessage="#{msg['tableau.vide']}" sortBy="#{cReel.idCompteReel}" sortOrder="descending" class="table_label" paginator="true" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+                                 rows="5" rowKey="#{cReel.idCompteReel}" var="cReel" id="t1" value="#{comptesBean.allCompteReel}">
+
+                        <p:column style="width: 180px" filterBy="#{cReel.numero}" headerText="#{msg['comptabilite.compte.numero']}" >
+                            <h:outputText value="#{cReel.numero}" />
+                        </p:column>
+                        <p:column filterBy="#{cReel.intitule}" headerText="#{msg['comptabilite.compte.intitule']}">
+                            <h:outputText value="#{cReel.intitule}" />
+                        </p:column>
+                        <p:column style="width:150px" filterBy="#{cReel.reference}" headerText="#{msg['comptabilite.compte.reference']}" >
+                            <h:outputText value="#{cReel.reference}" />
+                        </p:column>
+                        <p:column style="width: 150px" filterBy="#{cReel.classe.numeroClasse}" headerText="#{msg['comptabilite.compte.classe']}">
+                            <h:outputText value="#{cReel.classe.libelleClasse}" />
+                        </p:column>
+                        <p:column headerText="Actions" width="100">
+                            <p:commandButton title="#{msg['btn.modifier']}"  update=":real" action="#{comptesBean.modificationCompteReal()}" icon="fa fa-edit" class="btn-primary primary btn-sm">
+                                <f:setPropertyActionListener value="#{cReel}" target="#{comptesBean.compteReelToUpdate}" />
+
+
+                                <p:ajax listener="#{comptesBean.displayButtonText()}" update=":real"  />
+
+                            </p:commandButton>
+
+                            <p:commandButton  oncomplete="PF('supprimer').show()" update=":real" icon="fa fa-trash" title="#{msg['btn.supprimer']}" class="btn-danger danger btn-sm">
+                                <f:setPropertyActionListener value="#{cReel}" target="#{comptesBean.compteReelToDelete}" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+            <!-- Compte général -->
+            <h:form id="general">
+                <p:growl id="msgsGeneral"  globalOnly="true"  severity="info,warn"/>
+                <p:fieldset collapsed="true" toggleable="true" rendered="#{comptesBean.hideCompteGeneralFieldset}" legend="#{msg['compte.general.creer']}" id="creationCompteGeneral" >
+                    <p:growl id="aa"  globalOnly="true"  severity="info,warn"/>
+                    <p:dataTable sortOrder="descending" class="table_label" paginator="true" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+                                 emptyMessage="#{msg['tableau.vide']}" lazy="false" rows="5" var="cReel" id="t1" value="#{comptesBean.allCompteReel}"
+                                 selection="#{comptesBean.selectedCompteReel}" selectionMode="single"  
+                                 rowKey="#{cReel.idCompteReel}" reflow="true" >
+                        <f:facet name="header">
+                            #{msg['compte.reel.choisir']}
+                        </f:facet>
+                        <p:ajax event="rowSelect" listener="#{comptesBean.onRowSelect}" update=":general:t1,:general:numero" />
+
+                        <p:column style="width: 180px" filterBy="#{cReel.numero}" headerText="#{msg['comptabilite.compte.numero']}" >
+                            <h:outputText value="#{cReel.numero}" />
+                        </p:column>
+                        <p:column filterBy="#{cReel.intitule}" headerText="#{msg['comptabilite.compte.intitule']}">
+                            <h:outputText value="#{cReel.intitule}" />
+                        </p:column>
+                        <p:column style="width:150px" filterBy="#{cReel.reference}" headerText="#{msg['comptabilite.compte.reference']}">
+                            <h:outputText value="#{cReel.reference}" />
+                        </p:column>
+                        <p:column style="width: 150px" filterBy="#{cReel.classe.numeroClasse}" headerText="#{msg['comptabilite.compte.classe']}">
+                            <h:outputText value="#{cReel.classe.libelleClasse}" />
+                        </p:column>
+                    </p:dataTable>         
+                    <p:spacer width="10"/> 
+
+                    <div class="form-group">
+                        <div class="col-lg-4">
+                            <h:outputLabel  class="police_label pull-left" for="intituleCompteGeneral" value="#{msg['comptabilite.compte.intitule']}" /> <h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            <p:inputText id="intituleCompteGeneral" required="true" requiredMessage="#{msg['comptabilite.compte.intitule.requiredMessage']}" value="#{comptesBean.compteGeneralToSave.intitule}" styleClass="form-control" placeholder="Intitulé">
+                                <f:ajax event="keyup" render="intituleCompteGeneralMessage"/>
+                            </p:inputText>
+                            <h:message for="intituleCompteGeneral" id="intituleCompteGeneralMessage" class="errorClass"/>
+                        </div>
+                        <div class="col-lg-4">
+                            <h:outputLabel  class="police_label pull-left" for="numero" value="#{msg['compte.numero.ordre']}" /> <h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            <p:inputText id="numero" required="true" maxlength="#{comptesBean.positionCompteGeneral}" validatorMessage="#{msg['comptabilite.compte.type.validator']} #{comptesBean.positionCompteGeneral} #{msg['valeur.chiffre']}" requiredMessage="#{msg['compte.numero.ordre.requiredmessage']}" value="#{comptesBean.compteGeneralToSave.numeroOrdre}"  styleClass="form-control" placeholder="#{msg['comptabilite.compte.numero.ordre']}">
+                                <f:ajax event="keyup" render="numeroMessage"/>
+                                <f:validateLength minimum="#{comptesBean.positionCompteGeneral}" />
+
+                            </p:inputText>
+                            <h:message for="numero" id="numeroMessage" class="errorClass"/>
+                        </div>
+                    </div>
+                    <p:spacer width="100"/>
+                    <div class="form-group">
+                        <div class="col-lg-3 col-md-6 col-xs-6 col-sm-6">
+                            <p:commandButton id="generalCancel" value="#{msg['btn.annuller']}" ajax="true" action="#{comptesBean.cancelCompteGeneral()}" update="general"  class="btn-danger danger form-control" >
+                            </p:commandButton> 
+                        </div>
+                        <div class="col-lg-3 col-lg-push-6  col-md-6 col-xs-6 col-sm-6">
+                            <p:commandButton id="generalSave"   value="#{msg['btn.enregistrer']}" action="#{comptesBean.saveCompteGeneral()}" update=":generalDataTable,general,msgsGeneral,aa" class="btn form-control btn-primary primary" >
+
+                                <p:ajax listener="#{comptesBean.test()}" delay="200" update="msgsGeneral"  />
+
+                            </p:commandButton>
+                        </div> 
+                    </div>
+                </p:fieldset>
+            </h:form>
+            <p:spacer width="10"/> 
+
+
+
+            <h:form id="generalDataTable">
+                <p:fieldset rendered="#{comptesBean.hideCompteGeneralFieldset}"  legend="#{msg['compte.general.liste']}" id="creationCompteGeneral" >
+                    <p:dataTable sortBy="#{cGeneral.idCompteGeneral}" emptyMessage="#{msg['tableau.vide']}" sortOrder="descending" class="table_label" paginator="true" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+                                 rowKey="#{cGeneral.idCompteGeneral}" rows="5" var="cGeneral" id="t1" value="#{comptesBean.allCompteGeneral}" >
+
+                        <p:column style="width: 180px" filterBy="#{cGeneral.numero}" headerText="#{msg['comptabilite.compte.numero']}" >
+                            <h:outputText value="#{cGeneral.numero}" />
+                        </p:column>
+                        <p:column filterBy="#{cGeneral.intitule}" headerText="#{msg['comptabilite.compte.intitule']}">
+                            <h:outputText value="#{cGeneral.intitule}" />
+                        </p:column>
+                        <p:column headerText="Actions" width="100">
+                            <p:commandButton title="#{msg['btn.modifier']}"  update="modifier, modifier:intituleCompteGeneral" icon="fa fa-edit" class="btn-primary primary btn-sm" oncomplete="PF('modifier').show()"   >
+                                <f:setPropertyActionListener value="#{cGeneral}" target="#{comptesBean.compteGeneralToUpdate}" />
+                                <f:setPropertyActionListener value="#{cGeneral.compteReel}" target="#{comptesBean.selectedCompteReel}" />
+                                <f:setPropertyActionListener value="#{cGeneral.compteReel.parametre.nombreDigitCompteGeneral - cGeneral.compteReel.parametre.nombreDigitCompteReel}" target="#{comptesBean.positionCompteGeneral}" />
+
+
+                            </p:commandButton>
+
+                            <p:commandButton  oncomplete="PF('supprimerG').show()" update="generalDataTable" icon="fa fa-trash" title="#{msg['btn.supprimer']}" class="btn-danger danger btn-sm">
+                                <f:setPropertyActionListener value="#{cGeneral}" target="#{comptesBean.compteGeneralToDelete}" />
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>     
+                </p:fieldset>
+            </h:form>
+
+
+
+
+
+            <!--Compte Auxiliaire  -->
+
+            <h:form id="formliste">
+                <p:growl id="msgsAux"  globalOnly="true"  severity="info,warn"/>    
+                <p:fieldset rendered="#{comptesBean.hideCompteAuxiliaireFieldset}" legend="#{msg['compte.auxilliaire.creer']}" id="creationCompteAuxiliare" >
+                    <p:wizard id="sewa" class="police_label panel" nextLabel="#{msg['btn.suivant']}" backLabel="#{msg['btn.prescedent']}" 
+                              flowListener="#{comptesBean.onFlowProcess}"  widgetVar="compteAux" >
+
+                        <p:tab  id="tab1"  title="#{msg['comptabilite.compte.general']}" >
+                            <p:growl id="tab1Message"  globalOnly="true"  severity="info,warn"/>
+                            <p:dataTable sortOrder="descending" class="table_label" paginator="true" paginatorPosition="bottom" 
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+                                         lazy="false" rows="5" var="cGeneral" id="compteGeneral" value="#{comptesBean.allCompteGeneral}"
+                                         emptyMessage="#{msg['tableau.vide']}"
+                                         selection="#{comptesBean.selectedCompteGeneral}" selectionMode="single"
+                                         rowKey="#{cGeneral.idCompteGeneral}" reflow="true"
+                                         >
+
+                                <p:column style="width: 180px" filterBy="#{cGeneral.numero}" headerText="#{msg['comptabilite.compte.numero']}" >
+                                    <h:outputText value="#{cGeneral.numero}" />
+                                </p:column>
+                                <p:column filterBy="#{cGeneral.intitule}" headerText="#{msg['comptabilite.compte.intitule']}">
+                                    <h:outputText value="#{cGeneral.intitule}" />
+                                </p:column>
+                            </p:dataTable>  
+                        </p:tab>
+                        <p:tab  id="tab2"  title="Info Compte" >
+                            <p:growl id="tab2Message"  globalOnly="true"  severity="info,warn"/>
+                            <div class="panel-heading"> 
+                                <p:fieldset id="banque_info2" >                          
+                                    <legend>#{msg['compte.information']}</legend>
+                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                        <div class="form-group">
+                                            <div class="col-lg-3">
+                                                <h:outputLabel for="intitule" class=" police_label pull-left" value="#{msg['comptabilite.compte.intitule']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                <p:inputText id="intitule" value="#{comptesBean.compteAuxiliareToSave.libelleCompte}" required="true" requiredMessage="#{msg['comptabilite.compte.intitule.requiredMessage']}"  styleClass="form-control" placeholder="#{msg['comptabilite.compte.numero']}">
+                                                    <f:ajax event="keyup" render="intituleMessage"/>
+                                                </p:inputText> 
+                                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                                    <h:message for="intitule" id="intituleMessage" class="errorClass"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <h:outputLabel  value="#{msg['comptabilite.compte.nature']}"  for="natureCompte" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />   
+                                                <h:selectOneMenu id="natureCompte" required="true" value="#{comptesBean.compteAuxiliareToSave.natureCompte}" class="form-control" requiredMessage="#{msg['comptabilite.compte.nature.requiredMessage']}">
+                                                    <f:selectItem itemLabel="#{msg['compte.nature.choisir']}" itemDisabled="true" />
+                                                    <f:selectItem itemValue="Actif" itemLabel="#{msg['comptabilite.compte.actif']}"/>
+                                                    <f:selectItem itemValue="Passif" itemLabel="#{msg['comptabilite.compte.passif']}"/>
+                                                    <f:ajax event="keyup" render="natureCompteMessage"/> 
+                                                </h:selectOneMenu>
+                                                <h:message for="natureCompte"  id="natureCompteMessage" class="errorClass" />   
+                                            </div>   
+                                            <div class="col-lg-3">
+                                                <h:outputLabel value="#{msg['comptabilite.compte.type']}" for="typcompte" class="pull-left"/><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                                <h:selectOneMenu id="typcompte" value="#{comptesBean.compteAuxiliareToSave.typeCompte}" converter="omnifaces.SelectItemsConverter" required="true" 
+                                                                 requiredMessage="#{msg['comptabilite.compte.type.requiredMessage']}" class="form-control"  >
+                                                    <f:selectItem itemLabel="#{msg['comptabilite.compte.type']}" itemDisabled="true"/>
+                                                    <f:selectItems value="#{comptesBean.allTypeComptes}" var="typcompte" itemLabel="#{typcompte.libelle}" itemValue="#{typcompte}" />
+                                                    <p:ajax listener="#{comptesBean.displayChampTypeCompte()}" update="cc,banque,console" />
+                                                    <f:ajax event="keyup" render="typcompteMessage"/> 
+                                                </h:selectOneMenu>     
+                                                <h:message for="typcompte"  id="typcompteMessage" class="errorClass" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <h:outputLabel for="devise" value="#{msg['titre.devise']}" class="pull-left text-left"/>
+                                                <h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                                <h:selectOneMenu id="devise" class="form-control" required="true" requiredMessage="#{msg['devise.requiredMessage']}" 
+                                                                 converter="omnifaces.SelectItemsConverter" value="#{comptesBean.compteAuxiliareToSave.devise}" >
+                                                    <f:selectItem itemLabel="#{msg['devise.choisir']}" itemDisabled="true" />
+                                                    <f:selectItems value="#{comptesBean.allDevises}"  var="devise" itemLabel="#{devise.libelle}" itemValue="#{devise}" />
+                                                    <f:ajax event="keyup" render="deviseMessage"/> 
+                                                </h:selectOneMenu>
+                                                <h:message for="devise"  id="deviseMessage" class="errorClass" />    
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                        <div class="form-group">
+                                            <div class="col-lg-3">
+                                                <h:outputLabel for="console" value="#{msg['comptabilite.compte.typetiers']}" class="pull-left text-left"/>
+                                                <h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                                <h:selectOneMenu id="console" class="form-control" required="true" value="#{comptesBean.console}" requiredMessage="#{msg['comptabilite.compte.typetiers.requiredMessage']}" >
+                                                    <f:selectItem itemLabel="#{msg['comptabilite.compte.typetiers']}" noSelectionOption="true" />
+                                                    <f:selectItem itemLabel="#{msg['titre.compagnie']}" itemValue="compagnie" />
+                                                    <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue="courtier" />
+                                                    <f:selectItem itemLabel="#{msg['titre.pdv']}" itemValue="pointVente" />
+                                                    <f:selectItem itemLabel="Guichet Externe" itemValue="guichetExterne" />
+
+                                                    <f:selectItem itemLabel="Ncp" itemValue="ncp" />
+                                                    <p:ajax listener="#{comptesBean.listTiers()}" update="cc" />
+                                                    <f:ajax event="keyup" render="consoleMessage"/> 
+                                                </h:selectOneMenu>
+                                                <h:message for="console"  id="consoleMessage" class="errorClass" />     
+
+
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <h:outputLabel for="cc" value="#{msg['structure.titre']}" class="pull-left text-left"/>
+                                                    <h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                                    <p:autoComplete id="cc" style="font-size: 12px" required="true" requiredMessage="#{msg['structure.requiredMessage']}" value="#{comptesBean.selectedObjet}" dropdown="true" completeMethod="#{comptesBean.tiersFilter}"  >
+                                                        <f:ajax event="keyup" render="ccMessage"/> 
+                                                        <p:ajax event="itemSelect" listener="#{comptesBean.checkTypeCompteUnicityByTiers()}" update="msgsAux,cc" />   
+                                                    </p:autoComplete>
+                                                    <h:message for="cc"  id="ccMessage" class="errorClass" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <h:outputLabel value="#{msg['compte.numero.ordre']}" for="numOrdre" class="pull-left"/><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                                <p:inputText id="numOrdre" value="#{comptesBean.compteAuxiliareToSave.numOrdre}" maxlength="#{comptesBean.positionNumeroOrdreCompteAux}" validatorMessage="#{msg['comptabilite.compte.type.validator']} #{comptesBean.positionNumeroOrdreCompteAux} #{msg['valeur.chiffre']}" required="true" requiredMessage="#{msg['compte.numeroordre.requiredMessage']}"  styleClass="form-control" placeholder="#{msg['compte.numero.ordre']}">
+                                                    <f:ajax event="keyup" render="numOrdreMessage"/>
+                                                    <f:validateLength minimum="#{comptesBean.positionNumeroOrdreCompteAux}" />
+                                                </p:inputText> 
+                                                <h:message for="numOrdre"  id="numOrdreMessage" class="errorClass" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+
+                            <p:outputPanel id="banque">
+                                <div class="panel-heading"> 
+                                    <p:fieldset rendered="#{comptesBean.renderedBankFieldset}" id="banque_info" collapsed="#{comptesBean.hideBankInfo}">                          
+                                        <legend>Détails de la banque</legend>
+
+                                        <div class="col-md-12 col-lg-12 col-sm-12">
+                                            <div class="form-group">
+                                                <div class="col-lg-3">
+                                                    <h:outputLabel for="nomBanque" class=" police_label pull-left" value="#{msg['banque.nom']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    <p:inputText id="nomBanque" required="#{comptesBean.requiredValue}" requiredMessage="#{msg['banque.nomrequiredMessage']}" 
+                                                                 value="#{comptesBean.banque.nomBanque}" class="form-control" placeholder="#{msg['banque.nom']}" 
+                                                                 >
+                                                        <f:ajax event="keyup" render="nomBanqueMessage"/>
+                                                    </p:inputText> 
+                                                    <p:message for="nomBanque" id="nomBanqueMessage" class="errorClass"/>
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <h:outputLabel for="codeBanque" class=" police_label pull-left" value="#{msg['banque.code']}"   /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    <p:inputText id="codeBanque" required="#{comptesBean.requiredValue}" requiredMessage="#{msg['banque.code.requiredMessage']}" 
+                                                                 value="#{comptesBean.banque.codeBanque}" class="form-control" placeholder="#{msg['banque.code']}" 
+                                                                 >  
+                                                        <f:ajax event="keyup" render="codeBanqueMessage"/>
+                                                    </p:inputText>
+                                                    <p:message for="codeBanque" id="codeBanqueMessage" class="errorClass"/>
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <h:outputLabel for="codebic" class=" police_label pull-left" value="#{msg['banque.codebic']}"   /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    <p:inputText id="codebic" required="#{comptesBean.requiredValue}" requiredMessage="#{msg['banque.codebic.requiredMessage']}" 
+                                                                 value="#{comptesBean.banque.codeBIC}" class="form-control" placeholder="#{msg['banque.codebic']}" 
+                                                                 > 
+                                                        <f:ajax event="keyup" render="codebicMessage"/>
+                                                    </p:inputText>
+                                                    <p:message for="codebic" id="codebicMessage" class="errorClass"/>
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <h:outputLabel for="adresseBanque" class=" police_label pull-left" value="#{msg['banque.adresse']}"   /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    <p:inputText id="adresseBanque" required="#{comptesBean.requiredValue}" requiredMessage="#{msg['banque.adresse.requiredMessage']}" 
+                                                                 value="#{comptesBean.banque.adresseBanque}" class="form-control" placeholder="#{msg['banque.adresse']}" 
+                                                                 >  
+                                                        <f:ajax event="keyup" render="adresseBanqueMessage"/>
+                                                    </p:inputText> 
+                                                    <p:message for="adresseBanque" id="adresseBanqueMessage" class="errorClass"/>
+                                                </div> 
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-3">
+                                                    <h:outputLabel for="telBanque" class=" police_label pull-left" value="#{msg['banque.tel']}"   /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    <p:inputMask id="telBanque" required="#{comptesBean.requiredValue}" mask="(999) 99-99-99-99" requiredMessage="#{msg['banque.tel.requiredMessage']}" 
+                                                                 value="#{comptesBean.banque.telBanque}" class="form-control" placeholder="#{msg['banque.tel']}" 
+                                                                 > 
+                                                        <f:ajax event="keyup" render="telBanqueMessage"/>
+                                                    </p:inputMask> 
+                                                    <p:message for="telBanque" id="telBanqueMessage" class="errorClass"/>
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <h:outputLabel for="mailBanque" class=" police_label pull-left" value="#{msg['banque.mail']}"   />
+                                                    <p:inputText id="mailBanque"  
+                                                                 value="#{comptesBean.banque.mailBanque}" class="form-control" placeholder="#{msg['banque.mail']}" 
+                                                                 >                            
+                                                    </p:inputText>              
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <h:outputLabel for="webBanque" class=" police_label pull-left" value="#{msg['banque.web']}"   />
+                                                    <p:inputText id="webBanque" 
+                                                                 value="#{comptesBean.banque.siteBanque}" class="form-control" placeholder="#{msg['banque.web']}" 
+                                                                 >                            
+                                                    </p:inputText>              
+                                                </div>
+                                            </div>
+                                            <legend>Correspondant</legend>
+                                            <div class="form-group">
+                                                <div class="col-lg-3">
+                                                    <h:outputLabel for="nomCorrespondantBanque" class=" police_label pull-left" value="#{msg['banque.nomcorrespondant']}"   /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    <p:inputText id="nomCorrespondant" required="#{comptesBean.requiredValue}" requiredMessage="#{msg['banque.nomcorrespondant.requiredMessage']}"
+                                                                 value="#{comptesBean.banque.nomCorrespondant}" class="form-control" placeholder="#{msg['banque.nomcorrespondant']}"
+                                                                 > 
+                                                        <f:ajax event="keyup" render="nomCorrespondantMessage"/>
+                                                    </p:inputText> 
+                                                    <p:message for="nomCorrespondant" id="nomCorrespondantMessage" class="errorClass"/>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <h:outputLabel for="telCorrespondantBanque" class=" police_label pull-left" value="#{msg['banque.telcorrespondant']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    <p:inputMask id="telCorrespondant" required="#{comptesBean.requiredValue}" mask="(999) 99-99-99-99" requiredMessage="#{msg['banque.telcorrespondant']}"
+                                                                 value="#{comptesBean.banque.telCorrespondant}" class="form-control" placeholder="#{msg['banque.telcorrespondant']}"
+                                                                 > 
+                                                        <f:ajax event="keyup" render="telCorrespondantMessage"/>
+                                                    </p:inputMask> 
+                                                    <p:message for="telCorrespondant" id="telCorrespondantMessage" class="errorClass"/>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <h:outputLabel for="mailCorrespondantBanque" class=" police_label pull-left" value="#{msg['banque.emailcorrespondant']}"  />
+                                                    <p:inputText id="mailCorrespondantBanque" 
+                                                                 value="#{comptesBean.banque.mailCorrespondant}" class="form-control" placeholder="#{msg['banque.emailcorrespondant']}"
+                                                                 >                            
+                                                    </p:inputText>              
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </p:fieldset>
+                                </div>
+                            </p:outputPanel>
+
+                        </p:tab>
+                        <p:tab  id="tab3"  title="#{msg['btn.confirmation']}" >
+                            <p:growl id="tab3Message"  globalOnly="true"  severity="info,warn"/>
+                            <p:panel  header="#{msg['btn.confirmation']}">
+                                <div class="row">
+                                    <p:fieldset rendered="#{comptesBean.renderedConfirmationFieldset}" id="acount_confirm">                          
+                                        <legend>"#{msg['comptabilite.compte.detaille']}"</legend>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['comptabilite.compte.nature']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.compteAuxiliareToSave.natureCompte}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['comptabilite.compte.libelle']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.compteAuxiliareToSave.libelleCompte}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['comptabilite.compte.general']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.selectedCompteGeneral.numero}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['titre.devise']}"/>
+                                                    </span>
+                                                    <h:outputLabel  class="form-control" value="#{comptesBean.compteAuxiliareToSave.devise.libelle}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['comptabilite.compte.typetiers']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.console}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['structure.titre']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.selectedObjet}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['comptabilite.compte.type']}"/>
+                                                    </span>
+                                                    <h:outputLabel style="text-transform: lowercase" class="form-control" value="#{comptesBean.compteAuxiliareToSave.typeCompte.libelle}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['comptabilite.compte.auxilliaire']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.finalNumCompteAux}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p:fieldset>
+                                    <p:fieldset id="banque_info_confirm" rendered="#{comptesBean.renderedBankFieldset}" collapsed="#{comptesBean.hideBankInfo}">                          
+                                        <legend>#{msg['banque.detaille']}</legend>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['banque.detaille.nom']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.banque.nomBanque}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['banque.detaille.code']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.banque.codeBanque}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['banque.detaille.codebic']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.banque.codeBIC}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['banque.detaille.adresse']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.banque.adresseBanque}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['banque.detaille.tel']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.banque.telBanque}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['banque.detaille.mail']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.banque.mailBanque}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['banque.web']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.banque.siteBanque}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <legend>#{msg['banque.correspondant']}</legend>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['banque.detaille.adresse']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.banque.adresseBanque}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">   
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['banque.detaille.nom']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.banque.nomCorrespondant}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['banque.detaille.tel']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.banque.telCorrespondant}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12"> 
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <h:outputText value="#{msg['banque.detaille.mail']}"/>
+                                                    </span>
+                                                    <h:outputLabel class="form-control" value="#{comptesBean.banque.mailCorrespondant}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p:fieldset>
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <div class="col-lg-2 col-md-4 col-xs-12 col-sm-12 pull-right">
+                                            <p:commandButton id="ajouter" process="@this" rendered="#{comptesBean.hideSaveButton}" value="#{msg['btn.enregistrer']}" update="msgsAux,formliste,sewa" action="#{comptesBean.saveCompteAuxiliaire()}" class="btn form-control btn-success success" >
+                                            </p:commandButton>
+                                        </div>
+                                        <div class="col-lg-2 col-md-4 col-xs-12 col-sm-12 pull-right">
+                                            <p:commandButton id="terminer" rendered="#{comptesBean.hideEndButton}" value="#{msg['btn.terminer']}" update="msgsAux,formliste,sewa" class="btn form-control btn-primary primary" >
+                                                <f:ajax delay="1000" listener="#{comptesBean.pageCreationCompte()}" />
+                                            </p:commandButton>
+                                        </div>
+
+                                        <div class="col-lg-2 col-md-4 col-xs-12 col-sm-12 pull-left">
+                                            <h:commandLink rendered="#{comptesBean.hidePrintButton}"  target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-info btn police_label form-control" actionListener="#{comptesBean.print()}"   > 
+                                                <i class=" glyphicon glyphicon-print"></i>
+                                            </h:commandLink>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p:panel>        
+                        </p:tab>
+                    </p:wizard>
+                </p:fieldset>
+            </h:form>
+        </div>
+
+        <p:dialog class="police_label" header="#{msg['compte.general.modifier']}" showEffect="fade"  widgetVar="modifier" modal="true" width="1000" minHeight="600" resizable="false">
+            <ui:include src="comptegeneral_modifier.xhtml"/>
+        </p:dialog>
+
+        <h:form>
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                             header="Suppression" severity="alert" widgetVar="supprimer">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3, :realDataTable, :real" action="#{comptesBean.supprimerRealCompte()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+
+            <p:confirmDialog class="police_label" id="confirmationG" message="#{msg['supprimer.message']}"
+                             header="Suppression" severity="alert" widgetVar="supprimerG">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update=":generalDataTable" action="#{comptesBean.supprimerCompteGeneral()}"  oncomplete="PF('supprimerG').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+    </ui:composition>
+</html>

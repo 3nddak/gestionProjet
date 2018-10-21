@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <meta charseet="utf_8"/>
+        <meta name="viewport" content="width-device-width, initial-scale=1"/>
+        <meta http-equiv="X-UA-Conpatible" content="IE=edge"/>
+        <link rel="icon" type="image/png" href="../resources/custom/img/icon.png" />
+        <h:outputStylesheet library="bootstrap/css" name="bootstrap.css" />
+        <!-- Font Awesome -->
+        <h:outputStylesheet  library="font-awesome/css" name="font-awesome.css" />
+        <h:outputStylesheet library="custom/css" name="assurance.css"/>
+        <title>E-ASSURANCE|AUTHENTIFICATION</title>
+    </h:head> 
+
+    <h:body>
+        <div id="login-page">
+            <div class="container">
+                <h:form prependId="false" id="form" class="form-login">
+                    <h2 class="form-login-heading text-uppercase text-center">
+                        <h:outputLabel value="Authentification"/> 
+                    </h2>
+                   <div class="login-wrap">
+                        <h:messages id="me" globalOnly="true" showDetail="false" style="text-align: center" layout="table" class="errorClass"  />
+                     <br/>
+                        <h:inputText id="username" value="#{loginBean.pseudo}" styleClass="form-control" a:placeholder="Pseudo"/><br/>
+                        <h:inputSecret id="password" value="#{loginBean.password}" styleClass="form-control" a:placeholder="Mot de passe"/><br/>
+                        <input type="hidden"
+                               name="${_csrf.parameterName}"
+                               value="${_csrf.token}"/>
+                        <div class="btn-toolbar">
+                            <p:commandButton class="btn btn-connexion form-control" value="Connexion" action="#{loginBean.login}" ajax="false">
+                                <f:event listener="#{loginBean.loginMessageError()}" type="preRenderView"/> 
+                            </p:commandButton>
+                        </div>
+                        <!--hr/-->
+                        <!--div class="registration">
+                            <h:outputText value="Vous avez oublier votre mot de passe ?"/> <br/>
+                            <p:commandLink value="Recuperer son mot de passe" update="me" action="#{loginBean.info()}" />
+                        </div-->
+                    </div>
+                </h:form> 
+            </div>
+        </div>
+        <h:outputScript library="custom/js" name="jquery.backstretch.min.js"></h:outputScript>
+        <script type="text/javascript">
+            $.backstretch("../resources/custom/img/log_bg.jpg", {speed: 500, fade: 750});
+        </script>
+        <br />
+    </h:body>
+</html>
+

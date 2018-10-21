@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition>
+
+        <p:panel header="FORMULE"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="4">
+                <p:outputLabel  value="Formule :"/>
+                <h:outputText  value="#{souscriptionAsMrhBean.assuranceMrh.formule}"/>
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="NFOS SUR LE LOGEMENT"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+            <p:panelGrid columns="6" class="table">
+                <p:outputLabel    value="Type de logement:"/>
+                <h:outputText class="text-right"  value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.typeLogement}"/>
+                <p:outputLabel value="Type d'occupant:"/>
+                <h:outputText class="text-right"  value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.typeOccupant}"/>
+                <p:outputLabel value="Type de residence :"/>
+                <h:outputText value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.typeResidence}"/>
+                <p:outputLabel value="Type de residence-temps:"/>
+                <h:outputText class="text-right"  value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.typeResidenceTemps}"/>
+                <p:outputLabel  value="Adresse :"/>
+                <h:outputText value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.adresse}"/>   
+                <p:outputLabel value="Année de constuction :"/>
+                <h:outputText value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.anneeConstruction}">
+                    <f:convertNumber pattern="###,##0" type="number" />
+                </h:outputText>
+                <p:outputLabel value="Code postal :"/>
+                <h:outputText  value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.codePostal}"/>
+                <p:outputLabel value="Commune:"/>
+                <h:outputText class="text-right" value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.commune}"/>
+                <p:outputLabel value="Ville:"/>
+                <h:outputText class="text-right" value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.ville}"/>
+                <p:outputLabel value="Autres occupants:"/>
+                <h:outputText  class="text-right" value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.autresOccupant}" />
+
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="PIECES"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <div class="table-responsive">
+                <p:dataTable class="table_label table-responsive" var="piece" reflow="true" rows="5" value="#{souscriptionAsMrhBean.listPieces}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" 
+                             rowsPerPageTemplate="5,10,15"  emptyMessage="#{msg[tableau.vide]}"  >                                                    
+                    <p:column headerText="Type de pièce">
+                        <h:outputText value="#{piece.typepiece.toString()}" />
+                    </p:column>
+
+                    <p:column headerText="Longueur">
+                        <h:outputText value="#{piece.longueur}" />
+                    </p:column >
+                    <p:column headerText="Largeur">
+                        <h:outputText value="#{piece.largeur}" />
+                    </p:column >
+                    <p:column headerText="Hauteur">
+                        <h:outputText value="#{piece.hauteur}" />
+                    </p:column >
+                    <p:column headerText="Surface">
+                        <h:outputText value="#{piece.aire}" />
+                    </p:column >
+                    <p:column headerText="Volume">
+                        <h:outputText value="#{piece.volume}" />
+                    </p:column >
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{piece.nombre}" />
+                    </p:column >
+                </p:dataTable>
+            </div>
+
+        </p:panel>
+        <p:panel header="MOBILIERS/OBJETS USUELS"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <div class="table-responsive">
+                <p:dataTable class="table_label table-responsive" var="mobilier" reflow="true" rows="5" value="#{souscriptionAsMrhBean.listMobillierEtObjetUsuel}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" 
+                             rowsPerPageTemplate="5,10,15"  emptyMessage="#{msg[tableau.vide]}"  >                                                    
+                    <p:column headerText="Type de Mobile">
+                        <h:outputText value="#{mobilier.typeMobillierObjetUsuel.toString()}" />
+                    </p:column>
+
+                    <p:column headerText="Description">
+                        <h:outputText value="#{mobilier.description}" />
+                    </p:column >
+                    <p:column headerText="Estimation valeur">
+                        <h:outputText value="#{mobilier.estimationValeur}" />
+                    </p:column >
+
+                </p:dataTable>
+            </div>
+
+        </p:panel>
+
+        <p:panel header="COMPAGNIES-COURTIERS CHOISIES"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <div class="table-responsive">
+                <p:dataTable class="table table-striped table-bordered table-condensed " var="compcour"  reflow="true" rows="5" value="#{souscriptionAsMrhBean.listAssuranceMrh}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                             rowsPerPageTemplate="5,10,20"  emptyMessage="#{msg[tableau.vide]}" rowKey="#{compcour.compagnie.idCompagnie}"  >                                                    
+                    <p:column headerText="Compagnie">
+                        <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                    </p:column>
+
+                    <p:column headerText="Courtier">
+                        <h:outputText value="#{compcour.courtier.abbreviation}" />
+                    </p:column >
+
+                </p:dataTable>
+            </div>
+
+        </p:panel>
+
+       
+
+    </ui:composition> 
+
+</html>
+

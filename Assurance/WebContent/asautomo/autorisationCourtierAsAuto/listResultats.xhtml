@@ -1,0 +1,77 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div id="liste">
+
+            <h:form  id="formliste" class="form-horizontal">
+
+                <p:panel header ="#{msg['titre.resultatsDeLaRecherche']}" toggleable="true">
+                    <p:dataTable rows="8" paginator="true"   emptyMessage="#{msg['tableau.vide']}" class="table table-responsive" var="facture" value="#{demandeAnnulationPVBean.listFacture}" rowKey="#{facture.idFacture}" selection="#{demandeAnnulationPVBean.demandeAnnulationAsAuto.facture}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150"  
+                                 rowsPerPageTemplate="2,3,4,5,6,7"  
+                                 selectionMode="single"  >
+                        <p:column headerText="#{msg['titre.numeroTransaction']}" >
+                            <p:outputLabel value="#{facture.idTransaction}" />
+                        </p:column>
+                        <p:column headerText="#{msg['titre.numeroPolice']}" filterBy="#{facture.objetVoiture.numeroPolice}" >
+                            <h:outputText value="#{facture.objetVoiture.numeroPolice}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.compagnie']}" filterBy="#{facture.compagnie.abbreviation}">
+                            <h:outputText value="#{facture.compagnie.abbreviation}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.courtier']}" filterBy="#{facture.courtier.abbreviation}">
+                            <h:outputText value="#{facture.courtier.abbreviation}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['client.nom']}" >
+                            <h:outputText value="#{facture.objetVoiture.client.nom}"/>
+                        </p:column>
+                        <p:column  headerText="#{msg['client.prenom']}">
+                            <h:outputText value="#{facture.objetVoiture.client.prenom}"/>
+                        </p:column>
+                        <p:column  headerText="#{msg['client.numeroDIdentite']}">
+                            <h:outputText value="#{facture.objetVoiture.client.numeroPiece}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.immatriculation']}">
+                            <h:outputText value="#{facture.objetVoiture.numeroImmatriculation}"/>
+                        </p:column>
+                        <p:column  headerText="#{msg['titre.numeroSerie']}">
+                            <h:outputText value="#{facture.objetVoiture.numSerie}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.marque']}" >
+                            <h:outputText value="#{facture.objetVoiture.marque}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.numerochassis']}">
+                            <h:outputText value="#{facture.objetVoiture.numChassis}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.categorie']}" >
+                            <h:outputText value="#{facture.objetVoiture.categorie.libelle}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.action']}">
+                            <p:commandLink title="#{msg['titre.attestation']}" class=" btn btn-xs btn-primary fa fa-file" update="formliste2" action="#{demandeAnnulationPVBean.saveDemande()}" >
+                                <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['question.etesVousSur']}"  icon="ui-icon-alert" />
+                                <f:setPropertyActionListener target="#{demandeAnnulationPVBean.demandeAnnulationAsAuto.facture}" value="#{facture}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+
+                </p:panel>
+
+
+            </h:form>
+
+
+        </div>
+    </ui:composition>
+
+
+</html>
+

@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="panel">
+            <div class="panel-heading bg-purple">
+                <h:outputLabel class="text-uppercase" value="#{msg['titre.lesDemandes']}" ></h:outputLabel>
+            </div>
+            <div class="panel-body">
+                <h:form  class="form-horizontal" id="message1">
+                    <p:dataTable id="facture" paginator="true" rows="4"  selectionMode="single" rowKey="#{asSante.idFacture}" value="#{payementAsSanteBean.listAssuranceSantes}" var="asSante" emptyMessage="#{msg['tableau.vide']}"    style="padding:0px;margin: 0px; ">
+                        <p:column class="list-group">
+                            <p:commandLink  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="col-lg-12 lien_liste list-group-item mataille"   style="text-align:left; margin: 0px;padding:0px " update="entetedetail,detail,text">
+                                <p:outputLabel class="col-md-12 text-center "  value="#{asSante.dateTraitementCompagnie}" />
+                                <p:graphicImage class="img-circle col-md-3" library="img" name="/pdf.png" width="20"/>
+                                <p:outputLabel class="col-md-9 text-right " value="#{asSante.compagnie.abbreviation} - #{asSante.courtier.abbreviation}"/>
+
+                                <p:outputLabel class="col-md-12 text-right " value="#{asSante.client.nom}"/>
+                                <p:outputLabel class="col-md-12 text-right " value="#{msg['demande.traite']}"/>
+                                <f:setPropertyActionListener value="#{asSante}" target="#{payementAsSanteBean.assuranceSante}" /> 
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </div>
+            <h:form>
+                <p:remoteCommand name="newProposition" process="@this" action="#{payementAsSanteBean.init()}"  update="message1" autoRun="false"/>
+            </h:form>
+        </div>
+    </ui:composition> 
+</html>
+

@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:pe="http://primefaces.org/ui/extensions"
+
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <ui:include src="infos_client.xhtml"/>
+        <div id="liste1u" class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  ">
+                <p:growl globalOnly="true" showDetail="false"/>
+
+                <p:panel  class="panel" id="message1u">
+                    <div class="panel-heading bg-purple"> 
+                        <p:outputLabel class="police_label" value="#{msg['client.nom']} "></p:outputLabel>
+                    </div>
+                    <div class="panel-body"> 
+                        <p:dataTable var="ascrr" widgetVar="carsTable" value="#{souscriptionAsCompteBean.listAssuranceCompteTosave}" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" 
+                                     rowsPerPageTemplate="10,20,30"  emptyMessage="#{msg[tableau.vide]}" 
+                                    
+                                     
+                                     rowKey="#{ascrr.hashCode2()}"
+                                     
+                                     >
+                            
+                            
+                            
+                            <p:column filterBy="#{ascrr.compagnie.abbreviation}"  filterMatchMode="exact" headerText="#{msg['titre.compagnie']}" >
+                                <f:facet name="filter">
+                                    <h:selectOneMenu onchange="PF('carsTable').filter()" class="form-control" >
+                                        <f:selectItem itemLabel="#{msg['titre.tous']}" itemValue="#{null}" noSelectionOption="true" />
+                                        <f:selectItems value="#{souscriptionAsCompteBean.compagnie}" var="com" itemValue="#{com.abbreviation}" itemLabel="#{com.abbreviation}" />
+                                    </h:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{ascrr.compagnie.abbreviation}" />
+                            </p:column>
+                            <p:column headerText="#{msg['titre.souscripteur']}" >
+                                <h:outputText value="#{ascrr.client.nom} - #{ascrr.client.prenom}" />
+                            </p:column>
+                            
+                            <p:column headerText="#{msg['titre.selectionner']}" >
+                                <p:commandButton action="#{souscriptionAsCompteBean.initializeQuestionForClientGroup}" update="formliste:detailr" value="ok" >
+                                    <f:setPropertyActionListener value="#{ascrr}" target="#{souscriptionAsCompteBean.assuranceCompteSelected}" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+                    </div>
+                </p:panel>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12  ">
+                <div class="panel">
+                    <p:panel   id="detailr" class="panel-border-none">
+                        <div class="panel-heading bg-purple">  
+                            <h:outputLabel value="#{msg['titre.questionPour']}" class="text-uppercase" >
+                                <h:outputText value="#{souscriptionAsCompteBean.assuranceCompteSelected.client.nom} - #{souscriptionAsCompteBean.assuranceCompteSelected.client.prenom} -#{souscriptionAsCompteBean.assuranceCompteSelected.compagnie.abbreviation}" />
+                            </h:outputLabel>
+                        </div>
+
+                        <div class="panel-body"> 
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-condensed table-striped">
+                                    <thead class="text-center bg-gray text-uppercase text-purple text-bold ">
+                                        <tr>
+                                            <td class="">#{msg['titre.numero']}</td>
+                                            <td class="col-lg-4 col-md-4 col-sm-6 col-xs-12">#{msg['titre.questionsUn']}</td>
+                                            <td class="col-lg-2 col-md-2 col-sm-6 col-xs-12">#{msg['titre.reponsesUn']}</td> 
+                                            <td class="col-lg-4 col-md-4 col-sm-6 col-xs-12">#{msg['titre.questionsDeux']}</td>
+                                            <td class="col-lg-2 col-md-2 col-sm-6 col-xs-12">#{msg['titre.reponsesDeux']}</td> 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="#{souscriptionAsCompteBean.assuranceCompteSelected.listQuestionResponse}" var="q" >
+                                            <tr jsf:id="ll#{souscriptionAsCompteBean.assuranceCompteSelected.hashCode()}#{q.id()}" jsf:rendered="#{q.question.booleanQuestion}">
+                                                <td class="">
+                                                    <h:outputLabel id="n#{souscriptionAsCompteBean.assuranceCompteSelected.hashCode()}#{q.id()}" >#{q.question.getNumber()}</h:outputLabel>
+                                                </td>
+                                                <td class="">
+                                                    <h:outputLabel id="l#{souscriptionAsCompteBean.assuranceCompteSelected.hashCode()}#{q.id()}" >#{q.question.libelleQuestion}</h:outputLabel>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p:selectBooleanCheckbox id="a#{souscriptionAsCompteBean.assuranceCompteSelected.client.hashCode()}#{q.id()}" value="#{q.response}" >
+                                                        <p:ajax update="ll#{souscriptionAsCompteBean.assuranceCompteSelected.hashCode()}#{q.id()}"  />
+                                                    </p:selectBooleanCheckbox>
+                                                </td>
+                                                <td class="text-justify">
+                                                    <p:outputLabel id="c#{souscriptionAsCompteBean.assuranceCompteSelected.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" value="#{q.questionSecondaire()}" />
+                                                    <h:outputLabel rendered="#{q.response}" value="*" class="etoile_rouge pull-left" />
+                                                </td>
+                                                <td>
+                                                    <p:inputText required="#{q.response}" id="d#{souscriptionAsCompteBean.assuranceCompteSelected.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" class="form-control" value="#{q.precisions}" />
+                                                </td>
+                                            </tr>
+
+                                            <tr jsf:rendered="#{!q.question.booleanQuestion}">
+                                                <td> 
+                                                    <h:outputLabel >#{q.question.getNumber()}</h:outputLabel>
+                                                </td>
+                                                <td> 
+                                                    <h:outputLabel >#{q.question.libelleQuestion}</h:outputLabel>
+                                                </td> 
+                                                <td class="text-center">
+                                                    <p:inputText  class="form-control" value="#{q.precisions}" />
+                                                </td> 
+                                                <td></td> 
+                                                <td></td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div> 
+                        </div>
+                    </p:panel>
+                </div>
+            </div>
+        </div>
+
+        <pe:blockUI widgetVar="simulationrr">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                <h:outputText value="chargement du questionnaire en cours...." />  
+            </h:panelGrid>  
+        </pe:blockUI> 
+    </ui:composition> 
+</html>
+

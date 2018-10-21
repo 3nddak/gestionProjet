@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+
+        <h:form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel  value="Pays"  for="pays" class="" />
+                    <h:selectOneMenu converter="entityConverter"  id="pays" value="#{conditionsGeneraleBean.paysSelected}"   class="form-control" >
+                        <f:selectItem  itemLabel="Pays" noSelectionOption="true"/>
+                        <f:selectItems  value="#{conditionsGeneraleBean.listPays}" var="pays" itemValue="#{pays}" itemLabel="#{pays.designationPays}" /> 
+                        <p:ajax listener="#{conditionsGeneraleBean.initCourtierByTypeAssuranceAndPay()}" update="courtier" />
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel  value="Branche"  for="branche" class="" />
+                    <h:selectOneMenu converter="entityConverter"  id="branche" value="#{conditionsGeneraleBean.typeAssurance}"   class="form-control" >
+                        <f:selectItem  itemLabel="branche" noSelectionOption="true"/>
+                        <f:selectItems  value="#{conditionsGeneraleBean.listtTypeAssurances}" var="branche" itemValue="#{branche}" itemLabel="#{branche.designation}" /> 
+                        <p:ajax listener="#{conditionsGeneraleBean.initCourtierByTypeAssuranceAndPay()}" update="courtier" />
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel  value="Courtier"  for="courtier" class="" />
+                    <h:selectOneMenu  converter="entityConverter" label="courtier"  id="courtier" value="#{conditionsGeneraleBean.courtierSelected}"   class="form-control" >
+                        <f:selectItem  itemLabel="courtier" noSelectionOption="true"/>
+                        <f:selectItems  value="#{conditionsGeneraleBean.listCourtiers}" var="courtier" itemValue="#{courtier}" itemLabel="#{courtier.abbreviation}" /> 
+                        <p:ajax listener="#{conditionsGeneraleBean.initCompagnieByCourtierAndTypeAssurance()}" update="compagnie" />
+                    </h:selectOneMenu> 
+                </div>
+            </div>
+            <div class="form-group">
+
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel  value="Compagnie"  for="compagnie" class="" />
+                    <p:selectCheckboxMenu converter="entityConverter" label="compagnie"  id="compagnie" value="#{conditionsGeneraleBean.listCompagniesSelected}"   class="form-control" >
+                        <f:selectItem  itemLabel="compagnie" noSelectionOption="true"/>
+                        <f:selectItems  value="#{conditionsGeneraleBean.listCompagnies}" var="compagnie" itemValue="#{compagnie}" itemLabel="#{compagnie.abbreviation}" /> 
+                    </p:selectCheckboxMenu>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel  value="Conditions Generales"  for="cg" class="" />
+                    <h:selectOneMenu converter="entityConverter"  id="cg" value="#{conditionsGeneraleBean.condition_General.conditionGenerale}"   class="form-control" >
+                        <f:selectItem  itemLabel="Conditions Generales" noSelectionOption="true"/>
+                        <f:selectItems  value="#{conditionsGeneraleBean.listConditionGenerale}" var="cg" itemValue="#{cg}" itemLabel="#{cg}" /> 
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel for="fonction" value="Fonction" class=""/>
+                    <h:selectOneMenu id="fonction" value="#{conditionsGeneraleBean.condition_General.fonction}" class="form-control" required="true" requiredMessage="Veuillez choisir la fonction" >
+                        <f:selectItem itemLabel="Fonction" noSelectionOption="true" />
+                        <f:selectItem itemLabel="Max" itemValue="1" />
+                        <f:selectItem itemLabel="Min" itemValue="2" />
+                        <f:selectItem itemLabel="Prime" itemValue="3" />
+                    </h:selectOneMenu> 
+                </div>
+            </div>
+            <div class="form-group">
+
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel value="Désignation" for="designation" />
+                    <p:inputText value="#{conditionsGeneraleBean.condition_General.designation}" id="designation" class="form-control"/>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel value="Description" for="description" />
+                    <p:inputText value="#{conditionsGeneraleBean.condition_General.description}" id="description" class="form-control" />
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel value="Valeur" for="valeur" />
+                    <p:inputText value="#{conditionsGeneraleBean.condition_General.valeur}" id="valeur" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="btn-toolbar">
+                        <p:commandButton value="Annuler" class="btn btn-danger" actionListener="#{conditionsGeneraleBean.annuler()}" update="@form" />
+                        <p:commandButton  value="Enrégistrer" class="btn btn-imprimer pull-right"  actionListener="#{conditionsGeneraleBean.saveListcondition_General()}" update="@form,listcondition" />
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+
+        <div class="container-fluid">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tabMass1" aria-controls="tabMass1" role="tab" data-toggle="tab">Lecture Directe</a></li>
+                <li role="presentation"><a href="#tabMass2" aria-controls="tabMass2" role="tab" data-toggle="tab">Lecture Directe Compagnie</a></li>
+            </ul>
+            
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tabMass1">
+                       <div class="container-fluid">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['responsabilite.titre']}"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row-fluid">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+
+                    <div class="panel">
+                        <div class="panel-heading"> 
+                            <p:fieldset legend="#{msg['responsabilite.ajouterrc']}" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <ui:include src="rc_ajout.xhtml"/>
+                            </p:fieldset>
+                        </div>
+                        <h:form  id="formliste">
+                            <div class="panel panel-body">
+                                <p:outputPanel id="devise">                                
+                                    <p:fieldset legend="#{msg['responsabilite.lecture']}" style="margin-bottom:20px">
+                                        <div class="form-horizontal">
+                                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                                <div>
+                                                    <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-info btn police_label  " style="color:#fff;background:#5bc0de;border-color:#46b8da" actionListener="#{tableauRCBean.doGetA()}"   > 
+                                                        <i class=" glyphicon glyphicon-print"></i>
+                                                    </h:commandLink>  
+                                                </div>
+                                                <p:dataTable class="table_label" var="trc" id="rcliste" rows="20" value="#{tableauRCBean.allTableauRC}" 
+                                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" widgetVar="ddd"
+                                                             emptyMessage="#{msg['tableau.vide']}" sortOrder="descending" rowKey="#{trc.idTableauRC}"
+                                                             selection="#{tableauRCBean.selectedRC}"
+                                                             > 
+
+                                                    
+                                                   
+                                                   <p:ajax event="rowToggle" listener="#{tableauRCBean.onRowToggle}"  update="rcliste" />
+                                                   <p:column style="width:50px"  >
+
+                                                        <p:rowToggler  />
+                                                    </p:column>
+                                                   
+                                                    <p:column headerText="#{msg['vehicule.categorie']}" filterBy="#{trc.categorie.libelle}">
+                                                        <h:outputText value="#{trc.categorie.libelle}" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['vehicule.garantie']}" filterBy="#{trc.garantie.libelle}">
+                                                        <h:outputText value="#{trc.garantie.libelle}" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['vehicule.puissance']}" filterBy="#{trc.puissance}">
+                                                        <h:outputText value="#{trc.puissance}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="#{msg['vehicule.energie']}" filterBy="#{trc.energie.libelleFr}">
+                                                        <h:outputText value="#{trc.energie.libelleFr}" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['vehicule.nombreplace']}" filterBy="#{trc.nombreDePlace}">
+                                                        <h:outputText value="#{trc.nombreDePlace}" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['vehicule.poids']}" filterBy="#{trc.poids}">
+                                                        <h:outputText value="[#{trc.poids.inf};#{trc.poids.sup}]" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['vehicule.carrosserie']}" filterBy="#{trc.carrosserie}">
+                                                        <h:outputText value="#{trc.carrosserie}" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['vehicule.typeVitre']}" filterBy="#{trc.typeVitre}">
+                                                        <h:outputText value="#{trc.typeVitre}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="#{msg['garantie.prime']}" filterBy="#{trc.prime}">
+                                                        <h:outputText value="#{trc.prime}" >                                                       
+                                                        </h:outputText>
+                                                    </p:column>
+                                                   <p:column headerText="Actions"> 
+                                                    
+                                                        <p:commandButton title="#{msg['btn.modifier']}" update="zone-ajout,:zone-ajout:trclist1"  action="#{tableauRCBean.modificationSelection()}"  icon="fa fa-edit" class="btn-primary primary btn-sm"  >
+                                                            <f:setPropertyActionListener value="#{trc}" target="#{tableauRCBean.tableauRCToUpdate}" />
+                                                        </p:commandButton>
+
+                                                        <p:commandButton  oncomplete="PF('supprimer').show()" update="rcliste,formliste" icon="fa fa-trash" title="#{msg['btn.supprimer']}" class="btn-danger danger btn-sm">
+                                                            <f:setPropertyActionListener value="#{trc}" target="#{tableauRCBean.tableauRCToDelete}" />
+                                                        </p:commandButton>
+
+                                                    </p:column>
+                                                   <p:column selectionMode="multiple" style="width:50px;text-align:center" /> 
+                                                            
+                                                
+                                                    
+                                                    <p:rowExpansion >
+                                                        <div class="form-group">
+                                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <h:outputText value="pays"/>
+                                                                    </span>
+                                                                    <h:outputLabel class="form-control"  value="#{tableauRCBean.ligneSelected.pays.designationPays}"  />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <h:outputText value="categorie"/>
+                                                                    </span>
+                                                                    <h:outputLabel class="form-control"  value="#{tableauRCBean.ligneSelected.categorie.libelle}"  />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <h:outputText value="garantie"/>
+                                                                    </span>
+                                                                    <h:outputLabel class="form-control"  value="#{tableauRCBean.ligneSelected.garantie.libelle}"  />
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="form-group">
+
+                                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <h:outputText value="prime"/>
+                                                                    </span>
+                                                                    <h:outputLabel class="form-control"  value="#{tableauRCBean.ligneSelected.prime}"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <h:outputText value="puissance"/>
+                                                                    </span>
+                                                                    <h:outputLabel class="form-control"  value="#{tableauRCBean.ligneSelected.puissance}" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <h:outputText value="energie"/>
+                                                                    </span>
+                                                                    <h:outputLabel class="form-control"  value="#{tableauRCBean.ligneSelected.energie.libelleFr}"  />
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="form-group">
+
+
+                                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <h:outputText value="nombre de places"/>
+                                                                    </span>
+                                                                    <h:outputLabel class="form-control"  value="#{tableauRCBean.ligneSelected.nombreDePlace}"  />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <h:outputText value="poids"/>
+                                                                    </span>
+                                                                    <h:outputLabel class="form-control"  value="[#{tableauRCBean.ligneSelected.poids.inf} ; #{tableauRCBean.ligneSelelected.poids.sup}]"  />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <h:outputText value="carrosserie"/>
+                                                                    </span>
+                                                                    <h:outputLabel class="form-control"  value="#{tableauRCBean.ligneSelected.carrosserie}"  />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+
+
+                                                        </div>
+
+                                                        <div class="form-group">
+
+                                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <h:outputText value="Type de vitre"/>
+                                                                    </span>
+                                                                    <h:outputLabel class="form-control"  value="#{tableauRCBean.ligneSelected.typeVitre}"  />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <h:outputText value="compagnie"/>
+                                                                    </span>
+                                                                    <h:outputLabel class="form-control"  value="#{tableauRCBean.ligneSelected.compagnie.designation}"  />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <h:outputText value="courtier"/>
+                                                                    </span>
+                                                                    <h:outputLabel class="form-control"  value="#{tableauRCBean.ligneSelected.courtier.designation}"  />
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                    </p:rowExpansion> 
+
+
+                                                </p:dataTable>
+                                            </div>
+                                        </div>
+                                    </p:fieldset>
+                                </p:outputPanel>
+                            </div>
+                        </h:form>
+
+                        <!--div class="panel-footer"> 
+
+                        </div--> 
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <p:dialog class="police_label" header="Modifier RC" showEffect="fade"  widgetVar="modifier" modal="true" width="1000" minHeight="600" resizable="false">
+            <ui:include src="rc_modifier.xhtml"/>
+        </p:dialog>
+        <h:form>
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                             header="Suppression" severity="alert" widgetVar="supprimer">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3, :formliste" action="#{tableauRCBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+                    
+                    
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tabMass2">
+                  
+                        <ui:include src="lectureDirecteCompagnie.xhtml"/>
+                  
+                </div>
+            </div>
+        </div>
+
+    </ui:composition> 
+
+</html>
+

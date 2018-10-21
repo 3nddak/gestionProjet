@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+        <fieldset><legend><h:outputLabel value="#{msg['souscription.information']}"/></legend>
+            <div class="form-group">
+                <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="Periode En Jour ?"  for="t5" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:selectBooleanCheckbox id="t5"  value="#{flotteBean.periodeEstJournalie}"  class="pull-left" >
+                            <p:ajax update="periodeMessage,mask2" listener="#{flotteBean.dateFin()}" />
+                        </p:selectBooleanCheckbox>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['souscription.periode']}"  for="periode" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText id="periode"  class="form-control" value="#{flotteBean.periode}" placeholder="#{msg['souscription.periode']}" 
+                                     required="true"  requiredMessage="#{msg['souscription.periode.requireMessage']}" 
+                                     converterMessage="#{msg['souscription.periode.converterMessage']}"
+                                     validatorMessage="#{msg['souscription.periode.validatorMessage']}"
+                                     >
+                            <f:validateLongRange minimum="1" />
+                            <p:ajax event="keyup"  update="periodeMessage,mask2" listener="#{flotteBean.dateFin()}" />  
+                        </p:inputText>
+                        <pe:keyFilter for="periode" mask="int"/> 
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="periode" id="periodeMessage" />
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['souscription.datedebut']}"  for="mask1" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:calendar id="mask1"  pattern="dd/MM/yyyy" value="#{flotteBean.dateDebutRecherche}" mask="true" placeholder="#{msg['souscription.datedebut']} " 
+                                    required="true" readonlyInput="true" navigator="true"
+                                    requiredMessage="#{msg['souscription.datedebut.requireMessage']}" 
+                                    validatorMessage="#{msg['souscription.datedebut.validatorMessage']}"
+                                    converterMessage="#{msg['souscription.datedebut.converterMessage']}"
+                                    mindate="#{flotteBean.datemax}" 
+                                    >
+                            <f:convertDateTime pattern="dd/MM/yyyy"  type="date"/>
+
+                            <p:ajax event="dateSelect" listener="#{flotteBean.dateFin()}" update="dateMessage,mask2" />
+                        </p:calendar>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="mask1" id="dateMessage"/> 
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:outputLabel   value="Date Fin"  for="mask2" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:outputLabel id="mask2"  value="#{flotteBean.dateFins}"   />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel rendered="#{flotteBean.hideAjoutFlotteForm}" for="pays" value="#{msg['compagnie.pays']}" class="pull-left text-left"/><h:outputLabel rendered="#{flotteBean.hideAjoutFlotteForm}" value="*" class="etoile_rouge pull-left text-left"/>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu rendered="#{flotteBean.hideAjoutFlotteForm}"  id="pays" value="#{flotteBean.paysSouscription}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                         requiredMessage="#{msg['compagnie.pays.requireMessage']}"
+                                         >
+                            <f:selectItem itemLabel="#{msg['compagnie.pays']}"  itemValue=""/>
+                            <f:selectItems value="#{guarantieCategorieBean.paysList}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                            <f:ajax event="click" render="paysMessage" />
+                            <p:ajax  listener="#{flotteBean.categorieByPays()}" update="formliste:cat,formliste:pickList" />
+                            <p:ajax  listener="#{flotteBean.loadCompagnieByPays}" update="compa" />
+                        </h:selectOneMenu> 
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="pays"  id="paysMessage" class="errorClass" />
+                    </div>
+                </div> 
+
+                <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel rendered="#{flotteBean.hideAjoutFlotteForm}" value="Compagnies"  class=" pull-left" /><h:outputLabel rendered="#{flotteBean.hideAjoutFlotteForm}" value="*" class="etoile_rouge pull-left" />                
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu rendered="#{flotteBean.hideAjoutFlotteForm}" id="compa" required="true" requiredMessage="Compagnie obligatoire" value="#{flotteBean.flotteToSave.compagnie}" converter="omnifaces.SelectItemsConverter" class="form-control">
+                            <f:selectItem itemLabel="Compagnies" itemValue=""/>
+                            <f:selectItems value="#{flotteBean.compagnies}" var="com" itemLabel="#{com.abbreviation}" itemValue="#{com}" />
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="compa"  id="compaMessage" class="errorClass" />
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </ui:composition> 
+</html>
+

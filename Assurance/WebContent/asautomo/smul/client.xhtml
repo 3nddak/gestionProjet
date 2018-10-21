@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+           
+        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12">
+         
+
+            <div class="row">
+                <div class="col-lg-2">
+                    <p:commandButton update="modification" oncomplete="PF('dlg1').show()" icon="fa fa-plus" class="btn btn-success pull-left" title="Nouveau" />
+                </div>
+          
+
+            </div>
+        </div>
+
+        <p:dialog  header="#{msg['client.title.ajouter']}" showEffect="fade"  widgetVar="dlg1" modal="true" width="800" minHeight="200" resizable="false">
+            <p:outputPanel id="modification" style="text-align:center;">
+                <p:growl id="msgs2" showDetail="false" globalOnly="true" />
+                <p:messages id="nouveauSms" globalOnly="true" showDetail="false" autoUpdate="true"/>
+                <div class="form-group">
+                    <div class="col-md-3 col-lg-3 col-sm-3"> 
+                        <h:outputLabel  value="#{msg['client.type']}"  for="typeClient" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        <h:selectOneMenu id="typeClient" required="true" class="form-control" requiredMessage="Veuillez choisir le type">
+                            <f:selectItem itemValue="#{msg['client.type.physique']}" itemLabel="#{msg['client.type.physique']}"/>
+                            <f:selectItem itemValue="#{msg['client.type.morale']}" itemLabel="#{msg['client.type.morale']}"/> 
+                            <f:ajax event="click" render="typeMessage" />
+                        </h:selectOneMenu>
+                        <h:message for="typeClient" id="typeMessage" styleClass="error"/>
+                    </div> 
+                    <div class="col-md-3 col-lg-3 col-sm-3"> 
+                        <h:outputLabel  value="#{msg['client.nom']}"  for="nom" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        <p:inputText value="#{objetBean.nom}"  requiredMessage="#{msg['client.nom.requireMessage']}"
+                                     id="nom"  styleClass="form-control" placeholder="#{msg['client.nom']}">
+                            <f:ajax event="keyup" render="nomMessage"/>
+                        </p:inputText>
+                        <h:message for="nom"  id="nomMessage" class="errorClass" />
+                    </div> 
+                    <div class="col-md-3 col-lg-3 col-sm-3"> 
+                        <h:outputLabel  value="#{msg['client.prenom']}"  for="prenom" class=" pull-left" />
+                        <p:inputText value="#{objetBean.prenom}" id="prenom" styleClass="form-control" placeholder="#{msg['client.prenom']}"/>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-3">
+                        <h:outputLabel  value="#{msg['client.lieuemission']}"  for="lieuemission" class=" pull-left" />
+                        <p:inputText value="#{objetBean.lieuEmission}"  id="lieuemission" styleClass="form-control" placeholder="#{msg['client.lieuemission']}" />
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-3 col-lg-3 col-sm-3">  
+                        <h:outputLabel  value="#{msg['client.faxe']}" for="faxe" class=" pull-left" />
+                        <p:inputText value="#{objetBean.fax}" id="faxe" styleClass="form-control" placeholder="#{msg['client.faxe']}"/>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-3">
+                        <h:outputLabel  value="#{msg['client.bp']}"  for="codeZip" class=" pull-left" />
+                        <p:inputText value="#{objetBean.codeZip}" id="codeZip" styleClass="form-control" placeholder="#{msg['client.bp']}"/>
+                    </div>
+
+                    <div class="col-md-3 col-lg-3 col-sm-3"> 
+                        <h:outputLabel  value="#{msg['client.email']}"  for="email" class=" pull-left" />
+                        <p:inputText value="#{objetBean.email}" id="email" styleClass="form-control" placeholder="#{msg['client.email']}"/>
+                    </div>
+                    <!--div class="col-md-3 col-lg-3 col-sm-3">
+                        <h:outputLabel  value="Genre"  for="genre" class=" pull-left" />
+                        <p:inputText value="#{objetBean.genre}" id="genre" styleClass="form-control" placeholder="genre"/>
+                    </div-->
+
+
+                    <div class="col-md-3 col-lg-3 col-sm-3"> 
+                        <h:outputLabel  value="#{msg['client.pays']}"  for="pays" class=" pull-left" />
+                        <p:inputText value="#{objetBean.pays}" id="pays" styleClass="form-control" placeholder="#{msg['client.pays']}"/>
+                    </div>
+                </div> 
+
+                <div class="form-group">
+                    <div class="col-md-3 col-lg-3 col-sm-3">
+
+                        <h:outputLabel  value="#{msg['client.lieudenaissance']}"  for="lieunaissance" class=" pull-left" />
+                        <p:inputText value="#{objetBean.lieuNaissance}" id="lieunaissance" styleClass="form-control" placeholder="#{msg['client.lieudenaissance']}"/>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-3"> 
+                        <h:outputLabel  value="#{msg['client.datedenaissance']}"  for="dateNaissance" class=" pull-left" />
+                        <p:calendar  value="#{objetBean.dateNaissance}" class="pull-left"  id="dateNaissance" pattern="dd-MM-yyyy" mask="true" placeholder="#{msg['client.datedenaissance']}" />
+                    </div> 
+                    <div class="col-md-3 col-lg-3 col-sm-3">
+                        <h:outputLabel  value="#{msg['client.nationalite']}"  for="nationalite" class=" pull-left" />
+                        <p:inputText value="#{objetBean.nationalite}" id="nationalite" styleClass="form-control" placeholder="#{msg['client.nationalite']}"/>
+                    </div>
+
+
+                    <div class="col-md-3 col-lg-3 col-sm-3">
+                        <h:outputLabel  value="#{msg['client.adresse']}"  for="Adresse" class=" pull-left" />
+                        <p:inputText value="#{objetBean.adresse}" id="Adresse" styleClass="form-control" placeholder="#{msg['client.adresse']}"/>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3 col-lg-3 col-sm-3"> 
+                        <h:outputLabel  value="#{msg['client.piece']}" for="piece" class=" pull-left" />
+                        <h:selectOneMenu id="piece"  class="form-control" >
+                            <f:selectItem itemValue="" itemLabel="#{msg['client.piece']}"/> 
+                            <f:selectItem itemValue="#{msg['client.piece.carte']}" itemLabel="#{msg['client.piece.carte']}"/>
+                            <f:selectItem itemValue="#{msg['client.piece.passport']}" itemLabel="#{msg['client.piece.passport']}"/>
+                            <f:selectItem itemValue="#{msg['client.piece.permis']}" itemLabel="#{msg['client.piece.permis']}"/>
+                            <f:selectItem itemValue="#{msg['client.piece.autre']}" itemLabel="#{msg['client.piece.autre']}"/>
+                        </h:selectOneMenu>
+                    </div> 
+
+                    <div class="col-md-3 col-lg-3 col-sm-3"> 
+                        <h:outputLabel  value="#{msg['client.numeropiece']}"  for="dateEmissionPiece" class=" pull-left" />
+                        <p:inputText value="#{objetBean.numeroPiece}" styleClass="form-control" placeholder="#{msg['client.numeropiece']}"/> 
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-3">  
+                        <h:outputLabel  value="#{msg['client.dateemissionpiece']}"  for="dateEmissionPiece" class=" pull-left" />
+                        <p:calendar value="#{objetBean.dateEmissionPiece}" id="dateEmissionPiece" class="pull-left" pattern="dd-MM-yyyy" mask="true" placeholder="#{msg['client.dateemissionpiece']}" />
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-3">
+                        <h:outputLabel  value="#{msg['client.dateexpirationpiece']}"  for="dateExpirationPiece" class=" pull-left" />
+                        <p:calendar  value="#{objetBean.dateExpirationPiece}" class="pull-left" pattern="dd-MM-yyyy" mask="true" placeholder="#{msg['client.dateemissionpiece']}" />
+                    </div>
+
+
+                </div> 
+                <div class="form-group">
+                    <div class="col-md-3 col-lg-3 col-sm-3">      
+                        <p:inputText value="#{objetBean.pseudo}" styleClass="form-control hide" placeholder="pseudo *"/>
+
+                    </div> 
+                    <div class="col-md-3 col-lg-3 col-sm-3">      
+                        <p:inputText value="#{objetBean.password}"  class="form-control hide" placeholder="password *"/>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 col col-lg-6">
+                        <p:commandButton value="Annuler" class="btn btn-danger pull-left col-lg-3" action="#{objetBean.annulerClient()}" style="background: #d9534f;color:#fff;border-color: #d43f3a; font-family: cursive;"/>
+                    </div>
+
+                    <div class="col-md-6 col col-lg-6 ">
+                        <p:commandButton class="pull-right btn btn-primary col-lg-3" value="Enregistrer" update="nouveauSms,formliste"  action="#{objetBean.enregistrerClient()}" oncomplete="PF('dlg1').hide()"/>
+                    </div>
+
+                </div>
+
+            </p:outputPanel>
+        </p:dialog>
+
+    </ui:composition>
+</html>

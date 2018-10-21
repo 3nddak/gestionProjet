@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions" >
+    <ui:composition>
+        <p:outputPanel id="cg">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <fieldset> 
+                    <legend class="text-center text-uppercase"> <p:outputLabel value="Conditions Générales"></p:outputLabel></legend>
+                </fieldset>   
+                <div class="col-md-12 col-lg-12 col-sm-12">
+                    <h:form id="searchEngine" class="form-horizontal">
+                        <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                        <p:fieldset   legend="Conditions Générales" toggleable="true" toggleSpeed="500"   collapsed="false" >                         
+                            <div class="form-group" >
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="designationCG" value="Désignation" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText value="#{condition_GeneralBean.condition_GeneralToSave.designation}" class="form-control" required="true" requiredMessage="Veuillez entrer la description"></p:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="descriptionCG" value="Description" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText value="#{condition_GeneralBean.condition_GeneralToSave.description}" class="form-control" required="true" requiredMessage="Veuillez entrer la description"></p:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="valueCG" value="Valeur" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText value="#{condition_GeneralBean.condition_GeneralToSave.valeur}" class="form-control" required="true" requiredMessage="Veuillez entrer la description"></p:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu id="pays" value="#{condition_GeneralBean.selectedPays}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                                <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                                <f:selectItems value="#{condition_GeneralBean.listerParametreByUserService.listpays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                                <p:ajax listener="#{condition_GeneralBean.sortCompagnieByCourtier()}" update="courtier,compagnie" />
+                                                
+                                            </h:selectOneMenu> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="courtierCG" value="Courtier" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu id="courtier" value="#{condition_GeneralBean.condition_GeneralToSave.courtier}" converter="omnifaces.SelectItemsConverter" class="form-control" required="true" requiredMessage="Veuillez choisir la compagnie" >
+                                                <f:selectItem itemLabel="Courtier" noSelectionOption="true" />
+                                                <f:selectItems value="#{condition_GeneralBean.listCourtier}" var="crt" itemLabel="#{crt.designation}" itemValue="#{crt}" />
+                                            </h:selectOneMenu> 
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="compagnieCG" value="Compagnie" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu id="compagnie" value="#{condition_GeneralBean.condition_GeneralToSave.compagnie}" converter="omnifaces.SelectItemsConverter" class="form-control" required="true" requiredMessage="Veuillez choisir la compagnie" >
+                                                <f:selectItem itemLabel="Compagnie" noSelectionOption="true" />
+                                                <f:selectItems value="#{condition_GeneralBean.listCompagnie}" var="comp" itemLabel="#{comp.designation}" itemValue="#{comp}" />
+                                            </h:selectOneMenu> 
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="fonctionCG" value="Fonction" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu id="fonction" value="#{condition_GeneralBean.condition_GeneralToSave.fonction}" class="form-control" required="true" requiredMessage="Veuillez choisir la fonction" >
+                                                <f:selectItem itemLabel="Fonction" noSelectionOption="true" />
+                                                <f:selectItem itemLabel="Fonction 1" itemValue="1" />
+                                                <f:selectItem itemLabel="Fonction 2" itemValue="2" />
+                                                <f:selectItem itemLabel="Fonction 3" itemValue="3" />
+                                            </h:selectOneMenu> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </p:fieldset> 
+                    </h:form>
+                </div>
+            </div>
+        </p:outputPanel>
+    </ui:composition>
+</html>

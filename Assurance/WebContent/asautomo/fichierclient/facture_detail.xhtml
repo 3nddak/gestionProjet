@@ -1,0 +1,321 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <h:form id="detail" class="form-horizontal">
+
+            <!--div   class=" panel-heading bg-primary">
+                <div class="row">
+                    <h:outputLabel  value="#{fichierclientBean.factureSelected.compagnie.abbreviation}" class="text-uppercase" ></h:outputLabel>
+
+                    <h:graphicImage class=" imgfacture img-circle table-bordered  pull-left" id="img1"  library="images" name="#{fichierclientBean.factureSelected.compagnie.cheminImage}">
+
+                    </h:graphicImage>
+                    <h:graphicImage class=" imgfacture img-circle table-bordered  pull-right" id="img2" library="images" name="#{fichierclientBean.factureSelected.courtier.cheminImage}">
+
+                    </h:graphicImage>
+                </div>
+            </div-->
+
+
+            <div class="panel-body"> 
+                <div class="row">
+                    <fieldset>
+                        <!--p:panel  header="INFO DU CLIENT" toggleable="true" collapsed="true" style="margin-bottom:20px">
+                            <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Souscripteur"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.client.nom}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Téléphone"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.client.telephoneMobile}"/>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Adresse"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.client.adresse}"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        </p:panel-->
+                        <p:panel  header="AVENANT" toggleable="true" collapsed="true" style="margin-bottom:20px">
+                        <div class="form-group">
+                            <div class=" col-lg-12 ">
+                                <div class="input-group">
+
+
+                                    <p:panelGrid columns="2">
+                                        <p:outputLabel for="av" value="Avenant :"/>
+                                        <p:outputLabel id="av" value="#{fichierclientBean.factureSelected.type}"/>
+                                        <p:outputLabel for="datedebut" value="Date debut :"/>
+                                        <p:outputLabel id="datedebut" value="#{fichierclientBean.factureSelected.dateDebut}"/>
+                                        <p:outputLabel for="periode" value="Periode :"/>
+                                        <p:outputLabel id="periode" value="#{fichierclientBean.factureSelected.periode} #{fichierclientBean.factureSelected.periodeEnJour ? 'jours':'mois' }"/>
+                                        <p:outputLabel for="numPolice" value="Numero Police :"/>
+                                        <p:outputLabel id="numPolice" value="#{fichierclientBean.factureSelected.objetVoiture.numeroPolice}"/>
+                                    </p:panelGrid>
+                                </div>
+                            </div>
+                        </div>
+
+                        </p:panel>
+                        <p:panel  header="INFO DU VEHICULE" toggleable="true" collapsed="true" style="margin-bottom:20px">
+                             <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Immatriculation"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.numeroImmatriculation}"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Genre"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.genre}"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Marque"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.marque}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Type"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.type}"/>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Puissance"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.puissance}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Nombre de places"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.nombrePlaces}"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="N° Chassis"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.numChassis}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="N° Moteur"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.numMoteur}"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Usage"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.usagev}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Année"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.miseEnCirculation}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Valeur neuve"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.valeurNeuve}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Valeur déclarée"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.valeurvenale}"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Valeur Venale"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.valeurvenale}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Categorie"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{fichierclientBean.factureSelected.objetVoiture.categorie.libelle}"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        </p:panel>
+
+                        <p:panel  header="GARANTIES SOUSCRITES" toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+                            <p:dataTable id="g" var="proposition" editable="true" editMode="cell" scrollable="true" value="#{fichierclientBean.factureSelected.propositions}">
+                                <p:columnGroup type="header">
+                                    <p:growl>
+                                        <p:column rowspan="2" headerText="GUARANTIE" />
+                                        <p:column rowspan="2" headerText="PRIME ANNUELE" />
+                                        <p:column colspan="4" headerText="REDUCTION OU MAJORATION" />
+                                        <p:column rowspan="2" headerText="PRIME NETTE"  />
+                                    </p:growl>
+                                    <p:row>
+                                        <p:column headerText="BNS" />
+                                        <p:column headerText="RED" />
+                                        <p:column headerText="MLS" />
+                                        <p:column headerText="MONTANT" />
+                                    </p:row>
+                                </p:columnGroup>
+                                <p:column>
+                                    #{proposition.compagnieGuarantie.guarantie.libelle}
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{proposition.primePropose}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{proposition.bonus}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{proposition.reduction}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{proposition.malus}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{proposition.montant}"/>
+
+                                </p:column>
+                                <p:column>
+
+                                    <h:outputText value="#{proposition.prime}"/>
+
+                                </p:column>
+                                <p:columnGroup type="footer" id="primeTotal1">
+                                    <p:row>
+                                        <p:column   style="text-align:right" footerText="Total :" />
+                                        <p:column   footerText="#{facture.totalnet}" />
+                                        <p:column   footerText=""  />
+                                        <p:column   footerText=""  />
+                                        <p:column   footerText=""  />
+                                        <p:column   footerText=""  />
+                                       
+                                        <p:column   footerText="#{fichierclientBean.factureSelected.total}" id="primeTotal" />
+                                    </p:row>
+
+                                </p:columnGroup>
+                            </p:dataTable> 
+                            <hr/>
+                             <p:panelGrid columns="4" id="calculTotal">
+                                <p:outputLabel value="Prime nette:" for="ps"></p:outputLabel>
+                                <h:outputText id="ps" value="#{fichierclientBean.factureSelected.total}"/>
+                                <p:outputLabel value="Bonus:" for="bn"></p:outputLabel>
+                                <h:outputText id="bn" value="#{fichierclientBean.factureSelected.bonus}"/>
+                                <p:outputLabel value="Red Exceptionnelle:" for="rede"></p:outputLabel>
+                                <h:outputText id="rede" value="#{fichierclientBean.factureSelected.reductionExceptionnelle}"/>
+                                <p:outputLabel value="Red flotte:" for="ref"></p:outputLabel>
+                                <h:outputText id="ref" value="#{fichierclientBean.factureSelected.reductionFlotte}"/>
+                                <p:outputLabel value="Fractionnement:" for="fract"></p:outputLabel>
+                                <h:outputText id="fract" value="#{fichierclientBean.factureSelected.fractionnement}"/>
+                                <p:outputLabel  value="Accessoire:" for="acc"/>
+                                <h:outputText  id="acc" value="#{fichierclientBean.factureSelected.accessoire}"/>
+
+                                <p:outputLabel value=" Taux d'enregistrement:" for="te"/>
+                                <h:outputText  id="te" value="#{fichierclientBean.factureSelected.tauxEnregistrement}"/>
+
+                                <p:outputLabel value="Prime TTC:" for="pttc"/>
+                                <h:outputText  id="pttc" value="#{fichierclientBean.factureSelected.primeTtc}"/>
+
+                            </p:panelGrid>
+                        </p:panel>
+                     
+                    </fieldset>
+                </div> 
+
+            </div>
+           
+
+        </h:form>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:form id="menu-form" >
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+
+                <ul class="sidebar-menu">
+                    <li>
+                        <h:commandLink action="avmenug">
+                            <i class="fa fa-windows"></i> <span>MENU PRINCIPAL</span> 
+                        </h:commandLink>
+                    </li>
+                    <li>
+                        <h:commandLink action="acvoyage">
+                            <i class="fa fa-home"></i> <span>ACCUEIL</span> <!--small class="label pull-right bg-green">Hot</small-->
+                        </h:commandLink>
+                    </li>
+                    <li class="treeview" jsf:rendered="#{sec:areAllGranted('ACCESS_CONFIGURATION')}">
+                        <a>
+                            <i class="fa fa-cogs"></i>
+                            <span>Configuration</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">            
+                            <li ><h:commandLink  action="commissionAsVoyage" > <i class="fa fa-circle-o"></i> Gestion des commissions  </h:commandLink></li>
+                            <li ><h:commandLink  action="primeVoyage" > <i class="fa fa-circle-o"></i> Gestion des primes  </h:commandLink></li>
+                        </ul>
+                    </li>
+                    <!--  DEBUT BRANCHE !-->
+                    <li class="treeview">
+                        <a>
+                            <i class="fa fa-asterisk"></i>
+                            <span>Les branches</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li ><h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_AUTO')}" value="Assurance auto" action="acauto"  /></li>                                       
+                            <li > <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VIE')}" value="Assurance crédit" action="acvie"   /></li>
+                            <li ><h:commandLink  value="Assurance compte" action="accompte"   /></li> 
+                        </ul>
+                    </li>
+
+                    <!--  FIN BRANCHE !-->
+
+                    <li class="treeview" jsf:rendered="#{sec:areAllGranted('ACCESS_OPERATION')}">
+                        <a>
+                            <i class="fa fa-exchange"></i>
+                            <span>Operations</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">                          
+                            <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET,SOUSCRIPTION_ASVOYAGE">
+                                <li ><h:commandLink action="voyagesouscription" > <i class="fa fa-circle-o"></i> Souscription  </h:commandLink></li>
+                            </sec:authorize>
+                            <sec:authorize ifAllGranted="USER_CMP, ACCESS_ESPACE_COMPAGNIE,TRAITEMENT_COMPAGNIE_ASVOYAGE">
+                                <li ><h:commandLink action="demandeTraiteAssuranceVoyage" > <i class="fa fa-circle-o"></i> Traitement compagnie  </h:commandLink></li>
+                            </sec:authorize>
+                            <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET,PAYEMENT_ASVOYAGE">
+                                <li ><h:commandLink action="validationasvoyagepayement" > <i class="fa fa-circle-o"></i> Payement </h:commandLink></li>
+                            </sec:authorize>
+                            
+                            <li ><h:commandLink action="imprimerContratAsVoyage" > <i class="fa fa-circle-o"></i> Imprimer Contrat </h:commandLink></li>
+                            
+                        </ul>
+                    </li>
+                    
+                    
+                    <!--   DEBUT STATISTIQUE -->
+                        <sec:authorize ifAllGranted="ACCESS_STATISTIQUE">
+                            
+                            <li class="treeview">
+                            <a>
+                                <i class="glyphicon glyphicon-stats"></i>
+                                <span>#{msg['page.menu.statistique']}</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+
+                                    <sec:authorize ifAllGranted="STATISTIQUE"><li><h:commandLink  action="statistiqueAsVoyage"> <i class="fa fa-circle-o"></i> Statistiques </h:commandLink></li></sec:authorize>
+                                    <sec:authorize ifAllGranted="STATISTIQUE_LIST_COMPAGNIE"><li><h:commandLink  action="listeCompagnieAsVoyage"> <i class="fa fa-circle-o"></i> Statistique Compagnies </h:commandLink></li></sec:authorize>
+                                    <sec:authorize ifAllGranted="STATISTIQUE_LIST_COURTIER"><li><h:commandLink  action="listeCourtierAsVoyage"><i class="fa fa-circle-o"></i> Statistique Courtiers </h:commandLink></li></sec:authorize>                                 
+                                    <sec:authorize ifAnyGranted="STATISTIQUE_LIST_PDV"><li><h:commandLink action="listePointVenteAsVoyage"> <i class="fa fa-circle-o"></i> Liste des Points de vente </h:commandLink> </li></sec:authorize>
+                                    <sec:authorize ifAnyGranted="STATISTIQUE_LIST_CLIENT"><li><h:commandLink action="listeClientsAsVoyage"><i class="fa fa-circle-o"></i> Liste des Clients </h:commandLink></li></sec:authorize>
+                                    <sec:authorize ifAllGranted="ETAT_OPERATION_ASVOYAGE"> <li><h:commandLink action="VoyageimprimerOperation" >  <i class="fa fa-circle-o"></i> Etat sur les Operations </h:commandLink></li></sec:authorize>                                 
+                                    <sec:authorize ifAnyGranted="STATISTIQUE_BORDERAU"><li> <h:commandLink  action="bordereauAsVoyage"> <i class="fa fa-circle-o"></i> #{msg['menu.bordereau']} </h:commandLink> </li></sec:authorize>
+                                    <sec:authorize ifAnyGranted="STATISTIQUE_LIST_CONTRAT"><li> <h:commandLink  action="echuouechoircontratVoyage"><i class="fa fa-circle-o"></i> Liste des Contrats </h:commandLink></li></sec:authorize>
+
+                                </ul>
+                            </li>
+
+                        </sec:authorize>
+                        <!--   FIN STATISTIQUE -->
+                    
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+    </h:form>
+</ui:composition>

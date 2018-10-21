@@ -1,0 +1,390 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+    <ui:composition>
+        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="BORDEREAU DE PRODUCTION ET COMMISSION"></p:outputLabel></legend>
+            </fieldset>
+            <div class="panel">
+                <div class="panel-body">
+                    <p:tabView id="etats" class="panel-default">
+                        <p:ajax event="tabChange"  listener="#{etatBean.onTabChange}" update="printBordereau:bordereauData" />
+                        <p:tab title="BORDEREAU DE PRODUCTION ET COMMISSION PAR SERVICES">
+                            <h:form id="fr1" class="form-horizontal">
+                                <p:panel id="t6" header="Recherche" toggleable="true" collapsed="true" >
+                                    <div class="form-group">
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">                                 
+                                            <h:outputLabel for="pays"  value="#{msg['titre.pays']}" class=""/>                                
+                                            <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{etatBean.paysSelected}" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.tout']}" itemDisabled="false" />
+                                                <f:selectItems value="#{etatBean.listpays}" var="pays"  itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                                            </h:selectOneMenu>
+                                        </div>  
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">   
+                                            <h:outputLabel for="service"  value="#{msg['titre.service']}" class="pull-left text-left"/>
+                                            <h:selectOneMenu id="service"  value="#{etatBean.service}" class="form-control" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.tout']}" itemDisabled="false" />
+                                                <f:selectItem itemLabel="#{msg['titre.souscription']}" itemValue="3" /> 
+                                                <f:selectItem itemLabel="#{msg['page.menu.renouvellement']}" itemValue="2" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">                                   
+                                            <h:outputLabel for="compagnie"  value="#{msg['titre.compagnie']}" class="pull-left text-left"/>                                 
+                                            <h:selectOneMenu id="compagnie" value="#{etatBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.tout']}" itemDisabled="false" />
+                                                <f:selectItems value="#{etatBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">   
+                                            <h:outputLabel for="Typecourtier"  value="#{msg['courtier.type']}" class="pull-left text-left"/> 
+                                            <h:selectOneMenu id="typeCourt" value="#{etatBean.typeCourtier}"  class="form-control" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.tout']}" itemDisabled="false" />
+                                                <f:selectItem itemLabel="#{msg['courtier.type.externe']}" itemValue="#{msg['courtier.type.externe']}" /> 
+                                                <f:selectItem itemLabel="#{msg['courtier.type.propre']}" itemValue="#{msg['courtier.type.propre']}" /> 
+                                                <p:ajax listener="#{etatBean.sortCourtier()}" update="courtier" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">   
+                                            <h:outputLabel for="courtier"  value="#{msg['titre.courtier']}" class="pull-left text-left"/> 
+                                            <h:selectOneMenu id="courtier" converter="entityConverter" value="#{etatBean.courtierSelected}" class="form-control" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.courtier']}" itemDisabled="false" />
+                                                <f:selectItems var="courtier" value="#{etatBean.sortedListCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                                            </h:selectOneMenu>
+                                        </div>
+
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">   
+                                            <h:outputLabel for="tpv"  value=" #{msg['pdv.type']}" class=""/>
+                                            <h:selectOneMenu id="tpv"  value="#{etatBean.typePointVente}" class="form-control" >                                          
+                                                <f:selectItem itemLabel="Tout" itemDisabled="false" />
+                                                <f:selectItem itemLabel="#{msg['pdv.type.externe']}" itemValue="#{msg['pdv.type.externe']}" /> 
+                                                <f:selectItem itemLabel="#{msg['pdv.type.externe']}" itemValue="#{msg['pdv.type.externe']}" />
+                                                <p:ajax listener="#{etatBean.sortPointsVente()}" update="pv" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="form-group"> 
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">  
+                                            <h:outputLabel for="pv"  value="#{msg['titre.pdv']}" class="pull-left text-left"/>  
+                                            <h:selectOneMenu id="pv"  value="#{etatBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.tout']}" itemDisabled="false" />
+                                                <f:selectItems var="pv" value="#{etatBean.sortedListPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                                            </h:selectOneMenu>
+                                        </div>
+
+
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">  
+                                            <p:outputLabel for="mask" value="#{msg['titre.dateDebut']}:" />
+                                            <p:calendar id="mask" class="form-control" pattern="dd-MM-yyyy" mask="true" value="#{etatBean.dateDebut}" >
+                                            </p:calendar>
+                                        </div>
+
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">  
+                                            <p:outputLabel for="mask2" value="#{msg['titre.dateFin']}:" />
+                                            <p:calendar id="mask2" class="form-control"   pattern="dd-MM-yyyy" mask="true" value="#{etatBean.dateFin}">
+                                            </p:calendar>
+                                        </div>
+
+                                    </div> 
+
+                                    <div class="form-group">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">  
+                                            <div class="btn-toolbar ">  
+                                                <p:commandButton class="btn btn-imprimer pull-right" value="#{msg['btn.rechercher']}" onstart="PF('statusDialog0').show()" onsuccess="PF('statusDialog0').hide()" action="#{etatBean.trier2()}" update="etats:iardtPrint"  />
+                                            </div> 
+                                        </div> 
+                                    </div> 
+                                </p:panel>
+
+                            </h:form>
+
+                            <p:dialog widgetVar="statusDialog0" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                <h:graphicImage library="images" name="ajax-loader.gif" />
+                            </p:dialog>
+
+                            <h:form id="iardtPrint" class="form-horizontal">
+                                <p:panel header="Résultat" toggleable="true" collapsed="false">
+                                    <div class="btn-toolbar ">
+                                        <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-imprimer btn-xs" actionListener="#{etatBean.printIardt}"   > 
+                                            <i class=" glyphicon glyphicon-print"></i>
+                                        </h:commandLink>  
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <p:dataTable class="table table-striped table-bordered table-condensed"  id="iardt" var="proposition2" scrollable="true" value="#{etatBean.listFactureIARDT}" >
+                                            <p:columnGroup type="header">
+                                                <p:growl  >
+                                                    <p:column colspan="6" headerText="IARDT" />
+                                                </p:growl>
+                                                <p:row>
+                                                    <p:column headerText="SERVICES" />                                            
+                                                    <p:column headerText="#{msg['tableau.primenette']}" />
+                                                    <p:column headerText="#{msg['tableau.accessoire']}" />
+                                                    <p:column headerText="#{msg['tableau.taxeFGA']}" />
+                                                    <p:column headerText="#{msg['tableau.primettc']}" />
+                                                    <p:column headerText="#{msg['titre.commission']}" />
+                                                </p:row>
+                                            </p:columnGroup>
+                                            <p:column headerText="Service" >
+                                                <h:outputText value="#{proposition2.type}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['tableau.primenette']}" >
+                                                <h:outputText value="#{proposition2.arrondireFormat2(proposition2.primeNettennuelle)}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['tableau.accessoire']}" >
+                                                <h:outputText value="#{proposition2.arrondireFormat2(proposition2.accessoire)}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['tableau.taxeFGA']}" >
+                                                <h:outputText value="#{proposition2.arrondireFormat2(proposition2.taxeFGAvalue)}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['tableau.primettc']}" >
+                                                <h:outputText value="#{proposition2.arrondireFormat2(proposition2.primeTtc)}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['titre.commission']}">
+                                                <h:outputText value="#{proposition2.arrondireFormat2((etatBean.tauxIARDT*proposition2.primeNettennuelle*0.01))}" />
+                                            </p:column>
+
+                                            <!--p:columnGroup type="footer" id="primeTotal1">
+                                                <p:row>
+                                                    <p:column   style="text-align:right" footerText="Total :" />
+                                                    <p:column   footerText="" />
+                                                    <p:column   footerText=""  />
+                                                    <p:column   footerText=""  />
+                                                    <p:column   footerText="#" id="primeTotal" />
+                                                </p:row>
+                                            </p:columnGroup-->
+                                        </p:dataTable>
+                                    </div>
+                                </p:panel>
+                            </h:form>  
+
+                        </p:tab>
+                        <p:tab title="BORDEREAU DE PRODUCTION ET COMMISSION PAR POLICE">
+
+                            <h:form id="fr2" class="form-horizontal">
+
+
+                                <p:panel id="t6" header="#{msg['titre.recherche']}" toggleable="true" collapsed="true">
+                                    <div class="form-group">
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">   
+                                            <h:outputLabel for="pays"  value="#{msg['titre.pays']}" class="pull-left text-left"/>  
+                                            <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{etatBean.paysSelected}" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.tout']}" itemDisabled="false" />
+                                                <f:selectItems value="#{etatBean.listpays}" var="pays"  itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                                            </h:selectOneMenu>
+                                        </div>  
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">   
+                                            <h:outputLabel for="service"  value="Service" class="pull-left text-left"/>
+                                            <h:selectOneMenu id="service"  value="#{etatBean.service}" class="form-control" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.tous']}" itemDisabled="false" />
+                                                <f:selectItem itemLabel="#{msg['titre.souscription']}" itemValue="3" /> 
+                                                <f:selectItem itemLabel="#{msg['page.menu.renouvellement']}" itemValue="2" />
+                                            </h:selectOneMenu>
+
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">   
+                                            <h:outputLabel for="compagnie"  value="#{msg['titre.compagnie']}" class="pull-left text-left"/>
+                                            <h:selectOneMenu id="compagnie" value="#{etatBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.tout']}" itemDisabled="false" />
+                                                <f:selectItems value="#{etatBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                                            </h:selectOneMenu>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+                                            <h:outputLabel for="Typecourtier"  value="#{msg['courtier.type']}" class="pull-left text-left"/> 
+                                            <h:selectOneMenu id="typeCourt" value="#{etatBean.typeCourtier}"  class="form-control" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.tout']}" itemDisabled="false" />
+                                                <f:selectItem itemLabel="#{msg['courtier.type.externe']}" itemValue="#{msg['courtier.type.externe']}" /> 
+                                                <f:selectItem itemLabel="#{msg['courtier.type.propre']}" itemValue="#{msg['courtier.type.propre']}" /> 
+                                                <p:ajax listener="#{etatBean.sortCourtier()}" update="courtier" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+                                            <h:outputLabel for="courtier"  value="#{msg['titre.courtier']}" class="pull-left text-left"/> 
+                                            <h:selectOneMenu id="courtier" converter="entityConverter" value="#{etatBean.courtierSelected}" 
+                                                             class="form-control" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.tout']}" itemDisabled="false" />
+                                                <f:selectItems var="courtier" value="#{etatBean.sortedListCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                                            </h:selectOneMenu>
+
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+                                           <h:outputLabel for="tpv"  value=" #{msg['pdv.type']}" class=""/>
+                                            <h:selectOneMenu id="tpv"  value="#{etatBean.typePointVente}" class="form-control" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.tout']}" itemDisabled="false" />
+                                                <f:selectItem itemLabel="#{msg['pdv.type.externe']}" itemValue="#{msg['pdv.type.externe']}" /> 
+                                                <f:selectItem itemLabel="#{msg['pdv.type.externe']}" itemValue="#{msg['pdv.type.externe']}" />
+                                                <p:ajax listener="#{etatBean.sortPointsVente()}" update="pv" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+                                            <h:outputLabel for="pv"  value="#{msg['titre.pdv']}" class="pull-left text-left"/>  
+                                            <h:selectOneMenu id="pv"  value="#{etatBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                                <f:selectItem itemLabel="#{msg['titre.tout']}" itemDisabled="false" />
+                                                <f:selectItems var="pv" value="#{etatBean.sortedListPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                                            </h:selectOneMenu>
+
+                                        </div>
+
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+
+                                            <p:outputLabel for="mask" value="#{msg['titre.dateDebut']}:" />
+                                            <p:calendar class="form-control" id="mask"  pattern="dd-MM-yyyy" mask="true" value="#{etatBean.dateDebut}" >
+                                            </p:calendar>
+                                        </div>
+
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+                                            <p:outputLabel for="mask" value="#{msg['titre.dateFin']}:" />
+                                            <p:calendar id="mask2" class="form-control"   pattern="dd-MM-yyyy" mask="true" value="#{etatBean.dateFin}">
+                                            </p:calendar>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                            <div class="btn-toolbar"> 
+                                                <p:commandButton class="btn btn-imprimer pull-right" value="#{msg['btn.rechercher']}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{etatBean.trier()}" update="etats:printBordereau"  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p:panel>
+
+                            </h:form>
+                            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                <h:graphicImage library="images" name="ajax-loader.gif" />
+                            </p:dialog>
+                            <h:form id="printBordereau" class="form-horizontal">
+                                <p:panel header="Résultat" toggleable="true" collapsed="false">
+                                    <div class="btn-toolbar">
+                                        <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-imprimer btn-xs" actionListener="#{etatBean.printBordereau}"   > 
+                                            <i class=" glyphicon glyphicon-print"></i>
+                                        </h:commandLink>  
+                                    </div>
+                                      <div class="table-responsive">
+                                    <p:dataTable id="bordereauData" var="proposition"  value="#{etatBean.listFacture}" paginatorTemplate="{CurrentPageReport}  
+                                                 {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                 paginator="true" paginatorPosition="bottom" rows="5" scrollable="true" scrollWidth="2000" sortBy="#{proposition.idFacture}" 
+                                                 class="table table-responsive table-bordered" rowKey="#{proposition.idFacture}" widgetVar="ddd"
+                                                
+                                                 sortOrder="descending" emptyMessage="#{msg['tableau.vide']}"             
+
+                                                 >
+                                        <p:ajax event="filter" update = "bordereauData"/>
+
+                                        <p:column  filterBy="#{proposition.courtier.designation}" headerText="Courtier" filterMatchMode="exact">
+                                            <f:facet name="filter">
+                                                <p:selectOneMenu onchange="PF('ddd').filter()" >
+                                                    <f:selectItem itemLabel="Afficher tout" itemValue="#{null}" noSelectionOption="true" />
+                                                    <f:selectItems value="#{courtierBean.courtierList}" var="c" itemLabel="#{c.designation}" itemValue="#{c.designation}" />
+
+                                                </p:selectOneMenu>
+                                            </f:facet>
+                                            <h:outputText value="#{proposition.courtier.designation}" />
+                                        </p:column>
+
+                                        <p:column  filterBy="#{proposition.compagnie.designation}" headerText="#{msg['titre.compagnie']}" filterMatchMode="exact">
+                                            <f:facet name="filter">
+                                                <p:selectOneMenu onchange="PF('ddd').filter()" >
+                                                    <f:selectItem itemLabel="#{msg['titre.tout']}" itemValue="#{null}" noSelectionOption="true" />
+                                                    <f:selectItems value="#{compagnieBean.compagnieList}" var="cp" itemLabel="#{cp.designation}" itemValue="#{cp.designation}" />
+                                                </p:selectOneMenu>
+                                            </f:facet>
+                                            <h:outputText value="#{proposition.compagnie.designation}" />
+                                        </p:column>
+
+                                        <p:column headerText="#{msg['titre.numeroPolice']}" filterBy="#{proposition.objetVoiture.numeroPolice}" >
+                                            <h:outputText value="#{proposition.objetVoiture.numeroPolice}" />
+                                        </p:column>
+
+                                        <p:column headerText="Assuré" filterBy="#{proposition.objetVoiture.client.nom}" >
+                                            <h:outputText value="#{proposition.objetVoiture.client.nom}" />
+                                        </p:column>
+
+                                        <p:column headerText="N° Avenant" >
+                                            <h:outputText value="#{proposition.avenant}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['contrat.datedebut']}" filterBy="#{proposition.formatDate(proposition.dateDebut)}}" >
+                                            <h:outputText value="#{proposition.formatDate(proposition.dateDebut)}" />   
+                                        </p:column>
+                                        <p:column headerText="Durée (mois)" filterBy="#{proposition.periode}" >
+                                            <h:outputText value="#{proposition.periode}" />
+                                        </p:column>
+                                        <p:column headerText="Expiration" filterBy="#{proposition.formatDate(proposition.dateFin)}" >
+                                            <h:outputText value="#{proposition.formatDate(proposition.dateFin)}" />
+                                        </p:column>
+                                        <p:column headerText="Service" >
+                                            <h:outputText value="#{proposition.type}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['vehicule.categorie']}" >
+                                            <h:outputText value="#{proposition.objetVoiture.categorie.description}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['tableau.primenette']}" >
+                                            <h:outputText value="#{proposition.arrondireFormat2(proposition.primeNettennuelle)}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['tableau.accessoire']}" >
+                                            <h:outputText value="#{proposition.arrondireFormat2(proposition.accessoire)}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['tableau.taxeFGA']}" >
+                                            <h:outputText value="#{proposition.arrondireFormat2(proposition.taxeFGAvalue)}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['tableau.primettc']}" >
+                                            <h:outputText value="#{proposition.arrondireFormat2(proposition.primeTtc)}" />
+                                        </p:column>
+
+                                        <p:column headerText="#{msg['tableau.tauxenregistrement']}" >
+                                            <h:outputText value="#{etatBean.taux} %" />
+                                        </p:column>
+
+                                        <p:column headerText="#{msg['titre.commission']}">
+                                            <h:outputText value="#{proposition.arrondireFormat2((etatBean.taux*proposition.primeNettennuelle*0.01))}" />
+                                        </p:column>
+                                        <p:columnGroup type="footer" id="primeTotal1">
+                                            <p:row>
+                                                <p:column   style="text-align:left" footerText="#{msg['tableau.total']} :" />
+                                                <p:column   footerText="" />
+                                                <p:column   footerText="" />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText="" />
+                                                <p:column   footerText="" />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText="#{etatBean.facture.arrondireFormat2(etatBean.total_net)}"  />
+                                                <p:column   footerText="#{etatBean.facture.arrondireFormat2(etatBean.total_frais)}"  />
+                                                <p:column   footerText="#{etatBean.facture.arrondireFormat2(etatBean.total_taxes)}"  />
+                                                <p:column   footerText="#{etatBean.facture.arrondireFormat2(etatBean.total_prime)}"  />
+                                                <p:column   footerText=""  />                                       
+                                                <p:column   footerText="#{etatBean.facture.arrondireFormat2(etatBean.total_commission)}" id="primeTotal" />
+                                            </p:row>
+                                        </p:columnGroup>
+                                    </p:dataTable>
+                                          </div>
+                                </p:panel> 
+                            </h:form> 
+
+                        </p:tab>
+
+                    </p:tabView>
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

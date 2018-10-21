@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+        <div class="container-fluid">
+            <fieldset>
+                <legend class="text-center text-uppercase"> <p:outputLabel value="GESTION DES COURTIERS"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row-fluid">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+                    <div class="panel">
+                        <div class="panel-heading"> 
+                            <p:fieldset  legend="#{msg['courtier.ajouter']}" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <ui:include src="courtier_ajout.xhtml"/>
+                            </p:fieldset>
+                        </div>
+                        <h:form  id="formliste">
+                            <!--div class="panel-heading"> 
+
+                                <fieldset>
+                                    <legend class=" police_label text-center"><p:outputLabel value="GESTION DES COURTIERS"></p:outputLabel></legend>
+                                    <div class="form-horizontal">
+                                        <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8">
+                                            <div class="col-lg-2 small col-md-2 col-xs-2 col-sm-2">
+                                                <p:commandButton rendered="#{sec:areAnyGranted('ADMIN')}" value="Ajouter" icon="fa fa-plus" class="police_label btn btn-success btn-lg btn-sm btn-xs" type="button" onclick="PF('ajouter').show();"/>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </fieldset>
+                            </div-->
+
+                            <div class="panel panel-body">
+
+                                <p:outputPanel id="courtier">
+
+                                    <p:fieldset legend="#{msg['courtier.liste']}" style="margin-bottom:20px">   
+                                        <div>
+                                            <h:commandLink   target="_blank" value="Print" title="IMPRIMER" class=" btn-info btn police_label  " style="color:#fff;background:#5bc0de;border-color:#46b8da" actionListener="#{courtierBean.doGetA()}"   > 
+                                                <i class=" glyphicon glyphicon-print"></i>
+                                            </h:commandLink>  
+                                        </div>
+                                        <p:dataTable class="table_label" var="courtier" filteredValue="#{courtierBean.filteredCourtier}" rowKey="#{courtier.idCourtier}" selection="#{courtierBean.triCourtierList}" id="courtierliste" reflow="true" rows="5" value="#{courtierBean.courtierList}"
+
+                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                     paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" > 
+                                            <p:ajax event="filter" listener="#{courtierBean.onFilter}" update = "courtierliste"/>
+
+                                            <p:column headerText="#{msg['courtier.abbreviation']}" filterBy="#{courtier.abbreviation}">
+                                                <h:outputText value="#{courtier.abbreviation}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['courtier.designation']}" filterBy="#{courtier.designation}">
+                                                <h:outputText value="#{courtier.designation}" />
+                                            </p:column>
+
+                                            <p:column headerText="#{msg['courtier.adresse']}" filterBy="#{courtier.adresse}">
+                                                <h:outputText value="#{courtier.adresse}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['courtier.telephone']}" filterBy="#{courtier.telephones}">
+                                                <h:outputText value="#{courtier.telephones}" />
+                                            </p:column>
+
+                                            <p:column headerText="#{msg['courtier.type']}" filterBy="#{courtier.typeCourtier}">
+                                                <h:outputText value="#{courtier.typeCourtier}"  />
+                                            </p:column>
+
+                                            <p:column headerText="Actions">
+
+                                                <p:commandButton ajax="true" rendered="#{sec:areAllGranted('MOD_COURTIER')}" update="modification" action="#{courtierBean.modificationSelection()}" oncomplete="PF('modifier').show()" icon="fa fa-edit" title="Modification" class="btn btn-primary" style="background: #337ab7;color:#fff;border-color: #337ab7;">
+                                                    <f:setPropertyActionListener value="#{courtier}" target="#{courtierBean.courtierSelected}" />
+                                                </p:commandButton>
+
+
+
+                                                <p:commandButton rendered="#{sec:areAllGranted('DEL_COURTIER')}"   oncomplete="PF('supprimer').show()" icon="fa fa-trash" title="Supprimer" class="btn btn-danger" style="background: #d9534f;color:#fff;border-color: #d43f3a;">
+                                                    <f:setPropertyActionListener value="#{courtier}" target="#{courtierBean.courtierSelected}" />
+                                                </p:commandButton>
+                                            </p:column>
+
+                                        </p:dataTable>
+                                    </p:fieldset>
+                                </p:outputPanel>
+
+                            </div>
+
+                        </h:form>
+                        <!--p:dialog class="police_label" id="ajoutdevise" header="Ajout Courtier" showEffect="fade"  widgetVar="ajouter" modal="true" width="700" minHeight="950" resizable="false">
+
+                            <ui:include src="courtier_ajout.xhtml"/>
+                        </p:dialog-->
+                        <p:dialog class="police_label" header="Modification Courtier" showEffect="fade"  widgetVar="modifier" modal="true" width="750" minHeight="500" resizable="false">
+                            <ui:include src="courtier_modifier.xhtml"/>
+                        </p:dialog>
+                        <h:form>
+                            <p:growl id="msgs3" showDetail="false" globalOnly="true" />
+                            <p:confirmDialog class="police_label" id="confirmation" message="Voulez vous vraiment supprimer cette ligne"
+                                             header="Suppression" severity="alert" 
+                                             widgetVar="supprimer">
+
+
+                                <p:commandButton   value="Non" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                                <p:commandButton  value="Oui" update="msgs3,formliste" action="#{courtierBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+                            </p:confirmDialog>
+                        </h:form>
+
+                        <!--div class="panel-footer"> 
+
+                        </div--> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+
+</html>
+

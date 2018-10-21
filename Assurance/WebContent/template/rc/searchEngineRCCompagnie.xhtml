@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions" >
+
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:outputPanel id="rechercheCmpF" style="text-align:center;" class="panel">
+                    <h:form id="searchEngineCmpF" class="form-horizontal">
+                        <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="paysCmpF" value="Pays" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu id="paysCmpF" value="#{lectureDirectCompagnieBean.paysSelected}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                            <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                            <f:selectItems value="#{lectureDirectCompagnieBean.paysList}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                            <p:ajax event="click" listener="#{lectureDirectCompagnieBean.feshCategorieByPays()}" update="categorieCmpF,pssF,garantieCmpF" />
+                                        </h:selectOneMenu> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="pssF" value="Compagnie"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="pssF" value="#{lectureDirectCompagnieBean.compagnieSelected}"  >
+                                            <f:selectItem noSelectionOption="true" itemLabel="Choisir compagnie" /> 
+                                            <f:selectItems value="#{lectureDirectCompagnieBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="categorieCmpF" value="#{msg['vehicule.categorie']}" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu id="categorieCmpF" value="#{lectureDirectCompagnieBean.categorieSelected}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                            <f:selectItem itemLabel="#{msg['vehicule.categorie']}" noSelectionOption="true" />
+                                            <f:selectItems value="#{lectureDirectCompagnieBean.listCategorie}" var="cat" itemLabel="#{cat.libelle}" itemValue="#{cat}" /> 
+                                            <p:ajax listener="#{lectureDirectCompagnieBean.feshGarantieByCategorie()}" update="garantieCmpF" />
+                                        </h:selectOneMenu> 
+                                    </div>   
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="garantieCmpF" value="Garanties" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  id="garantieCmpF" value="#{lectureDirectCompagnieBean.garantieSelected}" converter="omnifaces.SelectItemsConverter"  class="police_label form-control">
+                                            <f:selectItem itemLabel="#{msg['garantie.titre']}" noSelectionOption="true" />
+                                            <f:selectItems value="#{lectureDirectCompagnieBean.guarantieList}" var="garantie" itemLabel="#{garantie.libelle}" itemValue="#{garantie}" />
+                                            <p:ajax  update="" />
+                                        </h:selectOneMenu>
+                                    </div>    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="typeVitreCmpF" value="Type Vitre" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  class="form-control"  converter="entityConverter"  id="typeVitreCmpF" value="#{lectureDirectCompagnieBean.typeVitreSelected}"  >
+                                            <f:selectItem itemLabel="Choisir type vitre" noSelectionOption="true" />
+                                            <f:selectItems value="#{lectureDirectCompagnieBean.typeVitreList}" var="typeV" itemLabel="#{typeV.typeVitre}" itemValue="#{typeV}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="puissanceCmpF" value="Puissance"  class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-6 col-xs-6">
+                                        <p:inputText id="puissanceCmpF" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCompagnieBean.puissanceValue}"  styleClass="form-control"  title="Puissance" placeholder="Puissance inf" >
+                                        </p:inputText>
+                                    </div>
+                                    <pe:keyFilter for="puissanceCmpF" mask="int"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  value="#{msg['vehicule.energie']}"  for="energieCmpF" class=" pull-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  id="energieCmpF"  value="#{lectureDirectCompagnieBean.energieSelected}" converter="omnifaces.SelectItemsConverter"  class="form-control" >
+                                            <f:selectItem itemLabel="#{msg['vehicule.energie']}" noSelectionOption="true"/>
+                                            <f:selectItems value="#{lectureDirectCompagnieBean.energieList}" var="en" itemLabel="#{en.libelleFr} -- #{en.libelleEn}" itemValue="#{en}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="nplcCmpF" value="#{msg['vehicule.nombreplace']}" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText id="nplcCmpF" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCompagnieBean.nombrePlace}" styleClass="form-control"  title="Nbr places" placeholder="Nbr places" >
+                                        </p:inputText>
+                                        <pe:keyFilter for="nplcCmpF" mask="int"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="poidsCmpF" value="Poids" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-6 col-xs-6">
+                                        <p:inputText id="poidsCmpF" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCompagnieBean.poidsValue}" class="form-control"  title="Poids" placeholder="Poids inf" >
+                                        </p:inputText>
+                                    </div>
+                                    <pe:keyFilter for="poidsCmpF" mask="num"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="typecylindreCmpF" value="Type Cylindre" class="pull-left text-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  class="form-control"  converter="entityConverter"  id="typecylindreCmpF" value="#{lectureDirectCompagnieBean.typeCylindreSelected}"  >
+                                            <f:selectItem itemLabel="Type Cylindre" noSelectionOption="true" /> 
+                                            <f:selectItems value="#{lectureDirectCompagnieBean.typeCylindreList}" var="tc" itemLabel="#{tc.designation}" itemValue="#{tc}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                <div class="form-group" >
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="cylindreCmpF" value="Cylindre" class="pull-left text-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText id="cylindreCmpF"  converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCompagnieBean.cylindreValue}"  class="form-control"  title="Cylindre" placeholder="Cylindre" >
+
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group ">
+                                <div class="col-lg-12  col-md-12 col-xs-12 col-sm-12">
+                                    <div class="col-lg-2 col-md-12 pull-right col-xs-12 col-sm-12">
+                                        <p:commandButton id="searchCmp" action="#{lectureDirectCompagnieBean.searchMethod2()}"  update="searchEngineCmpF,ggg:rcliste2" value="Rechercher"  class="btn-success success form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+                </p:outputPanel>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

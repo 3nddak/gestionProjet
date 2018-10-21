@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <ui:composition>
+        <div class="panel">
+            <p:growl id="msgsllx" globalOnly="true" showDetail="false"/>
+            <div class="panel-body">
+                <fieldset><legend class="text-uppercase" ><h:outputLabel class="police_label" value="#{msg['titre.creditPourChaqueClient']}"/></legend>
+                    <ui:include src="infos_client.xhtml"/>
+                    <div class="form-group">
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <p:outputPanel id="dis">
+                                    <p:dataTable class="table_label table-responsive" var="assG" id="assG" reflow="true" rows="5" value="#{souscriptionBean.listGroupeAssuranceCreditTosave}"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                 rowsPerPageTemplate="10,20,30,40,50"  emptyMessage="#{msg[tableau.vide]}" 
+                                                 editable="true" editMode="cell">                                                    
+                                        <p:column headerText="#{msg['client.nom']}" filterBy="#{assG.client.nom}" filterMatchMode="contains">
+                                            <h:outputText value="#{assG.client.nom}" />
+                                        </p:column >
+                                        <p:column headerText="#{msg['client.prenom']}" filterBy="#{assG.client.prenom}" filterMatchMode="contains">
+                                            <h:outputText value="#{assG.client.prenom}" />
+                                        </p:column >
+                                        <p:column headerText="#{msg['client.datedenaissance']}" filterMatchMode="contains">
+                                            <h:outputText value="#{assG.client.dateNaissance}" />
+                                        </p:column >
+                                 
+                                        <p:column headerText="#{msg['titre.pretDuConjoint']}" filterBy="#{assG.montantPret}">
+                                            <p:cellEditor>
+                                                <f:facet name="output"><p:outputLabel id="pRed4" value="#{assG.pretConjoint}" /></f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:inputText value="#{assG.pretConjoint}">
+                                                        <p:ajax event="keyup" update="pRed4"/>
+                                                        <pe:keyFilter  mask="num" />
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column headerText="#{msg['titre.montant']}" filterBy="#{assG.montantPret}">
+                                            <p:cellEditor>
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="Red4" value="#{assG.montantPret}" >
+                                                          <f:convertNumber pattern="###,##0" type="number" />
+                                                    </p:outputLabel>
+                                                </f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:inputText value="#{assG.montantPret}">
+                                                        <p:ajax event="keyup" update="Red4"/>
+                                                        <pe:keyFilter  mask="num" />
+                                                      
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:outputPanel>
+                            </div>
+                        </div>
+                    </div>
+
+                </fieldset>   
+            </div> 
+        </div>
+    </ui:composition>
+</html>

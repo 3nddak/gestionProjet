@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition>
+
+        <p:panel header="#{msg['titre.typeDeClient']}"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel value="#{msg['titre.type']} :"/>
+                <h:outputText value="#{souscriptionBean.groupe eq 0? msg['client.type.physique'] : msg['client.type.morale']}"/>
+                <p:outputLabel rendered="#{souscriptionBean.groupe eq 1?true:false}" value="#{msg['titre.genre']} :"/>
+                <h:outputText rendered="#{souscriptionBean.groupe eq 1?true:false}" value="#{souscriptionBean.genreGroup eq 0? msg['titre.groupe'] : msg['titre.entreprise']}"/>
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['titre.infogroupe']}"  rendered="#{souscriptionBean.groupe eq 1 and souscriptionBean.genreGroup eq 0?true:false}" toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel value="#{msg['titre.nomDuGroupe']} :"/>
+                <h:outputText value="#{souscriptionBean.grpAssuranceCredit.nomGroup}"/>
+                <p:outputLabel value="#{msg['titre.descriptionDuGroupe']} :"/>
+                <h:outputText value="#{souscriptionBean.grpAssuranceCredit.descriptionGroup}"/>
+                <p:outputLabel  value="#{msg['titre.adresse']} :"/>
+                <h:outputText value="#{souscriptionBean.grpAssuranceCredit.adresseGroup}"/>
+                <p:outputLabel  value="#{msg['titre.numeroDeTelephone']} :"/>
+                <h:outputText value="#{souscriptionBean.grpAssuranceCredit.numeroTelephoneGroup }"/>
+                <p:outputLabel  value="#{msg['titre.dateDeCreation']} :"/>
+                <h:outputText value="#{souscriptionBean.grpAssuranceCredit.dateCreationGroup}"/>
+
+
+            </p:panelGrid>
+
+        </p:panel>
+
+        <p:panel header="#{msg['titre.infoentreprise']}" rendered="#{souscriptionBean.groupe eq 1 and souscriptionBean.genreGroup eq 1 ?true:false}" toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel value="#{msg['titre.nomDeLEntreprise']} :"/>
+                <h:outputText value="#{souscriptionBean.grpAssuranceCredit.nomGroup}"/>
+                <p:outputLabel  value="#{msg['titre.descriptionDeLEntreprise']} :"/>
+                <h:outputText value="#{souscriptionBean.grpAssuranceCredit.descriptionGroup}"/>
+                <p:outputLabel value="#{msg['titre.adresse']} :"/>
+                <h:outputText value="#{souscriptionBean.grpAssuranceCredit.adresseGroup}"/>
+                <p:outputLabel value="#{msg['titre.numeroDeTelephone']} :"/>
+                <h:outputText value="#{souscriptionBean.grpAssuranceCredit.numeroTelephoneGroup }"/>
+                <p:outputLabel value="#{msg['titre.dateDeCreation']} :"/>
+                <h:outputText value="#{souscriptionBean.grpAssuranceCredit.dateCreationGroup}"/>
+                <p:outputLabel  value="#{msg['titre.typePiece']} :"/>
+                <h:outputText  value="#{souscriptionBean.grpAssuranceCredit.typePieceGroup}"/>
+                <p:outputLabel  value="#{msg['titre.numeroDeLaPiece']} :"/>
+                <h:outputText  value="#{souscriptionBean.grpAssuranceCredit.numeroPieceGroup}"/>
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['credit.info']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+            <p:panelGrid columns="8" class="table">
+                <p:outputLabel value="#{msg['titre.identifiantEmprunteur']} :"/>
+                <h:outputText class="text-right" value="#{souscriptionBean.assuranceCredit.identifiant}"/>
+                <p:outputLabel value="#{msg['titre.numeroDuPret']} :"/>
+                <h:outputText class="text-right"  value="#{souscriptionBean.assuranceCredit.numeroPret}"/>
+                <p:outputLabel value="#{msg['titre.typeDeRemboursement']} :"/>
+                <h:outputText value="#{souscriptionBean.assuranceCredit.typeDePret}"/>
+                <p:outputLabel value="#{msg['titre.dateDeCreation']} :"/>
+                <h:outputText class="text-right"  value="#{souscriptionBean.assuranceCredit.mensualiteDePayement}"/>
+                <p:outputLabel  value="#{msg['titre.montantDuPret']} :"/>
+                <h:outputText value="#{souscriptionBean.assuranceCredit.montantPret}">   
+                    <f:convertNumber pattern="###,##0" type="number" />
+                </h:outputText>
+                <p:outputLabel  value="#{msg['titre.tauxDuPret']} :"/>
+                <h:outputText  value="#{souscriptionBean.assuranceCredit.tauxDuPret}"/>
+                <p:outputLabel  value="#{msg['titre.dateDuPret']} :"/>
+                <h:outputText  value="#{souscriptionBean.assuranceCredit.dateDuPret}"/>
+
+                <p:outputLabel rendered="#{souscriptionBean.assuranceCredit.mensualiteDePayement eq souscriptionBean.autrepayement ?true:false}" value="Nombre de mensualité:"/>
+                <h:outputText class="text-right" rendered="#{souscriptionBean.assuranceCredit.mensualiteDePayement eq souscriptionBean.autrepayement ?true:false}"  value="#{souscriptionBean.assuranceCredit.nombreMensualite}"/>
+                <p:outputLabel value="#{msg['titre.dateDeLaPremiereEcheance']} :"/> 
+                <h:outputText  class="text-right" value="#{souscriptionBean.assuranceCredit.datePremiereEcheance}" />
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['titre.compagniesCourtiersChoisies']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <div class="table-responsive">
+                <p:dataTable class="table_label table-responsive" var="compcour" reflow="true" rows="5" value="#{souscriptionBean.listAssuranceCredit}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" 
+                             rowsPerPageTemplate="5,10,15"  emptyMessage="#{msg[tableau.vide]}"  >                                                    
+                    <p:column headerText="#{msg['titre.compagnie']}">
+                        <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                    </p:column>
+
+                    <p:column headerText="#{msg['titre.courtier']}">
+                        <h:outputText value="#{compcour.courtier.abbreviation}" />
+                    </p:column >
+                    <p:column headerText="#{msg['titre.typeCapitauxGaranties']}">
+                        <h:outputText value="#{compcour.typeCapitauxGaranite}" />
+                    </p:column >
+                </p:dataTable>
+            </div>
+
+        </p:panel>
+
+        <p:panel  header="#{msg['titre.creditClients']}"  toggleable="true" collapsed="true">
+            <p:dataTable class="table_label table-responsive" var="assG" reflow="true" rows="5" value="#{souscriptionBean.listGroupeAssuranceCreditTosave}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         paginator="true" paginatorPosition="bottom" style="margin-bottom:20px"
+                         rowsPerPageTemplate="5,10,15,20,25"  emptyMessage="#{msg[tableau.vide]}" 
+                         >                                                    
+                <p:column headerText="#{msg['titre.souscripteur']}">
+                    <h:outputText value="#{assG.client.nom} #{assG.client.prenom}" />
+                </p:column >
+                <p:column headerText="#{msg['client.datedenaissance']}">
+                    <h:outputText value="#{assG.client.dateNaissance}" />
+                </p:column >
+
+                <p:column headerText="#{msg['titre.pretDuConjoint']}">
+                    <h:outputText value="#{assG.pretConjoint}" />
+                </p:column >
+
+                <p:column headerText="#{msg['titre.montant']}">
+                    <h:outputText value="#{assG.montantPret}" >
+                        <f:convertNumber pattern="###,##0" type="number" />
+                    </h:outputText>
+                </p:column >
+            </p:dataTable>
+
+        </p:panel>
+
+        <p:panel header="#{msg['titre.reponsesAuxQuestions']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+            <div  class="row">
+                <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4 well-lg">
+
+                    <p:panel  class="form-horizontal well-sm">
+                        <div class="panel-heading bg-primary"> 
+                            <p:outputLabel class="police_label" value="#{msg['titre.nom-Prenom']}"></p:outputLabel>
+                        </div>
+                        <p:dataScroller class="police_label" value="#{souscriptionBean.listAssuranceCreditForQuestion}" var="ascr" chunkSize="6">
+                            <div class="table-responsive">
+                                <p:commandLink  onstart="PF('simulationrr').block()" oncomplete="PF('simulationrr').unblock()" class=" col-lg-12 lien_liste" update="formliste"  style="text-align:left; margin: 0px;padding:0px ">
+                                    <div class="col-lg-10 pull-left">
+                                        <p:outputLabel class="col-lg-12" value="#{ascr.client.nom} - #{ascr.client.prenom}"/>
+                                    </div>
+                                    <f:setPropertyActionListener value="#{ascr}" target="#{souscriptionBean.assuranceCreditSelected}"  />  
+                                </p:commandLink>
+                            </div>
+                        </p:dataScroller>
+                    </p:panel>
+
+                </div>
+                <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8 well-lg">
+                    <div class="panel">
+                        <p:panel  class="form-horizontal well-sm">
+                            <div class="panel-heading bg-primary">  
+                                <h:outputLabel value="#{msg['titre.questionnairesPour']} " class="text-uppercase" >
+                                    <h:outputText value="#{souscriptionBean.assuranceCreditSelected.client.nom} - #{souscriptionBean.assuranceCreditSelected.client.prenom}" />
+                                </h:outputLabel>
+                            </div>
+
+                            <div class="panel-body"> 
+                                <div class="row">
+                                    <fieldset><legend class="titre_entete text-left text-capitalize small" ></legend>
+                                        <c:forEach items="#{souscriptionBean.assuranceCreditSelected.listQuestionResponseAsVie}" var="q" >
+                                            <p:outputPanel id="gll#{souscriptionBean.assuranceCreditSelected.client.hashCode()}#{q.id()}" rendered="#{q.questionAsVie.booleanQuestion}">
+
+                                                <h:outputLabel id="gl#{souscriptionBean.assuranceCreditSelected.client.hashCode()}#{q.id()}" >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                                <p:selectBooleanCheckbox id="ga#{souscriptionBean.assuranceCreditSelected.client.hashCode()}#{q.id()}" value="#{q.response}" >
+                                                    <p:ajax update="gll#{souscriptionBean.assuranceCreditSelected.client.hashCode()}#{q.id()}"  />
+                                                </p:selectBooleanCheckbox>
+                                                <p:outputLabel id="gc#{souscriptionBean.assuranceCreditSelected.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" value="#{q.questionSecondaire()}" />
+
+                                                <p:inputText id="gd#{souscriptionBean.assuranceCreditSelected.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" class="form-control" value="#{q.precisions}" />
+                                            </p:outputPanel>
+
+                                            <p:outputPanel rendered="#{!q.questionAsVie.booleanQuestion}">
+                                                <h:outputLabel >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                                <p:inputText  class="form-control" value="#{q.precisions}" />
+                                            </p:outputPanel>
+
+                                        </c:forEach>
+                                    </fieldset>
+                                </div> 
+                            </div>
+                        </p:panel>
+                    </div>
+                </div>
+            </div>
+
+            <pe:blockUI widgetVar="simulationrrr">  
+                <h:panelGrid columns="2">  
+                    <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                    <h:outputText value="#{msg['titre.chargementDuQuestionnaireEnCours']} " />  
+                </h:panelGrid>  
+            </pe:blockUI>
+        </p:panel>
+
+    </ui:composition> 
+
+</html>
+

@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+        <sec:authorize ifAllGranted="PDR">
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['pdr.gestion']}"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row">
+              
+
+
+                    <div class="panel">
+                        <div class="panel-heading"> 
+                            <sec:authorize ifAllGranted="ADD_PDR">
+                            <p:fieldset  styleClass="whiteIcon"  legend="#{msg['pdr.ajouter']}" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <ui:include src="retrai_ajout.xhtml"/>
+                            </p:fieldset>
+                            </sec:authorize>
+                        </div>
+                        <h:form  id="formliste">
+                            <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>
+                            <div class="panel panel-body">
+                                <sec:authorize ifAllGranted="PDR">
+                                    <p:fieldset legend="#{msg['pdr.liste']}" style="margin-bottom:20px">
+                                        <div class="form-group">
+                                            <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-imprimer btn btn-xs" actionListener="#{pointDeRetraitBean.doGetA()}"   > 
+                                                <i class=" glyphicon glyphicon-print"></i>
+                                            </h:commandLink>  
+                                        </div>
+                                        <div class="table-responsive">
+                                        <p:dataTable sortOrder="descending"  sortBy="#{pdr.idPointDeRetrait}" class="" var="pdr" rowKey="#{pdr.idPointDeRetrait}" id="pdrliste" rows="5"  
+                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                     paginator="true" paginatorPosition="bottom"
+                                                     emptyMessage="#{msg['tableau.vide']}"
+                                                     value="#{pointDeRetraitBean.allPointDeRetrait}" rowExpandMode="single"
+                                                     style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" > 
+                                            <p:ajax event="rowToggle" listener="#{pointDeRetraitBean.onRowToggle}" update="display3" />
+                                            <p:column style="width:50px">
+
+                                                <p:rowToggler/>
+                                            </p:column> 
+
+                                            <p:column headerText="#{msg['pdr.libelle']}" filterBy="#{pdr.libelle}">
+                                                <h:outputText value="#{pdr.libelle}"  />
+                                            </p:column>
+
+                                            <p:column headerText="#{msg['pdr.adresse']}" filterBy="#{pdr.adresse}">
+                                                <h:outputText value="#{pdr.adresse}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['pdr.pays']}" filterBy="#{pdr.pays.designationPays}">
+                                                <h:outputText value="#{pdr.pays.designationPays}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['pdr.telephone']}" filterBy="#{pdr.telephone}">
+                                                <h:outputText value="#{pdr.telephone}" />
+                                            </p:column>
+                                            <p:column headerText="Actions" width="100">
+                                                
+                                                <p:commandButton rendered="#{sec:areAllGranted('MOD_PDR')}" title="#{msg['btn.modifier']}" action="#{pointDeRetraitBean.loadPointDeRetrait}"  update="mod" icon="fa fa-edit" class="btn-primary btn " oncomplete="PF('modifier').show()"   >
+                                                    <f:setPropertyActionListener value="#{pdr}" target="#{pointDeRetraitBean.pointDeRetraitToUpdate}" />
+                                                    <f:setPropertyActionListener value="#{pdr.compagnie}" target="#{pointDeRetraitBean.pointDeRetraitToUpdate.compagnie}" />
+                                                </p:commandButton>   
+                                                
+                                                <p:commandButton rendered="#{sec:areAllGranted('DEL_PDR')}"  icon="fa fa-trash"  oncomplete="PF('supprimer').show()"  title="#{msg['btn.supprimer']}" class="btn btn-danger" immediate="true">
+                                                    <f:setPropertyActionListener value="#{pdr}" target="#{pointDeRetraitBean.pointDeRetraitToDelete}" />
+                                                </p:commandButton>
+
+                                            </p:column>
+
+                                            <p:rowExpansion class="table-responsive" >
+
+                                                <p:dataTable class="table-bordered table tableTwo "  var="prcom" id="display3"  value="#{pointDeRetraitBean.compagniePointDeRetrait}"
+                                                             rows="8" emptyMessage="#{msg['tableau.vide']}"
+                                                             paginator="true" paginatorPosition="bottom"
+                                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                             >
+                                                    <f:facet name="header">
+
+                                                        <p:outputLabel  value="#{msg['pdr.utiliser.compagnie']} #{pdr.libelle}" />
+
+                                                    </f:facet>
+                                                    <p:column headerText="#{msg['compagnie.designation']}">
+                                                        <h:outputText value="#{prcom.designation}" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['compagnie.abbreviation']}">
+                                                        <h:outputText value="#{prcom.abbreviation}" />
+                                                    </p:column>
+
+                                                </p:dataTable>
+                                            </p:rowExpansion>
+
+                                        </p:dataTable>
+                                            </div>
+                                    </p:fieldset>
+                                    </sec:authorize>
+                            </div>
+                        </h:form>
+                        <p:dialog  header="#{msg['pdr.modifier']}" showEffect="fade"  widgetVar="modifier" modal="true" width="600" minHeight="600" resizable="false">
+                            <ui:include src="retrai_modifier.xhtml"/>
+                        </p:dialog>
+                        <h:form>
+
+                            <p:confirmDialog id="confirmation" message="#{msg['supprimer.message']}"
+                                             header="#{msg['titre.operation.suppression']}" severity="alert" 
+                                             widgetVar="supprimer">
+
+
+                                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                                <p:commandButton value="#{msg['supprimer.oui']}" action="#{pointDeRetraitBean.supprimer()}" update="pr, :formliste:msgs,:formliste:pdrliste,formliste"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+                            </p:confirmDialog>
+                        </h:form>
+
+                    </div>
+
+                </div>
+            </div>
+       
+            </sec:authorize>
+    </ui:composition> 
+
+</html>
+

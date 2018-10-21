@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:outputPanel id="commissionPanel" >
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <fieldset> 
+                    <legend class="text-center text-uppercase"> <p:outputLabel value="Gestion des Commissions"></p:outputLabel></legend>
+                </fieldset>
+                <p:tabView id="commissionTab" scrollable="true">
+                    <p:tab  title="Commission Compagnie Courtier Type Assurance">
+                        <p:fieldset legend="Ajouter Commission" toggleable="true" collapsed="false" toggleSpeed="500"  style="margin-bottom:20px">                          
+                            <ui:include src="commission_compagnie_courtier.xhtml" />
+                        </p:fieldset>
+                    </p:tab>
+                    
+                    
+                    <p:tab  title="Commission NCP Courtier Point de Vente Type Assurance">
+                        <p:fieldset legend="Ajouter Commission" toggleable="true" collapsed="false" toggleSpeed="500"  style="margin-bottom:20px">                          
+                            <ui:include src="commissionncpcourtierpdv.xhtml" />
+                        </p:fieldset>
+                    </p:tab>
+                    
+                    
+                    <p:tab  title="Commission Point de Vente Guichet Externe Type Assurance">
+                        <p:fieldset legend="Ajouter Commission" toggleable="true" collapsed="false" toggleSpeed="500"  style="margin-bottom:20px">                          
+                            <ui:include src="commission_pointsvente_guichetexterne.xhtml" />
+                        </p:fieldset>
+                    </p:tab>
+                </p:tabView>
+            </div>
+        </p:outputPanel>
+    </ui:composition>
+</html>

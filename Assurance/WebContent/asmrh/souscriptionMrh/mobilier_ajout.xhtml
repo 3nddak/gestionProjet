@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition >
+        <div class="row">
+
+            <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.typeMobile']}"  for="tmo" class=" " />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                    <h:selectOneMenu id="tmo" value="#{souscriptionAsMrhBean.mobillierEtObjetUsuel.typeMobillierObjetUsuel}"  class="form-control"
+                                    requiredMessage="#{msg['MobiliersObjets.requireMessage']}">
+                        <f:selectItem itemLabel="#{msg['titre.typeMobile']}" /> 
+                        <f:selectItems value="#{souscriptionAsMrhBean.typemobilierObjetUsuel}" /> 
+                        <p:ajax event="click" update="tmoMessage"/> 
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="tmo" id="tmoMessage"/>
+                </div>
+            </div> 
+
+            <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.Description']}"  for="descri" class=" " />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsMrhBean.mobillierEtObjetUsuel.description}"  id="descri" styleClass="form-control" placeholder="description"
+                             requiredMessage="#{msg['Description.requireMessage']}"  
+                                 >
+
+                        <p:ajax event="keyup" update="descriMessage"/>
+
+                    </p:inputText>
+
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="descri" id="descriMessage"/>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.Estimation.valeur']}"  for="estv" class=" " />
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:inputText value="#{souscriptionAsMrhBean.mobillierEtObjetUsuel.estimationValeur}"  id="estv" styleClass="form-control" placeholder="estimation valeur"
+                               requiredMessage="#{msg['Estimationvaleur.requireMessage']}"  
+                                 >
+                        <pe:keyFilter for="estv" mask="num"/>
+                        <p:ajax event="keyup" update="estvMessage"/>
+
+                    </p:inputText>
+
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <p:message for="estv" id="estvMessage"/>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="btn-toolbar">
+                        <p:commandButton value="#{msg['btn.annuller']}" class="btn btn-danger" actionListener="#{souscriptionAsMrhBean.annullerMobilier()}" update="formliste" />
+
+                        <p:commandButton value="#{msg['btn.enregistrer']}" class="btn btn-purple pull-right"  update="formliste" actionListener="#{souscriptionAsMrhBean.addOneMobilier()}"  />
+                    </div>
+                </div>
+            </div>
+            </div>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="sms1">
+        <div class="navbar-custom-menu">
+            <div class="navbar bg-under-head">
+
+                <sec:authorize ifAllGranted="NOTIFICATION"> 
+                    <ul class="nav navbar-nav">
+
+                        
+                        <sec:authorize ifAnyGranted="USER_GUICHET">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.ev']}"  style="color:#ffffff" /> <sup><h:outputLabel class="badge small" value="#{notificationsAsautoBean.demandeTraitee}" style="background-color:red" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink    value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}"  action="#{notificationsAsautoBean.getPagesDemandeTraitee()}"> 
+                                            <h:outputLabel value="#{notificationsAsautoBean.demandeTraitee}" style="background-color:#ec971f" class="pull-right badge" />                                           
+  
+                                        </h:commandLink>
+                                    </li>
+
+                                    <li class="hidden">
+                                        <h:commandLink    value="#{msg['page.menu.renouvellement']}" title="#{msg['page.menu.gestioncourrier']}" action="#{allMessageBean.action}"> 
+                                            <h:outputLabel value="0" style="background-color: #e4b9b9" class="pull-right badge" />                                           
+                                            <f:setPropertyActionListener value="#{newMessageBean.demandeTraitee}" target="#{allMessageBean.statut}" /> 
+                                            <p:ajax oncomplete="#{allMessageBean.listerFacture()}" />
+                                        </h:commandLink>
+                                    </li>
+                                    <li class="hidden">
+                                        <h:commandLink    value="#{msg['notification.menu.attestation']}"  action="demandeatt" title="#{msg['notification.ev']}"  > 
+                                            <h:outputLabel value="#{numberAttestationBean.nouvelleAttestation}" style="background-color:#a94442" class="pull-right badge" />                                           
+
+                                        </h:commandLink>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </sec:authorize>
+
+                        <sec:authorize ifAnyGranted="USER_GUICHET,USER_PVT,USER_CRT">
+                            <li class="">
+
+                                <a href="#" class="dropdown-toggle" title="#{msg['notification.de']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                    <h:outputLabel value="#{msg['notification.de']}"  style="color:#ffffff" /><sup><h:outputLabel class="badge small" value="#{notificationsAsautoBean.nouvelleDemande + numberAttestationBean.attestationTraite}" style="background-color:#ec971f" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+
+
+                                    <li>
+                                        <h:commandLink  value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.de']}"  action="#{notificationsAsautoBean.getPagesNouvelleD()}" >
+                                            <h:outputLabel value="#{notificationsAsautoBean.nouvelleDemande}" style="background-color: #ec971f" class="pull-right badge" />                
+                                           
+                                        </h:commandLink>
+                                    </li>
+                                    <li class="hidden" >
+                                        <h:commandLink  value="#{msg['page.menu.renouvellement']}" title="#{msg['notification.demandeEnvoye']}" action="#{allMessageBean.action}" >
+                                            <h:outputLabel value="0" style="background-color: #e4b9b9" class="pull-right badge" />                
+                                            <f:setPropertyActionListener value="#{newMessageBean.nouvelleDemande}" target="#{allMessageBean.statut}"  /> 
+                                            <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                                        </h:commandLink>
+                                    </li>
+
+                                    <li class="hidden">
+                                        <h:commandLink  value="#{msg['notification.menu.attestation']}"  title="#{msg['notification.de']}"   action="vdc" >
+                                            <h:outputLabel value="#{numberAttestationBean.attestationTraite}" style="background-color: #a94442" class="pull-right badge" />                
+
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAnyGranted="USER_GUICHET,USER_PVT,USER_CRT,USER_CMP">
+                            <li class="">
+
+                                <a href="#" class="dropdown-toggle" title="#{msg['notification.demandeValidee']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                    <h:outputLabel value="#{msg['notification.demandeValidee']}"  style="color:#ffffff "  /><sup><h:outputLabel class="badge small" value="#{notificationsAsautoBean.demandeValidee}" style="background-color:#FFE495" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+
+
+                                    <li>
+                                        <h:commandLink  value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.de']}"  action="#{notificationsAsautoBean.getPagesDemandeValideParClient()}" >
+                                            <h:outputLabel value="#{notificationsAsautoBean.demandeValidee}" style="background-color: #ec971f" class="pull-right badge" />                
+                                           
+                                        </h:commandLink>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAllGranted="USER_CMP ">
+                            <li class="" >
+
+                                <a href="#" class="dropdown-toggle" title="#{msg['notification.nd']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel value="#{msg['notification.nd']}"  style="color:#ffffff " /><sup><h:outputLabel class="badge small" value="#{notificationsAsautoBean.nouvelleDemande + numberAttestationBean.nouvelleAttestation}" style="background-color:red" /></sup></a>
+                                <ul  class="dropdown-menu" >
+
+                                    <li>
+                                        <h:commandLink  value="#{msg['notification.menu.sousrenouv']}"   title="#{msg['notification.nd']}"  action="#{notificationsAsautoBean.getPagesNouvelleD()}" >
+                                            <h:outputLabel value="#{notificationsAsautoBean.nouvelleDemande}" style="background-color:#ec971f" class="pull-right badge" />
+                                            
+                                        </h:commandLink>
+                                    </li>
+                                    <li class="hidden" >
+                                        <h:commandLink  value="#{msg['page.menu.renouvellement']}"  title="#{msg['notification.nouvelleDemande']}" action="#{allMessageBean.action}" >
+                                            <h:outputLabel value="0" style="background-color:#e4b9b9" class="pull-right badge" />
+                                            <f:setPropertyActionListener value="#{newMessageBean.nouvelleDemande}" target="#{allMessageBean.statut}"  /> 
+                                            <p:ajax oncomplete="#{allMessageBean.listerFacture()}" />
+                                        </h:commandLink>
+                                    </li>
+                                    <li class="hidden">
+                                        <h:commandLink    value="#{msg['notification.menu.attestation']}"  action="demandeatt" title="#{msg['notification.nd']}"  > 
+                                            <h:outputLabel value="#{numberAttestationBean.nouvelleAttestation}" style="background-color:#a94442" class="pull-right badge" />                                           
+
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAllGranted="USER_CMP">
+                            <li class="">
+
+                                <a  href="#" class="dropdown-toggle"  title="#{msg['notification.dt']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                    <h:outputLabel value="#{msg['notification.dt']}"  style="color:#ffffff " /> <sup><h:outputLabel class="badge small" value="#{notificationsAsautoBean.demandeTraitee + numberAttestationBean.attestationTraite}" style="background-color:#a94442" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                                    <li>
+                                        <h:commandLink  action="#{notificationsAsautoBean.getPagesDemandeTraitee()}" value ="#{msg['notification.menu.sousrenouv']}"   title ="#{msg['notification.dt']}" >
+                                            <h:outputLabel value="#{notificationsAsautoBean.demandeTraitee}" style="background-color:  #ec971f" class="pull-right badge" ></h:outputLabel>
+                                          
+                                        </h:commandLink>
+                                    </li>
+                                    <li class="hidden" >
+                                        <h:commandLink   action="#{allMessageBean.action}" value ="#{msg['page.menu.renouvellement']}"  title ="#{msg['notification.demandeTraitee']}">
+                                            <h:outputLabel value="0" style="background-color:  #e4b9b9" class="pull-right badge" ></h:outputLabel>
+                                            <f:setPropertyActionListener value="#{newMessageBean.demandeTraitee}" target="#{allMessageBean.statut}" /> 
+                                            <p:ajax oncomplete="#{allMessageBean.listerFacture()}" />
+                                        </h:commandLink>
+                                    </li>
+                                    <li class="hidden">
+                                        <h:commandLink  value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.dt']}"   action="vdc" >
+                                            <h:outputLabel value="#{numberAttestationBean.attestationTraite}" style="background-color: #a94442" class="pull-right badge" />                
+
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize> 
+
+                        <sec:authorize ifAnyGranted="USER_CMP, USER_GUICHET,USER_PVT,USER_CRT">
+                            <li class="">
+
+                                <a href="#" class="dropdown-toggle" title="#{msg['notification.rp']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel value="#{msg['notification.rp']}"  style="color:#ffffff " /><sup><h:outputLabel class="badge small" value="#{notificationsAsautoBean.souscriptioneffective + numberAttestationBean.attestationRecu}" style="background-color:lawngreen" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                                    <li>  
+                                        <h:commandLink value="#{msg['notification.menu.sousrenouv']}"    title="#{msg['notification.rp']}"  action="#{notificationsAsautoBean.getPagesSouscriptionEffective()}">
+                                            <h:outputLabel value="#{notificationsAsautoBean.souscriptioneffective}" style="background-color: #ec971f" class="pull-right badge" />
+                                            
+                                        </h:commandLink>
+                                    </li>
+                                    <li class="hidden" >  
+                                        <h:commandLink value="#{msg['page.menu.renouvellement']}"   title="#{msg['recu.avisOperation']}" action="#{allMessageBean.action}">
+                                            <h:outputLabel value="0" style="background-color: #e4b9b9" class="pull-right badge" />
+                                            <f:setPropertyActionListener value="#{newMessageBean.souscriptionEffective}" target="#{allMessageBean.statut}" /> 
+                                            <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                                        </h:commandLink>
+                                    </li>
+                                    <li class="hidden">
+                                        <h:commandLink   value="#{msg['notification.menu.attestation']}"   title="#{msg['notification.rp']}"  action="xttc">
+                                            <h:outputLabel value="#{numberAttestationBean.attestationRecu}" style="background-color:  #a94442" class="pull-right badge" ></h:outputLabel>
+
+                                        </h:commandLink>  
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        
+                       
+                        <sec:authorize ifAnyGranted="USER_CMP,USER_GUICHET,USER_PVT,USER_CRT">
+                            <li class="">
+
+                                <a href="#" class="dropdown-toggle" title="#{msg['notification.dr']}"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                    <h:outputLabel value="#{msg['notification.dr']}"  style="color:#ffffff " /><sup><h:outputLabel class="badge small" value="#{notificationsAsautoBean.demandeRejetee}" style="background-color: slategrey" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+
+
+                                    <li> 
+                                        <h:commandLink    value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.dr']}"  action="#{notificationsAsautoBean.getPagesDemandeRejete()}">
+                                            <h:outputLabel value="#{notificationsAsautoBean.demandeRejetee}" style="background-color: #ec971f" class="badge pull-right" />
+                                            
+                                        </h:commandLink>
+
+                                    </li>
+                                    <li class="hidden" > 
+                                        <h:commandLink   value="#{msg['page.menu.renouvellement']}" title="#{msg['page.menu.renouvellement']}" action="#{allMessageBean.action}">
+                                            <h:outputLabel value="0" style="background-color: #e4b9b9" class="badge pull-right" />
+                                            <f:setPropertyActionListener value="#{newMessageBean.demandeRejetee}" target="#{allMessageBean.statut}" /> 
+                                            <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                                        </h:commandLink>
+
+                                    </li>
+
+
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        
+                    </ul>
+                </sec:authorize>   
+
+            </div>
+        </div>
+    </h:form>
+
+    <h:form id="sms3">
+
+
+        <div class="modal " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                        <h4 class="modal-title" id="myModalLabel">#{msg['demande.souscription']}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ui:include src="souscrit.xhtml"/> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">#{msg['btn.fermer']}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal " id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                        <h4 class="modal-title" id="myModalLabel">#{msg['demande.renouvellement']}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ui:include src="renouvel.xhtml"/> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">#{msg['btn.fermer']}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal " id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                        <h4 class="modal-title" id="myModalLabel">#{msg['demande.attestation']}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ui:include src="attest.xhtml"/> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">#{msg['btn.fermer']}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

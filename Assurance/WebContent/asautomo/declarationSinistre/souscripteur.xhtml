@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <p:outputPanel   id="ddo">
+            <p:growl id="nouveauSms" globalOnly="true" showDetail="false"/>
+
+            <div class="form-group">
+
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">  
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.nom']}"  for="nom" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.declarantSinistre.nom}" required="true"  requiredMessage="#{msg['client.nom.requiredMessage']}" 
+                                     id="nom" class="form-control" placeholder="#{msg['client.nom']}">
+                            <p:ajax event="keyup" update="nomMessage"/>
+                        </p:inputText>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="nom"  id="nomMessage" class="errorClass" />
+                    </div> 
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.prenom']}"  for="prenom" class=" pull-left" /><h:outputLabel value="*" id="etoileprenom" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.declarantSinistre.prenom}" id="prenom" styleClass="form-control" placeholder="#{msg['client.prenom']}"
+                                     requiredMessage="#{msg['client.prenom.requiredMessage']}" >
+                            <p:ajax  event="keyup" update="prenomMessage"/>
+                        </p:inputText>  
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message  id="prenomMessage" for="prenom"/>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="form-group">
+
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">   
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.email']}"  for="email" class=" pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.declarantSinistre.email}" id="email" styleClass="form-control" placeholder="#{msg['client.email']}"/>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.tel']}"  for="tel" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left"/>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.declarantSinistre.numPhone}" required="true"  id="tel" styleClass="form-control" placeholder="#{msg['client.tel']}"
+                                     requiredMessage="#{msg['client.tel.requiredMessage']}" >
+                            <p:ajax  event="keyup" update="telMessage"/>
+                        </p:inputText> 
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <pe:keyFilter for="tel" mask="pint"/> 
+                        <p:message  id="telMessage" for="tel"/>
+                    </div> 
+                </div>
+
+            </div> 
+
+            <div class="form-group">
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  id="dateNai" value="#{msg['client.datedenaissance']}"   for="dateNaissance" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:calendar   id="dateNaissance" yearRange="c-100:c+10"  pattern="dd/MM/yyyy"  readonlyInput="true" navigator="true" value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.declarantSinistre.dateNaissance}" mask="true" class="form-control" placeholder="#{msg['client.datedenaissance']}"
+                                      required="true"
+                                      requiredMessage="#{msg['client.datedenaissance.requireMessage']}" 
+                                      converterMessage="format incorect"
+                                      >
+
+                            <f:convertDateTime pattern="dd/MM/yyyy"  type="date"/>
+                            <p:ajax event="dateSelect" update="datenMessage"/> 
+                        </p:calendar>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="dateNaissance" id="datenMessage" class="errorClass"/>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.adresse']}"   for="Adresse" class=" pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.declarantSinistre.adresse}" id="Adresse" styleClass="form-control" placeholder="#{msg['client.adresse']}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+
+
+            </div> 
+
+        </p:outputPanel>
+    </ui:composition>
+</html>

@@ -1,0 +1,589 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+        <h:form class="form-horizontal">
+            <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+            <p:panel    header="Recherche avancée"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                <div class="row">
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="pays" value="#{lectureDirectCompagnieBean.lectureDirecteCompagnieToSave.pays}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                 requiredMessage="#{msg['compagnie.pays.requireMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemDisabled="true"/>
+                                    <f:selectItems value="#{lectureDirectCompagnieBean.paysList}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                    <f:ajax event="click" render="paysMessage" />
+                                    <p:ajax update="pss,categorie,garantie,typeVitreCmp" listener="#{lectureDirectCompagnieBean.feshtableauRCByPays()}"/>
+                                </h:selectOneMenu> 
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pays"  id="paysMessage" class="errorClass" />
+                            </div>                        
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pss" value="Compagnie"/><h:outputLabel value="*" class="etoile_rouge"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  class="form-control" required="true" requiredMessage="Veuillez choisir la compagnie" converter="entityConverter"  id="pss" value="#{lectureDirectCompagnieBean.lectureDirecteCompagnieToSave.compagnie}"  >
+                                    <f:selectItem itemDisabled="true" itemLabel="Choisir compagnie" /> 
+                                    <f:selectItems value="#{lectureDirectCompagnieBean.listCompagnie}" var="compagnie"
+                                                   itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                    <f:ajax event="click" render="pssMessage" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pss"  id="pssMessage" class="errorClass" />
+                            </div>  
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="categorie" value="#{msg['vehicule.categorie']}" class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="categorie" value="#{lectureDirectCompagnieBean.lectureDirecteCompagnieToSave.categorie}" converter="omnifaces.SelectItemsConverter" class="form-control"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['vehicule.categorie']}" />
+                                    <f:selectItems value="#{lectureDirectCompagnieBean.listCategorie}" var="cat" itemLabel="#{cat.libelle}" itemValue="#{cat}" /> 
+                                </h:selectOneMenu> 
+                            </div>   
+                        </div>
+                    </div> 
+
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="garantie" value="Garanties" class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                <h:selectOneMenu  id="garantie" value="#{lectureDirectCompagnieBean.lectureDirecteCompagnieToSave.garantie}" converter="omnifaces.SelectItemsConverter"  class="police_label form-control">
+                                    <f:selectItem itemLabel="#{msg['garantie.titre']}" />
+                                    <f:selectItems var="garantie" itemLabel="#{garantie.libelle}" value="#{lectureDirectCompagnieBean.guarantieList}"/>
+                                </h:selectOneMenu>
+
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="typeVitreCmp" value="Type Vitre" class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  class="form-control"  converter="entityConverter"  id="typeVitreCmp" value="#{lectureDirectCompagnieBean.typeVitreSelected}"  >
+                                    <f:selectItem itemLabel="Choisir type vitre" noSelectionOption="true" />
+                                    <f:selectItems value="#{lectureDirectCompagnieBean.typeVitreList}" var="typeV" itemLabel="#{typeV.typeVitre}" itemValue="#{typeV}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="puissanceCmp" value="Puissance"  class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-6 col-xs-6">
+                                <p:inputText id="puissanceCmp" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCompagnieBean.puissanceValue}"  styleClass="form-control"  title="Puissance" placeholder="Puissance inf" >
+                                </p:inputText>
+                            </div>
+                            <pe:keyFilter for="puissanceCmp" mask="int"/>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.energie']}"  for="energieCmp" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  id="energieCmp"  value="#{lectureDirectCompagnieBean.energieSelected}" converter="omnifaces.SelectItemsConverter"  class="form-control" >
+                                    <f:selectItem itemLabel="#{msg['vehicule.energie']}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{lectureDirectCompagnieBean.energieList}" var="en" itemLabel="#{en.libelleFr} -- #{en.libelleEn}" itemValue="#{en}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="nplcCmp" value="#{msg['vehicule.nombreplace']}" class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="nplcCmp" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCompagnieBean.nombrePlace}" styleClass="form-control"  title="Nbr places" placeholder="Nbr places" >
+                                </p:inputText>
+                                <pe:keyFilter for="nplcCmp" mask="int"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="poidsCmp" value="Poids" class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-6 col-xs-6">
+                                <p:inputText id="poidsCmp" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCompagnieBean.poidsValue}" class="form-control"  title="Poids" placeholder="Poids inf" >
+                                </p:inputText>
+                            </div>
+                            <pe:keyFilter for="poidsCmp" mask="num"/>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="typecylindreCmp" value="Type Cylindre" class="pull-left text-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  class="form-control"  converter="entityConverter"  id="typecylindreCmp" value="#{lectureDirectCompagnieBean.typeCylindreSelected}"  >
+                                    <f:selectItem itemLabel="Type Cylindre" noSelectionOption="true" /> 
+                                    <f:selectItems value="#{lectureDirectCompagnieBean.typeCylindreList}" var="tc" itemLabel="#{tc.designation}" itemValue="#{tc}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="cylindreCmp" value="Cylindre" class="pull-left text-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="cylindreCmp"  converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCompagnieBean.cylindreValue}"  class="form-control"  title="Cylindre" placeholder="Cylindre" >
+
+                                </p:inputText>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group ">
+                        <div class="col-lg-12  col-md-12 col-xs-12 col-sm-12">
+                            <div class="col-lg-2 col-md-12 pull-right col-xs-12 col-sm-12">
+                                <p:commandButton id="searchCmp" action="#{lectureDirectCompagnieBean.searchMethod()}"  update="trclist1,msgs, @form" value="Rechercher"  class="btn-success success form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:dataTable  id="trclist1" value="#{lectureDirectCompagnieBean.filterListTablRC}" rows="8" var="trc1" class="table table-responsive  table-bordered"
+                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                      paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" sortOrder="descending"
+                                      editable="true" editMode="cell" rowsPerPageTemplate="8,15,20"
+                                      >
+
+                            <p:column headerText="#{msg['vehicule.categorie']}"  filterBy="#{trc1.categorie.libelle}">
+                                <h:outputText value="#{trc1.categorie.libelle}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.garantie']}" filterBy="#{trc1.garantie.libelle}">
+                                <h:outputText value="#{trc1.garantie.libelle}" />
+                            </p:column>
+
+                            <p:column headerText="Puissance Inf" filterBy="#{trc1.puissance.inf}" >
+                                <p:outputLabel id="pG" value="#{trc1.puissance.inf}" />
+
+                            </p:column>
+                            <p:column headerText="Puissance Sup" filterBy="#{trc1.puissance.sup}">
+                                <p:outputLabel id="pH" value="#{trc1.puissance.sup}" />
+
+                            </p:column>
+                            <p:column headerText="#{msg['vehicule.energie']}" filterBy="#{trc1.energie.libelleFr}">
+                                <p:outputLabel id="D" value="#{trc1.energie.libelleFr}" />
+
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.nombreplace']}" filterBy="#{trc1.nombreDePlace}">
+                                <p:outputLabel id="E" value="#{trc1.nombreDePlace}" />
+
+                            </p:column>
+
+                            <p:column headerText="Poids Inf" filterBy="#{trc1.poids.inf}" >
+                                <p:outputLabel id="G" value="#{trc1.poids.inf}" />
+
+                            </p:column>
+                            <p:column headerText="Poids Sup" filterBy="#{trc1.poids.sup}">
+                                <p:outputLabel id="H" value="#{trc1.poids.sup}" />
+
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.carrosserie']}" filterBy="#{trc1.carrosserie}" >
+                                <p:outputLabel id="I" value="#{trc1.carrosserie}" />
+
+                            </p:column> 
+
+                            <p:column headerText="#{msg['vehicule.typeVitre']}" filterBy="#{trc1.typeVitres.typeVitre}" >
+                                <p:outputLabel id="J" value="#{trc1.typeVitres.typeVitre}" />
+
+                            </p:column>
+                            <p:column headerText="Type Cylindre" filterBy="#{trc1.typeCylindre}" >
+                                <p:outputLabel id="Jc" value="#{trc1.typeCylindre}" />
+
+                            </p:column>
+                            <p:column headerText="Cylindre Inf" filterBy="#{trc1.cylindre.inf}" >
+                                <p:outputLabel id="Gc" value="#{trc1.cylindre.inf}" />
+                            </p:column>
+                            <p:column headerText="Cylindre Sup" filterBy="#{trc1.cylindre.sup}">
+                                <p:outputLabel id="Hc" value="#{trc1.cylindre.sup}" />
+
+                            </p:column>
+
+                            <p:column headerText="#{msg['garantie.prime']}" filterBy="#{trc1.prime}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:outputLabel id="K" value="#{trc1.prime}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{trc1.prime}" rendered="#{(trc1.prime eq null) ?false:true }" >
+                                            <p:ajax event="keyup" update="K"  /> 
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Actions"> 
+
+                                <p:commandButton  update="trclist1,@form" icon="fa fa-trash" action="#{lectureDirectCompagnieBean.removeOneLigneTableauRCForCompagnie}" title="#{msg['btn.supprimer']}" class="btn-danger danger btn-sm">
+                                    <f:setPropertyActionListener value="#{trc1}" target="#{lectureDirectCompagnieBean.temporalLigneTableauRcToRemove2}" />
+                                </p:commandButton>
+
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:commandButton  value="#{msg['btn.enregistrer']}" action="#{lectureDirectCompagnieBean.saveLectureDirecteCompagnie}" update="@form,ggg,msgs"   class="btn btn-success success">
+
+                        </p:commandButton>
+                    </div>
+                </div>
+            </p:panel>
+
+        </h:form>
+
+
+        <p:panel   header="Recherche"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <ui:include src="searchEngineRCCompagnie.xhtml"/>
+        </p:panel>
+
+        <h:form id="ggg" class="form-horizontal">
+            <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+            <p:panel   header="Lecture directe des compagnies" toggleable="true" id="ppp" collapsed="false" style="margin-bottom:20px" >
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:dataTable class="table table-responsive table-bordered" var="trc" rowExpandMode="single" id="rcliste2" rows="20" value="#{lectureDirectCompagnieBean.allLectureDirecteCompagnie}" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {RowsPerPageDropdown}"
+                                     paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" widgetVar="ddd"
+                                     emptyMessage="#{msg['tableau.vide']}" sortOrder="descending" rowKey="#{trc.idLectureDirecteCompagnie}"
+                                     selection="#{lectureDirectCompagnieBean.selectedLectureDirecteCompagnie}"
+                                     editable="true" editMode="cell" rowStyleClass="#{lectureDirectCompagnieBean.LectureDirecteCompagnieColor(trc)}"
+                                     rowsPerPageTemplate="10,20,30"
+                                     > 
+
+                            <p:column style="width:50px"  >
+
+                                <p:rowToggler  />
+                            </p:column>
+
+                            <p:column filterBy="#{trc.compagnie.designation}" headerText="Compagnie" >
+                                <h:outputText value="#{trc.compagnie.designation}" />
+                            </p:column>
+
+                            <p:column filterBy="#{trc.categorie.libelle}" headerText="#{msg['vehicule.categorie']}" >
+                                <h:outputText value="#{trc.categorie.libelle}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.garantie']}" filterBy="#{trc.garantie.libelle}">
+                                <h:outputText value="#{trc.garantie.libelle}" />
+                            </p:column>
+
+
+
+                            <p:column headerText="#{msg['vehicule.energie']}" filterBy="#{trc.energie.libelleFr}" >
+
+                                <p:outputLabel id="D" value="#{trc.energie.libelleFr}" />
+
+
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.nombreplace']}" filterBy="#{trc.nombreDePlace}">
+
+                                <p:outputLabel id="E" value="#{trc.nombreDePlace}" />
+
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.puissance']}" filterBy="#{trc.puissance}">
+                                <h:outputText value="[#{trc.puissance.inf};#{trc.puissance.sup}]" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.poids']}" filterBy="#{trc.poids}">
+                                <h:outputText value="[#{trc.poids.inf};#{trc.poids.sup}]" />
+                            </p:column>
+
+
+                            <p:column headerText="#{msg['vehicule.carrosserie']}" filterBy="#{trc.carrosserie}">
+                                <p:outputLabel id="I" value="#{trc.carrosserie}" />
+
+                            </p:column> 
+
+                            <p:column headerText="#{msg['vehicule.typeVitre']}" filterBy="#{trc.typeVitres.typeVitre}" >
+                                <p:outputLabel id="J" value="#{trc.typeVitres.typeVitre}" />
+
+                            </p:column>
+                            <p:column headerText="Type Cylindre" filterBy="#{trc.typeCylindre}" >
+                                <p:outputLabel id="Jc" value="#{trc.typeCylindre}" />
+
+                            </p:column>
+                            <p:column headerText="cylindre" >
+                                <h:outputText value="[#{trc.cylindre.inf};#{trc.cylindre.sup}]" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['garantie.prime']}" filterBy="#{trc.prime}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:outputLabel id="K" value="#{trc.prime}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{trc.prime}" rendered="#{(trc.prime eq null) ?false:true }" >
+                                            <p:ajax event="keyup" update="K"  /> 
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Activer" width="5%">
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:outputLabel id="ss0" value="#{trc.active}" /></f:facet>
+                                    <f:facet name="input"> 
+                                        <p:selectBooleanCheckbox value="#{trc.active}" >
+                                            <p:ajax update="ss0" />
+                                        </p:selectBooleanCheckbox>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Actions" width="12%">
+                                <p:commandButton title="Enregistrer"  action="#{lectureDirectCompagnieBean.updateLetureDirecteCompagnie()}"   icon="fa fa-save"   class="btn btn-primary primary" update="@form" >
+                                    <f:setPropertyActionListener value="#{trc}" target="#{lectureDirectCompagnieBean.lectureDirecteCompagnieToUpdate}" />
+                                </p:commandButton>
+                                <p:commandButton  title="Reinitialiser" oncomplete="PF('reinitializeOne').show()"   icon="fa fa-refresh"   class="btn btn-success success" update="@form" >
+                                    <f:setPropertyActionListener value="#{trc}" target="#{lectureDirectCompagnieBean.lectureDirecteCompagnieToInitialize}" />
+                                </p:commandButton>
+                                <p:commandButton title="supprimer"  oncomplete="PF('supprimerOne').show()" update="rcliste2,formliste"   icon="fa fa-remove"   class="btn btn-danger danger" >
+                                    <f:setPropertyActionListener value="#{trc}" target="#{lectureDirectCompagnieBean.lectureDirecteCompagnieToDelete}" />
+                                </p:commandButton>
+
+                            </p:column>
+                            <p:column selectionMode="multiple" style="width:50px;text-align:center" /> 
+
+
+
+                            <p:rowExpansion >
+                                <div class="form-group">
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="pays"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.pays.designationPays}"  />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="categorie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.categorie.libelle}"  />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="garantie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.garantie.libelle}"  />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="prime"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.prime}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="puissance"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="[#{trc.puissance.inf} ; #{trc.puissance.sup}]"  />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="energie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.energie.libelleFr}"  />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+
+
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="nombre de places"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.nombreDePlace}"  />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="poids"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="[#{trc.poids.inf} ; #{trc.poids.sup}]"  />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="carrosserie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.carrosserie}"  />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="Type de vitre"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.typeVitre}"  />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="Type de cylindre"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.typeCylindre.designation}"  />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="cylindre"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="[#{trc.cylindre.inf} ; #{trc.cylindre.sup}]"  />
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="compagnie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.compagnie.designation}"  />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </p:rowExpansion> 
+                        </p:dataTable>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:commandButton rendered="#{lectureDirectCompagnieBean.displayOptionLinkForCompagnie}" title="Enregistrer les modifications de  la selection" value="Enregistrer"  action="#{lectureDirectCompagnieBean.updateLetureDirecteCompagnieSelection()}"   class="btn btn-primary primary" icon="fa fa-save" update="@form" />
+
+                        <p:commandButton rendered="#{lectureDirectCompagnieBean.displayOptionLinkForCompagnie}" title="Reinitialiser la sélection" value="Réinitialiser" oncomplete="PF('reinitializeTout').show()"    class="btn btn-success success" update="@form" />
+
+                        <p:commandButton rendered="#{lectureDirectCompagnieBean.displayOptionLinkForCompagnie}" title="supprimer la sélection" value="supprimer" oncomplete="PF('supprimerAll').show()"   class="btn btn-danger danger" icon="fa fa-remove" update="@form" />
+                    </div>
+                </div>
+            </p:panel>
+        </h:form> 
+        <h:form class="form-horizontal">
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                             header="Suppression" severity="alert" widgetVar="supprimerOne">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer
+                            One').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,ggg" action="#{lectureDirectCompagnieBean.supprimerLectureDirecteCompagnie()}"  oncomplete="PF('supprimerOne').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+        <h:form class="form-horizontal">
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="police_label" id="confirmation" message="Voulez vous réinitialiser ?"
+                             header="Réinitialisation" severity="alert" widgetVar="reinitializeOne">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('reinitialize
+                            One').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,ggg" action="#{lectureDirectCompagnieBean.reinitialseLetureDirecteCompagnie()}"   oncomplete="PF('reinitializeOne').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+        <h:form class="form-horizontal">
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="police_label" id="confirmation" message="Voulez vous réinitialiser ?"
+                             header="Réinitialisation" severity="alert" widgetVar="reinitializeTout">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('reinitializeT
+                            out').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,ggg" action="#{lectureDirectCompagnieBean.reinitializeLetureDirecteCompagnieSelection()}"   oncomplete="PF('reinitializeTout').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+
+
+        <h:form class="form-horizontal">
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="police_label" id="confirmation" message="Voulez vous supprimer ?"
+                             header="Suppression" severity="alert" widgetVar="supprimerAll">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer
+                            All').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,ggg" action="#{lectureDirectCompagnieBean.deleteLetureDirecteCompagnieSelection()}"  oncomplete="PF('supprimerAll').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+    </ui:composition> 
+
+</html>
+

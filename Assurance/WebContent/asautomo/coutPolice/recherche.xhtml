@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+         <p:panel id="coutpolicer" header="Rechercher" toggleable="true" collapsed="true">
+        <h:form id="recherche" class="form-horizontal">
+           
+                <div class="form-group">
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="paysr"  value="Pays" class="pull-left text-left"/>                              
+                        <h:selectOneMenu id="paysr"   class="form-control"  converter="entityConverter" value="#{coutPoliceParCompagnieBean.listerParametreByUserService.paysSelect}" >                                          
+                            <f:selectItem itemLabel="selectionner  pays" itemDisabled="false" />
+                            <f:selectItems var="pays" value="#{coutPoliceParCompagnieBean.listerParametreByUserService.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                            <p:ajax update="compagnier,courtier" listener="#{coutPoliceParCompagnieBean.listerParametreByUserService.trierPrametresByPays()}" />
+                        </h:selectOneMenu>
+
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="compagnier"  value="Compagnie" class="pull-left text-left"/>                              
+                        <h:selectOneMenu id="compagnier" value="#{coutPoliceParCompagnieBean.compagnieSelectedRecherche}"  converter="entityConverter"  class="form-control" >                                          
+                            <f:selectItem itemLabel="selectionner Compagnies" itemDisabled="false" />
+                            <f:selectItems value="#{coutPoliceParCompagnieBean.listerParametreByUserService.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                        </h:selectOneMenu>
+
+
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="courtier"  value="courtier" class="pull-left text-left"/>                              
+                        <h:selectOneMenu id="courtier" value="#{coutPoliceParCompagnieBean.courtierSelectedRecherche}"  converter="entityConverter"  class="form-control" >                                          
+                            <f:selectItem itemLabel="selectionner courtier" itemDisabled="false" />
+                            <f:selectItems value="#{coutPoliceParCompagnieBean.listerParametreByUserService.listCourtier}" var="courtier" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                        </h:selectOneMenu>
+
+
+                    </div>
+
+                </div>
+            <p:commandButton value="#{msg['btn.rechercher']}" class="btn-xs btn-imprimer" actionListener="#{coutPoliceParCompagnieBean.triercoupPoliceParCompagnie()}" update="policelist" />
+          
+       
+        </h:form>
+               </p:panel>
+    </ui:composition>
+</html>

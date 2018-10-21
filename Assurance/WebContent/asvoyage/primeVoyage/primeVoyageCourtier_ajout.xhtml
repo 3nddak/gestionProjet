@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition>
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <p:outputPanel id="ajoutp">
+                <h:form id="conditionGeneralAjoutForm4" class="form-horizontal">
+                    <p:growl id="msgss" globalOnly="true" showDetail="false"  life="3000"/>
+                    <div class="form-group ">
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pays" value="#{msg['titre.pays']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="pays" value="#{primeCompagnieCourtierAsVoyageBean.paysSelect}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                 requiredMessage="#{msg['compagnie.pays.requireMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                    <f:selectItems value="#{primeCompagnieCourtierAsVoyageBean.listpays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                    <p:ajax event="click" update="pss"  listener="#{primeCompagnieCourtierAsVoyageBean.listCompagniesByPays()}" />
+                                </h:selectOneMenu> 
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pays"  id="paysMessage" class="errorClass" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pss" value="#{msg['titre.compagnie']}"/><h:outputLabel value="*" class="etoile_rouge"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  class="form-control" required="true" requiredMessage="#{msg['courtier.compagnie.requireMessage']}" converter="entityConverter"  id="pss" value="#{primeCompagnieCourtierAsVoyageBean.compagnieSelected}"  >
+                                    <f:selectItem itemDisabled="true" itemLabel="#{msg['compagnie.requiredMessage']}" /> 
+                                    <f:selectItems value="#{primeCompagnieCourtierAsVoyageBean.listCompagnie}" var="compagnie"
+                                                   itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                    <f:ajax event="click" render="pssMessage"  />
+                                    <p:ajax event="click" update="courtier" listener="#{primeCompagnieCourtierAsVoyageBean.listCourtierByCompagnies()}" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pss"  id="pssMessage" class="errorClass" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="#{msg['tiers.courtier']}" value="Courtier" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left" /> 
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="courtier" value="#{primeCompagnieCourtierAsVoyageBean.courtierSelected}" converter="omnifaces.SelectItemsConverter" class="form-control" required="true" requiredMessage="#{msg['pv.courtier.requireMessage']}" >
+                                    <f:selectItem itemLabel="#{msg['tiers.courtier']}" noSelectionOption="true" />
+                                    <f:selectItems value="#{primeCompagnieCourtierAsVoyageBean.listCourtier}" var="crt" itemLabel="#{crt.designation}" itemValue="#{crt}" />
+                                    <f:ajax event="click" render="psssMessage"  />
+                                </h:selectOneMenu> 
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pss"  id="psssMessage" class="errorClass" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <div class="btn-toolbar">
+                                    <p:commandButton id="search" title="#{msg['btn.Filtrer']}" action="#{primeCompagnieCourtierAsVoyageBean.initialisePrimeCompagnieCourtierAsVoyage()}" update="@form,primForm4:rcliste3" value="Rechercher" onstart="PF('statusDialog444').show()" onsuccess="PF('statusDialog444').hide()" class="btn-purple btn pull-right" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </h:form>
+                <h:form id="primForm4" class="form-horizontal">
+                    <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                    <div class="form-group ">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <div class="table-responsive">
+                                    <p:dataTable class="table  table-bordered" var="pV" id="rcliste3" rowExpandMode="single" rows="5" value="#{primeCompagnieCourtierAsVoyageBean.listPrimeCompagnieCourtierAsVoyage}" 
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" 
+                                                 emptyMessage="#{msg['tableau.vide']}" sortOrder="descending" 
+                                                 rowsPerPageTemplate="10,20,30"
+                                                 editable="true" editMode="cell"
+                                                 selection="#{primeCompagnieCourtierAsVoyageBean.listPrimeCompagnieCourtierAsVoyageSelected}"
+                                                 rowKey="#{pV.hashCode()}"
+                                                 >     
+                                        <p:column headerText="#{msg['voyage.zone']}" filterBy="#{pV.primeCompagnieAsVoyage.zone}">
+                                            <h:outputText value="#{pV.primeCompagnieAsVoyage.zone}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['voyage.typeVoyage']}" filterBy="#{pV.primeCompagnieAsVoyage.typeVoyage}">
+                                            <h:outputText value="#{pV.primeCompagnieAsVoyage.typeVoyage}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['voyage.TrancheAgemin']}" filterBy="#{pV.primeCompagnieAsVoyage.trancheAgeMinimale}">
+                                            <h:outputText value="#{pV.primeCompagnieAsVoyage.trancheAgeMinimale}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['voyage.TrancheAgemax']}" filterBy="#{pV.primeCompagnieAsVoyage.trancheAgeMaximale}">
+                                            <h:outputText value="#{pV.primeCompagnieAsVoyage.trancheAgeMaximale}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['voyage.PrimeenJour']}" class="text-center" filterBy="#{pV.primeCompagnieAsVoyage.enjour}">
+                                            <!--h:outputText value="#{pV.primeCompagnieAsVoyage.enjour}" /-->
+                                            <h:outputLabel class="#{pV.primeCompagnieAsVoyage.enjour}" ><i class="fa fa-check text-green"/></h:outputLabel>
+                                            <h:outputLabel class="#{!pV.primeCompagnieAsVoyage.enjour}" ><i class="fa fa-close text-red"/></h:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="#{msg['voyage.Periodemin']}" filterBy="#{pV.primeCompagnieAsVoyage.periodeMinimale}">
+                                            <h:outputText value="#{pV.primeCompagnieAsVoyage.periodeMinimale}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['voyage.Periodemax']}" filterBy="#{pV.primeCompagnieAsVoyage.periodeMaximale}">
+                                            <h:outputText value="#{pV.primeCompagnieAsVoyage.periodeMaximale}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['tableau.accessoire']}" filterBy="#{pV.accessoire}">
+                                            <p:cellEditor>
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="Red3" value="#{pV.accessoire}" >
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </p:outputLabel>
+                                                </f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:inputText value="#{pV.accessoire}">
+                                                        <p:ajax update="Red3"/>
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg['tableau.primenette']}" filterBy="#{pV.primeNette}">
+                                            <p:cellEditor>
+                                                <f:facet name="output">
+                                                    <p:outputLabel id="Red4" value="#{pV.primeNette}" >
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </p:outputLabel>
+                                                </f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:inputText value="#{pV.primeNette}">
+                                                        <p:ajax update="Red4"/>
+                                                        <pe:keyFilter  mask="num" />
+                                                    </p:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column headerText="#{msg['btn.activer']}" width="10%" class="text-center" >
+                                            <p:cellEditor>
+                                                <f:facet name="output">
+    <!--p:outputLabel id="Ba" value="#{pV.estActive}" /-->
+                                                    <p:outputLabel id="BaT" class="#{pV.estActive}"><i class="fa fa-check text-green"/></p:outputLabel>
+                                                    <p:outputLabel id="BaF" class="#{!pV.estActive}"><i class="fa fa-close text-red"/></p:outputLabel>
+
+                                                </f:facet>
+                                                <f:facet name="input"> 
+                                                    <p:selectBooleanCheckbox value="#{pV.estActive}" >
+                                                        <p:ajax update="BaT,BaF" />
+                                                    </p:selectBooleanCheckbox>
+                                                </f:facet>
+
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column headerText="#{msg['titre.action']}" width="10%">
+
+                                            <p:commandButton title="#{msg['btn.supprimer']}" update="rcliste3"   icon="fa fa-remove"  class="btn btn-danger danger" action="#{primeCompagnieCourtierAsVoyageBean.deleteFromLisPrimeCompagnieCourtierAsVoyage()}" >
+                                                <f:setPropertyActionListener target="#{primeCompagnieCourtierAsVoyageBean.primeCompagnieCourtierAsVoyage}" value="#{pV}"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                        <p:column selectionMode="multiple"/>
+                                    </p:dataTable>   
+                                </div>
+
+                                <div class="btn-toolbar">
+                                    <p:commandButton class="btn btn-purple pull-right" id="ajouter2" action="#{primeCompagnieCourtierAsVoyageBean.saveListLisPrimeCompagnieCourtierAsVoyage()}"  update="formliste4:rcliste,primForm4,msgs" value="#{msg['btn.enregistrer']}"  />
+                                    <p:commandButton class="btn btn-danger" id="annuler2" action="#{primeCompagnieCourtierAsVoyageBean.cancel()}" update="@form,primForm4" value="#{msg['btn.annuller']}"  />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+
+            </p:outputPanel>
+        </div>
+        <p:dialog widgetVar="statusDialog444" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+    </ui:composition> 
+
+</html>
+

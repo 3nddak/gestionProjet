@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+    <ui:composition>
+        <p:outputPanel id="parmcp">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <fieldset> 
+                    <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['parametrecompte.titre']}"></p:outputLabel></legend>
+                </fieldset>               
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                    <h:form id="param" class="form-horizontal">
+                        <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>
+                        <p:fieldset   legend="#{parametreBean.legend}" toggleable="true" toggleSpeed="500"   collapsed="#{parametreBean.collapsedFieldset}" style="margin-bottom:20px; background-color:#{parametreBean.setColor}">                          
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <h:outputLabel for="typeCompte" class=" police_label pull-left" value="#{msg['parametrecompte.compte']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <h:selectOneMenu id="typeCompte" required="true" value="#{parametreBean.parametreToSave.typeComptes}" class="form-control" requiredMessage="Veuillez choisir compte">
+                                            <f:selectItem itemLabel="#{msg['parametrecompte.choisircompte']}" itemDisabled="true" />
+                                            <f:selectItem itemValue="1" itemLabel="#{msg['parametrecompte.com']}"/>
+                                            <f:selectItem itemValue="2" itemLabel="#{msg['parametrecompte.autre']}"/>
+
+                                            <f:ajax event="keyup" render="typeCompteMessage"/> 
+                                            <p:ajax listener="#{parametreBean.configureAccountFormat()}" update="libelle,digitReel,digitGeneral,digitNumOdreAux,digitCodeStructure" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <h:message for="typeCompte"  id="typeCompteMessage" class="errorClass" />    
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <h:outputLabel id="tt" for="libelle" class=" police_label pull-left" value="#{msg['parametrecompte.libelle']}"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <p:inputText id="libelle" required="true" 
+                                                     disabled="#{parametreBean.defaultDisable}"
+                                                     requiredMessage="#{msg['parametrecompte.libelle.requiredMessage']}" 
+                                                     value="#{parametreBean.parametreToSave.libelle}" class="form-control" placeholder="#{msg['parametrecompte.libelle']}">
+                                            <f:ajax event="keyup" render="libelleMessage"/>
+                                        </p:inputText>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <h:message for="libelle"  id="libelleMessage" class="errorClass" />    
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <h:outputLabel for="digitReel" class=" police_label pull-left" value="Compte Réel"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <p:inputText id="digitReel" required="true" 
+                                                     disabled="#{parametreBean.defaultDisable}"
+                                                     requiredMessage="#{msg['nombre.digit.requiredMessage']}" 
+                                                     validatorMessage="#{msg['nombre.digit.validatorMessage']}" 
+                                                     converterMessage="#{msg['format.integer.reel.converterMessage']}"
+                                                     maxlength="2" value="#{parametreBean.parametreToSave.nombreDigitCompteReel}" class="form-control" placeholder="Nombre de Digits">
+                                            <f:ajax event="keyup" render="digitReelMessage"/>
+                                            <f:validateLongRange minimum="1" maximum="10" />
+
+                                        </p:inputText>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <pe:keyFilter for="digitReel" preventPaste="true" mask="num"/>
+                                        <h:message for="digitReel" id="digitReelMessage" class="errorClass"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <h:outputLabel for="digitGeneral" class=" police_label pull-left" value="Compte General"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <p:inputText id="digitGeneral" required="true" 
+                                                     disabled="#{parametreBean.defaultDisable}"
+                                                     requiredMessage="#{msg['nombre.digit.requiredMessage']}"  
+                                                     maxlength="2" value="#{parametreBean.parametreToSave.nombreDigitCompteGeneral}"
+                                                     converterMessage="#{msg['format.integer.converterMessage']}" 
+                                                     validatorMessage="#{msg['nombre.digit.general.requiredMessage']}"  
+                                                     class="form-control" placeholder="Nombre de Digits">
+                                            <f:ajax event="keyup" render="digitGeneralMessage"/>
+                                            <f:validateLongRange minimum="0" maximum="20" />
+                                        </p:inputText>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <h:message for="digitGeneral" id="digitGeneralMessage" class="errorClass"/>
+                                    </div>
+                                    <pe:keyFilter for="digitGeneral" preventPaste="true" mask="num"/>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <h:outputLabel for="digitNumOdreAux" class=" police_label pull-left" value="Numero Ordre"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <p:inputText id="digitNumOdreAux" 
+                                                     disabled="#{parametreBean.defaultDisable}"
+                                                     requiredMessage="Veuillez entrer le nombre de digits" 
+                                                     required="true" maxlength="2"
+                                                     converterMessage="#{msg['format.integer.converterMessage']}"
+                                                     validatorMessage="Veuillez choisir un chiffre entre 0 et 10" 
+                                                     value="#{parametreBean.parametreToSave.nombreDigitNumOrdreCompteAux}" class="form-control" placeholder="Nombre de Digits">
+
+                                            <f:ajax event="keyup" render="digitNumOdreAuxMessage"/>
+                                            <f:validateLongRange minimum="0" maximum="10" />
+                                        </p:inputText>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <pe:keyFilter for="digitNumOdreAux" preventPaste="true" mask="num"/>
+                                        <h:message for="digitNumOdreAux" id="digitNumOdreAuxMessage" class="errorClass"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <h:outputLabel for="digitCodeStructure" class=" police_label pull-left" value="Code Structre"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <p:inputText id="digitCodeStructure" required="true" 
+                                                     disabled="#{parametreBean.defaultDisable}"
+                                                     requiredMessage="Veuillez entrer le code Structure" 
+                                                     maxlength="2" 
+
+
+                                                     value="#{parametreBean.parametreToSave.codeStructure}" class="form-control" placeholder="Code Structure">
+
+                                            <f:ajax event="keyup" render="digitCodeStructureMessage"/>
+
+                                        </p:inputText>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <pe:keyFilter for="digitCodeStructure" preventPaste="true" mask="num"/>
+                                        <h:message for="digitCodeStructure" id="digitCodeStructureMessage" class="errorClass"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                    <div class="col-lg-2 col-md-4 col-xs-12 col-sm-12 pull-left">
+                                        <p:commandButton value="#{msg['btn.annuller']}" action="#{parametreBean.cancelParametre()}" update="param" id="annuler" class="btn btn-danger danger form-control">
+
+                                        </p:commandButton>
+                                    </div>
+
+                                    <div class="col-lg-2 col-md-4 col-xs-12 col-sm-12 pull-right">
+
+                                        <p:commandButton id="paramSave" rendered="#{parametreBean.hideSaveButton}"  value="#{msg['btn.enregistrer']}" action="#{parametreBean.ajouter()}" update="param, :paramData, msgs" class="btn form-control btn-primary primary" >
+                                        </p:commandButton>
+                                        <p:commandButton id="paramUpdate" rendered="#{parametreBean.hideUpdateButton}" value="#{msg['btn.modifier']}" action="#{parametreBean.modifier()}" update="param, :paramData, msgs" class="btn form-control btn-success success">                                    
+                                        </p:commandButton>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </p:fieldset>
+                    </h:form>
+                </div>
+                <h:form id="paramData">
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                        <p:fieldset id="tt" legend="Liste Paramètres" style="margin-bottom:20px">
+
+                            <!--div class="form-horizontal"-->
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+                                <p:dataTable   class="table_label table-responsive"  id="aliste" reflow="true" rows="5" value="#{parametreBean.allParametre}"
+                                               paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                               paginator="true" paginatorPosition="bottom" var="par" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd"
+                                               emptyMessage="#{msg['tableau.vide']}"> 
+
+                                    <f:facet name="{Exporters}">
+                                        <h:commandLink>
+                                            <p:graphicImage library="img" name="/excel.png" width="24"/>
+                                            <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                        </h:commandLink>
+                                    </f:facet>
+                                    <p:column width="300" headerText="Libellé" filterBy="#{par.libelle}">
+                                        <h:outputText value="#{par.libelle}" />
+                                    </p:column>
+                                    <p:column width="150" headerText="Compte Réel" filterBy="#{par.nombreDigitCompteReel}">
+                                        <h:outputText value="#{par.nombreDigitCompteReel}" />
+                                    </p:column>
+                                    <p:column width="150" headerText="Compte Géneral" filterBy="#{par.nombreDigitCompteGeneral}">
+                                        <h:outputText value="#{par.nombreDigitCompteGeneral}" />
+                                    </p:column>
+                                    <p:column width="150"  headerText="Code Structure" filterBy="#{par.codeStructure}">
+                                        <h:outputText value="#{par.codeStructure}" />
+                                    </p:column>
+                                    <p:column width="150"  headerText="Compte Auxiliaire" filterBy="#{par.nombreDigitNumOrdreCompteAux}">
+                                        <h:outputText value="#{par.nombreDigitNumOrdreCompteAux}" />
+                                    </p:column>
+
+                                    <p:column headerText="Actions" class="col-lg-2">
+                                        <p:commandButton    icon="fa fa-edit" title="#{msg['btn.modifier']}" action="#{parametreBean.modificationSelection()}" update=":param" class="btn btn-primary primary form-control" immediate="true">                                                    
+                                            <f:setPropertyActionListener value="#{par}"  target="#{parametreBean.parametreToUpdate}" />
+
+                                            <p:ajax listener="#{parametreBean.displayFieldset()}" update=":param"  />
+                                        </p:commandButton>
+                                        <p:commandButton   icon="fa fa-trash"  oncomplete="PF('supprimer').show()"  title="#{msg['btn.supprimer']}" class="btn btn-danger danger form-control" immediate="true">
+                                            <f:setPropertyActionListener value="#{par}" target="#{parametreBean.parametreToDelete}" />
+                                        </p:commandButton>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </div>
+                            <!--/div-->
+                        </p:fieldset>
+                    </div>
+                </h:form>   
+            </div>
+        </p:outputPanel>
+        <h:form>
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                             header="Suppression" severity="alert" widgetVar="supprimer">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3, :param, :paramData" action="#{parametreBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+    </ui:composition> 
+
+</html>

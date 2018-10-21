@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"><h:outputLabel value="Liste des sauvegardes"></h:outputLabel></legend>
+            </fieldset>
+            <!--div id="liste" class="panel"-->
+                 <h:form  id="forml" class="form-horizontal" >
+                        <p:panel  header="Recherche" toggleable="true" toggleSpeed="500"  collapsed="true" class="panel-default">                          
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="mask" value="Date debut" /><h:outputLabel for="mask" value="*" class="etoile_rouge" />
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <p:calendar id="mask" class="form-control" required="true" value="#{archiveManuelBean.du}" pattern="dd-MM-yyyy HH:mm:ss" mask="true" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="mask2" value="Date fin" /><h:outputLabel for="mask2" value="*" class="etoile_rouge" />
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <p:calendar id="mask2" class="form-control" value="#{archiveManuelBean.au}" pattern="dd-MM-yyyy HH:mm:ss" mask="true">
+                                            </p:calendar>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="typ"   value="Types de comptes" /><h:outputLabel for="typ" value="*" class="etoile_rouge" />
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu required="true"  id="typ"  value="#{archiveManuelBean.typeComptes}" converter="omnifaces.SelectItemsConverter"
+                                                             class="form-control" >
+                                                <f:selectItem itemLabel="Auxiliaires" itemValue="0"  />
+                                                <f:selectItem itemLabel="Generaux" itemValue="1"  />
+                                                <f:selectItem itemLabel="Reels" itemValue="2"  />
+
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="etat"   value="Etat" class="" />
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu  id="etat"  value="#{archiveManuelBean.etat}" converter="omnifaces.SelectItemsConverter"
+                                                              class="form-control" >
+                                                <f:selectItem itemLabel="etat" itemValue=""  />
+                                                <f:selectItem itemLabel="Actif" itemValue="true"  />
+                                                <f:selectItem itemLabel="Non actif" itemValue="false"  />
+
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="btn-toolbar">
+                                                <p:commandButton onstart="PF('statusDialog2').show()" onsuccess="PF('statusDialog2').hide()" value="Rechercher" update="formliste" actionListener="#{archiveManuelBean.afficherS()}" class="btn btn-purple   pull-right" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p:dialog widgetVar="statusDialog2" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                    <h:graphicImage library="images" name="ajax-loader.gif" />
+                                </p:dialog>
+                            </div>
+                        </p:panel>
+                    </h:form>
+                    <h:form  id="formliste" class="form-horizontal" >
+                        <p:panel id ="field1" header="Journaux sauvegardés" class="panel-default" toggleable="true" collapsed="false" >
+                            <div class="panel-body">
+                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                    <div class="btn-toolbar">
+                                        <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-xs btn-imprimer" actionListener="#{deviseBean.doGetA}"   > 
+                                            <i class=" glyphicon glyphicon-print"></i>
+                                        </h:commandLink>  
+                                    </div>
+                                    <div class="table-responsive">
+                                        <p:dataTable  class="table table-bordered" var="archive" id="deviseliste" reflow="true" rows="15" value="#{archiveManuelBean.listMonArchive}"
+                                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                      paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd"
+                                                      sortOrder="descending" emptyMessage="#{msg['tableau.vide']}"
+                                                      rowStyleClass="#{archiveManuelBean.factureColor(archive)}"  > 
+
+                                            <f:facet name="{Exporters}">
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/excel.png" width="24"/>
+                                                    <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/pdf.png" width="24"/>
+                                                    <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/csv2.png" width="24"/>
+                                                    <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/xml.png" width="24"/>
+                                                    <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+                                            </f:facet>
+
+                                            <p:column headerText="Numero de compte" filterBy="#{archive.numero}">
+                                                <h:outputText value="#{archive.numero}" />
+                                            </p:column>
+                                            <p:column headerText="Libellé" filterBy="#{archive.compte.libelleCompte}">
+                                                <h:outputText value="Compte #{archive.compte.libelleCompte} " />
+                                            </p:column>
+
+                                            <p:column headerText="Date Debut" >
+                                                <h:outputText value="#{archive.dateDebut}" />
+                                            </p:column >
+                                            <p:column headerText="Date Fin" >
+                                                <h:outputText value="#{archive.dateFin}" />
+                                            </p:column >
+                                            <p:column headerText="Date Lancement" >
+                                                <h:outputText value="#{archive.datelancement}" />
+                                            </p:column >
+
+                                            <p:column headerText="Credit" filterBy="#{archive.credit}">
+                                                <h:outputText value="#{archive.credit}" >
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </h:outputText>
+                                            </p:column >
+                                            <p:column headerText="Credit" filterBy="#{archive.debit}">
+                                                <h:outputText value="#{archive.debit}" >
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </h:outputText>
+                                            </p:column >
+                                            <p:column headerText="Etat">
+                                                <h:outputText value="#{archive.etat}" >
+                                                </h:outputText>
+                                            </p:column >
+
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel>
+                        <!--p:panel id ="field2" rendered="#{archiveManuelBean.typeComptes eq 1 ?true:false}"  legend="Journaux sauvegardés" style="margin-bottom:20px">
+                            
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <div class="form-group">
+                                    <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-xs btn-imprimer" actionListener=""   > 
+                                        <i class=" glyphicon glyphicon-print"></i>
+                                    </h:commandLink>  
+                                </div>
+                                <div class="form-group table-responsive">
+                                    <p:dataTable  class="table table-bordered" var="archive" id="deviseliste1" reflow="true" rows="5" value="#{archiveManuelBean.listArchiveComptesGen}"
+                                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                  paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd"
+                                                  sortOrder="descending" emptyMessage="#{msg['tableau.vide']}"> 
+
+                                        <f:facet name="{Exporters}">
+                                            <h:commandLink>
+                                                <p:graphicImage library="img" name="/excel.png" width="24"/>
+                                                <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                            </h:commandLink>
+
+                                            <h:commandLink>
+                                                <p:graphicImage library="img" name="/pdf.png" width="24"/>
+                                                <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                            </h:commandLink>
+
+                                            <h:commandLink>
+                                                <p:graphicImage library="img" name="/csv2.png" width="24"/>
+                                                <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                                            </h:commandLink>
+
+                                            <h:commandLink>
+                                                <p:graphicImage library="img" name="/xml.png" width="24"/>
+                                                <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                                            </h:commandLink>
+                                        </f:facet>
+
+                                        <p:column headerText="Numero de compte" filterBy="#{archive.compteGeneral.numero}">
+                                            <h:outputText value="#{archive.compteGeneral.numero}" />
+                                        </p:column>
+                                        <p:column headerText="Libellé" filterBy="#{archive.compteGeneral.intitule}">
+                                            <h:outputText value="Compte #{archive.compteGeneral.intitule}" />
+                                        </p:column>
+
+                                        <p:column headerText="Date Sauvegarde" filterBy="#{archive.dateArchive}">
+                                            <h:outputText value="#{archive.dateArchive}" />
+                                        </p:column >
+                                        <p:column headerText="Debit" filterBy="#{archive.debit}">
+                                            <h:outputText value="#{archive.debit}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="Credit" filterBy="#{archive.credit}">
+                                            <h:outputText value="#{archive.credit}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="Etat">
+                                            <h:outputText value="#{archive.etat}" >
+                                            </h:outputText>
+                                        </p:column >
+
+                                    </p:dataTable>
+                                </div>
+                            </div>
+
+                        </p:panel-->
+
+
+
+                    </h:form>
+
+
+                </div>
+            <!--/div-->
+       
+
+
+    </ui:composition> 
+
+</html>

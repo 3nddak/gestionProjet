@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" >
+    <ui:composition>
+        <p:tabView id="permission">
+            <p:ajax event="tabChange" listener="#{pagesBean.onTabChange(event)}" update="pageData:pageliste,affect:permissionliste" />
+            <p:tab title="Ajout de permission" >
+                <h:form  id="page" class="form-horizontal">
+                    <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>
+                    <p:panel rendered="#{pagesBean.hideFirstForm}" styleClass="color:red"  header="#{pagesBean.legend}" toggleable="true" toggleSpeed="500"  collapsed="#{pagesBean.collapsedFieldset}" style="margin-bottom:20px">                         
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <h:outputLabel for="rol_c" class=" police_label pull-left" value="Catégorie"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+
+                                <h:selectOneMenu id="rol_c" value="#{pagesBean.st}" required="true" converter="omnifaces.SelectItemsConverter" class="form-control" requiredMessage="Veuillez choisir une catégorie">
+                                    <f:selectItem itemLabel="Choisir une catégorie" itemDisabled="true" />
+                                    <f:selectItems value="#{pagesBean.allRole_cat}" var="r" itemLabel="#{r.name}" itemValue="#{r.name}" /> 
+                                    <f:ajax event="keyup" render="rol_cMessage"/> 
+                                </h:selectOneMenu>
+                                <h:message for="rol_c"  id="rol_cMessage" class="errorClass" />   
+                            </div>
+
+                            <div class="col-lg-3">
+                                <h:outputLabel id="codePanel" for="code" class=" police_label pull-left" value="Code Permission"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                <p:inputText id="code" required="true" 
+                                             requiredMessage="Veuillez saisir le code de la permission" 
+                                             value="#{pagesBean.pagesToSave.codePage}" class="form-control" placeholder="Code Permission">
+                                    <f:ajax event="keyup" render="codeMessage"/>
+                                </p:inputText>
+                                <h:message for="code"  id="codeMessage" class="errorClass" />    
+                            </div> 
+
+                            <div class="col-lg-3">
+                                <h:outputLabel id="libellePanel" for="libelle" class=" police_label pull-left" value="Libellé Permission"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                <p:inputText id="libelle" required="true" 
+                                             requiredMessage="Veuillez saisir le libellé de la permission" 
+                                             value="#{pagesBean.pagesToSave.libelle}" class="form-control" placeholder="Libellé Permission">
+                                    <f:ajax event="keyup" render="libelleMessage"/>
+                                </p:inputText>
+                                <h:message for="libelle"  id="libelleMessage" class="errorClass" />    
+                            </div>
+                            <div class="col-lg-3">
+                                <h:outputLabel id="urlPanel" for="url" class=" police_label pull-left" value="Url Permission"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                <p:inputText id="url" required="true" 
+                                             requiredMessage="Veuillez saisir l'url de la permission" 
+                                             value="#{pagesBean.pagesToSave.URL}" class="form-control" placeholder="URL Permission">
+                                    <f:ajax event="keyup" render="urlMessage"/>
+                                </p:inputText>
+                                <h:message for="url"  id="urlMessage" class="errorClass" />    
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <div class="col-lg-3 col-md-12 col-xs-12 col-sm-12">
+                                    <p:commandButton value="#{msg['btn.annuller']}" action="#{pagesBean.annuler()}" update="page," id="annuler" class="btn-danger danger form-control">
+
+                                    </p:commandButton>
+                                </div>
+
+                                <div class="col-lg-3 col-lg-push-6  col-md-12 col-xs-12 col-sm-12">
+
+                                    <p:commandButton id="pageSave" rendered="#{pagesBean.hideSaveButton}"  value="#{msg['btn.enregistrer']}" action="#{pagesBean.ajouter()}" 
+                                                     update="msgs,permission:page,permission:pageData:pageliste" class="btn form-control btn-primary primary" onstart="PF('addProcess').block()" oncomplete="PF('addProcess').unblock()" >
+                                    </p:commandButton>
+                                    <p:commandButton id="pageUpdate" rendered="#{pagesBean.hideUpdateButton}" value="#{msg['btn.modifier']}" action="#{pagesBean.modifier()}" 
+                                                     update="msgs,permission:page,permission:pageData:pageliste" class="btn form-control btn-success   pull-right" 
+                                                     onstart="PF('editProcess').block()" oncomplete="PF('editProcess').unblock()"
+                                                     style="background: #5cb85c;color:#fff;border-color:#4cae4c; font-family: cursive;">                                    
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                    </p:panel>
+                </h:form>
+
+                <h:form  id="pageData">
+                    <p:panel id="tt" rendered="#{pagesBean.hideFirstForm}" header="Liste Permissions" toggleable="true" style="margin-bottom:20px">
+                        <p:dataTable   class="table_label table-responsive"  id="pageliste" reflow="true" rows="5" value="#{pagesBean.allPages}"
+                                       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                       paginator="true" paginatorPosition="bottom" var="page" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd"
+                                       emptyMessage="#{msg['tableau.vide']}"> 
+
+                            <p:column width="300" headerText="Code Permission" filterBy="#{page.codePage}">
+                                <h:outputText value="#{page.codePage}" />
+                            </p:column>
+                            <p:column width="180" headerText="Libellé Permission" filterBy="#{page.libelle}">
+                                <h:outputText value="#{page.libelle}" />
+                            </p:column>
+                            <p:column width="150" headerText="Url" filterBy="#{page.URL}">
+                                <h:outputText value="#{page.URL}" />
+                            </p:column>
+                            <p:column width="150" headerText="Catégorie Permission" filterBy="#{page.role_Cat.name}">
+                                <h:outputText value="#{page.role_Cat.name}" />
+                            </p:column>
+                            <p:column headerText="Actions" width="100" class="col-lg-2">
+                                <p:commandButton    icon="fa fa-edit" title="#{msg['btn.modifier']}" action="#{pagesBean.modificationSelection()}" 
+                                                    update="permission:page" class="btn btn-primary primary form-control" immediate="true" onstart="PF('loadProcess').block()" oncomplete="PF('loadProcess').unblock()" >                                                    
+                                    <f:setPropertyActionListener value="#{page}" target="#{pagesBean.pagesToUpdate}" />
+                                    <p:ajax listener="#{pagesBean.displayFieldset()}" update=""  />
+
+                                </p:commandButton>
+                                <p:commandButton   icon="fa fa-trash" oncomplete="PF('supprimer').show()"  title="#{msg['btn.supprimer']}" class="btn btn-danger danger form-control" 
+                                                   immediate="true">
+                                    <f:setPropertyActionListener value="#{page}" target="#{pagesBean.pagesToDelete}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form> 
+            </p:tab>
+
+            <p:tab title="Affectation de permission">
+                <h:form id="affect"  >
+                    <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>
+                    <p:panel header="Affectation de Permission" styleClass="color:red"  toggleable="true" toggleSpeed="500" style="margin-bottom:20px">                         
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <h:outputLabel for="struc" class=" police_label pull-left" value="Type structure"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+
+                                <h:selectOneMenu id="struc" label="Type structure" value="#{pagesBean.typeStructure}" 
+                                                 required="true" converter="omnifaces.SelectItemsConverter"  class="form-control" 
+                                                 requiredMessage="Veuillez choisir un type structure" >
+                                    <f:selectItem itemLabel="Choisir un type structure" itemDisabled="true" />
+                                    <f:selectItems value="#{pagesBean.allTypeStructure}" var="typeS" itemLabel="#{typeS.libelle}" itemValue="#{typeS}" /> 
+                                    <f:ajax event="change" render="strucMessage"/> 
+                                </h:selectOneMenu>
+                                <h:message for="struc"  id="strucMessage" class="errorClass" />   
+                            </div>
+                        </div>
+                        <p:spacer width="60" />
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <h:outputLabel for="permi" class=" police_label pull-left" value="Permissions"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <p:spacer width="40" />
+                            <p:dataTable   class="table_label table-responsive"  id="permissionliste"  rows="5" value="#{pagesBean.allPermission}"
+                                           paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                           paginator="true" paginatorPosition="bottom" var="permision" style="margin-bottom:20px" scrollWidth="50%" 
+                                           scrollHeight="150"  selectionMode="single" rowKey="#{permision.idPage}" emptyMessage="#{msg['tableau.vide']}"
+                                           selection="#{pagesBean.selectedPermission}"> 
+
+
+                                <p:column width="300" headerText="Code Permission" filterBy="#{permision.codePage}">
+                                    <h:outputText value="#{permision.codePage}" />
+                                </p:column>
+                                <p:column width="180" headerText="Libellé Permission" filterBy="#{permision.libelle}">
+                                    <h:outputText value="#{permision.libelle}" />
+                                </p:column>
+                                <p:column width="150" headerText="Url" filterBy="#{permision.URL}">
+                                    <h:outputText value="#{permision.URL}" />
+                                </p:column>
+                                <p:column width="150" headerText="Catégorie Permission" filterBy="#{permision.role_Cat.name}">
+                                    <h:outputText value="#{permision.role_Cat.name}" />
+                                </p:column>
+                            </p:dataTable> 
+
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                    <div class="col-lg-3 col-md-12 col-xs-12 col-sm-12">
+                                        <p:commandButton value="#{msg['btn.annuller']}" action="#{pagesBean.annulerAffecterPermission()}" 
+                                                         accesskey="" update="affect" id="annuler" class="btn-danger danger form-control" >
+                                        </p:commandButton>
+                                    </div>
+                                    <div class="col-lg-3 col-lg-push-6  col-md-12 col-xs-12 col-sm-12">
+                                        <p:commandButton id="pageSave"  value="#{msg['btn.enregistrer']}" action="#{pagesBean.affecterPermission()}" 
+                                                         update="affect,msgs,permission:pageData:pageliste" class="btn form-control btn-primary primary" onstart="PF('affectProcess').block()" oncomplete="PF('affectProcess').unblock()" >
+                                        </p:commandButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </p:panel>
+                </h:form>
+            </p:tab>
+        </p:tabView>
+        <pe:blockUI widgetVar="addProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                <h:outputText value="Enregistrement en cours...." />  
+            </h:panelGrid>  
+        </pe:blockUI> 
+        <pe:blockUI widgetVar="editProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                <h:outputText value="Modification en cours...." />  
+            </h:panelGrid>  
+        </pe:blockUI> 
+        <pe:blockUI widgetVar="loadProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                <h:outputText value="Chargement en cours...." />  
+            </h:panelGrid>  
+        </pe:blockUI>
+        <pe:blockUI widgetVar="affectProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                <h:outputText value="Affectation en cours...." />  
+            </h:panelGrid>  
+        </pe:blockUI> 
+        <pe:blockUI widgetVar="editaffectProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                <h:outputText value="Modification en cours...." />  
+            </h:panelGrid>  
+        </pe:blockUI> 
+        <h:form>
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                             header="Suppression" severity="alert" widgetVar="supprimer">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3, permission:pageData:pageliste" action="#{pagesBean.supprimer()}"  
+                                 oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+    </ui:composition> 
+</html>

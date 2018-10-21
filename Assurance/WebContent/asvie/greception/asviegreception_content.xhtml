@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"  
+
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div class="panel">
+                <div class="panel-heading"> 
+                    <fieldset>
+                        <legend class="police_label text-center"><p:outputLabel value="#{msg['titre.gestionDesReceptionsDeContrat']}"></p:outputLabel></legend>
+                    </fieldset>
+                </div>
+                <h:form  id="searchForm" class="form-horizontal">
+                    <p:panel id="serachPanel" header="#{msg['recherche.titre']}" toggleable="true" collapsed="false" >
+                        <ui:include src="asviegreceptionsearchEngine.xhtml" />
+                    </p:panel>
+                </h:form>
+            </div>
+            <div class="panel">
+                <h:form  id="dataListeForm" class="form-horizontal">
+                    <p:panel  header="#{msg['liste.contrat']}" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                        <p:dataTable id="dataListe" editable="true" editMode="cell"
+                                     resizableColumns="true"
+                                     class="table table-condensed" 
+                                     paginator="true" rows="20" emptyMessage="#{msg['tableau.vide']}"  paginatorPosition="bottom" value="#{souscriptionEffectiveAsVieBean.listAssuranceCreditForReception}" var="assCredit"    style="padding:0px;margin: 0px; ">
+
+                            <p:column headerText="#{msg['titre.numeroPolice']}"  class="col-md-1 col-lg-1"  filterBy="#{assCredit.numeroPolice}"  >
+                                <h:outputText value="#{assCredit.numeroPolice}" />
+                            </p:column>
+                            <p:column headerText="#{msg['titre.dateDebut']}" class="col-lg-1 col-md-1"   >
+                                <h:outputText value="#{assCredit.dateDuPret}" />
+                            </p:column>
+                            <p:column headerText="#{msg['titre.dateFin']}"  class="col-lg-1 col-md-1"  >
+                                <h:outputText value="#{assCredit.finDuPret}" />
+                            </p:column>
+                            <p:column class="col-md-2 col-lg-2"  headerText="#{msg['titre.codeTransaction']} " filterBy="#{assCredit.codeTransaction}">
+                                <h:outputText value="#{assCredit.codeTransaction}" />
+                            </p:column>
+                            <p:column headerText="#{msg['titre.compagnie']}" filterBy="#{assCredit.compagnie.abbreviation}" class="col-lg-1 col-md-1">
+                                <h:outputText value="#{assCredit.compagnie.abbreviation}" />
+                            </p:column>
+                            <p:column headerText="#{msg['titre.courtier']}"  filterBy="#{assCredit.courtier.abbreviation}" class="col-lg-1 col-md-1">
+                                <h:outputText value="#{assCredit.courtier.abbreviation}" />
+                            </p:column>
+                            <p:column headerText="#{msg['titre.lieuDeRetrait']}" filterBy="#{assCredit.guichetDeRetrait.designation}" class="col-lg-1 col-md-1">
+                                <h:outputText value="#{assCredit.guichetDeRetrait.designation}" />
+                            </p:column>
+                            <p:column  headerText="#{msg['control.client.nom']}" filterBy="#{assCredit.client.nom}" class="col-lg-1 col-md-1"  >
+                                <h:outputText value="#{assCredit.client.nom}" />
+                            </p:column>
+                            <p:column filterBy="#{assCredit.primeTTC}" headerText="#{msg['tableau.primettc']}" class="col-lg-1 col-md-1"  >
+                                <p:outputLabel value="#{assCredit.arrondireFormat2(assCredit.primeTTC)}" />
+                            </p:column>
+                            <p:column headerText="#{msg['titre.actions']}" class="col-lg-2 col-md-2"  >
+                                <p:commandLink rendered="#{assCredit.readyToPrint}"  title="#{msg['titre.contrat']}" class=" btn btn-xs btn-success" ajax="false" target="/rapport"   action="#{allPrintBean.printContrat()}" >
+                                    <i class="fa fa-print"/>
+                                    <f:setPropertyActionListener target="#{allPrintBean.assuranceCreditSelect}" value="#{assCredit}" />
+                                </p:commandLink>
+
+                                <p:commandLink rendered="#{!assCredit.readyToPrint}" title="#{msg['titre.receptionner']}" update="ajout,reception,reception:klm" action="#{souscriptionEffectiveAsVieBean.loadNativeClientAtGuichet()}" class=" btn btn-xs btn-primary glyphicon glyphicon-send" oncomplete="PF('ajout').show()" >
+                                    <f:setPropertyActionListener value="#{assCredit}" target="#{souscriptionEffectiveAsVieBean.assuranceCreditToTake}" />
+                                    <f:setPropertyActionListener value="#{assCredit.receptionnaire}" target="#{souscriptionEffectiveAsVieBean.receptionnaireToSave}" />
+                                    <f:setPropertyActionListener value="#{assCredit}" target="#{souscriptionEffectiveAsVieBean.assuranceCreditSelected}" />
+                                </p:commandLink>
+
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+        </div>
+        <p:dialog  header="#{msg['titre.informationsDuReceptionnaire']}" showEffect="fade"  widgetVar="ajout" modal="true" width="900" minHeight="200" resizable="false">
+            <ui:include src="asviegreception_ajout.xhtml"/>
+        </p:dialog>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+    </ui:composition> 
+</html>
+

@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <div class="panel-body">
+            <h:form id="searchCategorieForm" class="form-horizontal">
+                <div class="form-group" >
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="pays" value="#{msg['titre.pays']}" class="pull-left text-left"/>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu id="pays" value="#{garantieCategorieCompagnieProduitBean.paysSelectedToSearch}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                <f:selectItems value="#{garantieCategorieCompagnieProduitBean.listpays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                <p:ajax listener="#{garantieCategorieCompagnieProduitBean.feshProduitByPays()}" update="prod" />
+                            </h:selectOneMenu> 
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="prod" value="Produit" class="pull-left text-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="prod" requiredMessage="Veuillez choisir un produit" value="#{garantieCategorieCompagnieProduitBean.selectedProduitToSearch}"  >
+                                <f:selectItem noSelectionOption="true" itemLabel="Choisir produit" /> 
+                                <f:selectItems value="#{garantieCategorieCompagnieProduitBean.listProduit}" var="produit" itemLabel="#{produit.nom}" itemValue="#{produit}"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="btn-toolbar">
+                    <p:commandButton class="btn-imprimer btn pull-right" value="#{msg['btn.rechercher']}" update="@form,listCategorieForm" action="#{garantieCategorieCompagnieProduitBean.rechercheAvancee()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                </div>
+                    </div>
+            </h:form >
+            <ui:include src="list_garantiecategoriecompagnieproduit.xhtml" />
+        </div>
+    </ui:composition> 
+</html>
+

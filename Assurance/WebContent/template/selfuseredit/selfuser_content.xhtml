@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition>
+        <p:outputPanel id="societe">
+            <div class="container-fluid">
+                <div id="liste" class="row-fluid">
+
+                    <div class="panel">
+                        <div class="panel-heading">
+
+                            <p:fieldset  legend="Liste des utilisateurs" toggleable="true" collapsed="false" toggleSpeed="500"  style="margin-bottom:20px">     
+                                <ui:include src="selfuser_list.xhtml"/>
+                            </p:fieldset>
+
+                        </div>
+                        <p:dialog  header="#{msg['titre.operation.creation.pass']}" showEffect="fade"  widgetVar="pass" modal="true"   width="400" height="250" resizable="false">
+                            <ui:include src="selfuser_pass.xhtml"/>
+                        </p:dialog>
+                    </div>
+
+                </div>
+            </div>
+        </p:outputPanel>
+        <pe:blockUI widgetVar="loadProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                <h:outputText value="#{msg['btn.chargementencour']}..." />  
+            </h:panelGrid>  
+        </pe:blockUI>  
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+    </ui:composition> 
+</html>
+

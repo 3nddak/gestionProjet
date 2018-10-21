@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <ui:composition>
+        <div class="panel">
+            <h:form id="formFormulaire" class="form-horizontal ">
+
+                <div class="panel-body">
+                    <fieldset><legend class="text-uppercase" ><h:outputLabel class="police_label" value="#{msg['titre.fornule']}"/></legend>
+                        <p:growl id="msgsll" globalOnly="true" showDetail="false"/>
+
+
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.fornule']}"  for="tformule" class=" " /><h:outputLabel value="*" class="etoile_rouge "  />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                <h:selectOneMenu id="tformule" value="#{souscriptionAsMrhBean.assuranceMrh.formule}"  class="form-control"
+                                                 required="true"   requiredMessage="Veuillez entrer la formule">
+                                    <f:selectItem itemLabel="#{msg['titre.fornule']}"/> 
+                                    <f:selectItems value="#{souscriptionAsMrhBean.formule}" /> 
+                                    <p:ajax event="click" update="formuleMessage"/> 
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="tformule" id="formuleMessage"/>
+                            </div>
+                        </div> 
+
+
+                    </fieldset>   
+                </div> 
+            </h:form>
+        </div>
+    </ui:composition>
+</html>

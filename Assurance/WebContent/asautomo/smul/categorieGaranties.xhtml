@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+        <fieldset><legend><h:outputLabel value="#{msg['simulation.auto.souscriptionInformation']}"/></legend>
+            <div class="form-group">
+                <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="pays" value="#{msg['simulation.auto.pays']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu id="pays" value="#{objetBean.paysSouscription}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                         requiredMessage="#{msg['compagnie.pays.requireMessage']}"
+                                         >
+                            <f:selectItem itemLabel="#{msg['simulation.auto.pays']}"  itemValue=""/>
+                            <f:selectItems value="#{guarantieCategorieBean.paysList}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                            <p:ajax listener="#{objetBean.categorieByPays}" update="cat"/> 
+                            <f:ajax event="click" render="paysMessage" />
+                        </h:selectOneMenu> 
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="pays"  id="paysMessage" class="errorClass" />
+                    </div>
+
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="cat" value="#{msg['simulation.auto.category']}"   class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu id="cat" value="#{objetBean.idcategorie}" required="true" class="form-control"
+                                         requiredMessage="#{msg['vehicule.categorie.requiredMessage']}"
+                                         >
+                            <f:selectItem itemLabel="#{msg['simulation.auto.category']}" itemValue=""/>
+                            <f:selectItems value="#{objetBean.categorieItems}"/> 
+                            <p:ajax  listener="#{objetBean.guarantiesByCategorie}" update="formliste:display2,formliste:courtierp" />
+                            <f:ajax event="click" render="catMessage" />
+                            <p:ajax update="formliste" />
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:message for="cat"  id="catMessage" class="errorClass"/>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="packaged" value="#{msg['simulation.auto.packagedegarantie']}"   class=" pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu id="packaged" value="#{objetBean.paquegeGarantieAsAuto}" class="form-control" converter="entityConverter" >
+                            <f:selectItem itemLabel="#{msg['simulation.auto.package']}" noSelectionOption="true"/>
+                            <f:selectItems var="packaged" value="#{objetBean.listPaquegeGarantieAsAuto}" itemLabel="#{packaged.designation}: #{packaged.listGarantie()}" itemValue="#{packaged}"/> 
+                           
+                            <p:ajax  update="formliste:displayy,formliste:menuu"  listener="#{objetBean.initselectedGuaranties()}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12 col-lg-12 col-sm-12">
+                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                        <h:outputLabel  value="#{msg['simulation.auto.selectionner']}"  class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />                
+                            <p:selectCheckboxMenu converter="entityConverter" id="menuu"   value="#{objetBean.selectedGuaranties}" label="#{msg['garantie.titre']}"
+                                                  filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                                <f:selectItems value="#{objetBean.guanrantieList}" var="guarantie" itemLabel="#{guarantie.libelle}" itemValue="#{guarantie}" />
+                                
+                            </p:selectCheckboxMenu>
+                        <p:commandButton value="OK" update="formliste:displayy" class="btn btn-xs btn-primary" action="#{objetBean.loadGarantie()}" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <p:outputPanel id="displayy">
+                            <p:scrollPanel style="height:150px;">
+                                <p:dataGrid value="#{objetBean.selectedGuaranties}" var="guarantie" emptyMessage="#{msg['garantie.nonselectioner']}" columns="4" layout="grid"> 
+                                    <f:facet name="header">
+                                        <h:outputLabel value="#{msg['simulation.auto.selectionner']}" class=" police_label text-uppercase" style="font-size: 15px" />
+                                    </f:facet>
+                                    #{guarantie.symbole}
+                                </p:dataGrid>
+                            </p:scrollPanel>
+                        </p:outputPanel>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </ui:composition> 
+
+</html>
+

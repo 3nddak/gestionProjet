@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <div class="panel-body">
+            <h:form id="commissionCompagnieCourtierCreateForm" class="form-horizontal">
+                <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                <div class="form-group" >
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="pays" value="#{msg['titre.pays']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu id="pays" value="#{categorieAsMrhBean.categorieAsMrhToSave.pays}" required="true" requiredMessage="Veuillez choisir le pays" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                <f:selectItems value="#{categorieAsMrhBean.listPays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                <f:ajax event="click" render="paysMessage" />
+                            </h:selectOneMenu> 
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:message for="pays"  id="paysMessage" class="errorClass" />
+                        </div> 
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h:outputLabel value="#{msg['titre.designation']}" /><h:outputLabel value="*" class="etoile_rouge" />
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:inputText id="designation" class="form-control" value="#{categorieAsMrhBean.categorieAsMrhToSave.designation}" required="true" requiredMessage="Veuillez entrer la désignation"  >
+                                <f:ajax event="blur" render="designationMessage" />
+                            </p:inputText>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:message for="designation"  id="designationMessage" class="errorClass" />
+                        </div> 
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h:outputLabel value="#{msg['titre.Description']}" />
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:inputText class="form-control" value="#{categorieAsMrhBean.categorieAsMrhToSave.description}"  />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h:outputLabel value="#{msg['titre.positions']}" /><h:outputLabel value="*" class="etoile_rouge" />
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:inputText id="position" required="true" requiredMessage="#{msg['titre.position.message']}" class="form-control" value="#{categorieAsMrhBean.categorieAsMrhToSave.poids}" >
+                                <pe:keyFilter  mask="int" />
+                                <f:ajax event="blur" render="positionMessage" />
+                            </p:inputText>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:message for="position"  id="positionMessage" class="errorClass" />
+                        </div> 
+                    </div>
+                </div>
+                <div class="btn-toolbar">
+                    <p:commandButton class="btn-danger btn" value="#{msg['btn.annuller']}" update="@form" action="#{categorieAsMrhBean.cancel()}" />
+                    
+                    <p:commandButton class="btn-imprimer btn pull-right" value="#{msg['btn.enregistrer']}" update="@form" action="#{categorieAsMrhBean.createCategorieAsMrh()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                </div>
+            </h:form >
+        </div>
+    </ui:composition> 
+</html>
+

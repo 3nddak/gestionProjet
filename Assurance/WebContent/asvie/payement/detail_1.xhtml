@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition>
+        <div class="panel">
+            <div class="panel-heading bg-purple">  
+                <h:outputLabel class="police_label" value="SOCIETE DE COURTAGE" ></h:outputLabel>
+            </div>
+            <div class="panel-body">
+                <h:form  class="form-horizontal" id="detail">
+
+                    <p:fieldset  legend="VOIR LES REFERENCES DU CLIENT" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+
+                        <p:panelGrid columns="6" class="table">
+                            <h:outputLabel value="Souscripteur"/>
+                            <h:outputText value="#{validationSouscriptionAsVieBean.assuranceCredit.client.nom}"/>
+                            <h:outputLabel value="Date de naissance"/>
+                            <h:outputText value="#{validationSouscriptionAsVieBean.assuranceCredit.client.dateNaissance}"/>
+                            <h:outputLabel value="Téléphone"/>
+                            <h:outputText  value="#{validationSouscriptionAsVieBean.assuranceCredit.client.telephoneMobile}"/>
+                            <h:outputLabel value="Adresse"/>
+                            <h:outputText  value="#{validationSouscriptionAsVieBean.assuranceCredit.client.adresse}"/>
+                        </p:panelGrid>
+
+                    </p:fieldset>
+                    <p:fieldset  legend="VOIR LE TYPE D'OPERATIONS" toggleable="true" collapsed="false"  toggleSpeed="500"  style="margin-bottom:20px">                                              
+                        <p:panelGrid columns="6" class="table">
+                            <p:outputLabel for="datedebut" value="Date debut :"/>
+                            <h:outputText id="datedebut" value="#{validationSouscriptionAsVieBean.assuranceCredit.dateDuPret}"/>
+                            <p:outputLabel for="periode" value="Periode (Mois) :"/>
+                            <h:outputText id="periode" value="#{validationSouscriptionAsVieBean.assuranceCredit.dureePret} "/>
+                            <p:outputLabel for="mp" value="Montant du pret :"/>
+                            <h:outputText id="mp" value="#{validationSouscriptionAsVieBean.assuranceCredit.montantPret}">
+                                <f:convertNumber pattern="###,##0" type="number" />
+                            </h:outputText>
+                            <p:outputLabel for="typedepret" value="Type de prêt :"/>
+                            <h:outputText id="typedepret" value="#{validationSouscriptionAsVieBean.assuranceCredit.typeDePret}"/>
+                            <p:outputLabel for="tauxdepret" value="Taux du prêt :"/>
+                            <h:outputText id="tauxdepret" value="#{validationSouscriptionAsVieBean.assuranceCredit.tauxDuPret}"/>
+                        </p:panelGrid>
+
+                    </p:fieldset>
+                    <p:fieldset  legend="Réponses aux Questions" toggleable="true" collapsed="false"  toggleSpeed="500"  style="margin-bottom:20px">                                              
+                        <fieldset><legend class="titre_entete text-left text-capitalize small" ></legend>
+                            <c:forEach items="#{validationSouscriptionAsVieBean.assuranceCredit.listQuestionResponseAsVie}" var="q" >
+                                <p:outputPanel id="ll#{validationSouscriptionAsVieBean.assuranceCredit.client.hashCode()}#{q.id()}" rendered="#{q.questionAsVie.booleanQuestion}">
+
+                                    <h:outputLabel id="l#{validationSouscriptionAsVieBean.assuranceCredit.client.hashCode()}#{q.id()}" >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                    <p:outputLabel value="" ><i class="#{q.response} fa fa-check text-green"/><i class="#{!q.response} text-red fa fa-close"/></p:outputLabel>
+
+                                    <p:outputLabel id="c#{validationSouscriptionAsVieBean.assuranceCredit.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" value="#{q.questionSecondaire()}" />
+
+                                    <p:outputLabel id="d#{validationSouscriptionAsVieBean.assuranceCredit.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" class="form-control" value="#{q.precisions}" />
+                                </p:outputPanel>
+
+                                <p:outputPanel rendered="#{!q.questionAsVie.booleanQuestion}">
+                                    <h:outputLabel >#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                    <p:outputLabel  class="form-control" value="#{q.precisions}" />
+                                </p:outputPanel>
+
+                            </c:forEach>
+                        </fieldset>
+
+                    </p:fieldset>
+
+
+
+
+                </h:form>
+                <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                    <h:form>
+                        <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </h:form>
+                </p:confirmDialog>
+                <h:form id="text" class="form-horizontal">
+                    <p:panel class="panel-border-none" >
+                        <div class="form-group" >
+                            <p:panelGrid columns="2"  layout="grid"  class="panel-border-none" >
+                                <p:outputLabel class="form-control bg-purple" value="Prime nette:" for="ps"></p:outputLabel>
+                                <p:outputLabel id="ps" class="text-right form-control"  value="#{validationSouscriptionAsVieBean.assuranceCredit.prixNette}"> 
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:outputLabel>
+
+                                <p:outputLabel class="form-control bg-purple" value="Remise:" for="psrr"></p:outputLabel>
+                                <p:outputLabel id="psrr" class="text-right form-control"  value="#{validationSouscriptionAsVieBean.assuranceCredit.remise}"> 
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:outputLabel>
+
+                                <p:outputLabel class="form-control bg-purple" value="Réduction:" for="psr"></p:outputLabel>
+                                <p:outputLabel id="psr" class="text-right form-control"  value="#{validationSouscriptionAsVieBean.assuranceCredit.valeurReduction()}"> 
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:outputLabel>
+
+                                <p:outputLabel class="form-control bg-purple" value="Majoration:" for="psrm"></p:outputLabel>
+                                <p:outputLabel id="psrm" class="text-right form-control"  value="#{validationSouscriptionAsVieBean.assuranceCredit.valeurMajoration()}"> 
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:outputLabel>
+
+
+                                <p:outputLabel  class="form-control bg-purple" value="Frais de gestion:" for="fdg"/>
+                                <p:outputLabel id="fdg" class="text-right form-control" value="#{validationSouscriptionAsVieBean.assuranceCredit.accessoire}">
+
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:outputLabel>
+                                <p:outputLabel class="form-control bg-purple" value=" Taxe:" for="tes"/>
+                                <p:outputLabel id="tes" class="text-right form-control" value="#{validationSouscriptionAsVieBean.assuranceCredit.taxeValue}">
+
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:outputLabel>
+
+                                <p:outputLabel class="form-control bg-purple" value="Prime TTC:" for="pttc"/>
+                                <p:outputLabel id="pttc" class="text-right form-control"  value="#{validationSouscriptionAsVieBean.assuranceCredit.primeTTC}">
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:outputLabel>
+                            </p:panelGrid>
+                        </div>
+
+                        <div class="form-group" >
+                            <div class="btn-toolbar">
+                                <p:commandButton  value="Rejeter"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" update="@form,detail,message1,vvv" action="#{validationSouscriptionAsVieBean.rejetAssurance()}" class="btn-danger btn"  icon="fa fa-trash" >
+                                    <p:ajax listener="#{validationSouscriptionAsVieBean.setFalse}" update="" />
+                                </p:commandButton>
+                                <p:commandButton  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"   class="btn-success btn pull-right" icon="fa fa-shopping-card" value="Valider" action="#{validationSouscriptionAsVieBean.payerAssurance()}" update="@form,detail,message1,vvv">  
+                                    <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert"  />
+                                    <p:ajax listener="#{validationSouscriptionAsVieBean.setTrue}"  />
+                                </p:commandButton>
+                            </div>
+                            <p:growl for="somekey" id="vvv" />
+                        </div>
+                    </p:panel>
+                </h:form>
+            </div>
+        </div> 
+        <p:dialog widgetVar="imprimerRecu" header="Imprimer le reçu">
+            <h:form class="form-horizontal">
+                <div class="btn-toolbar">
+                    <p:commandLink value="#{msg['btn.imprimer']}"  ajax="false" onstart="PF('imprimerRecu').hide()" class="btn btn-xs btn-imprimer"  target="/" action="#{validationSouscriptionAsVieBean.doGetPrintRecuBonAssurance()}" >
+                    </p:commandLink>
+                    <p:commandLink value="Quitter"  oncomplete="PF('imprimerRecu').hide()"   class="btn btn-xs btn-danger pull-right" >
+                    </p:commandLink>
+                </div>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

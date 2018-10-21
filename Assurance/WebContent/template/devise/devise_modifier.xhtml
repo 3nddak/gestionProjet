@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <h:form class="form-horizontal" id="devise-modif" >
+            <p:growl id="msgs2" globalOnly="true" showDetail="false"  life="3000" severity="warn,info,error"/>
+            
+          
+                <div class="form-group">
+                    <div class="col-lg-4">
+                        <h:outputLabel for="modifLibelle" class=" police_label pull-left" value="#{msg['devise.libelle']}"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                    </div>
+                    <div class="col-lg-8">
+                        <p:inputText id="modifLibelle" required="true" requiredMessage="#{msg['devise.libelle.requireMessage']}" 
+                                     value="#{deviseBean.deviseSelected.libelle}" class="form-control" placeholder="Libelle *"
+                                     validatorMessage="#{msg['devise.libelle.validatorMessage']}" >
+                            <f:validateLength minimum="3"/>
+                            <f:ajax event="blur" render="libelleMessage" />
+                        </p:inputText>
+                        <h:message for="modifLibelle"  id="libelleMessage" class="errorClass" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-4">
+                        <h:outputLabel  class=" police_label pull-left" for="ajoutDescription" value="#{msg['devise.description']}"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                    </div>
+                    <div class="col-lg-8">
+                        <p:inputText id="ajoutDescription" required="true" value="#{deviseBean.deviseSelected.description}" styleClass="form-control" placeholder="Description"
+                                     requiredMessage="#{msg['devise.description.requireMessage']}" 
+                                     >
+                            <p:ajax event="keyup"  update="desMessage"   />
+                        </p:inputText>
+                        <p:message id="desMessage" for="ajoutDescription"/>
+                    </div>
+                </div>
+          
+           
+                <p:commandButton value="#{msg['btn.annuller']}" action="#{deviseBean.annuler()}" class="btn-danger danger col-md-4  pull-left"/>
+                <p:commandButton value="#{msg['btn.enregistrer']}" update="formliste,devise-modif,msgs2" action="#{deviseBean.modifier()}"  oncomplete="PF('modifier').hide()" class="btn-primary primary col-md-4  pull-right"/>
+         
+        </h:form>
+    </ui:composition> 
+
+</html>
+

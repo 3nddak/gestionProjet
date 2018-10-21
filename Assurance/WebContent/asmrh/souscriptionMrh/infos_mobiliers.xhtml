@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition>
+
+        <p:panel header="#{msg['titre.formule']}"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="4">
+                <p:outputLabel  value="#{msg['titre.formule']} :"/>
+                <h:outputText  value="#{souscriptionAsMrhBean.assuranceMrh.formule}"/>
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['titre.InfoLogement']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+            <p:panelGrid columns="6" class="table">
+                <p:outputLabel    value="#{msg['titre.Typelogement']}:"/>
+                <h:outputText class="text-right"  value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.typeLogement}"/>
+                <p:outputLabel value="#{msg['titre.TypeOccupant']}:"/>
+                <h:outputText class="text-right"  value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.typeOccupant}"/>
+                <p:outputLabel value="#{msg['titre.Typeresidence']} :"/>
+                <h:outputText value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.typeResidence}"/>
+                <p:outputLabel value="#{msg['titre.Typeresidence-temps']}:"/>
+                <h:outputText class="text-right"  value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.typeResidenceTemps}"/>
+                <p:outputLabel  value="#{msg['titre.adressee']} :"/>
+                <h:outputText value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.adresse}"/>   
+                <p:outputLabel value="#{msg['titre.Anneedeconstuction']} :"/>
+                <h:outputText value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.anneeConstruction}">
+                    <f:convertNumber pattern="###,##0" type="number" />
+                </h:outputText>
+                <p:outputLabel value="#{msg['titre.Codepostal']} :"/>
+                <h:outputText  value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.codePostal}"/>
+                <p:outputLabel value="#{msg['titre.Commune']}:"/>
+                <h:outputText class="text-right" value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.commune}"/>
+                <p:outputLabel value="#{msg['titre.ville']}:"/>
+                <h:outputText class="text-right" value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.ville}"/>
+                <p:outputLabel value="#{msg['titre.Autresoccupants']}:"/>
+                <h:outputText  class="text-right" value="#{souscriptionAsMrhBean.assuranceMrh.logementMRH.autresOccupant}" />
+
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['titre.Pieces']}"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <div class="table-responsive">
+                <p:dataTable class="table_label table-responsive" var="piece" reflow="true" rows="5" value="#{souscriptionAsMrhBean.listPieces}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" 
+                             rowsPerPageTemplate="5,10,15"  emptyMessage="#{msg[tableau.vide]}"  >                                                    
+                    <p:column headerText="#{msg['piece.type']}">
+                        <h:outputText value="#{piece.typepiece.toString()}" />
+                    </p:column>
+
+                    <p:column headerText="#{msg['titre.Longueur']}">
+                        <h:outputText value="#{piece.longueur}" />
+                    </p:column >
+                    <p:column headerText="#{msg['titre.Largeur']}">
+                        <h:outputText value="#{piece.largeur}" />
+                    </p:column >
+                    <p:column headerText="#{msg['titre.hauteur']}">
+                        <h:outputText value="#{piece.hauteur}" />
+                    </p:column >
+                    <p:column headerText="#{msg['titre.Surface']}">
+                        <h:outputText value="#{piece.aire}" />
+                    </p:column >
+                    <p:column headerText="#{msg['titre.Volume']}">
+                        <h:outputText value="#{piece.volume}" />
+                    </p:column >
+                    <p:column headerText="#{msg['titre.Nombre']}">
+                        <h:outputText value="#{piece.nombre}" />
+                    </p:column >
+                </p:dataTable>
+            </div>
+
+        </p:panel>
+       
+    </ui:composition> 
+
+</html>
+

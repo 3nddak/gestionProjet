@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+
+
+        <p:outputPanel id="modification" style="text-align:center;">
+            <h:form class="form-horizontal">
+                <p:growl id="msgs2" showDetail="false" globalOnly="true" />
+                <div class="form-group">
+                    <div class="col-md-6 col-lg-6 col-sm-6">
+                        <h:outputLabel  value="#{msg['pays.code']}"  for="codePays" class=" pull-left"/><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        <p:inputText id="codePays" value="#{paysBean.paysSelected.codePays}" styleClass="form-control" placeholder="#{msg['pays.code']}"
+                                     required="true"
+                                     requiredMessage="#{msg['pays.longueur.requireMessage']}"
+                                     >
+                            <f:ajax event="blur" render="codeMessage"/>
+                        </p:inputText>
+                        <h:message for="codePays" id="codeMessage" class="errorClass"/>
+                    </div> 
+                    <div class="col-md-6 col-lg-6 col-sm-6">
+                        <h:outputLabel  value="#{msg['pays.designation']}"  for="designationPays" class="pull-left" style=""/><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div> 
+                    <div class="col-md-6 col-lg-6 col-sm-6">
+                        <p:autoComplete id="designationPays" required="true"  class="pull-left" requiredMessage="#{msg['pays.designation.requireMessage']}"  value="#{paysBean.paysSelected.designationPays}" forceSelection="true"  completeMethod="#{paysBean.completeMethod}"  >
+                            <f:ajax event="keyup" render="desMessage"/>
+                        </p:autoComplete>
+                        <h:message for="designationPays" id="desMessage" class="errorClass"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 col col-lg-6">
+                        <h:outputLabel  value="#{msg['pays.indicatif']}"  for="indicatifTelephone" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        <p:inputText id="indicatifTelephone" value="#{paysBean.paysSelected.indicatifTelephone}" class="form-control " a:placeholder="#{msg['pays.indicatif']}"
+                                     requiredMessage="#{msg['pays.indicatif.requireMessage']}"
+                                     converterMessage="#{msg['format.integer.converterMessage']}"
+                                     validatorMessage="#{msg['pays.indicatif.validatorMessage']}"
+                                     >
+                            <f:validateLongRange minimum="1" maximum="999" />
+                            <f:ajax event="blur" render="indicatifMessage"/>
+                        </p:inputText>
+                        <h:message for="indicatifTelephone"  id="indicatifMessage" class="errorClass" />
+                    </div>
+                    <div class="col-md-6 col col-lg-6">
+                        <h:outputLabel  value="Longueur du téléphone"  for="longueurTelephone" class="pull-left"/><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        <p:inputText  id="longueurTelephone" value="#{paysBean.paysSelected.longueurTelephone}" styleClass="form-control " a:placeholder="Longueur téléphone"
+                                      required="true"
+                                      requiredMessage="#{msg['pays.longueur.requireMessage']}"
+                                      converterMessage="#{msg['format.integer.converterMessage']}"
+                                      validatorMessage="#{msg['pays.longueur.validatorMessage']}"
+                                      >
+                            <f:validateLongRange minimum="4" maximum="20" />
+                            <f:ajax event="blur" render="desLongueur"/>
+                        </p:inputText>
+                        <h:message for="longueurTelephone"  id="desLongueur" class="errorClass" />
+                    </div>
+                    <div class="col-md-6 col-lg-3 col-sm-12 col-xm-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                            <h:outputLabel  value="Fractionnement mensuelle"  for="codePaysf" class="police_label pull-left"/><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                            <p:inputText value="#{paysBean.paysSelected.fractionnementMensuel}" required="true" 
+                                         id="codePaysf"  class="form-control" >
+                                <f:ajax event="keyup" render="codePaysMessagef"/>
+                            </p:inputText>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                            <h:message for="codePaysf"  id="codePaysMessagef" class="errorClass" />
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <!---div class="form-group">
+                    <div class="col-md-6 col-lg-6 col-sm-6">     
+                        <div class="input-group">
+                            <p:outputLabel class=" police_label text-left form-control" for ="plafondTaxe" value="Plafond Taxe"  />
+                            <span class="input-group-addon">
+                                <p:selectBooleanCheckbox id="plafondTaxe" value="#{paysBean.paysSelected.plafondTaxe}"/>
+                            </span>                      
+                        </div> 
+                    </div> 
+                    <div class="col-md-6 col-lg-6 col-sm-6">
+                        <div class="input-group">
+                            <p:outputLabel class="police_label text-left form-control" value="Alert SMS" for ="alertSms"/>
+                            <span class="input-group-addon">
+                                <p:selectBooleanCheckbox id="alertSms" value="#{paysBean.paysSelected.alerteSMS}"/>
+                            </span>
+                        </div>
+                    </div>
+                <div class="col-md-6 col col-lg-6">
+                        <div class="input-group">
+                            <p:outputLabel class=" police_label text-left form-control"  for ="plafondActifs" value="Plafond actifs"/>
+                            <span class="input-group-addon">
+                                <p:selectBooleanCheckbox id="plafondActifs" value="#{paysBean.paysSelected.plafondsActifs}"/>
+                            </span>
+                        </div>
+                    </div>
+                </div-->
+                <div class="form-group">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                        <h:outputLabel  value="#{msg['titre.zone']}"  for="zonem" class="police_label pull-left" /> <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+
+                    <div class="col-md-6 col col-lg-6">
+
+                        <h:selectOneMenu value="#{paysBean.paysSelected.zonesmonetaire.idZone}" required="true" class="form-control">
+                            <f:selectItem itemLabel="Zone monetaire" itemValue=""/>
+                            <f:selectItems value="#{paysBean.zonesMonetaireItems}"/>
+                        </h:selectOneMenu> <br/>
+                    </div>
+
+                </div> 
+                <div class="form-group">
+                    <div class="col-md-6 col col-lg-6">
+                        <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}"  type="reset" class="btn-danger danger btn-sm pull-left col-md-4"/>
+                    </div>
+
+                    <div class="col-md-6 col col-lg-6 ">
+                        <p:commandButton value="#{msg['btn.enregistrer']}" title="#{msg['btn.enregistrer']}" update="msgs2,formliste" action="#{paysBean.modifier()}"  oncomplete="PF('modifier').hide()" class="btn-primary primary btn-sm pull-right col-md-4"/>
+                    </div>
+
+
+                </div>
+            </h:form>
+        </p:outputPanel>
+
+
+
+
+    </ui:composition> 
+
+</html>
+

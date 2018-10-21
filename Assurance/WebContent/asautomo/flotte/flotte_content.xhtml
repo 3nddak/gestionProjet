@@ -1,0 +1,310 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="Gestion des flottes"></p:outputLabel></legend>
+            </fieldset>
+            <h:form id="formliste" class="form-horizontal ">
+                <p:growl id="msgsAux"  globalOnly="true"  severity="info,warn"/>   
+                <p:wizard   flowListener="#{flotteBean.onFlowProcessFlotte}"  nextLabel="#{msg['btn.suivant']}" backLabel="#{msg['btn.prescedent']}" >
+                    <p:tab  id="flotteinfo" title="Infos Flotte">
+                        <p:growl id="msgsAux2"  globalOnly="true"  severity="info,warn"/>   
+                        <fieldset> <legend class="text-uppercase small" ><h:outputLabel value="Flotte" /></legend>
+                            <legend class="text-uppercase small" ><h:outputLabel value="Option" />
+                                <p:selectOneRadio  id="consFlotte" value="#{flotteBean.optionFlotte}" requiredMessage="choix obligatoire">
+                                    <f:selectItem  itemLabel="Choisir une flotte"  itemValue="choixFlotte" />
+                                    <f:selectItem itemLabel="Créer une flotte"  itemValue="creationFlotte" />
+                                    <p:ajax listener="#{flotteBean.choixOperationFlotte()}" update="choixFlotte,creationFlotte,formliste"/>
+                                </p:selectOneRadio>
+                            </legend>
+                            <p:fieldset id="creationFlotte" class="#{flotteBean.hideAjoutFlotteForm} panel-border-none" >
+                                <p:panel  rendered="#{flotteBean.hideAjoutFlotteForm}" class="panel-border-none">
+                                    <ui:include src="flotte_ajout.xhtml"/>
+                                </p:panel>
+                            </p:fieldset>
+
+                            <p:fieldset id="choixFlotte"  class="#{!flotteBean.hideAjoutFlotteForm} panel-border-none">
+                                <ui:include src="flotte_choix.xhtml"/>
+                            </p:fieldset>
+                        </fieldset>
+                    </p:tab>
+
+                    <p:tab id="personal" rendered="#{flotteBean.skipStep}"  title="#{msg['client.title']}" class="police_label">
+                        <p:growl id="test"  globalOnly="true"  severity="info,warn"/>
+                        <div class="panel">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <h:outputLabel  value="Non propriétaire"  for="tll5" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:selectBooleanCheckbox id="tll5"  value="#{flotteBean.nonProprietaire}"  class="pull-left" >
+                                    <p:ajax update="formliste" />
+                                </p:selectBooleanCheckbox>
+                            </div>
+                            <div class="panel-body">
+                                <div class="panel-body">
+                                    <div id ='mlk' class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{flotteBean.nonProprietaire}" value="#{msg['client.nom']}"  for="nombr" class=" pull-left" /><h:outputLabel rendered="#{flotteBean.nonProprietaire}" value="*" class="etoile_rouge pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText rendered="#{flotteBean.nonProprietaire}" value="#{flotteBean.nomBeneficiaire}" required="true"  requiredMessage="#{msg['client.nom.requiredMessage']}" 
+                                                         id="nombr" class="form-control" placeholder="#{msg['client.nom']}">
+                                                <p:ajax event="keyup" update="nomMessagebr"/>
+                                            </p:inputText>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message for="nombr"  id="nomMessagebr" class="errorClass" />
+                                        </div> 
+                                    </div>
+                                    <div id ='mlk2' class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{flotteBean.nonProprietaire}"  value="#{msg['client.prenom']}"  for="prenombr" class=" pull-left" /><h:outputLabel value="*" rendered="#{flotteBean.nonProprietaire}" class="etoile_rouge pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText rendered="#{flotteBean.nonProprietaire}" value="#{flotteBean.prenomBeneficiaire}"  id="prenombr" styleClass="form-control" placeholder="#{msg['client.prenom']}"
+                                                         requiredMessage="#{msg['client.prenom.requiredMessage']}" >
+                                                <p:ajax  event="keyup" update="prenomMessagebr"/>
+                                            </p:inputText>  
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message  id="prenomMessagebr" for="prenombr"/>
+                                        </div>
+                                    </div>
+                                    <div id ='mlk22' class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{flotteBean.nonProprietaire}"  value="#{msg['client.tel']}"  for="telnombr" class=" pull-left" /><h:outputLabel value="*" rendered="#{flotteBean.nonProprietaire}" class="etoile_rouge pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText rendered="#{flotteBean.nonProprietaire}" value="#{flotteBean.telBeneficiaire}"  id="telnombr" styleClass="form-control" placeholder="#{msg['client.tel']}"
+                                                         requiredMessage="#{msg['client.tel.requiredMessage']}" >
+                                                <p:ajax  event="keyup" update="telMessagebr"/>
+                                            </p:inputText>  
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message  id="telMessagebr" for="telnombr"/>
+                                        </div>
+                                    </div>
+                                    <div id ='mlk23' class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{flotteBean.nonProprietaire}"  value="#{msg['client.profession']}"  for="profnombr" class=" pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText rendered="#{flotteBean.nonProprietaire}" value="#{flotteBean.professionBeneficiaire}"  id="profnombr" styleClass="form-control" placeholder="#{msg['client.profession']}"
+                                                         requiredMessage="#{msg['client.profession.requiredMessage']}" >
+                                                <p:ajax  event="keyup" update="profMessagebr"/>
+                                            </p:inputText>  
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message  id="profMessagebr" for="profnombr"/>
+                                        </div>
+                                    </div>
+                                    <div id ='mlk23' class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{flotteBean.nonProprietaire}"  value="#{msg['client.numeropiece']}"  for="numpnombr" class=" pull-left" /><h:outputLabel value="*" rendered="#{flotteBean.nonProprietaire}" class="etoile_rouge pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText rendered="#{flotteBean.nonProprietaire}" value="#{flotteBean.numPieceBeneficiaire}"  id="numpnombr" styleClass="form-control" placeholder="#{msg['client.numeropiece']}"
+                                                         requiredMessage="#{msg['client.numeropiece.requiredMessage']}" >
+                                                <p:ajax  event="keyup" update="numpMessagebr"/>
+                                            </p:inputText>  
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message  id="numpMessagebr" for="numpnombr"/>
+                                        </div>
+                                    </div>
+                                    <div id ='mlk23' class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel rendered="#{flotteBean.nonProprietaire}"  value="#{msg['client.adresse']}"  for="adrnombr" class=" pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText rendered="#{flotteBean.nonProprietaire}" value="#{flotteBean.adresseBeneficiaire}"  id="adrnombr" styleClass="form-control" placeholder="#{msg['client.adresse']}"
+                                                         requiredMessage="#{msg['client.numeropiece.requiredMessage']}" >
+                                                <p:ajax  event="keyup" update="adrMessagebr"/>
+                                            </p:inputText>  
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:message  id="adrMessagebr" for="adrnombr"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <fieldset> <legend class="text-uppercase small" ><h:outputLabel value="#{msg['client.title']}" /></legend>
+                                    <legend class="text-uppercase small" ><h:outputLabel value="Option" />
+                                        <p:selectOneRadio  id="cons" value="#{flotteBean.option}" requiredMessage="#{msg['client.option.requiredMessage']}">
+                                            <f:selectItem  itemLabel="#{msg['client.choisir']}"  itemValue="choix" />
+                                            <f:selectItem itemLabel="#{msg['client.creer']}"  itemValue="creation" />
+                                            <p:ajax listener="#{flotteBean.choixOperation()}" update="choix,creation"/>
+                                        </p:selectOneRadio>
+                                    </legend>
+                                    <p:fieldset id="creation" class="#{flotteBean.hideAjoutClientForm} panel-border-none" >
+                                        <p:panel  rendered="#{flotteBean.hideAjoutClientForm}" class="panel-border-none">
+                                            <ui:include src="client_ajout.xhtml"/>
+                                        </p:panel>
+                                    </p:fieldset>
+
+                                    <p:fieldset id="choix"  class="#{!flotteBean.hideAjoutClientForm} panel-border-none">
+                                        <ui:include src="client_choix.xhtml"/>
+                                    </p:fieldset>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </p:tab>
+
+                    <p:tab  id="garanties"  title="Informations sur la souscription">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <!--p:messages /-->
+                                <ui:include src="garanties.xhtml"/>
+                            </div>
+                        </div>
+                    </p:tab>
+
+                    <p:tab  id="CategorieGaranties" title="#{msg['souscription.auto.tab.categorie']}  ">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <ui:include src="categorieGaranties_2.xhtml"/>
+                            </div>
+                        </div>
+                    </p:tab>
+
+                    <p:tab id="confirm" title="#{msg['btn.confirmation']}">
+                        <fieldset><legend>#{msg['btn.confirmation']}</legend>
+
+                            <p:panel header="Information sur la flotte"  toggleable="true" collapsed="true">
+
+                                <p:panelGrid class="table" columns="8">
+                                    <p:outputLabel for="designationflotte01" value="Designation :"/>
+                                    <h:outputText id="designationflotte01" value="#{flotteBean.flotteToSave.designation} #{flotteBean.flotteSelected.designation}"/>
+                                    <p:outputLabel for="descriptionflotte01" value="Description :"/>
+                                    <h:outputText id="descriptionflotte01" value="#{flotteBean.flotteToSave.description} #{flotteBean.flotteSelected.description}"/>
+                                    <p:outputLabel for="datecreationflotte01" value="Date création :"/>
+                                    <h:outputText id="datecreationflotte01" value="#{flotteBean.formatDate(flotteBean.flotteToSave.dateCreation)} #{flotteBean.formatDate(flotteBean.flotteSelected.dateCreation)}"/>
+                                    <p:outputLabel for="compagnieflotte01" value="Compagnie :"/>
+                                    <h:outputText id="compagnieflotte01" value="#{flotteBean.flotteToSave.compagnie.abbreviation} #{flotteBean.flotteSelected.compagnie.abbreviation}"/>
+                                </p:panelGrid>
+
+                            </p:panel>      
+
+                            <p:panel header="#{msg['message.client.titre']}"  toggleable="true" collapsed="false">
+
+                                <p:panelGrid class="table" columns="6">
+                                    <p:outputLabel for="nom2" value="Souscripteur :"/>
+                                    <h:outputText id="nom2" value="#{flotteBean.finalClient.nom} #{flotteBean.flotteSelected.client.nom}"/>
+                                    <p:outputLabel for="tel2" value="Téléphone :"/>
+                                    <h:outputText id="tel2" value="#{flotteBean.finalClient.telephoneMobile} #{flotteBean.flotteSelected.client.telephoneMobile}"/>
+                                    <p:outputLabel for="addresse2" value="Adresse :"/>
+                                    <h:outputText id="addresse2" value="#{flotteBean.finalClient.adresse} #{flotteBean.flotteSelected.client.adresse}"/>
+                                </p:panelGrid>
+
+                            </p:panel>
+                            <p:panel header="CARACTERISTIQUES DU VEHICULE ET GARANTIES"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                                <p:dataTable id="vehiclesTableConfirmation" var="vehiclec" value="#{flotteBean.flotteListeFacture}" rowKey="#{vehiclec.idFacture}" emptyMessage="#{msg['tableau.vide']}">  
+                                    <p:ajax event="rowToggle" listener="#{flotteBean.onRowToggle3}" update="displayConfirmation" />  
+
+                                    <p:column style="width:5%" exportable="false">  
+                                        <p:rowToggler />  
+                                    </p:column>  
+                                    <p:column headerText="Afficher prime" >
+                                        <p:commandLink title="Afficher prime" class=" btn-sm btn-info info glyphicon glyphicon-refresh"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" update="formliste:detail"  action ="#{flotteBean.initsimu()}">
+                                            <f:setPropertyActionListener target="#{flotteBean.factureSelected}" value="#{vehiclec}"/>
+                                        </p:commandLink>
+                                    </p:column>
+                                    <p:column headerText="Immatriculation" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.numeroImmatriculation}" />
+                                    </p:column>
+                                    <p:column headerText="Genre" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.genre}" />
+                                    </p:column>
+                                    <p:column headerText="Marque" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.marque}" />
+                                    </p:column>
+                                    <p:column headerText="Type marque" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.typeMarqueVehicule}" />
+                                    </p:column>
+                                    <p:column headerText="Energie" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.energie.libelleFr}" />
+                                    </p:column>
+                                    <p:column headerText="Type vitre" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.typeVitres.typeVitre}" />
+                                    </p:column>
+                                    <p:column headerText="Nbre de place" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.nombrePlaces}" />
+                                    </p:column>
+                                    <p:column headerText="P. fiscale" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.puissance}" />
+                                    </p:column>
+                                    <p:column headerText="P. reelle" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.puissanceReelle}" />
+                                    </p:column>
+                                    <p:column headerText="V.N" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.valeurNeuve}" />
+                                    </p:column>
+                                    <p:column headerText="V.V" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.valeurvenale}" />
+                                    </p:column>
+                                    <p:column headerText="N° chassi" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.numChassis}" />
+                                    </p:column>
+                                    <p:column headerText="N° moteur" >
+                                        <h:outputText value="#{vehiclec.objetVoiture.numMoteur}" />
+                                    </p:column>
+
+                                    <p:rowExpansion>  
+                                        <p:dataTable id="displayConfirmation" var="categarC" value="#{vehiclec.propositions}" sortBy="#{categarC.compagnieGuarantie.categorie.poids}" >  
+                                            <f:facet name="header">  
+                                                <h:outputText value="Catégories et garanties"></h:outputText>  
+                                            </f:facet>  
+                                            <p:column>  
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Catégorie"></h:outputText>  
+                                                </f:facet>  
+                                                <h:outputText  value="#{categarC.compagnieGuarantie.categorie.libelle}" />  
+                                            </p:column>
+                                            <p:column>  
+                                                <f:facet name="header">  
+                                                    <h:outputText value="Garanties"></h:outputText>  
+                                                </f:facet>  
+                                                <h:outputText  value="#{categarC.compagnieGuarantie.guarantie.symbole}" />  
+                                            </p:column>  
+                                        </p:dataTable>  
+                                    </p:rowExpansion>  
+                                </p:dataTable>   
+                            </p:panel>
+
+                            <p:panel header="COMPAGNIES CHOISIES"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+                                <p:panelGrid class="table" columns="2">
+                                    <p:outputLabel for="compagn" value="Compagnie :"/>
+                                    <h:outputText id="compagn" value="#{flotteBean.flotteToSave.compagnie.designation} #{flotteBean.flotteSelected.compagnie.designation}"/>
+                                </p:panelGrid>
+                            </p:panel>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                    <p:commandButton value="#{msg['btn.enregistrer']}" update="formliste,msgsAux" action="#{flotteBean.enregistrerSouscription()}" onstart="PF('loadProcess').block()" oncomplete="PF('loadProcess').unblock(),PF('modifier').show()" class="btn btn-success btn-xs pull-right"/>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset> <legend>Simulation</legend>
+                            <ui:include src="simulation.xhtml"/>
+                        </fieldset>
+                    </p:tab>
+                </p:wizard>
+            </h:form>
+        </div>
+        <pe:blockUI widgetVar="loadProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>   
+            </h:panelGrid>  
+        </pe:blockUI>  
+    </ui:composition> 
+
+</html>
+

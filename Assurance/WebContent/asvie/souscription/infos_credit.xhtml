@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition>
+
+        <p:panel header="#{msg['titre.typeDuClient']}"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel for="tynom2bmg" value="#{msg['titre.type']} :"/>
+                <h:outputText id="tynom2bmg" value="#{souscriptionBean.groupe eq 0? msg['client.type.physique'] : msg['client.type.morale'] }"/>
+                <p:outputLabel for="getel2bmg" rendered="#{souscriptionBean.groupe eq 1?true:false}" value="#{msg['titre.genre']} :"/>
+                <h:outputText id="getel2bmg" rendered="#{souscriptionBean.groupe eq 1?true:false}" value="#{souscriptionBean.genreGroup eq 0 ? msg['titre.groupe'] : msg['titre.entreprise']}"/>
+
+            </p:panelGrid>
+
+        </p:panel>
+
+        <p:panel header="#{msg['titre.infogroupe']}"  rendered="#{souscriptionBean.groupe eq 1 and souscriptionBean.genreGroup eq 0?true:false}" toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel for="anamG2tuiu" value="#{msg['titre.nomDuGroupe']} :"/>
+                <h:outputText id="anamG2tuiu" value="#{souscriptionBean.grpAssuranceCredit.nomGroup}"/>
+                <p:outputLabel for="aDesG2tuiu" value="#{msg['titre.descriptionDuGroupe']} :"/>
+                <h:outputText id="aDesG2tuiu" value="#{souscriptionBean.grpAssuranceCredit.descriptionGroup}"/>
+                <p:outputLabel for="aadd2tuiu" value="#{msg['titre.adresse']} :"/>
+                <h:outputText id="aadd2tuiu" value="#{souscriptionBean.grpAssuranceCredit.adresseGroup}"/>
+                <p:outputLabel for="atel2tuiu" value="#{msg['titre.numeroDeTelephone']} :"/>
+                <h:outputText id="atel2tuiu" value="#{souscriptionBean.grpAssuranceCredit.numeroTelephoneGroup }"/>
+                <p:outputLabel value="#{msg['titre.dateDeCreation']} :"/>
+                <h:outputText value="#{souscriptionBean.grpAssuranceCredit.dateCreationGroup}"/>
+
+            </p:panelGrid>
+
+        </p:panel>
+
+        <p:panel header="#{msg['titre.infoentreprise']}" rendered="#{souscriptionBean.groupe eq 1 and souscriptionBean.genreGroup eq 1 ?true:false}" toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel for="namG2tuiu" value="#{msg['titre.nomDeLEntreprise']} :"/>
+                <h:outputText id="namG2tuiu" value="#{souscriptionBean.grpAssuranceCredit.nomGroup}"/>
+                <p:outputLabel for="DesG2tuiu" value="#{msg['titre.descriptionDeLEntreprise']} :"/>
+                <h:outputText id="DesG2tuiu" value="#{souscriptionBean.grpAssuranceCredit.descriptionGroup}"/>
+                <p:outputLabel for="add2tuiu" value="#{msg['titre.adresse']} :"/>
+                <h:outputText id="add2tuiu" value="#{souscriptionBean.grpAssuranceCredit.adresseGroup}"/>
+                <p:outputLabel for="tel2tuiu" value="#{msg['titre.numeroDeTelephone']} :"/>
+                <h:outputText id="tel2tuiu" value="#{souscriptionBean.grpAssuranceCredit.numeroTelephoneGroup }"/>
+                <p:outputLabel for="dc2tuiu" value="#{msg['titre.dateDeCreation']} :"/>
+                <h:outputText id="dc2tuiu" value="#{souscriptionBean.grpAssuranceCredit.dateCreationGroup}"/>
+                <p:outputLabel for="tp2tuiu" value="#{msg['titre.typePiece']} :"/>
+                <h:outputText id="tp2tuiu" value="#{souscriptionBean.grpAssuranceCredit.typePieceGroup}"/>
+                <p:outputLabel for="np2tuiu" value="#{msg['titre.numeroDeLaPiece']} :"/>
+                <h:outputText id="np2tuiu" value="#{souscriptionBean.grpAssuranceCredit.numeroPieceGroup}"/>
+            </p:panelGrid>
+
+        </p:panel>
+
+        <p:panel header="#{msg['credit.info']}"  toggleable="true" collapsed="true" >
+
+            <p:panelGrid columns="8" class="table">
+                <p:outputLabel  for="vn12bmg" value="#{msg['titre.identifiantEmprunteur']}:"/>
+                <h:outputText class="text-right" id="vn12bmg" value="#{souscriptionBean.assuranceCredit.identifiant}"/>
+                <p:outputLabel value="#{msg['titre.numeroDuPret']} :"/>
+                <h:outputText class="text-right"  value="#{souscriptionBean.assuranceCredit.numeroPret}"/>
+                <p:outputLabel value="#{msg['titre.typeDeRemboursement']} :"/>
+                <h:outputText value="#{souscriptionBean.assuranceCredit.typeDePret}"/>
+                <p:outputLabel value="#{msg['titre.modeDeReglement']} :"/>
+                <h:outputText class="text-right"  value="#{souscriptionBean.assuranceCredit.mensualiteDePayement}"/>
+                <p:outputLabel for="pui2bmg" value="#{msg['titre.montantDuPret']} :"/>
+                <h:outputText id="pui2bmg" value="#{souscriptionBean.assuranceCredit.montantPret}">   
+                    <f:convertNumber pattern="###,##0" type="number" />
+                </h:outputText>
+                <p:outputLabel for="puiRbmg" value="#{msg['titre.tauxDuPret']} :"/>
+                <h:outputText id="puiRbmg" value="#{souscriptionBean.assuranceCredit.tauxDuPret}"/>
+                <p:outputLabel for="vn2bmg" value="#{msg['titre.dateDuPret']} :"/>
+                <h:outputText id="vn2bmg" value="#{souscriptionBean.assuranceCredit.dateDuPret}"/>
+                
+                <p:outputLabel rendered="#{souscriptionBean.assuranceCredit.mensualiteDePayement eq souscriptionBean.autrepayement ?true:false}" value="#{msg['titre.nombreDeMensualite']} :"/>
+                <h:outputText class="text-right" rendered="#{souscriptionBean.assuranceCredit.mensualiteDePayement eq souscriptionBean.autrepayement ?true:false}"  value="#{souscriptionBean.assuranceCredit.nombreMensualite}"/>
+                <p:outputLabel rendered="#{souscriptionBean.groupe eq 1?false:true}" value="#{msg['titre.pretDuConjoint']} :"/>
+                <h:outputText rendered="#{souscriptionBean.groupe eq 1?false:true}" value="#{souscriptionBean.assuranceCredit.pretConjoint}"/>
+                <p:outputLabel   value="#{msg['titre.dateDeLaPremiereEcheance']} :"/>
+                <h:outputText  value="#{souscriptionBean.assuranceCredit.datePremiereEcheance}"/>
+                <p:outputLabel rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalRestantDu ?true:false}" value="#{msg['titre.typeDeCotisation']} :"/>
+                <h:outputText rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalRestantDu ?true:false}" class="text-right"  value="#{souscriptionBean.assuranceCredit.typeCautisation}"/>
+                <p:outputLabel rendered="#{ souscriptionBean.assuranceCredit.typeCautisation  ne null and souscriptionBean.assuranceCredit.typeCautisation eq souscriptionBean.cautisationAnnuelle ?true:false}" value="#{msg['titre.periodeDeLaCotisation']} :"/>
+                <h:outputText  rendered="#{ souscriptionBean.assuranceCredit.typeCautisation  ne null and souscriptionBean.assuranceCredit.typeCautisation eq souscriptionBean.cautisationAnnuelle ?true:false}" value="#{souscriptionBean.assuranceCredit.periodeCautisation}"/>
+                <p:outputLabel  rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalRestantDu ?true:false}" value="#{msg['titre.DateDebutDeLaCotisation']}  :"/>
+                <h:outputText  rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalRestantDu ?true:false}"  value="#{souscriptionBean.assuranceCredit.dateDeputCautisation}"/>
+
+
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['titre.compagniesCourtiersChoisies']}"  toggleable="true" collapsed="true" >
+            <div class="table-responsive">
+                <p:dataTable class="table_label table-responsive" var="compcour" reflow="true" rows="5" value="#{souscriptionBean.listAssuranceCredit}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" 
+                             rowsPerPageTemplate="5,10,15,20,25"  emptyMessage="#{msg[tableau.vide]}"  >                                                    
+                    <p:column headerText="#{msg['titre.compagnie']}">
+                        <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                    </p:column>
+
+                    <p:column headerText="#{msg['titre.courtier']}">
+                        <h:outputText value="#{compcour.courtier.abbreviation}" />
+                    </p:column >
+                    <p:column headerText="#{msg['titre.typeCapitauxGaranties']}">
+                        <h:outputText value="#{compcour.typeCapitauxGaranite}" />
+                    </p:column >
+
+                </p:dataTable>
+            </div>
+
+        </p:panel>
+
+
+    </ui:composition> 
+
+</html>
+

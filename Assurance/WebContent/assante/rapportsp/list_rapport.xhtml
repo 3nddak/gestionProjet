@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+    <ui:composition>
+        <h:form id="listCategorieForm" class="form-horizontal">
+            <p:growl id="msgss" globalOnly="true" showDetail="false"  life="3000"/>
+            <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                <fieldset> 
+                    <legend class=""> <p:outputLabel value="Liste des rapports"></p:outputLabel></legend>
+                    <div class="table-responsive">
+                        <p:dataTable id="listCategorieDataTable" class="table table-hover table-striped" rows="15" rowKey="#{cat.id}" editable="true" editMode="cell"
+                                     emptyMessage="#{msg['tableau.vide']}"
+                                     paginator="true" paginatorPosition="bottom"  var="cat" value="#{rapportSpBean.listRapportSp}"
+                                     selection="#{rapportSpBean.listRapportSpSelected}" >
+
+                            <p:column  headerText="Valeur minimale" filterBy="#{cat.valeurMin}" >
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:outputLabel id="desi" value="#{cat.valeurMin}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{cat.valeurMin}" >
+                                            <p:ajax event="keyup" update="desi,listCategorieForm:msgss"  /> 
+                                        </p:inputText></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column  headerText="Valeur maximale" filterBy="#{cat.valeurMax}" >
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:outputLabel id="desc" value="#{cat.valeurMax}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{cat.valeurMax}" >
+                                            <p:ajax event="keyup" update="desc"  /> 
+                                        </p:inputText></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column  headerText="Taux de variation" filterBy="#{cat.tauxVariation}" >
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:outputLabel id="desct" value="#{cat.tauxVariation}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{cat.tauxVariation}" >
+                                            <p:ajax event="keyup" update="desct"  /> 
+                                        </p:inputText></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="#{msg['titre.pays']}" filterBy="#{cat.compagnie.pays.designationPays}" >
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:outputLabel id="paysLabel" value="#{cat.compagnie.pays.designationPays}" /></f:facet>
+                                    <f:facet name="input">
+                                        <h:selectOneMenu  id="paysMenu" value="#{rapportSpBean.paysSelected}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                          requiredMessage="Veuillez choisir le pays"
+                                                          >
+                                            <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                            <f:selectItems value="#{rapportSpBean.listPays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                            <p:ajax event="keyup" update="paysLabel"  /> 
+                                        </h:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="#{msg['titre.compagnie']}" filterBy="#{cat.compagnie.designation}" >
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:outputLabel id="compLabel" value="#{cat.compagnie.designation}" /></f:facet>
+                                    <f:facet name="input">
+                                        <h:selectOneMenu  id="compagnieMenu" value="#{cat.compagnie}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                          requiredMessage="Veuillez choisir la compagnie"
+                                                          >
+                                            <f:selectItem itemLabel="#{msg['compagnie.designation']}" noSelectionOption="true" />
+                                            <f:selectItems value="#{rapportSpBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.designation}" itemValue="#{compagnie}" />
+                                            <p:ajax event="keyup" update="compLabel"  /> 
+                                        </h:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Type de variation" filterBy="#{cat.typeVariation}" >
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:outputLabel id="typLabel" value="#{cat.typeVariation}" /></f:facet>
+                                    <f:facet name="input">
+                                        <h:selectOneMenu  id="typMenu" value="#{cat.typeVariation}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                          requiredMessage="Veuillez choisir le type de variation"
+                                                          >
+                                            <f:selectItem itemLabel="#{msg['compagnie.designation']}" noSelectionOption="true" />
+                                            <f:selectItems value="#{rapportSpBean.listTypeVariation}" var="type" itemLabel="#{type}" itemValue="#{type}" />
+                                            <p:ajax event="keyup" update="typLabel"  /> 
+                                        </h:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+
+
+                            <p:column headerText="Selection" selectionMode="multiple" width="8%" style="text-align: center;" />
+                        </p:dataTable>
+                    </div>
+
+                    <div class="btn-toolbar">
+                        <p:commandButton class="btn-danger btn" value="#{msg['btn.annuller']}" update="@form" action="#{rapportSpBean.cancel()}" />
+                        <p:commandButton class="btn-danger btn pull-right" value="#{msg['btn.supprimer']}" update="@form" action="#{rapportSpBean.deleteMultipleRapportSp()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" >
+                            <p:confirm icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        <p:commandButton class="btn-imprimer btn pull-right" value="#{msg['btn.modifier']}" update="@form" action="#{rapportSpBean.updateMultipleRapportSp()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                    </div>
+                </fieldset>
+            </div>
+
+        </h:form>
+    </ui:composition> 
+</html>
+

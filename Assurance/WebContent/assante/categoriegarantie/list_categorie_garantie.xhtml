@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <h:form id="listCategorieForm" class="form-horizontal">
+            <p:growl id="msgss" globalOnly="true" showDetail="false"  life="3000"/>
+            <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+              
+                    <fieldset> 
+                        <legend class=""> <p:outputLabel value="#{msg['categorie.liste']} #{msg['garantie.titre']}"></p:outputLabel></legend>
+                        <div class="table-responsive">
+                            <p:dataTable id="listCategorieDataTable" class="table table-hover table-striped" rows="15" rowKey="#{cat.idCategorieGarantieAsSante}" editable="true" editMode="cell"
+                                         emptyMessage="#{msg['tableau.vide']}"
+                                         paginator="true" paginatorPosition="bottom"  var="cat" value="#{categorieGarantieAsSanteBean.listCategorieGarantieAsSante}"
+                                         selection="#{categorieGarantieAsSanteBean.listCategorieGarantieAsSanteSelected}" >
+
+                                <p:column  headerText="#{msg['titre.designation']}" filterBy="#{cat.designation}" >
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:outputLabel id="desi" value="#{cat.designation}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{cat.designation}" required="true" requiredMessage="Veuillez entrer la designation" >
+                                                <p:ajax event="keyup" update="desi,listCategorieForm:msgss"  /> 
+                                            </p:inputText></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column  headerText="#{msg['titre.Description']}" filterBy="#{cat.description}" >
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:outputLabel id="desc" value="#{cat.description}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{cat.description}" >
+                                                <p:ajax event="keyup" update="desc"  /> 
+                                            </p:inputText></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="#{msg['titre.pays']}" filterBy="#{cat.pays.designationPays}" >
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:outputLabel id="paysLabel" value="#{cat.pays.designationPays}" /></f:facet>
+                                        <f:facet name="input">
+                                            <h:selectOneMenu  id="paysMenu" value="#{cat.pays}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                              requiredMessage="Veuillez choisir le pays"
+                                                              >
+                                                <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                                <f:selectItems value="#{categorieGarantieAsSanteBean.listPays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                                <p:ajax event="keyup" update="paysLabel"  /> 
+                                            </h:selectOneMenu>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column  headerText="#{msg['titre.position']}" filterBy="#{cat.poids}" >
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:outputLabel id="poids" value="#{cat.poids}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{cat.poids}" required="true" requiredMessage="#{msg['titre.position.message']}" >
+                                                <p:ajax event="keyup" update="poids"  /> 
+                                            </p:inputText></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                
+                                <p:column headerText="Activé" width="10%" style="width:36px;text-align:center" >
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <p:outputLabel  id="TA" class="#{cat.active}"> <i class="icon-default  text-green fa fa-check " /></p:outputLabel>
+                                            <p:outputLabel  id="TB" class="#{!cat.active}"> <i class="icon-default  text-red fa fa-close " /></p:outputLabel>
+                                        </f:facet>
+                                        <f:facet name="input"> 
+                                            <p:selectBooleanCheckbox value="#{cat.active}" >
+                                                <p:ajax update="TA,TB" />
+                                            </p:selectBooleanCheckbox>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Selection" selectionMode="multiple" width="8%" style="text-align: center;" />
+                            </p:dataTable>
+                        </div>
+
+                        <div class="btn-toolbar">
+                            <p:commandButton class="btn-danger btn" value="#{msg['btn.annuller']}" update="@form" action="#{categorieGarantieAsSanteBean.cancel()}" />
+                            <p:commandButton class="btn-danger btn pull-right" value="#{msg['btn.supprimer']}" update="@form" action="#{categorieGarantieAsSanteBean.deleteMultipleCategorieGarantieAsSante()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" >
+                                <p:confirm icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            <p:commandButton class="btn-imprimer btn pull-right" value="#{msg['btn.modifier']}" update="@form" action="#{categorieGarantieAsSanteBean.updateMultipleCategorieGarantieAsSante()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                        </div>
+                    </fieldset>
+               
+            </div>
+        </h:form>
+    </ui:composition> 
+</html>
+

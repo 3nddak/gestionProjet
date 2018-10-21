@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['titre.statistique']}"></p:outputLabel></legend>
+            </fieldset>
+
+            <h:form class="form-horizontal">                                        
+                <p:messages autoUpdate="true"/>  
+                <p:outputPanel id="container" class="panel-border-none"  > 
+                    <p:fieldset  legend="#{msg['titre.statistique']}" class="panel-border-none" >
+                        <div class="panel-default">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 #{(statBean.u.compagnie!=null || statBean.u.courtier!=null || statBean.u.pointsVente!=null || statBean.u.guichets!=null )?false:true}">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="console"  rendered="#{(statBean.u.compagnie!=null || statBean.u.courtier!=null || statBean.u.pointsVente!=null || statBean.u.guichets!=null )?false:true}" value="#{msg['titre.typtiers']}" class="pull-left text-left"/>    
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu  id="console"  rendered="#{(statBean.u.compagnie!=null || statBean.u.courtier!=null || statBean.u.pointsVente!=null || statBean.u.guichets!=null )?false:true}" required="true" class="form-control" value="#{statBean.console}" requiredMessage="#{msg['titre.typetiers.requiredMessage']}">                                          
+                                                <f:selectItem itemLabel="#{msg['titre.typtiers']}" itemDisabled="false" />
+                                                <f:selectItem itemLabel="#{msg['titre.compagnie']}" itemValue="#{msg['titre.compagnie']}" />
+                                                <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue="#{msg['titre.courtier']}" />
+                                                <f:selectItem itemLabel="#{msg['titre.pdv']}" itemValue="#{msg['titre.pdv']}" />
+                                                <!--f:selectItem itemLabel="Ncp" itemValue="ncp" /-->
+                                                <p:ajax listener="#{statBean.listTiers()}" update="cc" />
+                                                <f:ajax event="keyup" render="consoleMessage"/> 
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <p:message for="console"  id="consoleMessage" class="errorClass" />  
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 #{(statBean.u.compagnie!=null || statBean.u.courtier!=null || statBean.u.pointsVente!=null || statBean.u.guichets!=null )?false:true}">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="cc" value="#{msg['titre.tiers']}"  rendered="#{(statBean.u.compagnie!=null || statBean.u.courtier!=null || statBean.u.pointsVente!=null || statBean.u.guichets!=null )?false:true}" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <p:autoComplete class="" id="cc"  rendered="#{(statBean.u.compagnie!=null || statBean.u.courtier!=null || statBean.u.pointsVente!=null || statBean.u.guichets!=null )?false:true}" required="true" requiredMessage="#{msg['titre.tiers.requiredMessage ']}" value="#{statBean.selectedObjet}" dropdown="true" completeMethod="#{statBean.tiersFilter}"  >
+                                                <f:ajax event="keyup" render="ccMessage"/> 
+                                                <p:ajax event="itemSelect" update="cc" />   
+                                            </p:autoComplete>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <p:message for="cc"  id="ccMessage" class="errorClass" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <p:outputLabel for="mask" value="#{msg['titre.dateDebut']} :" />
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <p:calendar id="mask" class="form-control" value="#{statBean.du}" pattern="dd-MM-yyyy" mask="true" >
+                                            </p:calendar>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <p:outputLabel for="mask" value="#{msg['titre.dateFin']}:" />
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <p:calendar id="mask2" class="form-control"  value="#{statBean.au}" pattern="dd-MM-yyyy" mask="true">
+                                            </p:calendar>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                            <div class="btn-toolbar">
+                                                <p:commandButton class="btn-primary btn" value="#{msg['btn.generer']}" update="container" action="#{statBean.generateModel}" />  
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <td class="active"> #{msg['notification.de']}</td>
+                                                        <td class="success">#{msg['notification.dt']}</td>
+                                                        <td class="warning">#{msg['notification.demandeValidee']}</td>
+                                                        <td class="warning">#{msg['notification.demandeAccepte']}</td>
+                                                        <td class="danger">#{msg['notification.dr']}</td>
+                                                    </thead>
+                                                    <tr>
+                                                        <td >#{statBean.demandes1}</td>
+                                                        <td >#{statBean.demandes2}</td>
+                                                        <td >#{statBean.demandes3}</td>
+                                                        <td >#{statBean.demandes5}</td>
+                                                        <td >#{statBean.demandes4}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 #{statBean.model==null ?false:true}">
+                                            <p:chart type="pie"  class="" widgetVar="browserChart" rendered="#{statBean.model==null ?false:true}" model="#{statBean.model}"  />
+                                            <p:socket  onMessage="handleMessage" channel="/browser" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </p:fieldset>
+
+                </p:outputPanel>  
+
+            </h:form>
+            <script type="text/javascript">
+                function handleMessage(data) {
+                    var series = [],
+                            chart = PF('browserChart').plot;
+
+                    for (var key in data) {
+                        series.push([key, data[key]]);
+                    }
+
+                    chart.series[0].data = series;
+                    chart.replot();
+                }
+            </script>
+
+
+
+        </div>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,347 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="panel">
+            <div class="panel-heading bg-purple">
+                <p:panel toggleable="true" collapsed="true" header="#{msg['recherche.titre']}">
+                    <h:form  class="form-horizontal" id="listf">
+                        <div class="search-margin row">
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="pays"  value="Pays" class="pull-left text-left"/>    
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                    <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{factureCourtierBean.paysSelected}" >                                          
+                                        <f:selectItem itemLabel="Tous les pays" itemDisabled="false" />
+                                        <f:selectItems var="pays" value="#{factureCourtierBean.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                                    </h:selectOneMenu>
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="compagnie"  value="Compagnie" class="pull-left text-left"/>                              
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                    <h:selectOneMenu id="compagnie" value="#{factureCourtierBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                        <f:selectItem itemLabel="Tous les Compagnies" itemDisabled="false" />
+                                        <f:selectItems value="#{factureCourtierBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                                    </h:selectOneMenu>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="courtier"  value="Courtier"/>   
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                    <h:selectOneMenu id="courtier"  converter="entityConverter" value="#{factureCourtierBean.courtierSelected}" class="form-control" >                                          
+                                        <f:selectItem itemLabel="Type tiers" itemDisabled="false" />
+                                        <f:selectItems var="courtier" value="#{factureCourtierBean.listCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="pv"  value="Point de vente" class="pull-left text-left"/>                          
+                                </div>  
+                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                    <h:selectOneMenu id="pv"  value="#{factureCourtierBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                        <f:selectItem itemLabel="Point de vente" itemDisabled="false" />
+                                        <f:selectItems var="pv" value="#{factureCourtierBean.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="gt"  value="Guichet" class="pull-left text-left"/>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                    <h:selectOneMenu id="gt"  value="#{factureCourtierBean.guichetSelected}"  converter="entityConverter" class="form-control" >                                          
+                                        <f:selectItem itemLabel="Guichets" itemDisabled="false" />
+                                        <f:selectItems var="guichet" value="#{factureCourtierBean.listGuichet}" itemLabel="#{guichet.designation}" itemValue="#{guichet}" />            
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <p:outputLabel for="mask" value="DATE DEBUT" />
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                    <p:calendar id="mask"  pattern="dd-MM-yyyy" class="form-control" mask="true" value="#{factureCourtierBean.dateDebut}" >
+                                    </p:calendar>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <p:outputLabel for="mask" value="DATE FIN" />
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                    <p:calendar id="mask2"   pattern="dd-MM-yyyy" class="form-control" mask="true" value="#{factureCourtierBean.dateFin}">
+                                    </p:calendar>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <p:commandButton value="#{msg['btn.rechercher']}" update="message1:facture,@form" class="btn-imprimer btn btn-xs pull-right" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  action="#{factureCourtierBean.trier()}"  />
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </h:form>
+                </p:panel>
+            </div>
+        </div>
+        <h:form  class="form-horizontal" id="message1">
+            <div class="panel">
+                <!--p:fieldset style="margin-bottom:5px"--> 
+                <div class="panel-heading bg-purple"> 
+                    <p:outputLabel value="#{msg['message.titres']}"></p:outputLabel>
+                </div>
+                <div class="panel-body"> 
+                    <p:contextMenu for="facture " style="background-color: oldlace" >
+                        <p:menuitem value="#{msg['btn.imprimer']}" icon="fa fa-print" action="#{factureCourtierBean.doGetA()}" target="/" ajax="false"  />
+                        <p:menuitem value="#{msg['btn.actualiser']}" icon="fa fa-refresh" update="@form"/>
+                        <p:menuitem value="#{msg['btn.modifier']}" icon="fa fa-edit" oncomplete="PF('modifier').show()" update="detail3" actionListener="#{factureCourtierBean.listener1()}" >
+
+                        </p:menuitem>
+
+                        <p:menuitem value="#{msg['btn.rejeter']}" icon="fa fa-trash" update="@form,detail" actionListener="#{factureCourtierBean.rejeteFacture()}">
+                            <p:confirm header="Confirmation" message="Etes-vous sûr ?"  icon="ui-icon-alert" />
+                        </p:menuitem>
+                        <p:menuitem value="#{msg['btn.email']}" icon="fa fa-at" oncomplete="PF('mailTo').show()"  update="mailto" >
+                            <f:setPropertyActionListener value="#{factureCourtierBean.selectedFacture.objetVoiture.client.email}" target="#{factureCourtierBean.adresseRecepteur}" /> 
+                        </p:menuitem>
+
+                    </p:contextMenu>
+
+                    <p:dataTable id="facture" paginator="true" rows="4"  selection="#{factureCourtierBean.selectedFacture}" selectionMode="single" rowKey="#{facture.idFacture}" value="#{factureCourtierBean.listFacturesNonTraitees}" var="facture" emptyMessage="#{msg['tableau.vide']}"    style="padding:0px;margin: 0px; ">
+                        <p:column class="list-group">
+                            <p:commandLink onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="col-lg-12 lien_liste list-group-item mataille"  action="#{factureCourtierBean.detailFacture()}" style="text-align:left; margin: 0px;padding:0px " update="detail">
+
+                                <p:outputLabel class="col-md-12 text-center " style="#{facture.couleur}; color: white;"  value="#{facture.dateTraitement}" />
+                                <p:graphicImage class="img-circle col-md-3" library="img" name="/pdf.png" width="20"/>
+                                <p:outputLabel class="col-md-9 text-right " value="#{facture.compagnie.abbreviation} - #{facture.courtier.abbreviation}"/>
+                                <p:outputLabel class="col-md-12 text-right " value="#{msg['demande.traite']}"/>
+
+                                <f:setPropertyActionListener value="#{facture}" target="#{factureCourtierBean.selectedFacture}" /> 
+                            </p:commandLink>
+
+                        </p:column>
+                    </p:dataTable>
+                </div> 
+            </div> 
+            <!--/p:fieldset--> 
+
+        </h:form>
+        <h:form>
+            <p:remoteCommand name="newProposition" process="@this" actionListener ="#{factureCourtierBean.init()}" update="message1" autoRun="false"/>
+        </h:form>
+
+
+
+        <p:dialog widgetVar="mailTo">
+            <h:form id="mailto">
+
+
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="destinataire" value="#{msg['message.destinataire']} :"/>
+                    <h:inputText id="destinataire" value="#{factureCourtierBean.adresseRecepteur}"/>
+                    <p:outputLabel for="objet" value="#{msg['message.objet']} :"/>
+                    <p:inputText id="objet" value="#{factureCourtierBean.objet}"/>
+                    <p:outputLabel for="message" value="#{msg['message.titre']} :"/>
+                    <p:inputTextarea id="message" value="#{factureCourtierBean.message}"/>
+                    <p:commandButton   class="btn-danger  danger" icon="fa fa-close" oncomplete="PF('mailTo').hide()" value="#{msg['btn.annuller']}"/> 
+                    <p:commandButton  icon="fa fa-send" onstart="PF('mailTo').hide()"  actionListener="#{factureCourtierBean.sendEmail()}" class="btn-success success"  value="#{msg['btn.envoyer']} :"/> 
+                    <p:growl for="somekey2"/>
+                </p:panelGrid>
+
+            </h:form>   
+        </p:dialog>
+
+        <p:dialog widgetVar="modifier" modal="true" width="1000" height="400" >
+            <h:form id="detail3" class="form-control">
+                <p:fieldset legend="#{msg['garantie.souscrite']}"   toggleable="true" collapsed="false">                          
+                    <p:commandButton value="Ajouter"  icon="fa fa-plus" class="btn-success success" oncomplete="PF('addGarantie').show()" update="detail2"  action="#{factureCourtierBean.listener2()}" >
+                    </p:commandButton>
+
+                    <p:dataTable id="tab" editMode="cell" editable="true"  emptyMessage="" paginator="true" var="proposition"  rowKey="#{proposition.idPropositions}" value="#{factureCourtierBean.listPropositionselect}">
+
+                        <p:columnGroup type="header">
+                            <p:growl  >
+                                <p:column rowspan="2" headerText="#{msg['garantie.titre']}"></p:column>
+
+                                <p:column rowspan="2" headerText="#{msg['tableau.primeannuelle']}" />
+                                <p:column rowspan="2" headerText="Choisir Option" />
+                                <p:column rowspan="2" headerText="Choisir tranche" />
+                                <p:column rowspan="2" headerText="Autre tranche" />
+                                <p:column colspan="4" headerText="#{msg['tableau.redmaj']}" />
+                                <p:column rowspan="2" headerText="#{msg['tableau.generique']}"  />
+                                <p:column rowspan="2" headerText="#{msg['tableau.primenette']}"  />
+                                <p:column rowspan="2" headerText="Actions"  />
+                            </p:growl>
+                            <p:row>
+                                <p:column headerText="#{msg['tableau.bns']}" />
+                                <p:column headerText="#{msg['tableau.red']}" />
+                                <p:column headerText="#{msg['tableau.mls']}" />
+                                <p:column headerText="#{msg['tableau.total']}" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:column   >
+                            <h:outputText  value="#{proposition.compagnieGuarantie.guarantie.symbole}" />
+                        </p:column>
+                        <p:column class="text-right" >
+                            <h:outputText value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(proposition.primePropose)}"/>
+
+                        </p:column>
+                        <p:column   >
+                            <p:cellEditor >
+                                <f:facet name="output" rendered="#{proposition.compagnieGuarantie.option}" >
+                                    <p:outputLabel id="HH" value="#{proposition.optionActive}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:selectOneMenu rendered="#{proposition.compagnieGuarantie.option}" id="pss1" value="#{proposition.optionActive}" >
+                                        <f:selectItem itemLabel="opt1: #{proposition.compagnieGuarantie.option1}" itemValue="1" />
+                                        <f:selectItem itemLabel="opt2: #{proposition.compagnieGuarantie.option2}" itemValue="2" />
+                                        <f:selectItem itemLabel="opt3: #{proposition.compagnieGuarantie.option3}" itemValue="3" />
+                                        <p:ajax update="HH,@form" listener="#{factureCourtierBean.updateTable()}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column  >
+                            <p:cellEditor >
+                                <f:facet name="output" >
+                                    <p:outputLabel id="HH11" rendered="#{proposition.compagnieGuarantie.option}" value="#{proposition.optionActive}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:selectOneMenu rendered="#{proposition.compagnieGuarantie.option and proposition.compagnieGuarantie.guarantie.idRegle eq 7}" id="pss" value="#{proposition.optionActive}" >
+                                        <f:selectItem itemLabel="tranche1: #{proposition.compagnieGuarantie.capitaleGarantieOp1} prime: #{proposition.compagnieGuarantie.option1}" itemValue="1" />
+                                        <f:selectItem itemLabel="tranche1: #{proposition.compagnieGuarantie.capitaleGarantieOp2} prime: #{proposition.compagnieGuarantie.option2}" itemValue="2" />
+                                        <f:selectItem itemLabel="tranche1: #{proposition.compagnieGuarantie.capitaleGarantieOp3} prime: #{proposition.compagnieGuarantie.option3}" itemValue="3" />
+                                        <p:ajax update="HH11,@form" listener="#{factureCourtierBean.updateTable()}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column   >
+                            <p:cellEditor rendered="#{proposition.compagnieGuarantie.guarantie.idRegle==7}" >
+                                <f:facet name="output" >
+                                    <p:outputLabel id="bb" value="#{proposition.compagnieGuarantie.capitaleGarantieAutre}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{proposition.compagnieGuarantie.capitaleGarantieAutre}" >
+                                        <p:ajax event="blur" update="@form" listener="#{factureCourtierBean.updateTable()}"/>
+                                        <p:ajax event="keyup" update="bb" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+
+                        </p:column>
+
+                        <p:column class="text-right">
+                            <h:outputText value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(proposition.bonus)}"/>
+                        </p:column>
+                        <p:column class="text-right">
+                            <h:outputText value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(proposition.reduction)}"/>
+                        </p:column>
+                        <p:column class="text-right">
+                            <h:outputText value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(proposition.malus)}"/>
+                        </p:column>
+                        <p:column class="text-right">
+                            <h:outputText value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(proposition.montant)}"/>
+                        </p:column>
+                        <p:column class="text-right">
+                            <h:outputText value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(proposition.taxeGenerique)}"/>
+                        </p:column>
+                        <p:column class="text-right" >
+                            <h:outputText value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(proposition.prime)}"/>
+                        </p:column>
+                        <p:column  width="10%" >
+                            <p:commandButton class="btn-danger  danger" icon="fa fa-close"  action="#{factureCourtierBean.supprimer()}" update="detail3">
+                                <f:setPropertyActionListener target="#{factureCourtierBean.propositionSelect}" value="#{proposition}"/>
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:fieldset>
+                <p:panel  toggleable="true" collapsed="false" style="margin-bottom:20px" id="tab2">
+                    <p:panelGrid columns="2" layout="grid" >
+                        <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.primenette']}:" for="psm"></p:outputLabel>
+                        <h:outputText id="psm" class="form-control text-right" value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(factureCourtierBean.selectedFacture1.primeNettennuelle)}"/>
+
+                        <p:outputLabel class="form-control bg-purple" value="Durrée de fractionnement:" for="fractd"></p:outputLabel>
+                        <p:outputLabel class="form-control text-right" id="fractd" value="#{factureCourtierBean.selectedFacture1.periodeDeFractionnement()}"/>
+
+
+                        <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.fractionnement']}:" for="fract11"></p:outputLabel>
+                        <p:outputLabel class="form-control text-right" id="fract11" value="#{factureCourtierBean.selectedFacture1.primeFracionne}">
+                            <f:convertNumber pattern="###,##0" type="number" />
+                        </p:outputLabel>
+
+                        <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.bonus']}:" for="bnm"></p:outputLabel>
+                        <p:outputLabel id="bnm" class="form-control text-right" value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(factureCourtierBean.selectedFacture1.bonusValue)}"/>
+                        <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.reduction.exceptionnelle']}:" for="redem"></p:outputLabel>
+                        <p:outputLabel id="redem" class="form-control text-right" value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(factureCourtierBean.selectedFacture1.reductionExceptionnelleValue)}"/>
+                        <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.reduction.flotte']}:" for="refm"></p:outputLabel>
+                        <p:outputLabel id="refm" class="form-control text-right" value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(factureCourtierBean.selectedFacture1.reductionFlotteValue)}"/>
+                        <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.fractionnement']}:" for="fractm"></p:outputLabel>
+                        <p:outputLabel id="fractm" class="form-control text-right" value="#{factureCourtierBean.selectedFacture1.fractionnement}%"/>
+                        <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.primeapres']} :" for="fract1m"></p:outputLabel>
+                        <p:outputLabel id="fract1m" class="form-control text-right" value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(factureCourtierBean.selectedFacture1.total)}"/>
+                        <p:outputLabel class="form-control bg-purple"  value="#{msg['tableau.accessoire']} :" for="accm"/>
+                        <p:outputLabel  id="accm" class="form-control text-right" value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(factureCourtierBean.selectedFacture1.accessoire)}"/>
+                        <p:outputLabel class="form-control bg-purple"  value="#{msg['tableau.taxeFGA']} :" for="tesm"/>
+                        <p:outputLabel id="tesm" class="form-control text-right"  value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(factureCourtierBean.selectedFacture1.taxeFGAvalue)}">
+                        </p:outputLabel>
+                        <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.tauxenregistrement']} :" for="tem"/>
+                        <p:outputLabel  id="tem" class="form-control text-right"  value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(factureCourtierBean.selectedFacture1.tauxEnregistrementValue)}"/>
+
+                        <p:outputLabel  class="form-control bg-purple" value="#{msg['tableau.primettc']} :" for="pttcm"/>
+                        <p:outputLabel  id="pttcm" class="form-control text-right" value="#{factureCourtierBean.selectedFacture1.arrondireFormat2(factureCourtierBean.selectedFacture1.primeTtc)}"/>
+
+                        <p:outputLabel class="form-control bg-purple" for="dateDebutm" value="#{msg['tableau.datedebut']}:"/>
+                        <p:calendar id="dateDebutm" class="form-control text-right" value="#{factureCourtierBean.selectedFacture1.dateDebut}" pattern="dd/MM/yyyy" />
+                    </p:panelGrid>
+                </p:panel>
+                <p:panelGrid columns="2">
+                    <p:commandButton  value="Annuler" action="#{factureCourtierBean.reset()}" oncomplete="PF('modifier').hide()" class="btn-danger danger" ></p:commandButton>
+                    <p:commandButton icon="fa fa-send" value="Valider" action="#{factureCourtierBean.modifier()}" oncomplete="PF('modifier').hide()" class="btn-success success" ></p:commandButton>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+        <p:dialog widgetVar="addGarantie" class="police_label" header="#{msg['garantie.title.ajouter']}" showEffect="fade" modal="true" width="500" minHeight="500" resizable="false">
+            <!--h:panelGrid-->
+            <h:form id="detail2" class="form-horizontal" >
+                <div class="form-group col-lg-12">
+                    <p:pickList value="#{factureCourtierBean.objetGurantie}"  class="" itemValue="#{garantie}" var="garantie" converter="entityConverter"
+                                itemLabel="#{garantie.libelle}"  >
+                        <f:facet name="sourceCaption">Available</f:facet>
+                        <f:facet name="targetCaption">Selected</f:facet>
+                    </p:pickList>
+                </div>
+                <div class="form-group col-lg-12">
+                    <p:commandButton class="pull-left btn-danger danger" value="Annuler"  oncomplete="PF('addGarantie').hide()" actionListener="#{factureCourtierBean.annuler()}"  >
+                    </p:commandButton>
+                    <p:commandButton  class="pull-right btn-success success" value="#{msg['btn.ajouter']}" oncomplete="PF('addGarantie').hide()"  update="detail3" actionListener="#{factureCourtierBean.valider()}" >
+                    </p:commandButton>
+                </div>
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition> 
+</html>
+

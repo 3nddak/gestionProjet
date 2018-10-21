@@ -1,0 +1,320 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="sms1">
+        <div class="navbar-custom-menu">
+            <div class="navbar bg-under-head">
+
+
+                <sec:authorize ifAllGranted="NOTIFICATION"> 
+                    <ul class="nav navbar-nav">
+
+
+
+
+
+                        <li class="" >
+                            <!--Nouvelles demandes -->
+
+                            <a href="#" class="dropdown-toggle text-center" title="#{msg['notification.de']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                               <!--i class="fa fa-envelope "  style="color:#ffffff" title="#{msg['notification.nd ']}"  ></i--> 
+                              
+                                <h:outputLabel value="#{msg['notification.nd']}"   style="color:#ffffff" />                                                 
+                                <sup><h:outputLabel class="badge small" value="#{ notificationAsMrhBean.nouvelleDemande+ notificationsAsautoBean.nouvelleDemande+notificationAsCompteBean.nouvelleDemande+notificationAsVoyageBean.nouvelleDemande+notificationsAsVieBean.nouvelleDemande+notificationAsSanteBean.nouvelleDemande}" style="background-color:#ec971f" /> </sup>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                                <!--demandes envoyées // auto-->
+                                <li>                             
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_AUTO')}"   value="#{msg['titre.automobile']}"  title="#{msg['assurance.automobile']}"  action="#{notificationsAsautoBean.getPagesNouvelleD()}">
+                                        <h:outputLabel value="#{notificationsAsautoBean.nouvelleDemande}" style="background-color: #ec971f" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+
+                                <!--demandes envoyées // Voyage-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VOYAGE')}"  value="#{msg['titre.voyage']}" title="#{msg['assurance.voyage']}" action="#{notificationAsVoyageBean.getPagesNouvelleD()}">
+                                        <h:outputLabel value="#{notificationAsVoyageBean.nouvelleDemande}" style="background-color: #ec971f" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+
+                                <!--demandes envoyées // credit-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VIE')}"  value="#{msg['titre.credit']}" title="#{msg['assurance.credit']}" action="#{notificationsAsVieBean.getPagesNouvelleD()}">
+                                        <h:outputLabel value="#{notificationsAsVieBean.nouvelleDemande}" style="background-color: #ec971f" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+
+                                <!--demandes envoyées // compte-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_COMPTE')}"  value="#{msg['titre.compte']}" title="#{msg['assurance.compte']}" action="#{notificationAsCompteBean.getPagesNouvelleD()}">
+                                        <h:outputLabel value="#{notificationAsCompteBean.nouvelleDemande}" style="background-color: #ec971f" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes envoyées // mrh-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_MULTIRISQUE_HABITATION')}"  value="#{msg['titre.mrh']}" title="#{msg['assurance.habitation']}" action="#{notificationAsMrhBean.getPagesNouvelleD()}">
+                                        <h:outputLabel value="#{notificationAsMrhBean.nouvelleDemande}" style="background-color: #ec971f" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes envoyées // SANTE-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_SANTE')}"  value="#{msg['titre.sante']}" title="#{msg['assurance.sante']}" action="#{notificationAsSanteBean.getPagesNouvelleD()}">
+                                        <h:outputLabel value="#{notificationAsSanteBean.nouvelleDemande}" style="background-color: #ec971f" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+                                
+                                
+                            </ul>
+                        </li>
+
+
+                        <li class="">
+                            <!--demandes traitées -->
+
+                            <a  href="#" class="dropdown-toggle"  title="#{msg['notification.dt']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                <h:outputLabel value="#{msg['notification.dt']}"  style="color:#ffffff; " /> <sup><h:outputLabel class="badge small" value="#{notificationAsSanteBean.demandeTraitee+ notificationAsMrhBean.demandeTraitee+notificationsAsautoBean.demandeTraitee+notificationAsCompteBean.demandeTraitee+notificationAsVoyageBean.demandeTraitee+notificationsAsVieBean.demandeTraitee}" style="background-color:#a94442" /></sup></a>
+                            <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                                <!--demandes traitées // auto -->
+                                <li>                             
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_AUTO')}"   value="#{msg['titre.automobile']}"  title="#{msg['assurance.automobile']}"  action="#{notificationsAsautoBean.getPagesDemandeTraitee()}">
+                                        <h:outputLabel value="#{notificationsAsautoBean.demandeTraitee}" style="background-color: #a94442" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes traitées // Voyage -->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VOYAGE')}"  value="#{msg['titre.voyage']}" title="#{msg['assurance.voyage']}" action="#{notificationAsVoyageBean.getPagesDemandeTraitee()}">
+                                        <h:outputLabel value="#{notificationAsVoyageBean.demandeTraitee}" style="background-color: #a94442" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes traitées // credit -->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VIE')}"  value="#{msg['titre.credit']}" title="#{msg['assurance.credit']}" action="#{notificationsAsVieBean.getPagesDemandeTraitee()}">
+                                        <h:outputLabel value="#{notificationsAsVieBean.demandeTraitee}" style="background-color: #a94442" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes traitées // compte -->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_COMPTE')}"  value="#{msg['titre.compte']}" title="#{msg['assurance.compte']}" action="#{notificationAsCompteBean.getPagesDemandeTraitee()}">
+                                        <h:outputLabel value="#{notificationAsCompteBean.demandeTraitee}" style="background-color: #a94442" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+
+
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_MULTIRISQUE_HABITATION')}"  value="#{msg['titre.mrh']}" title="#{msg['assurance.habitation']}" action="#{notificationAsMrhBean.getPagesDemandeTraitee()}">
+                                        <h:outputLabel value="#{notificationAsMrhBean.demandeTraitee}" style="background-color: #a94442" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_SANTE')}"  value="#{msg['titre.sante']}" title="#{msg['assurance.sante']}" action="#{notificationAsSanteBean.getPagesDemandeTraitee()}">
+                                        <h:outputLabel value="#{notificationAsSanteBean.demandeTraitee}" style="background-color: #a94442" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="">
+
+                            <!--demandes Validée -->
+
+                            <a href="#" class="dropdown-toggle" title="#{msg['notification.demandeValidee']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                <h:outputLabel value="#{msg['notification.demandeValidee']}"  style="color: #ffffff; " /><sup><h:outputLabel class="badge small" value="#{notificationAsSanteBean.demandeValidee+notificationsAsautoBean.demandeValidee+notificationAsCompteBean.demandeValidee+notificationAsVoyageBean.demandeValidee+notificationsAsVieBean.demandeValidee}" style="background-color:#FFE495" /></sup></a>
+                            <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                                <!--demandes acceptées // auto-->
+                                <li>                             
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_AUTO')}" value="#{msg['titre.automobile']}"  title="#{msg['assurance.automobile']}"  action="#{notificationsAsautoBean.getPagesDemandeValideParClient()}">
+                                        <h:outputLabel value="#{notificationsAsautoBean.demandeValidee}" style="background-color: #aed248" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes acceptées // Voyage-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VOYAGE')}"  value="#{msg['titre.voyage']}" title="#{msg['assurance.voyage']}" action="#{notificationAsVoyageBean.getPagesDemandeValideParClient()}">
+                                        <h:outputLabel value="#{notificationAsVoyageBean.demandeValidee}" style="background-color: #aed248" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+
+                                <!--demandes acceptées // credit-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VIE')}"  value="#{msg['titre.credit']}" title="#{msg['assurance.credit']}" action="#{notificationsAsVieBean.getPagesDemandeValideParClient()}">
+                                        <h:outputLabel value="#{notificationsAsVieBean.demandeValidee}" style="background-color: #aed248" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+
+                                <!--demandes acceptées // compte-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_COMPTE')}"  value="#{msg['titre.compte']}" title="#{msg['assurance.compte']}" action="#{notificationAsCompteBean.getPagesDemandeValideParClient()}">
+                                        <h:outputLabel value="#{notificationAsCompteBean.demandeValidee}" style="background-color: #aed248" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes envoyées // mrh-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_MULTIRISQUE_HABITATION')}"  value="#{msg['titre.mrh']}" title="#{msg['assurance.habitation']}" action="#{notificationAsMrhBean.getPagesNouvelleD()}">
+                                        <h:outputLabel value="#{notificationAsMrhBean.nouvelleDemande}" style="background-color: #ec971f" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes envoyées // SANTE-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_SANTE')}"  value="#{msg['titre.sante']}" title="#{msg['assurance.sante']}" action="#{notificationAsSanteBean.getPagesNouvelleD()}">
+                                        <h:outputLabel value="#{notificationAsSanteBean.nouvelleDemande}" style="background-color: #ec971f" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="">
+                            <!--recu de paiement-->
+
+                            <a href="#" class="dropdown-toggle" title="#{msg['notification.rp']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                <h:outputLabel value="#{msg['notification.rp']}"  style="color:#ffffff " /><sup><h:outputLabel class="badge small" value="#{notificationAsSanteBean.souscriptioneffective+notificationAsMrhBean.souscriptioneffective+notificationsAsautoBean.souscriptioneffective+notificationAsCompteBean.souscriptioneffective+notificationsAsVieBean.souscriptioneffective+notificationAsVoyageBean.souscriptioneffective}" style="background-color:lawngreen" /></sup></a>
+                            <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                                <!--recu de paiement // auto-->
+                                <li>                             
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_AUTO')}"   value="#{msg['titre.automobile']}"  title="#{msg['assurance.automobile']}"  action="#{notificationsAsautoBean.getPagesSouscriptionEffective()}">
+                                        <h:outputLabel value="#{notificationsAsautoBean.souscriptioneffective}" style="background-color: lawngreen" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+                                <!--recu de paiement // Voyage-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VOYAGE')}"  value="#{msg['titre.voyage']}" title="#{msg['assurance.voyage']}" action="#{notificationAsVoyageBean.getPagesSouscriptionEffective()}">
+                                        <h:outputLabel value="#{notificationAsVoyageBean.souscriptioneffective}" style="background-color: lawngreen" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+                                <!--recu de paiement // credit-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VIE')}"  value="#{msg['titre.credit']}" title="#{msg['assurance.credit']}" action="#{notificationsAsVieBean.getPagesSouscriptionEffective()}">
+                                        <h:outputLabel value="#{notificationsAsVieBean.souscriptioneffective}" style="background-color: lawngreen" class="badge pull-right" />
+                                    </h:commandLink>
+
+                                </li>
+                                <!--recu de paiement // compte-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_COMPTE')}"  value="#{msg['titre.compte']}" title="#{msg['assurance.compte']}" action="#{notificationAsCompteBean.getPagesSouscriptionEffective()}">
+                                        <h:outputLabel value="#{notificationAsCompteBean.souscriptioneffective}" style="background-color: lawngreen" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+                                <!--recu de paiement // mrh-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_MULTIRISQUE_HABITATION')}"  value="#{msg['titre.mrh']}" title="#{msg['assurance.habitation']}" action="#{notificationAsMrhBean.getPagesSouscriptionEffective()}">
+                                        <h:outputLabel value="#{notificationAsMrhBean.souscriptioneffective}" style="background-color: lawngreen" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+                                <!--recu de paiement // SANTE-->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_SANTE')}"  value="#{msg['titre.sante']}" title="#{msg['assurance.sante']}" action="#{notificationAsSanteBean.getPagesSouscriptionEffective()}">
+                                        <h:outputLabel value="#{notificationAsSanteBean.souscriptioneffective}" style="background-color: lawngreen" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="">
+                            <!--demandes rejetées -->
+
+                            <a href="#" class="dropdown-toggle" title="#{msg['notification.dr']}"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                <h:outputLabel value="#{msg['notification.dr']}"  style="color:#ffffff " /><sup><h:outputLabel class="badge small" value="#{notificationAsSanteBean.demandeRejetee+notificationAsMrhBean.demandeRejetee+notificationsAsautoBean.demandeRejetee+notificationAsCompteBean.demandeRejetee+notificationAsVoyageBean.demandeRejetee+notificationsAsVieBean.demandeRejetee}" style="background-color: slategrey" /></sup></a>
+                            <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                                <!--demandes rejetées // auto -->
+                                <li>                             
+                                    <h:commandLink  rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_AUTO')}"  value="#{msg['titre.automobile']}"  title="#{msg['assurance.automobile']}"  action="#{notificationsAsautoBean.getPagesDemandeRejete()}">
+                                        <h:outputLabel value="#{notificationsAsautoBean.demandeRejetee}" style="background-color: slategrey" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes rejetées // Voyage -->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VOYAGE')}"  value="#{msg['titre.voyage']}" title="#{msg['assurance.voyage']}" action="#{notificationAsVoyageBean.getPagesDemandeRejete()}">
+                                        <h:outputLabel value="#{notificationAsVoyageBean.demandeRejetee}" style="background-color: slategrey" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes rejetées // credit -->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_VIE')}"  value="#{msg['titre.credit']}" title="#{msg['assurance.credit']}" action="#{notificationsAsVieBean.getPagesDemandeRejete()}">
+                                        <h:outputLabel value="#{notificationsAsVieBean.demandeRejetee}" style="background-color: slategrey" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes rejetées //compte -->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_COMPTE')}"  value="#{msg['titre.compte']}" title="#{msg['assurance.compte']}" action="#{notificationAsCompteBean.getPagesDemandeTraitee()}">
+                                        <h:outputLabel value="#{notificationAsCompteBean.demandeRejetee}" style="background-color: slategrey" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes rejetées //MRH -->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_MULTIRISQUE_HABITATION')}"  value="#{msg['titre.mrh']}" title="#{msg['assurance.habitation']}" action="#{notificationAsMrhBean.getPagesDemandeTraitee()}">
+                                        <h:outputLabel value="#{notificationAsMrhBean.demandeRejetee}" style="background-color: slategrey" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+                                <!--demandes rejetées //SANTE -->
+                                <li  > 
+                                    <h:commandLink rendered="#{sec:areAllGranted('ACCESS_ASSURANCE_SANTE')}"  value="#{msg['titre.sante']}" title="#{msg['assurance.sante']}" action="#{notificationAsSanteBean.getPagesDemandeTraitee()}">
+                                        <h:outputLabel value="#{notificationAsSanteBean.demandeRejetee}" style="background-color: slategrey" class="badge pull-right" />
+
+                                    </h:commandLink>
+
+                                </li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </sec:authorize>   
+
+            </div>
+        </div>
+
+    </h:form>
+
+</ui:composition>

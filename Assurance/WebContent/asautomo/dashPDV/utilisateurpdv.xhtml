@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition template="../default/layout.xhtml">
+
+        <ui:define name="contenu"> 
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                <fieldset>
+                    <legend class="text-center text-uppercase"> <p:outputLabel value="espace point de vente"></p:outputLabel></legend>
+                </fieldset>
+            </div>
+            <!--div class="text-center col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <h2 class=" text-uppercase">espace point de vente</h2> 
+            </div-->   
+
+            <!--  DEBUT ESPACE POINT DE VENTEE !-->
+            <sec:authorize ifAllGranted="USER_PVT,ACCESS_ESPACE_PDV">
+                <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET">
+                    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <p:commandLink class=" text-center tile-stats bg-purple2" action="simulation" > 
+                            <span class="menu-page  text-center ">
+                                <i class=" fa fa-eye" /> 
+                            </span> 
+                            <h3 class="text-center">#{msg['page.menu.simulation']}</h3>              
+                        </p:commandLink>
+                    </div>
+
+                    <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET,SOUSCRIPTION">
+                        <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                            <p:commandLink class=" text-center tile-stats bg-purple2" action="souscription" > 
+                                <span class="menu-page  text-center ">
+                                    <i class=" fa fa-exchange" /> 
+                                </span> 
+                                <h3 class="text-center">#{msg['page.menu.souscription']}</h3>              
+                            </p:commandLink>
+                        </div>   
+                    </sec:authorize>
+                    <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET,RENOUVELLEMENT">
+                        <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                            <p:commandLink class=" text-center tile-stats bg-purple2" action="renouvelement" > 
+                                <span class="menu-page  text-center ">
+                                    <i class=" fa fa-repeat" /> 
+                                </span> 
+                                <h3 class="text-center">#{msg['page.menu.renouvellement']}</h3>              
+                            </p:commandLink>
+                        </div>   
+                    </sec:authorize>
+                    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <p:commandLink class=" text-center tile-stats bg-purple2" action="chartel" > 
+                            <span class="menu-page  text-center ">
+                                <i class=" fa fa-arrow-circle-up" /> 
+                            </span> 
+                            <h3 class="text-center">Charger un contrat</h3>              
+                        </p:commandLink>
+                    </div>
+                    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <sec:authorize ifAnyGranted="USER_PVT,USER_GUICHET,USER_CRT">
+                            <p:commandLink rendered="#{sec:areAllGranted('ROLE_RECEPTION_CONTRAT_ASAUTO')}"  class=" text-center tile-stats bg-purple2" action="greception" > 
+                                <span class="menu-page  text-center ">
+                                    <i class=" fa fa-file-archive-o" /> 
+                                </span> 
+                                <h3 class="text-center">#{msg['page.menu.contrat.reception']}</h3>              
+                            </p:commandLink>
+                        </sec:authorize>
+                    </div>   
+                </sec:authorize>
+                <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET">
+                    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <p:commandLink class="tile-stats bg-purple2 text-center" action="espace_traitement_courtier" > 
+                            <span class="menu-page  text-center ">
+                                <i class=" fa fa-envelope-o" /> 
+                            </span> 
+                            <h3 >#{msg['page.menu.gestioncourrier']}</h3>              
+                        </p:commandLink>
+                    </div>
+
+                </sec:authorize>
+                <sec:authorize ifAllGranted="USER_GUICHET,DEMANDE_ATTESTATION">
+                    <sec:authorize ifAllGranted="USER_PVT,USER_GUICHET">
+                        <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                            <p:commandLink class="tile-stats bg-purple2 text-center" action="attestation" > 
+                                <span class="menu-page  text-center ">
+                                    <i class=" fa fa-bookmark-o" /> 
+                                </span> 
+                                <h3 >#{msg['menu.attestation.demande']}</h3>              
+                            </p:commandLink>
+                        </div>
+                    </sec:authorize>
+                    <sec:authorize ifAllGranted="USER_PVT">
+                        <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                            <p:commandLink class="tile-stats bg-purple2 text-center" action="demandeatt" > 
+                                <span class="menu-page  text-center ">
+                                    <i class=" fa fa-trash" /> 
+                                </span> 
+                                <h3 >#{msg['menu.attestation.liste']}</h3>              
+                            </p:commandLink>
+                        </div>
+                    </sec:authorize>
+                    <sec:authorize ifAllGranted="USER_PVT">
+                        <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                            <p:commandLink class="tile-stats bg-purple2 text-center" action="vdc" > 
+                                <span class="menu-page  text-center ">
+                                    <i class=" fa fa-paypal" /> 
+                                </span> 
+                                <h3 >#{msg['menu.attestation.caution']}</h3>              
+                            </p:commandLink>
+                        </div>
+                    </sec:authorize>
+                    <sec:authorize ifAllGranted="USER_PVT">
+                        <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                            <p:commandLink class="tile-stats bg-purple2 text-center" action="xttc" > 
+                                <span class="menu-page  text-center ">
+                                    <i class=" fa fa-files-o" /> 
+                                </span> 
+                                <h3 >#{msg['menu.attestation.recue']}</h3>              
+                            </p:commandLink>
+                        </div>
+
+                    </sec:authorize>
+                </sec:authorize>
+
+
+            </sec:authorize>
+            <!-- FIN ESPACE POINT DE VENTE !-->
+
+            <!--  DEBUT ESPACE COMPAGNIE -->
+            <sec:authorize ifAllGranted="USER_CMP, ACCESS_ESPACE_COMPAGNIE,DEMANDE_ATTESTATION">
+
+                <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <p:commandLink class=" text-center tile-stats bg-purple2" action="espace_traitement_compagnie" > 
+                        <span class="menu-page  text-center ">
+                            <i class=" fa fa-file-archive-o" /> 
+                        </span> 
+                        <h3 class="text-center">#{msg['page.menu.demandes']}</h3>              
+                    </p:commandLink>
+                </div>
+                <sec:authorize ifAllGranted="DEMANDE_ATTESTATION">
+
+                    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <p:commandLink class="tile-stats bg-purple2 text-center" action="demandeatt" > 
+                            <span class="menu-page  text-center ">
+                                <i class=" fa fa-trash" /> 
+                            </span> 
+                            <h3 >#{msg['menu.gestion.caution']}</h3>              
+                        </p:commandLink>
+                    </div>
+                    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <p:commandLink class="tile-stats bg-purple2 text-center" action="vdc" > 
+                            <span class="menu-page  text-center ">
+                                <i class=" fa fa-check-square-o" /> 
+                            </span> 
+                            <h3 >#{msg['menu.validation.attestation']}</h3>              
+                        </p:commandLink>
+                    </div>
+                    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <p:commandLink class="tile-stats bg-purple2 text-center" action="actp" > 
+                            <span class="menu-page  text-center ">
+                                <i class=" fa fa-paypal" /> 
+                            </span> 
+                            <h3 >#{msg['menu.gestion.caution.payer']}</h3>              
+                        </p:commandLink>
+                    </div>
+                    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <p:commandLink class="tile-stats bg-purple2 text-center" action="xttc" > 
+                            <span class="menu-page  text-center ">
+                                <i class=" fa fa-files-o" /> 
+                            </span> 
+                            <h3 >#{msg['menu.attestation.delivrer']}</h3>              
+                        </p:commandLink>
+                    </div>
+                    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <p:commandLink class=" text-center tile-stats bg-purple2" action="validation" > 
+                            <span class="menu-page  text-center ">
+                                <i class=" fa fa-check" /> 
+                            </span> 
+
+                            <h3 class="text-center">#{msg['page.menu.validation']}</h3>              
+                        </p:commandLink>
+                    </div>
+                    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <p:commandLink class=" text-center tile-stats bg-purple2" action="chartel" > 
+                            <span class="menu-page  text-center ">
+                                <i class=" fa fa-arrow-circle-up" /> 
+                            </span> 
+                            <h3 class="text-center">Charger un contrat</h3>              
+                        </p:commandLink>
+                    </div>
+                </sec:authorize>
+                <sec:authorize ifAnyGranted="IMMATRICULATION">
+                    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                        <p:commandLink class=" text-center tile-stats bg-purple2" action="mettreImmatriculation" > 
+                            <span class="menu-page  text-center ">
+                                <i class=" fa fa-arrow-circle-up" /> 
+                            </span> 
+                            <h3 class="text-center">#{msg['page.menu.immatriculation']}</h3>              
+                        </p:commandLink>
+                    </div>         
+                </sec:authorize>
+
+            </sec:authorize>
+            <!--   FIN ESPACE COMPAGNIE -->
+
+            <!-- ####################### COMPTABILITE #######################-->     
+
+            <!-- ####################### FIN COMPTABILITE #######################-->  
+
+
+
+            <!-- ####################### STATISTIQUE #######################-->     
+
+
+            <!-- ####################### FIN STATISTIQUE #######################-->  
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>
+

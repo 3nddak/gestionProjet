@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+        <div class="panel">
+            <h:form id="formForm" class="form-horizontal ">
+
+                <div class="panel-body">
+                    <fieldset><legend class="text-uppercase" ><h:outputLabel class="police_label" value="Dommages"/></legend>
+                        <p:growl id="ms" globalOnly="true" showDetail="false"/>
+
+
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="Détails des dommages"  for="domm" class="" /><h:outputLabel value="*" class="etoile_rouge "  />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                <p:inputTextarea id="domm" value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.degats}" rows="6" cols="33" >
+                                    <p:ajax event="keyup" update="dommMessage"/>
+                                </p:inputTextarea>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="domm" id="dommMessage"/>
+                            </div>
+                        </div> 
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="Nombre de vehicules impliqués"  for="nombre" class=" " />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.nombreVehiculeImpliques}"  id="nombre" styleClass="form-control" placeholder="nombre"
+
+                                             >
+                                    <pe:keyFilter for="nombre" mask="num"/>
+
+
+                                </p:inputText>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="Autres Tiers (hors vehicule) impliqué"  for="tier" class="" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                <p:selectBooleanCheckbox value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.tiersHorsVehuculeImpliques}" >
+
+                                </p:selectBooleanCheckbox>
+                            </div>
+                        </div> 
+
+
+                    </fieldset>   
+                </div> 
+            </h:form>
+        </div>
+    </ui:composition>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+        <fieldset><legend><h:outputLabel value="#{msg['souscription.information']}"/></legend>
+            <ui:include src="infos_2.xhtml"/>
+            <div class="form-group">
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <h:outputLabel  value="Periode En Jour ?"  for="t5" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:selectBooleanCheckbox id="t5"  value="#{objetBean.periodeEstJournalie}"  class="pull-left" >
+                            <p:ajax update="periodeMessage,mask2" listener="#{objetBean.dateFin()}" />
+                        </p:selectBooleanCheckbox>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <h:outputLabel  value="#{msg['souscription.periode']}"  for="periode" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText id="periode"  class="form-control" value="#{objetBean.periode}" placeholder="#{msg['souscription.periode']}" 
+                                     required="true"  requiredMessage="#{msg['souscription.periode.requireMessage']}" 
+                                     converterMessage="#{msg['souscription.periode.converterMessage']}"
+                                     validatorMessage="#{msg['souscription.periode.validatorMessage']}"
+                                     >
+                            <f:validateLongRange minimum="1" />
+                            <p:ajax event="keyup"  update="periodeMessage,mask2" listener="#{objetBean.dateFin()}" />  
+
+                        </p:inputText>
+                        <pe:keyFilter for="periode" mask="int"/> 
+                    </div>
+
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <p:message for="periode" id="periodeMessage" />
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <h:outputLabel  value="#{msg['souscription.datedebut']}"  for="mask1" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <p:calendar id="mask1"  pattern="dd/MM/yyyy" value="#{objetBean.dateDebutRecherche}" mask="true" placeholder="#{msg['souscription.datedebut']} " 
+                                    required="true" readonlyInput="true" navigator="true"
+                                    requiredMessage="#{msg['souscription.datedebut.requireMessage']}" 
+                                    validatorMessage="#{msg['souscription.datedebut.validatorMessage']}"
+                                    converterMessage="#{msg['souscription.datedebut.converterMessage']}"
+                                    mindate="#{objetBean.datemax}" 
+                                    >
+                            <f:convertDateTime pattern="dd/MM/yyyy"  type="date"/>
+
+                            <p:ajax event="dateSelect" listener="#{objetBean.dateFin()}" update="dateMessage,mask2" />
+                        </p:calendar>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <p:message for="mask1" id="dateMessage"/> 
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:outputLabel   value="Date Fin"  for="mask2" />
+                    </div> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:outputLabel id="mask2"  value="#{objetBean.dateFins}"   />
+                    </div> 
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12 col-lg-12 col-sm-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <h:outputLabel  value="Sélectionner les Compagnies"  class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />                
+                        <div class="col-md-2 col-lg-2 col-sm-6 col-xs-12">
+                            <h:selectOneMenu id="menu" value="#{objetBean.idCompagnie}"  class="form-control">
+                                <f:selectItem itemLabel="Compagnies" itemValue=""/>
+                                <f:selectItems value="#{objetBean.compagnieItems}"/>
+                                <p:ajax  oncomplete="PF('courtier').show()" listener="#{objetBean.compagnieTrans()}"  update="formliste:display2,formliste:courtierp"/>
+                            </h:selectOneMenu>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <p:outputPanel id="display22">
+                            <p:dataTable class="table_label table-responsive" var="factur" id="display2" reflow="true" rows="5" value="#{objetBean.facturesList}"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                         rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg[tableau.vide]}" >                                                    
+
+
+
+                                <p:column headerText="Compgnie">
+                                    <h:outputText value="#{factur.compagnie.abbreviation}" />
+                                </p:column>
+
+                                <p:column headerText="Courtier">
+                                    <h:outputText value="#{factur.courtier.abbreviation}" />
+                                </p:column >
+
+                                <p:column headerText="Actions">
+
+                                    <p:commandButton  icon="fa fa-edit" oncomplete="PF('courtier').show()" action="#{objetBean.compagnieTrans}" update="formliste:display2,formliste:courtierp" class="btn btn-primary" title="Modification">
+                                        <f:setPropertyActionListener value="#{factur}"  target="#{objetBean.factureSelected}" />
+                                    </p:commandButton>
+
+                                    <p:commandButton icon="fa fa-trash" update="display2,formliste:menu" action="#{objetBean.supprimerFactureSelection}" title="Supprimer" class="btn btn-danger">
+                                        <f:setPropertyActionListener value="#{factur}" target="#{objetBean.factureSelected}" />
+                                    </p:commandButton>
+
+
+                                </p:column>
+                            </p:dataTable>
+                        </p:outputPanel>
+                    </div>
+                </div>
+            </div>
+
+            <p:dialog   id="courtierp" header="Choix du courtier" showEffect="fade"  widgetVar="courtier" modal="true" width="625" minHeight="800" resizable="false">
+                <div class="form-group">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+                            <h:outputLabel  value="Courtier"   class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-md-9 col-lg-9 col-sm-9">
+                            <h:selectOneMenu  id ="uu" value="#{objetBean.idcourtier}" class="form-control">
+                                <f:selectItems value="#{objetBean.courtiersCompagnieItems}"/> 
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-md-9 col-lg-9 col-sm-9">
+                            <p:panel rendered="#{objetBean.optionIsExixted}" >
+                                <p:dataTable var="garantie" value="#{objetBean.selectedGuarantOption}" editMode="cell"  editable="true" editingRow="true" >
+                                    <p:column headerText="Garantie">
+                                        <p:outputLabel value="#{garantie.symbole}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Choisir Option"  >
+                                        <p:cellEditor rendered="#{garantie.idRegle ne 7}" >
+                                            <f:facet name="output" >
+                                                <p:outputLabel id="HH" value="#{garantie.optionSelect}" />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:selectOneMenu id="pss" value="#{garantie.optionSelect}" >
+                                                    <f:selectItem itemLabel="opt1: #{garantie.option1}"  itemValue="1" />
+                                                    <f:selectItem itemLabel="opt2: #{garantie.option2}" itemValue="2" />
+                                                    <f:selectItem itemLabel="opt3: #{garantie.option3}" itemValue="3" />
+                                                    <p:ajax update="HH"/>
+                                                </p:selectOneMenu>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Choisir Tranche"  >
+                                        <p:cellEditor rendered="#{garantie.idRegle eq 7}" >
+                                            <f:facet name="output" >
+                                                <p:outputLabel id="HH1" value="#{garantie.optionSelect}" />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:selectOneMenu id="pssss" value="#{garantie.optionSelect}" >
+                                                    <f:selectItem itemLabel="tranche1: #{garantie.tranche1}   Prime: #{garantie.option1}"  itemValue="1" />
+                                                    <f:selectItem itemLabel="tranche2 : #{garantie.tranche2}  Prime: #{garantie.option2}" itemValue="2" />
+                                                    <f:selectItem itemLabel="tranche3 : #{garantie.tranche3}  Prime: #{garantie.option3}" itemValue="3" />
+                                                    <p:ajax update="HH1"/>
+                                                </p:selectOneMenu>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Autre tranche"  >
+                                        <p:cellEditor rendered="#{garantie.idRegle==7}" >
+                                            <f:facet name="output" >
+                                                <p:inputText id="bb" value="#{garantie.autreTranche}" />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{garantie.autreTranche}" >
+                                                    <p:ajax update="bb"/>
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+
+                                    </p:column>
+
+                                </p:dataTable>
+                            </p:panel>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-3">
+                            <p:commandButton value="#{msg['btn.valider']}" class="btn-success success" action="#{objetBean.factureCompagnie()}" oncomplete="PF('courtier').hide()" update="formliste:display2,menu" />
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </p:dialog> 
+        </fieldset>
+    </ui:composition> 
+
+</html>
+

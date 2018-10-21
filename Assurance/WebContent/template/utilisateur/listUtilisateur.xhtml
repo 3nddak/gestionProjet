@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui" >
+
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:outputPanel id="users" style="text-align:center;" class="panel">
+                    <h:form id="formliste" class="form-horizontal">
+                        <ui:include src="searchEngine.xhtml"/>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:commandLink target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-imprimer btn btn-xs pull-left  "  actionListener="#{gestionUtilisateurBean.doGetA()}"   > 
+                                    <i class=" glyphicon glyphicon-print"></i>
+                                </h:commandLink> 
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <div class="table-responsive">
+                                    <p:dataTable sortOrder="descending" sortBy="#{utilisateur.idUtilisateur}" class="table table-bordered" var="utilisateur"  rows="5" rowKey="#{utilisateur.idUtilisateur}" selection="#{gestionUtilisateurBean.triUtilisateurList}" value="#{gestionUtilisateurBean.allUtilisateurs}"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                 paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" scrollWidth="50%" scrollHeight="150">
+
+                                        <p:column headerText="#{msg['utilisateur.nom']}" filterBy="#{utilisateur.nom}">
+                                            <h:outputText value="#{utilisateur.nom}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['utilisateur.prenom']}" filterBy="#{utilisateur.prenom}">
+                                            <h:outputText value="#{utilisateur.prenom}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['utilisateur.pseudo']}" filterBy="#{utilisateur.login}">
+                                            <h:outputText value="#{utilisateur.login}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['utilisateur.email']}" filterBy="#{utilisateur.email}" >
+                                            <h:outputText value="#{utilisateur.email}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['titre.profil']}" filterBy="#{utilisateur.profil.code}">
+                                            <h:outputText value="#{utilisateur.profil.code}" />
+                                        </p:column>
+                                        <p:column headerText="Structure" filterBy="#{utilisateur.compagnie.designation}#{utilisateur.courtier.designation}#{utilisateur.pointsVente.designation}#{utilisateur.pointRetrait.libelle}">
+                                            <h:outputText value="#{utilisateur.compagnie.designation} #{utilisateur.courtier.designation} #{utilisateur.pointsVente.designation} #{utilisateur.pointRetrait.libelle} #{utilisateur.societe.designation}" />
+                                        </p:column>
+                                        <p:column headerText="Actions" class="col-lg-1 col-md-1">
+                                            <p:commandButton  rendered="#{sec:areAnyGranted('MOD_UTILISATEUR')}" update="modification" class="btn-primary primary" action="#{gestionUtilisateurBean.modificationSelection()}" onstart="PF('loadProcess').block()" oncomplete="PF('loadProcess').unblock(),PF('modifier').show()"  icon="fa fa-edit" title="#{msg['btn.modifier']}">
+                                                <f:setPropertyActionListener value="#{utilisateur}" target="#{gestionUtilisateurBean.utilisateurSelected}" />
+                                            </p:commandButton>
+                                            <p:commandButton update="formliste" rendered="#{sec:areAnyGranted('DEL_UTILISATEUR')}" class="btn-danger danger"  oncomplete="PF('supprimer').show()" icon="fa fa-trash" title="#{msg['btn.supprimer']}">
+                                                <f:setPropertyActionListener value="#{utilisateur}" target="#{gestionUtilisateurBean.utilisateurSelected}" />
+                                            </p:commandButton>
+                                            <p:commandButton update="passwd" rendered="#{sec:areAnyGranted('NEW_PASSWORD')}"     class="btn-primary primary"  oncomplete="PF('pass').show()" icon="fa fa-key" title="#{msg['btn.changerMdp']}">
+                                                <f:setPropertyActionListener value="#{utilisateur}" target="#{gestionUtilisateurBean.utilisateurSelected}" />
+                                            </p:commandButton>
+                                            <p:commandButton update="formliste" rendered="false" class="btn-primary primary" icon="fa fa-lock" action="#{gestionUtilisateurBean.disableUser()}" title="Désactiver">
+                                                <f:setPropertyActionListener value="#{utilisateur}" target="#{gestionUtilisateurBean.utilisateurSelected}" />
+                                                <p:confirm icon="ui-icon-alert"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+                </p:outputPanel>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <div class="panel">
+            <h:form id="formFormulaire" class="form-horizontal ">
+
+                <div class="panel-body">
+                    <fieldset><legend class="text-uppercase" ><h:outputLabel class="police_label" value="Numero du contrat"/></legend>
+                        <p:growl id="msgsll" globalOnly="true" showDetail="false"/>
+
+
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="Numero du contrat"  for="tformule" class="" /><h:outputLabel value="*" class="etoile_rouge "  />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{declarationSinistreBean.police}"  id="tformule" styleClass="form-control" placeholder="numero contrat"
+                                             required="true"  requiredMessage="Veuillez entrer le numero du contrat"  
+                                             >
+                                    <p:ajax event="keyup" update="policeMessage"/>
+
+                                </p:inputText>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="tformule" id="policeMessage"/>
+                            </div>
+                        </div> 
+
+
+                    </fieldset>   
+                </div> 
+            </h:form>
+        </div>
+    </ui:composition>
+</html>

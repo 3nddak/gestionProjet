@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="container-fluid">
+            <div id="liste" class="row-fluid">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                    <!--h:form id="formliste">
+                        <p:wizard >
+                            <p:tab id="reception" title="Reception">
+                                
+                            </p:tab>
+                             <p:tab id="traitement" title="Traitement">
+                                
+                            </p:tab>
+                        </p:wizard-->    
+                    <!--ui:include src="compagnie_reception.xhtml"/-->
+
+
+                    <!--p:tabView orientation="left" id="traitement">
+                        <p:tab title="Nouveau Message">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:graphicImage name="demo/images/godfather/godfather1.jpg" />
+                                <h:outputText
+                                    value="The story begins as Don Vito Corleone..." />
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="Boite de réception">
+                            <h:panelGrid columns="2" cellpadding="10">  <br/>
+                                <p:tabView scrollable="true">
+                                    <p:tab title="Tab 1">  
+                                       
+                                            <fieldset>
+                                                <legend class="bg-purple text-center"><p:outputLabel value="Liste des traitement"></p:outputLabel></legend>
+                                                <div class="panel">
+                                                    <div class="panel-heading"> 
+
+                                                    </div><br/>  
+                                                    <div class="panel panel-body">
+                                                        <p:dataTable var="profils" reflow="true" rows="10" value=""
+                                                                     paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                                     paginator="true" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150">
+                                                            <f:facet name="header">
+                                                                <p:outputPanel >
+                                                                    <p:outputLabel  value="Rechercher : " />
+                                                                    <p:inputText id="globalFilter" onkeyup="PF('ddd').filter()" style="width:150px" placeholder="Rechercher"/>
+                                                                </p:outputPanel>
+                                                            </f:facet>
+
+                                                            <p:column headerText="Type">
+                                                                <h:outputText value="" />
+                                                            </p:column>
+                                                            <p:column headerText="Nom">
+                                                                <h:outputText value="" />
+                                                            </p:column>
+
+                                                            <p:column headerText="Actions">
+                                                                <div class="form-horizontal"></div>
+                                                                <p:commandButton value=""  class="col-lg-2 btn-lg btn-sm btn-xs glyphicon glyphicon-move"> </p:commandButton>
+
+                                                                <p:commandButton value="" class="col-lg-2 btn-lg btn-sm btn-xs glyphicon glyphicon-apple">
+                                                                </p:commandButton>
+                                                            </p:column>
+                                                        </p:dataTable>
+                                                    </div>
+                                                    <div class="panel-footer"> 
+                        
+                                                    </div> 
+                                                </div>
+                                            </fieldset>
+                                      </p:tab>
+                                    <p:tab title="Compagnie">Tab 2 Content</p:tab>
+                                    <p:tab title="Courtier">Tab 3 Content</p:tab>
+                                    <p:tab title="Point de vente">Tab 4 Content</p:tab>
+                                    <p:tab title="Guichet">Tab 5 Content</p:tab>
+                                </p:tabView>
+                            </h:panelGrid>
+                        </p:tab>
+                    </p:tabView-->
+                    </h:form> 
+
+                </div>
+            </div>
+        </div>
+        <!--p:dialog header="PROFIL" widgetVar="ajouter" showEffect="explode" modal="true" hideEffect="bounce"  minWidth="700" width="800"  height="450" minHeight="350"  >
+            <ui:include src="profil-ajout.xhtml"/>
+        </p:dialog>
+        <p:dialog header="PROFIL" widgetVar="modifier" showEffect="explode" modal="true" hideEffect="bounce"  minWidth="700" width="800"  height="450" minHeight="350"  >
+            <ui:include src="profil-modifier.xhtml"/>
+        </p:dialog-->
+    </ui:composition>
+</html>
+

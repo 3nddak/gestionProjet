@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <p:dataTable  class="table_label table-responsive"  id="catgliste" rows="5" value="#{flotteBean.listP}"
+                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                              paginator="true" paginatorPosition="bottom" var="prop" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd"
+                              rowKey="#{prop.idPropositions}"
+                              sortBy="#{prop.compagnieGuarantie.categorie.poids}"
+                              emptyMessage="#{msg['tableau.vide']}"> 
+
+                    <p:column headerText="Categories" >
+                        <h:outputText value="#{prop.compagnieGuarantie.categorie.libelle}" />
+                    </p:column>
+                    <p:column headerText="Liste garantie" >
+                        <h:outputText value="#{prop.compagnieGuarantie.guarantie.symbole}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </div>
+    </ui:composition> 
+</html>

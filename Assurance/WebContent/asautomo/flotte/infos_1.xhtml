@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition>
+        <p:panel header="Information sur la flotte"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+                <p:outputLabel for="designationflotte1" value="Designation :"/>
+                <h:outputText id="designationflotte1" value="#{flotteBean.flotteToSave.designation}"/>
+                <p:outputLabel for="descriptionflotte1" value="Description :"/>
+                <h:outputText id="descriptionflotte1" value="#{flotteBean.flotteToSave.description}"/>
+                <p:outputLabel for="datecreationflotte1" value="Date création :"/>
+                <h:outputText id="datecreationflotte1" value="#{flotteBean.formatDate(flotteBean.flotteToSave.dateCreation)}"/>
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="#{msg['message.client.titre']}"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel for="nom2aaa" value="Souscripteur :"/>
+                <h:outputText id="nom2aaa" value="#{flotteBean.clientSelected.nom} #{flotteBean.nom}"/>
+                <p:outputLabel for="tel2aaa" value="Téléphone :"/>
+                <h:outputText id="tel2aaa" value="#{flotteBean.clientSelected.telephoneMobile} #{flotteBean.telephoneMobile}"/>
+                <p:outputLabel for="addresse2aaa" value="Adresse :"/>
+                <h:outputText id="addresse2aaa" value="#{flotteBean.clientSelected.adresse} #{flotteBean.adresse}"/>
+
+
+            </p:panelGrid>
+
+        </p:panel>
+        <p:panel header="CATEGORIE-GARANTIES SELECTIONNEES"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <p:panelGrid class="table" columns="6">
+
+                <p:outputLabel for="cat2aaa" value="Categorie:"/>
+                <h:outputText id="cat2aaa" value="#{flotteBean.categorie.libelle}"/>
+
+            </p:panelGrid>
+            <p:outputLabel value="Garanties:"/>
+            <p:dataGrid  value="#{flotteBean.selectedObjetGuaranties}" var="guarantie" columns="4" layout="grid" class="table"> 
+                #{guarantie.symbole}
+            </p:dataGrid>
+        </p:panel>
+
+    </ui:composition> 
+
+</html>
+

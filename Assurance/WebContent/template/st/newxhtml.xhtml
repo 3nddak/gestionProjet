@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> >
+
+
+    <ui:composition>
+
+        <div class="container-fluid">
+            <div class="panel">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                    <div class=" col-lg-12 text-center panel-heading bg-primary">
+                        <label  class="text-uppercase">#{msg['titre.statistique']}</label>
+                    </div>
+                    <h:form>                                        
+                        <p:messages autoUpdate="true"/>  
+                        <p:outputPanel id="container" layout="block">  
+                            <h:panelGrid columns="4">  
+                                <h:outputText value=" Nouvelles demandes" />
+                                <p:inputText converter="javax.faces.Integer" value="#{statBean.demandes1}" />                                
+                                <h:outputText value=" En cours de traitement" />
+                                <p:inputText converter="javax.faces.Integer" value="#{statBean.demandes2}" />
+                                <h:outputText value=" Demandes traitees" />                              
+                                <p:inputText converter="javax.faces.Integer" value="#{statBean.demandes3}" />  
+                                <h:outputText value="Type" />  
+                                                                                                                              
+                                
+                                <h:selectOneMenu value="#{statBean.chartType}">  
+                                    <f:selectItems value="#{statBean.types}"/>  
+                                </h:selectOneMenu>  
+                                 <h:panelGroup/>   
+                                <p:commandButton value="Generate" update="container" action="#{statBean.generateModel}" />  
+                            </h:panelGrid>  
+
+                            <pe:gChart value="#{statBean.chart}" title="Variation des demandes des clients">  
+                                <p:ajax listener="#{statBean.onSelect}"/>  
+                            </pe:gChart>  
+                        </p:outputPanel>  
+
+                    </h:form>
+                    <div class="panel-footer col-lg-12 bg-primary">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</html>
+

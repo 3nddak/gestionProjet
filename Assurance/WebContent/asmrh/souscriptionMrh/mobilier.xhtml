@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition >
+        <ui:include src="infos_mobiliers.xhtml"/>
+        <p:panel header="#{msg['titre.Ajoutermobilierobjetusuel']}"  rendered="#{!souscriptionAsMrhBean.mobilierAjout}" >
+            <f:facet name="actions">
+                <h:commandLink  action="#{souscriptionAsMrhBean.onCloseMobilier()}" immediate="true" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+                    <f:ajax execute="@form" render="@form"/>
+                    <h:outputText styleClass="ui-icon ui-icon-close" />
+                </h:commandLink>
+            </f:facet>
+            <ui:include src="mobilier_ajout.xhtml"/>
+
+        </p:panel >
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="btn-toolbar">
+                    <p:commandButton rendered="#{souscriptionAsMrhBean.mobilierAjout}" value="Ajouter un objet" class="btn btn-purple pull-right"  update="formliste" actionListener="#{souscriptionAsMrhBean.openFormulaireMobilier()}"  />
+                </div>
+            </div>
+        </div>
+        <p:panel rendered="#{souscriptionAsMrhBean.listMobillierEtObjetUsuel.size() eq 0 ? false:true}" >
+            <ui:include src="mobilier_list.xhtml"/>
+
+        </p:panel>
+
+
+    </ui:composition>
+
+</html>

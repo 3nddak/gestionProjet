@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <ui:composition >
+        <h:form id="listtaux" class="form-horizontal">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="table-responsive"> 
+                        <p:dataTable sortOrder="descending"  class="table table-bordered" var="primeca"  rows="5" rowKey="#{primeca.idPrimeCapitalRestantDuAsVie}" selection="#{primeCapitalRestantDuAsVieBean.listPrimeCapitalRestantDuAsViesToupdate}" value="#{primeCapitalRestantDuAsVieBean.listPrimeCapitalRestantDuAsVies}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" scrollWidth="50%" scrollHeight="150"  editable="true" editMode="cell">
+
+                            <p:column headerText="#{msg['titre.pays']}" filterBy="#{primeca.compagnie.pays.designationPays}">
+                                <p:outputLabel value="#{primeca.compagnie.pays.designationPays}"/>
+                            </p:column>
+
+                            <p:column headerText="#{msg['titre.compagnie']}" filterBy="#{primeca.compagnie.abbreviation}">
+                                <p:outputLabel value="#{primeca.compagnie.abbreviation}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['titre.courtier']}" filterBy="#{primeca.courtier.abbreviation}">
+                                <p:outputLabel value="#{primeca.courtier.abbreviation}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['titre.typeCapitauxGaranties']}" filterBy="#{primeca.typeCapitauxGarantie}">
+                                <p:outputLabel value="#{primeca.typeCapitauxGarantie.toString()}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['titre.typeDeCotisation']}" filterBy="#{primeca.typeDeCautisation}">
+                                <p:outputLabel value="#{primeca.typeDeCautisation}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['titre.taux']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel id="ss4" value="#{primeca.tauxAnnuelleCautisation}">
+
+                                        </p:outputLabel>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{primeca.tauxAnnuelleCautisation}">
+                                            <p:ajax event="keyup" update ="ss4"  />
+                                         
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="#{msg['titre.actions']}">
+
+                                <p:commandButton icon="fa fa-save" title="#{msg['btn.enregistrer']}" action="#{primeCapitalRestantDuAsVieBean.updateOnePrimeCapitalRestantDuAsVie()}" update="@form" >
+                                    <f:setPropertyActionListener value="#{primeca}" target="#{primeCapitalRestantDuAsVieBean.primeCapitalRestantDuAsVieToUpdate}" />
+                                </p:commandButton>
+                                <p:commandButton icon="fa fa-trash" title="#{msg['btn.supprimer']}" action="#{primeCapitalRestantDuAsVieBean.deleteOneCapitalRestantDuAsVie()}"  update="@form">
+                                    <f:setPropertyActionListener value="#{primeca}" target="#{primeCapitalRestantDuAsVieBean.primeCapitalRestantDuAsVieToUpdate}" />
+                                </p:commandButton>
+                            </p:column>
+                            <p:column width="5%"  selectionMode="multiple" style="width: 16px;text-align: center; color: black;" />
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="btn-toolbar">
+                        <p:commandButton class="btn-danger btn" value="#{msg['btn.supprimer']}"  title="#{msg['titre.supprimerLaSelection']}" actionListener="#{primeCapitalRestantDuAsVieBean.deleteListPrimeCapitalRestantDuAsVie()}" update="@form" />
+                        <p:commandButton class="btn-purple btn pull-right"  value="#{msg['btn.enregistrer']}" title="#{msg['titre.enregistrerLaSelection']}" actionListener="#{primeCapitalRestantDuAsVieBean.updateListPrimeCapitalRestantDuAsVie()}" update="@form" />
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+
+        <div class="container-fluid">
+            <div class="panel">
+
+
+
+                    <h:commandLink class="list-group-item"    value="Demandes en cours de validation" title="En cours de validation" action="#{allMessageBean.action}"> 
+                        <h:outputLabel value="#{newMessageBean.demandeTraite}" style="background-color:red" class="pull-right badge" />                                           
+                        <f:setPropertyActionListener value="1" target="#{allMessageBean.statut}" /> 
+                        <p:ajax oncomplete="#{allMessageBean.listerFacture()}" />
+                    </h:commandLink>
+
+                    <h:commandLink class="list-group-item"  value="Nouvelles demandes"  title="Nouvelles demandes" action="#{allMessageBean.action}" >
+                        <h:outputLabel value="#{newMessageBean.numberNewFacture}" style="background-color:red" class="pull-right badge" />
+                        <f:setPropertyActionListener value="0" target="#{allMessageBean.statut}"  /> 
+                        <p:ajax oncomplete="#{allMessageBean.listerFacture()}" />
+                    </h:commandLink>
+
+
+                    <h:commandLink class="list-group-item"   value="Demandes envoyées" title="Demandes envoyées" action="#{allMessageBean.action}" >
+                        <h:outputLabel value="#{newMessageBean.numberNewFacture}" style="background-color: #ec971f" class="pull-right badge" />                
+                        <f:setPropertyActionListener value="0" target="#{allMessageBean.statut}"  /> 
+                        <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                    </h:commandLink>
+
+                    
+                    <h:commandLink class="list-group-item"    action="#{allMessageBean.action}" value ="Demandes Traitées"  title ="Demandes Traitées">
+                        <h:outputLabel value="#{newMessageBean.demandeTraite}" style="background-color:  #a94442" class="pull-right badge" ></h:outputLabel>
+                        <f:setPropertyActionListener value="1" target="#{allMessageBean.statut}" /> 
+                        <p:ajax oncomplete="#{allMessageBean.listerFacture()}" />
+                    </h:commandLink>
+
+                    <h:commandLink class="list-group-item"    action="#{allMessageBean.action}" value="Demandes acceptées"  title="Demandes acceptées par le client">
+                        <h:outputLabel value="#{newMessageBean.demandevalide}" style="background-color:  #aed248" class="pull-right badge" ></h:outputLabel>
+                        <f:setPropertyActionListener value="2" target="#{allMessageBean.statut}" /> 
+                        <p:ajax oncomplete="#{allMessageBean.listerFacture()}" />
+                    </h:commandLink>  
+
+                    <h:commandLink class="list-group-item"  value="Reçu de paiement"   title="Avoir" action="#{allMessageBean.action}">
+                        <h:outputLabel value="#{newMessageBean.numeroPolice}" style="background-color: lawngreen" class="pull-right badge" />
+                        <f:setPropertyActionListener value="4" target="#{allMessageBean.statut}" /> 
+                        <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                    </h:commandLink>
+
+                    <h:commandLink  class="list-group-item" type="boutton"   value="Demandes rejetées" title="Demandes rejetées" action="#{allMessageBean.action}">
+                        <h:outputLabel value="#{newMessageBean.demandeRejete}" style="background-color: slategrey" class="badge pull-right" />
+                        <f:setPropertyActionListener value="3" target="#{allMessageBean.statut}" /> 
+                        <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                    </h:commandLink>
+
+
+            </div>
+        </div>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,80 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <div id="liste">
+
+            <h:form  id="formliste3" class="form-horizontal">
+
+                <p:panel header ="Traitement de la demande" toggleable="true">
+                    <div class="form-group">
+                        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                    <p:panel id="motif" header ="Motif de la demande" toggleable="true">
+                                        <div class="panel panel-border-none">
+                                            <div class="panel-body">
+                                                <p jsf:id="sta" title='mtif de la demande'>
+                                                    #{autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.motifDemandePV}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </p:panel>
+                                </div>
+                            <div class="panel panel-border-none">
+                                <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                        <h:outputLabel  value="Autoriser"  for="autorisers" class=" pull-left" />
+                                    </div>
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                        <p:selectBooleanCheckbox id="autorisers" value="#{autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.autoriser}"  class="form-control" >
+                                            <p:ajax update="@form"/>
+                                        </p:selectBooleanCheckbox>
+                                    </div> 
+                                </div> 
+                                <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">  
+                                        <h:outputLabel id="motifl" rendered="#{!autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.autoriser}"  value="Motif du refus"  for="motifr" class=" pull-left" />
+                                    </div>
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+
+                                        <p:inputTextarea id="motifr" requiredMessage="Veuillez  donner le motif du refus" required="true" rendered="#{!autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.autoriser}" value="#{autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.motifRefusCourtier}" title="motif refus" class="form-control" >
+
+                                            <p:ajax event="keyup" update="telMessage"/>
+
+                                        </p:inputTextarea>
+                                    </div> 
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                        <p:message for="motifr" id="telMessage" class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:commandLink title="Enregistrer" value="Enregistrer" update="formliste2" onsuccess="PF('traiter').hide()"  action="#{autorisationDemandeAnnulationCourtierAsAuto.enregistrer()}"   class="btn btn-success"   >
+                                    <p:confirm header="Confirmation" message="Etes-vous sûr ?"  icon="ui-icon-alert" />
+                                </p:commandLink>
+                            </div>
+                        </div>
+                    </div>
+                </p:panel>
+
+
+            </h:form>
+
+
+        </div>
+    </ui:composition>
+
+
+</html>
+

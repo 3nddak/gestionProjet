@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <div class="panel-body">
+            <h:form id="commissionCompagnieCourtierCreateForm" class="form-horizontal">
+                <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                <div class="form-group" >
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  id="pays" value="#{garantieCategorieCompagnieProduitBean.paysSelected}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                <f:selectItems value="#{garantieCategorieCompagnieProduitBean.listpays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                <p:ajax listener="#{garantieCategorieCompagnieProduitBean.feshCompagnieByPays()}" update="comp,prod,cat,gar" />
+                            </h:selectOneMenu> 
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="comp" value="Compagnie" class="pull-left text-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="comp" required="false" requiredMessage="Veuillez choisir la compagnie" value="#{garantieCategorieCompagnieProduitBean.selectedCompagnie}"  >
+                                <f:selectItem noSelectionOption="true" itemLabel="Choisir compagnie" /> 
+                                <f:selectItems value="#{garantieCategorieCompagnieProduitBean.listCompagnieByPays}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                <f:ajax event="keyup" render="compMessage"/>
+                                <p:ajax listener="#{garantieCategorieCompagnieProduitBean.feshProduitByCompagnie()}" update="prod" />
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <h:message for="comp"  id="compMessage" class="errorClass" />    
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="prod" value="Produit" class="pull-left text-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="prod" required="false" requiredMessage="Veuillez choisir un produit" value="#{garantieCategorieCompagnieProduitBean.selectedProduit}"  >
+                                <f:selectItem noSelectionOption="true" itemLabel="Choisir produit" /> 
+                                <f:selectItems value="#{garantieCategorieCompagnieProduitBean.listProduit}" var="produit" itemLabel="#{produit.nom}" itemValue="#{produit}"/>
+                                <f:ajax event="keyup" render="prodMessage"/> 
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <h:message for="prod"  id="prodMessage" class="errorClass" />    
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="cat" value="Categorie" class="pull-left text-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="cat" required="false" requiredMessage="Veuillez choisir une catégorie" value="#{garantieCategorieCompagnieProduitBean.selectedCategorieGarantieAsSante}"  >
+                                <f:selectItem noSelectionOption="true" itemLabel="Choisir catégorie" /> 
+                                <f:selectItems value="#{garantieCategorieCompagnieProduitBean.listCategorieGarantie}" var="cat" itemLabel="#{cat.designation}" itemValue="#{cat}"/>
+                                <f:ajax event="keyup" render="catMessage"/> 
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <h:message for="cat"  id="catMessage" class="errorClass" />    
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:outputLabel  value="Garantie" class="pull-left" />
+                            <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:selectCheckboxMenu  filter="true" filterMatchMode="contains" class="form-control" id="gar" label="Garantie" value="#{garantieCategorieCompagnieProduitBean.selectedListGarantieAsSante}" converter="omnifaces.SelectItemsConverter">
+                                <f:selectItems value="#{garantieCategorieCompagnieProduitBean.listGarantieAsSante}" var="gar" itemLabel="#{gar.designation}" itemValue="#{gar}" />
+                            </p:selectCheckboxMenu>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:outputLabel  value="Taux de remboursement" class="pull-left" />
+                            <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:inputText id="tauxRemboursement" value="#{garantieCategorieCompagnieProduitBean.garantieCategorieCompagnieProduitToSave.tauxRemboursement}" required="true" requiredMessage="veuillez définir le taux" class="form-control" >
+                                <p:ajax event="keyup" update="msgs" />
+                            </p:inputText>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:outputLabel  value="Plafond de remboursement" class="pull-left" />
+                            <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:inputText id="plafondRemboursement" value="#{garantieCategorieCompagnieProduitBean.garantieCategorieCompagnieProduitToSave.plafondRemboursement}" required="true" requiredMessage="veuillez définir le taux" class="form-control" >
+                                <p:ajax event="keyup" update="msgs" />
+                            </p:inputText>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <div class="btn-toolbar">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p:commandButton class="btn btn-success pull-right " id="valid" value="#{msg['btn.ajouter']}" action="#{garantieCategorieCompagnieProduitBean.createGarantieCategorieCompagnieProduitTemporaliste()}"  update="@form,cco"  />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group ">
+                        <div class="table-responsive" >
+                            <p:dataTable id="cco" class="table table-bordered table-hover" rows="6" rowKey="#{co.hashCode()}" 
+                                         emptyMessage="#{msg['tableau.vide']}"
+                                         paginator="true" paginatorPosition="bottom"  var="co" value="#{garantieCategorieCompagnieProduitBean.garantieCategorieCompagnieProduitTemporalListe}" editable="true" editMode="cell">
+
+                                <p:column class="bg-blue" headerText="Pays" filterBy="#{co.produit.compagnie.pays.designationPays}" >
+                                    <p:outputLabel value="#{co.produit.compagnie.pays.designationPays}"/>
+                                </p:column>
+                                <p:column class="bg-blue" headerText="Compagnie" filterBy="#{co.produit.compagnie.designation}" >
+                                    <p:outputLabel value="#{co.produit.compagnie.designation}"/>
+                                </p:column>
+                                <p:column class="bg-blue" headerText="Produit" filterBy="#{co.produit.nom}" >
+                                    <p:outputLabel value="#{co.produit.nom}"/>
+                                </p:column>
+                                <p:column  class="bg-beige" headerText="Catégorie" filterBy="#{co.categorieGarantieAsSante.designation}" >
+                                    <p:outputLabel value="#{co.categorieGarantieAsSante.designation}"/>
+                                </p:column>
+                                <p:column  class="bg-beige" headerText="Garantie" filterBy="#{co.garantieAsSante.designation}" >
+                                    <p:outputLabel value="#{co.garantieAsSante.designation}"/>
+                                </p:column>
+                                <p:column  class="bg-blue" headerText="Taux de remboursement" >
+                                    <p:cellEditor  >
+                                        <f:facet name="output">
+                                            <p:outputLabel id="k1" value="#{co.tauxRemboursement}"/>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText id="k11" value="#{(co.tauxRemboursement)}" >
+                                                <p:ajax event="keyup" update="" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column  class="bg-blue"  headerText="Plafond remboursement" >
+                                    <p:cellEditor  >
+                                        <f:facet name="output">
+                                            <p:outputLabel id="k2" value="#{co.plafondRemboursement}"/>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText id="k22" value="#{(co.plafondRemboursement)}" >
+                                                <p:ajax event="keyup" update="" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Option" width="8%" style="text-align: center;">
+                                    <p:commandButton icon="fa fa-remove" class="btn btn-danger danger" update="cco" action="#{garantieCategorieCompagnieProduitBean.removeOneLine()}" >
+                                        <f:setPropertyActionListener value="#{co}" target="#{garantieCategorieCompagnieProduitBean.garantieCategorieCompagnieProduitToRemove}" />
+                                        <p:confirm icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p:commandButton class="btn-danger danger" value="#{msg['btn.annuller']}" update="@form" action="#{garantieCategorieCompagnieProduitBean.cancel()}" />
+                        <p:commandButton class="btn-success success" value="#{msg['btn.enregistrer']}" update="@form,listCategorieForm" action="#{garantieCategorieCompagnieProduitBean.saveGarantieCategorieCompagnieProduit()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                    </div>
+                </div>
+            </h:form >
+        </div>
+    </ui:composition> 
+</html>
+

@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+        <p:outputPanel id="dev" >
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <div id="liste" class="row">
+                    <fieldset> 
+                        <legend class="text-center text-uppercase"><p:outputLabel value="Sauvegarde Manuelle"></p:outputLabel></legend>
+                    </fieldset>
+                    <h:form  id="formliste" class="form-horizontal" >
+
+                        <p:outputLabel for="mask" value="DATE DEBUT:" />
+                        <p:calendar id="mask" required="true" value="#{archiveManuelBean.du}" pattern="dd-MM-yyyy HH:mm:ss" mask="true" />
+
+                        <p:commandButton  value="ok" update="formliste" actionListener="#{archiveManuelBean.test()}" class="btn btn-success   pull-right" style="background: #5cb85c;color:#fff;border-color:#4cae4c; font-family: cursive;"/>
+
+                        <p:commandButton  value="renitial" update="formliste" actionListener="#{archiveManuelBean.reinitialiser()}" class="btn btn-success   pull-right" style="background: #5cb85c;color:#fff;border-color:#4cae4c; font-family: cursive;"/>
+
+
+
+                    </h:form>
+
+
+
+                </div>
+            </div>
+
+        </p:outputPanel>
+
+
+    </ui:composition> 
+
+</html>

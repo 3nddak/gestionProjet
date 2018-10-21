@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="GESTION DES POINTS DE VENTES"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row">
+               
+
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <sec:authorize ifAllGranted="ADD_POINT_DE_VENTE">
+                            <p:fieldset  styleClass="whiteIcon"  legend="#{msg['pv.ajouter']}" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <ui:include src="pointsvente_ajout.xhtml"/>
+                            </p:fieldset>
+                            </sec:authorize>
+                        </div>
+                        <h:form  id="formliste">
+                            <!--div class="panel-heading"> 
+
+                                <fieldset>
+                                    <legend class="text-center"><p:outputLabel value="GESTION DES POINTS DE VENTE"></p:outputLabel></legend>
+                                    <div class="form-horizontal">
+                                        <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8">
+                                            <div class="col-lg-2 small col-md-2 col-xs-2 col-sm-2">
+                                                <p:commandButton rendered="#{sec:areAllGranted('ADD_POINT_DE_VENTE')}" value="Ajouter" class="form-control btn btn-success btn-lg btn-sm btn-xs" type="button" onclick="PF('ajouter').show();"/>
+                                            </div>
+
+
+                                        </div>
+                                    </div> 
+
+
+
+                                </fieldset>
+
+                            </div--> 
+
+                            <div class="panel-body">
+                                <sec:authorize ifAllGranted="POINT_DE_VENTE">
+                                <p:outputPanel id="devise">
+                                    <p:fieldset legend="#{msg['pv.liste']}" style="margin-bottom:20px">
+                                        <div>
+                                            <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-imprimer btn btn-xs " actionListener="#{pointsVenteBean.doGetA()}"   > 
+                                                <i class=" glyphicon glyphicon-print"></i>
+                                            </h:commandLink>  
+                                        </div>
+                                        <p:dataTable sortOrder="descending" sortBy="#{pointsVente.idPointVente}" class="table_label" var="pointsVente" rowKey="#{pointsVente.idPointVente}" selection="#{pointsVenteBean.triPointsVenteList}" id="pointsVenteliste" reflow="true" rows="5" value="#{pointsVenteBean.pointsVenteList}" 
+                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                     paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" > 
+
+                                            <f:facet name="{Exporters}">
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/excel.png" width="24"/>
+                                                    <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/pdf.png" width="24"/>
+                                                    <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/csv2.png" width="24"/>
+                                                    <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <p:graphicImage library="img" name="/xml.png" width="24"/>
+                                                    <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                                                </h:commandLink>
+                                            </f:facet>
+
+                                            <p:column headerText="Désignation PV" filterBy="#{pointsVente.designation}">
+                                                <h:outputText value="#{pointsVente.designation}"  />
+                                            </p:column>
+
+
+                                            <p:column headerText="Adresse" filterBy="#{pointsVente.adresse}">
+                                                <h:outputText value="#{pointsVente.adresse}" />
+                                            </p:column>
+                                            <p:column headerText="Type PV" filterBy="#{pointsVente.typePointVente}">
+                                                <h:outputText value="#{pointsVente.typePointVente}" />
+                                            </p:column>
+                                            <p:column headerText="Actions">
+
+                                                <p:commandButton rendered="#{sec:areAllGranted('MOD_POINT_DE_VENTE')}" update="modification" action="#{pointsVenteBean.modificationSelection()}" oncomplete="PF('modifier').show()" icon="fa fa-edit" title="Modification" class="btn btn-primary" style="background: #337ab7;color:#fff;border-color: #337ab7;">
+                                                    <f:setPropertyActionListener value="#{pointsVente}" target="#{pointsVenteBean.pointsVenteSelected}" />
+                                                </p:commandButton>
+
+
+
+                                                <p:commandButton rendered="#{sec:areAllGranted('DEL_POINT_DE_VENTE')}"  oncomplete="PF('supprimer').show()" icon="fa fa-trash" title="Suprimer" class="btn btn-danger" style="background: #d9534f;color:#fff;border-color: #d43f3a;">
+                                                    <f:setPropertyActionListener value="#{pointsVente}" target="#{pointsVenteBean.pointsVenteSelected}" />
+                                                </p:commandButton>
+                                            </p:column>
+
+                                        </p:dataTable>
+                                    </p:fieldset>
+                                </p:outputPanel>
+                                </sec:authorize>
+                            </div>
+                        </h:form>
+                        <!--p:dialog  showEffect="fade" header="AJOUT" widgetVar="ajouter" modal="true" width="750" minHeight="800" resizable="false">
+                            <div class="panel-heading bg-primary">
+                                <h:outputLabel value="AJOUT"/> 
+                            </div>
+                            <ui:include src="pointsvente_ajout.xhtml" />
+                        </p:dialog-->
+                        <p:dialog  header="#{msg['pv.modification']}" showEffect="fade"  widgetVar="modifier" modal="true" width="800" minHeight="500" resizable="false">
+                            <ui:include src="pointsvente_modifier.xhtml"/>
+                        </p:dialog>
+                        <h:form>
+                            <p:growl id="msgs3" showDetail="false" />
+                            <p:confirmDialog id="confirmation" message="#{msg['supprimer.message']}"
+                                             header="#{msg['titre.operation.suppression']}" severity="alert" 
+                                             widgetVar="supprimer">
+
+
+                                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste" action="#{pointsVenteBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+                            </p:confirmDialog>
+                        </h:form>
+
+                        <!--div class="panel-footer"> 
+
+                        </div--> 
+                    </div>
+
+
+                </div>
+            </div>
+        
+
+
+
+
+
+
+
+    </ui:composition> 
+
+</html>
+

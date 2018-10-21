@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <ui:composition>
+        <div class="panel">
+
+            <div class="panel-body">
+                <ui:include src="infos_capit.xhtml"/>
+                <fieldset><legend class="text-uppercase" ><h:outputLabel class="police_label" value="#{msg['titre.Info.Supplementaires']}"/></legend>
+                    <p:growl id="msgsl" globalOnly="true" showDetail="false"/>
+
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+                            <h:outputLabel  value="#{msg['souscription.periode']}"  for="periode" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText id="periode"  class="form-control" value="#{souscriptionAsMrhBean.assuranceMrh.periodeContrat}" placeholder="#{msg['souscription.periode']}" 
+                                         required="true"  requiredMessage="#{msg['souscription.periode.requireMessage']}" 
+                                         converterMessage="#{msg['souscription.periode.converterMessage']}"
+                                         validatorMessage="#{msg['souscription.periode.validatorMessage']}"
+                                         >
+                                <f:validateLongRange minimum="1" />
+                                <p:ajax event="keyup"  update="periodeMessage,mask2" listener="#{souscriptionAsMrhBean.dateFin()}" />  
+                            </p:inputText>
+                            <pe:keyFilter for="periode" mask="int"/> 
+                        </div>
+
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+                            <p:message for="periode" id="periodeMessage" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+                            <h:outputLabel  value="#{msg['souscription.datedebut']}"  for="mask1" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+                            <p:calendar id="mask1"  pattern="dd/MM/yyyy" value="#{souscriptionAsMrhBean.assuranceMrh.dateDebutContrat}" mask="true" placeholder="#{msg['souscription.datedebut']} " 
+                                        required="true" readonlyInput="true" navigator="true"
+                                        requiredMessage="#{msg['souscription.datedebut.requireMessage']}" 
+                                        validatorMessage="#{msg['souscription.datedebut.validatorMessage']}"
+                                        converterMessage="#{msg['souscription.datedebut.converterMessage']}"
+
+                                        >
+                                <f:convertDateTime pattern="dd/MM/yyyy"  type="date"/>
+                                <p:ajax event="dateSelect" listener="#{souscriptionAsMrhBean.dateFin()}" update="dateMessage,mask2" />
+                            </p:calendar>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+                            <p:message for="mask1" id="dateMessage"/> 
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:outputLabel   value="#{msg['titre.dateFin']}"  for="mask2" />
+                        </div> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:outputLabel id="mask2"  value="#{souscriptionAsMrhBean.dateFins}"   />
+                        </div> 
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="#{msg['titre.Capitalassure']}"  for="cap" class=" " /><h:outputLabel value="*" class="etoile_rouge " />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{souscriptionAsMrhBean.assuranceMrh.capitalAssure}"  id="cap" styleClass="form-control" placeholder="capital assuré"
+                                         required="true"  requiredMessage="#{msg['titre.Capitalassure.requiredMessage']}"  
+                                         >
+                                <pe:keyFilter for="cap" mask="num"/>
+                                <p:ajax event="keyup" update="capMessage"/>
+
+                            </p:inputText>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="cap" id="capMessage"/>
+                        </div>
+                    </div> 
+
+                </fieldset>   
+            </div> 
+        </div>
+    </ui:composition>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+          
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <ui:composition>
+
+
+        <p:outputPanel id="modification" style="text-align:center;">
+            <h:form id="mod" class="form-horizontal">
+
+                <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>
+
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="libelle" value="#{msg['pdr.libelle']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText id="libelle"  value="#{pointDeRetraitBean.pointDeRetraitToUpdate.libelle}" required="true" requiredMessage="#{msg['pdr.libelle.requireMessage']}"  class="form-control" a:placeholder="#{msg['pdr.libelle']}">
+
+                            <f:ajax event="keyup" render="libelleMessage"/>
+                        </p:inputText>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:message for="libelle"  id="libelleMessage" class="errorClass" />    
+                    </div> 
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="pays" value="#{msg['pdr.pays']}" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu id="pays" value="#{pointDeRetraitBean.pointDeRetraitToUpdate.pays}" converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="#{msg['pdr.pays.requireMessage']}" title="#{msg['pdr.pays']}" class=" form-control " >
+                            <f:selectItem itemLabel="#{msg['pdr.pays']}" noSelectionOption="true" />
+                            <f:selectItems value="#{pointDeRetraitBean.allPays}" var="p" itemLabel="#{p.designationPays}" itemValue="#{p}" />
+                            <p:ajax event="click"  update="paysMessage"/>
+                            <p:ajax listener="#{pointDeRetraitBean.configTelephone()}" update="tel,telephoneM,teleMessage" />
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:message for="pays" id="paysMessage" class="errorClass"/>     
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['pdr.telephone']}" for="telephoneM" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-2 col-lg-2 col-sm-4 col-xs-4 " style="padding-right: 0px">
+                        <h:outputLabel for="telephoneM" value="#{pointDeRetraitBean.indicatif}" id="tel" class=" form-control label-primary" style="color: white"/>
+                    </div>
+                    <div class="col-md-10 col-lg-10 col-sm-8 col-xs-8" style="padding-left: 0px">
+                        <p:inputText id ="telephoneM" required="true" requiredMessage="#{msg['pdr.telephone.requireMessage']}"
+                                     value="#{pointDeRetraitBean.pointDeRetraitToUpdate.telephone}" title="#{msg['pdr.telephone']}" class="form-control" a:placeholder="#{msg['pdr.telephone']}"
+                                     converterMessage="#{msg['compagnie.tel.converterMessage']}"
+                                     validatorMessage="#{msg['compagnie.tel.validatorMessage']}"
+                                     maxlength="#{pointDeRetraitBean.longueur}"
+                                     >
+                            <f:validateLength minimum="#{pointDeRetraitBean.longueur}"  maximum="#{pointDeRetraitBean.longueur}"  />
+                            <f:validateLongRange minimum="1"  />
+                            <p:ajax event="keyup" update="teleMessage"/>
+                        </p:inputText>
+                        <pe:keyFilter for="telephoneM" mask="pint"/>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:message for="telephoneM" id="teleMessage" class="errorClass"/>
+                        <p:growl id="msgTel" globalOnly="true"  />
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel for="adresse" value="#{msg['pdr.adresse']}" class="pull-left text-left"/>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText id="adresse" value="#{pointDeRetraitBean.pointDeRetraitToUpdate.adresse}" styleClass="form-control" placeholder="#{msg['pdr.adresse']}" >
+                        </p:inputText>
+
+                    </div>
+                </div> 
+                <!--     
+                     <div class="col-md-4 col-lg-4">
+                         <div class="col-md-12 col-lg-12 col-sm-12">
+                             <h:outputLabel for="ville" value="Ville" class="pull-left text-left"/>
+                         </div>
+                         <div class="col-md-12 col-lg-12 col-sm-12">
+                             <h:selectOneMenu id="ville" value="" styleClass="form-control" >
+                             </h:selectOneMenu>
+                             
+                         </div>
+                     </div> 
+                     
+                -->    
+
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['pdr.compagnie']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:selectCheckboxMenu id="cp" class="form-control pull-left" 
+                                              value="#{pointDeRetraitBean.listCompagnieForUpdate}" 
+                                              converter="omnifaces.SelectItemsConverter" label="#{msg['pdr.compagnie']}" 
+                                              filter="true" filterMatchMode="startsWith" required="true" requiredMessage="#{msg['pdr.compagnie.requireMessage']}"  >
+
+                            <f:selectItems value="#{pointDeRetraitBean.allCompagnie}" var="compo" itemLabel="#{compo.designation}" itemValue="#{compo}" />
+                            <f:ajax event="change" render="cpMessage"/>
+
+                        </p:selectCheckboxMenu> 
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:message for="cp"  id="cpMessage" class="errorClass" />   
+                    </div>
+                </div>
+                <div jsf:rendered="false" class="col-lg-4 col-md-4 col-xs-4">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel  value="Courtier" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:selectCheckboxMenu id="ct" class="form-control pull-left" 
+                                                          value="#{pointDeRetraitBean.pointDeRetraitToSave.courtier}" 
+                                                          converter="omnifaces.SelectItemsConverter" label="Courtier"
+                                                          filter="true" filterMatchMode="startsWith" required="true" requiredMessage="#{msg['pdr.compagnie.requireMessage']}"  >
+                                        <f:selectItems value="#{pointDeRetraitBean.allCourtier}" var="court" itemLabel="#{court.designation}" itemValue="#{court}" />
+                                        <f:ajax event="change" render="ctMessage"/>
+                                    </p:selectCheckboxMenu>
+                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                        <h:message for="ct"  id="ctMessage" class="errorClass animated" />  
+                                    </div>
+                                </div>
+                            </div>
+
+          
+              
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                         <br/>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:commandButton value="#{msg['btn.annuller']}" type="reset" update="mod,:formliste:msgs,:formliste:pdrliste, :formliste" class="btn btn-danger pull-left"/>
+
+                            <p:commandButton value="#{msg['btn.enregistrer']}" action="#{pointDeRetraitBean.modifier()}" oncomplete="PF('modifier').hide()" update="mod,:formliste:msgs,:formliste:pdrliste, :formliste" class="btn btn-primary pull-right" />
+                        </div>
+                    </div>
+               
+            </h:form>
+        </p:outputPanel>
+    </ui:composition> 
+
+</html>
+

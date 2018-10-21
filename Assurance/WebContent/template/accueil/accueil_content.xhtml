@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+
+        <!--div class="container-fluid"-->
+        <div class="row">
+            <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                <p:commandLink class=" text-center tile-stats bg-purple2" action="profils" > 
+                    <span class="menu-page  text-center ">
+                        <i class=" fa fa-steam-square" /> 
+                    </span> 
+                    <h3 class="text-right">#{msg['page.menu.parametres']}</h3>            
+                </p:commandLink>
+            </div>
+            <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                <p:commandLink class=" text-center tile-stats bg-purple2" action="compagnie" > 
+                    <span class="menu-page  text-center ">
+                        <i class=" fa fa-user" /> 
+                    </span> 
+                    <h3 class="text-right">#{msg['page.menu.admimistration']}</h3>            
+                </p:commandLink>
+            </div>
+            <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                <p:commandLink class=" text-center tile-stats bg-purple2" action="compte" > 
+                    <span class="menu-page  text-center ">
+                        <i class=" fa fa-eur" /> 
+                    </span> 
+                    <h3 class="text-right">#{msg['page.menu.comptabilite']}</h3>            
+                </p:commandLink>
+            </div>
+            <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                <p:commandLink class=" text-center tile-stats bg-purple2" action="st" > 
+                    <span class="menu-page  text-center ">
+                        <i class=" fa fa-bar-chart" /> 
+                    </span> 
+                    <h3 class="text-right">#{msg['page.menu.statistique']}</h3>            
+                </p:commandLink>
+            </div>
+
+
+        </div>
+        <!--/div-->
+
+    </ui:composition>
+</html>
+

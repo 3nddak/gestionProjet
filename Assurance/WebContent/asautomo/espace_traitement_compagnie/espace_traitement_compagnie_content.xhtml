@@ -1,0 +1,446 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="container">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['demande.gestion']}"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row">
+                <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4 well-lg" id="espace_message">
+                    <div class="panel">
+                        <div class="panel-heading bg-primary">
+ 
+                            <p:panel toggleable="true" collapsed="true" header="#{msg['recherche.titre']}">
+                                <h:form  class="form-horizontal" id="recherche">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <h:outputLabel for="pays"  value="Pays" class="pull-left text-left"/>    
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{factureCompagnieBean.paysSelected}" >                                          
+                                                    <f:selectItem itemLabel="Tous les pays" itemDisabled="false" />
+                                                    <f:selectItems var="pays" value="#{factureCompagnieBean.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <h:outputLabel for="compagnie"  value="Compagnie" class="pull-left text-left"/>                              
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <h:selectOneMenu id="compagnie" value="#{factureCompagnieBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                                    <f:selectItem itemLabel="Tous les Compagnies" itemDisabled="false" />
+                                                    <f:selectItems value="#{factureCompagnieBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                                                </h:selectOneMenu>
+                                            </div> 
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <h:outputLabel for="courtier"  value="Courtier"/>   
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <h:selectOneMenu id="courtier"  converter="entityConverter" value="#{factureCompagnieBean.courtierSelected}" class="form-control" >                                          
+                                                    <f:selectItem itemLabel="Type tiers" itemDisabled="false" />
+                                                    <f:selectItems var="courtier" value="#{factureCompagnieBean.listCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <h:outputLabel for="pv"  value="Point de vente" class="pull-left text-left"/>                          
+                                            </div>  
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <h:selectOneMenu id="pv"  value="#{factureCompagnieBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                                    <f:selectItem itemLabel="Point de vente" itemDisabled="false" />
+                                                    <f:selectItems var="pv" value="#{factureCompagnieBean.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <h:outputLabel for="gt"  value="Guichet" class="pull-left text-left"/>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <h:selectOneMenu id="gt"  value="#{factureCompagnieBean.guichetSelected}"  converter="entityConverter" class="form-control" >                                          
+                                                    <f:selectItem itemLabel="Guichets" itemDisabled="false" />
+                                                    <f:selectItems var="guichet" value="#{factureCompagnieBean.listGuichet}" itemLabel="#{guichet.designation}" itemValue="#{guichet}" />            
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <p:outputLabel for="mask" value="DATE DEBUT" />
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <p:calendar id="mask"  pattern="dd-MM-yyyy" class="form-control" mask="true" value="#{factureCompagnieBean.dateDebut}" >
+                                                </p:calendar>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <p:outputLabel for="mask" value="DATE FIN" />
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                <p:calendar id="mask2"   pattern="dd-MM-yyyy" class="form-control" mask="true" value="#{factureCompagnieBean.dateFin}">
+                                                </p:calendar>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <p:commandButton value="#{msg['btn.rechercher']}" update="message1:facture,@form" class="btn-imprimer btn btn-xs pull-right" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{factureCompagnieBean.trier()}"  />
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </h:form>
+                            </p:panel>
+
+                        </div>
+                        <h:form  class="form-horizontal well-sm" id="message1">
+
+                            <p:fieldset style="margin-bottom:20px">                       
+                                <div class="panel-heading bg-primary"> 
+                                    <p:outputLabel class="police_label" value="Messages"></p:outputLabel>
+                                </div>
+                                <p:dataScroller id="facture" value="#{factureCompagnieBean.listFacturesNonTraitees}" var="facture" chunkSize="10" style="padding:0px;margin: 0px; " class="list-group">
+                                    <div class="table-responsive">
+                                        <f:facet name="loader">
+                                            <p:commandButton type="button" class="btn btn-primary" value="Plus" style="color: white;background:#337ab7; " icon="fa fa-triangle" />
+                                        </f:facet>
+                                        <p:fieldset style="margin-bottom:5px"> 
+                                            <p:commandLink class="col-lg-12 mataille list-group-item lien_liste" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  style="text-align:left; margin: 0px;padding:0px " action="#{factureCompagnieBean.detailFacture()}" update="detail,text,recherche" >
+                                                <p:outputLabel class="col-md-12" style="#{facture.couleur}" value="#{facture.dateCreattion}" />
+                                                <p:graphicImage class="img-circle col-md-3" library="img" name="/mail.png" width="20"/>
+                                                <p:outputLabel class="col-md-9" value="#{facture.courtier.abbreviation}"/>
+                                                <p:outputLabel class="col-md-12" value="#{facture.type}"/>
+                                                <h:outputLabel rendered="#{facture.etat}" value="En cours de traitement..." class="col-lg-12"/>
+                                                <f:setPropertyActionListener value="#{facture}" target="#{factureCompagnieBean.selectedFacture}" />  
+                                            </p:commandLink>
+                                        </p:fieldset> 
+                                    </div>
+                                </p:dataScroller>
+                            </p:fieldset>   
+                        </h:form>
+                        <h:form id="f">
+                            <p:remoteCommand name="newProposition"    process="f" partialSubmit="true"  actionListener ="#{factureCompagnieBean.init()}"  update="message1:facture" autoRun="false"/> 
+                        </h:form>
+
+
+                    </div>
+
+                </div>
+                <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8 well-lg" id="espace_detail">
+                    <div class="panel">
+                        <h:form  class="form-horizontal well-sm" id="detail">
+                            <div class="panel-heading bg-primary">  
+                                <h:outputLabel class="police_label" value="SOCIETE DE COURTAGE" ></h:outputLabel>
+                            </div>
+
+                            <div class="panel-body"> 
+
+                                <div class="row">
+
+                                    <p:fieldset  legend="VOIR LES REFERENCES DU CLIENT" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+
+                                        <p:panelGrid columns="6" class="table">
+                                            <h:outputLabel value="Souscripteur"/>
+                                            <h:outputText value="#{factureCompagnieBean.client.nom}"/>
+                                            <h:outputLabel value="Téléphone"/>
+                                            <h:outputText  value="#{factureCompagnieBean.client.telephoneMobile}"/>
+                                            <h:outputLabel value="Adresse"/>
+                                            <h:outputText  value="#{factureCompagnieBean.client.adresse}"/>
+                                        </p:panelGrid>
+
+                                    </p:fieldset>
+                                    <p:fieldset  legend="VOIR LE TYPE D'OPERATIONS" toggleable="true" collapsed="false"  toggleSpeed="500"  style="margin-bottom:20px">                                              
+                                        <p:panelGrid columns="4" class="table">
+                                            <p:outputLabel for="av" value="Avenant :"/>
+                                            <h:outputText id="av" value="#{factureCompagnieBean.selectedFacture.type}"/>
+                                            <p:outputLabel for="datedebut" value="Date debut :"/>
+                                            <h:outputText id="datedebut" value="#{factureCompagnieBean.selectedFacture.dateDebut}"/>
+                                            <p:outputLabel for="periode" value="Periode en (#{factureCompagnieBean.selectedFacture.periodeDeFractionnement()}) :"/>
+                                            <h:outputText id="periode" value="#{factureCompagnieBean.selectedFacture.periode}"/>
+                                            <p:outputLabel for="numPolice" value="Numero Police :"/>
+                                            <h:outputText id="numPolice" value="#{factureCompagnieBean.selectedFacture.objetVoiture.numeroPolice}"/>
+                                        </p:panelGrid>
+
+                                    </p:fieldset>
+                                    <p:fieldset  legend="VOIR LES CARACTERISTIQUES DU VEHICULE" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                                
+                                        <p:panelGrid columns="4" class="table table-hover">
+                                            <h:outputLabel value="Immatriculation"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.numeroImmatriculation}"/>
+                                            <h:outputLabel value="Genre"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.genre}"/>
+                                            <h:outputLabel value="Marque"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.marque}"/>
+                                            <h:outputLabel value="Type"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.type}"/>
+                                            <h:outputLabel value="Puissance"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.puissance}"/>
+                                            <h:outputLabel value="Nombre de places"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.nombrePlaces}"/>
+                                            <h:outputLabel value="N° Chassis"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.numChassis}"/>
+                                            <h:outputLabel value="N° Moteur"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.numMoteur}"/>
+                                            <h:outputLabel value="Usage"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.usagev}"/>
+                                            <h:outputLabel value="Année"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.miseEnCirculation}"/>
+                                            <h:outputLabel value="Valeur neuve"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.valeurNeuve}">
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                            <h:outputLabel value="Valeur Venale"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.valeurvenale}">
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                            <h:outputLabel value="Categorie"/>
+                                            <h:outputText  value="#{factureCompagnieBean.voiture.categorie.libelle}"/>
+
+
+                                        </p:panelGrid>
+
+                                    </p:fieldset>
+
+                                    <p:fieldset style="margin-bottom:20px" id="ddd">
+                                        <legend>GARANTIES SOUSCRITES</legend>
+                                        <p:dataTable id="g" class="table table-bordered" 
+                                                     scrollable="true"  scrollWidth="100%" var="proposition" editable="true" editMode="cell"  value="#{factureCompagnieBean.listPropositionselect}">
+                                            <p:columnGroup type="header">
+                                                <p:growl>
+                                                    <p:column rowspan="2" headerText="GUARANTIE" />
+                                                    <p:column rowspan="2" headerText="PRIME ANNUELE" />
+                                                    <p:column colspan="4" headerText="REDUCTION OU MAJORATION" />
+                                                    <p:column rowspan="2" headerText="Taxe Generique "  />
+                                                    <p:column rowspan="2" headerText="PRIME NETTE"  />
+                                                </p:growl>
+                                                <p:row>
+                                                    <p:column headerText="BNS" />
+                                                    <p:column headerText="RED" />
+                                                    <p:column headerText="MLS" />
+                                                    <p:column headerText="MONTANT" />
+                                                </p:row>
+                                            </p:columnGroup>
+                                            <p:column>
+                                                #{proposition.compagnieGuarantie.guarantie.libelle}
+                                            </p:column>
+                                            <p:column>
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="ss4" value="#{factureCompagnieBean.selectedFacture.arrondireFormat(proposition.primePropose)}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText value="#{proposition.primePropose}">
+                                                            <p:ajax event="keyup" update ="ss4,primeTotal1,sss,ss1" listener="#{factureCompagnieBean.actionl()}" />
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column>
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel  id="ss3" value="#{factureCompagnieBean.selectedFacture.arrondireFormat(proposition.bonus)}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </p:outputLabel>
+
+                                                    </f:facet>
+                                                    <f:facet name="input">
+
+                                                        <p:inputText value="#{proposition.bonus}">
+                                                            <p:ajax event="keyup" update="ss3,primeTotal1,sss,ss1" listener="#{factureCompagnieBean.actionl()}" />
+                                                            <p:ajax event="blur" update="g"  />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column>
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="ss2" value="#{factureCompagnieBean.selectedFacture.arrondireFormat(proposition.reduction)}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+
+                                                        <p:inputText value="#{proposition.reduction}">
+                                                            <p:ajax event="keyup" update="ss2,primeTotal1,sss,ss1" listener="#{factureCompagnieBean.actionl()}" />
+                                                            <p:ajax event="blur" update="g"  />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column>
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="ss" value="#{factureCompagnieBean.selectedFacture.arrondireFormat(proposition.malus)}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+
+                                                        <p:inputText value="#{proposition.malus}">
+                                                            <p:ajax event="keyup" update="ss,primeTotal1,sss,ss1" listener ="#{factureCompagnieBean.actionl()}"  />
+                                                            <p:ajax event="blur" update="g"  />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column>
+                                                <p:outputLabel id="sss" value="#{factureCompagnieBean.selectedFacture.arrondireFormat(proposition.montant)}">
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </p:outputLabel>
+                                            </p:column>
+                                            <p:column>
+                                                <p:cellEditor >
+                                                    <f:facet name="output">
+                                                        <p:outputLabel id="ssss" value="#{factureCompagnieBean.selectedFacture.arrondireFormat(proposition.taxeGeneriqueValue)}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </p:outputLabel>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+
+                                                        <p:inputText value="#{proposition.taxeGeneriqueValue}">
+                                                            <p:ajax event="keyup" update="ss,primeTotal1,ssss,sss,ss1" listener ="#{factureCompagnieBean.actionl()}"  />
+                                                            <pe:keyFilter  mask="num" />
+                                                        </p:inputText>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column>
+
+                                                <p:outputLabel id="ss1" value="#{proposition.prime}">
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </p:outputLabel>
+
+                                            </p:column>
+                                            <p:columnGroup type="footer" id="primeTotal1">
+                                                <p:row>
+                                                    <p:column   style="text-align:right" footerText="Total :" />
+                                                    <p:column   footerText="#{factureCompagnieBean.selectedFacture.totalnet}" />
+                                                    <p:column   footerText=""  />
+                                                    <p:column   footerText=""  />
+                                                    <p:column   footerText=""  />
+                                                    <p:column   footerText=""  />
+                                                    <p:column   footerText=""  />
+
+                                                    <p:column   footerText="#{factureCompagnieBean.selectedFacture.arrondireFormat2(factureCompagnieBean.selectedFacture.primeNettennuelle)}" id="primeTotal" />
+                                                </p:row>
+
+                                            </p:columnGroup>
+                                        </p:dataTable>  
+
+                                    </p:fieldset>
+                                </div> 
+
+                            </div>
+
+                            <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                                <h:form>
+                                    <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{factureCourtierBean.comptabilite()}" />
+                                    <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </h:form>
+                            </p:confirmDialog>
+                        </h:form>
+                        <h:form id="text" class="form-horizontal">
+                            <p:panel id="calculTotal">
+                                <div class="form-group" >
+                                    <p:panelGrid columns="2"  layout="grid" >
+                                        <p:outputLabel class="form-control bg-purple" value="Prime nette:" for="ps"></p:outputLabel>
+                                        <p:outputLabel id="ps" class="text-right form-control"  value="#{factureCompagnieBean.selectedFacture.arrondireFormat(factureCompagnieBean.selectedFacture.primeNettennuelle)}"> 
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:outputLabel>
+                                        <p:outputLabel class="form-control bg-purple" value="Fractionnement en %:" for="frac"></p:outputLabel>
+                                        <p:outputLabel id="frac"  value="#{factureCompagnieBean.selectedFacture.primeFracionne}" class="form-control text-right">
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:outputLabel>
+                                        <p:outputLabel class="form-control bg-purple" value="Reduction flote en %:" for="rfl"></p:outputLabel>
+                                        <p:inputText id="rfl" class="text-right form-control" value="#{factureCompagnieBean.selectedFacture.reductionFlotte}">
+                                            <p:ajax event="keyup" update="pttc"  />
+                                            <pe:keyFilter  mask="num" />
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:inputText>
+                                        <p:outputLabel class="form-control bg-purple" value="Reduction Exeptionnelle en %:" for="rexp"></p:outputLabel>
+                                        <p:inputText id="rexp" class="text-right form-control" value="#{factureCompagnieBean.selectedFacture.reductionExceptionnelle}">
+                                            <p:ajax event="keyup" update="pttc"  />
+                                            <pe:keyFilter  mask="num" />
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:inputText>
+                                        <p:outputLabel class="form-control bg-purple" value="bonus %:" for="bon"></p:outputLabel>
+                                        <p:inputText id="bon" size="13" value="#{factureCompagnieBean.selectedFacture.bonus}" class="text-right form-control">
+                                            <p:ajax event="keyup" update="pttc"  />
+                                            <pe:keyFilter  mask="num" />
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:inputText>
+                                        <p:outputLabel  class="form-control bg-purple" value="Accessoire:" for="acc"/>
+                                        <p:inputText id="acc" class="text-right form-control" value="#{factureCompagnieBean.selectedFacture.accessoire}">
+                                            <p:ajax event="keyup" update="pttc"  />
+                                            <pe:keyFilter  mask="num" />
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:inputText>
+                                        <p:outputLabel class="form-control bg-purple" value=" Taxe FGA :" for="tes"/>
+                                        <p:inputText id="tes" class="text-right form-control" value="#{factureCompagnieBean.selectedFacture.taxeFGAvalue}">
+                                            <p:ajax event="keyup" update="pttc"  />
+                                            <pe:keyFilter  mask="num" />
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:inputText>
+                                        <p:outputLabel class="form-control bg-purple" value=" Taux d'enregistrement :" for="te"/>
+                                        <p:inputText id="te" class="text-right form-control" value="#{factureCompagnieBean.selectedFacture.tauxEnregistrementValue}">
+                                            <p:ajax event="keyup" update="pttc"  />
+                                            <pe:keyFilter  mask="num" />
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:inputText>
+                                        <p:outputLabel class="form-control bg-purple" value="Prime TTC:" for="pttc"/>
+                                        <p:outputLabel id="pttc" class="text-right form-control"  value="#{factureCompagnieBean.selectedFacture.arrondireFormat(factureCompagnieBean.selectedFacture.primeTtc)}">
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </p:outputLabel>
+                                    </p:panelGrid>
+                                </div>
+                                <div class="form-group" >
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <p:commandButton  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" value="Annuler" update="@form,detail,message1" action="#{factureCompagnieBean.destroy()}" class="btn-danger btn"  icon="fa fa-trash" />
+                                        <p:commandButton  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  class="btn-success btn pull-right" icon="fa fa-shopping-card" value="Valider" action="#{factureCompagnieBean.saveFacture()}" update="@form,detail,message1">  
+                                            <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert" rendered="#{(factureCourtierBean.selectedFacture.objetVoiture.numeroPolice==null)?false:true}" />
+                                        </p:commandButton>
+                                    </div>
+
+                                </div>
+                            </p:panel>
+
+
+
+
+                        </h:form>
+
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                            <h:graphicImage library="images" name="ajax-loader.gif" />
+                        </p:dialog>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ui:composition> 
+</html>
+

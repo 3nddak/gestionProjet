@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html manifest="demo.appcache" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      > 
+
+    <ui:composition>
+        <h:outputScript library="custom/js" name="common.js" />
+        <h:outputScript library="custom/js" name="calendar.js" />
+
+        <div class="nav-menu">
+            <nav class="" >
+
+                <div class="row">
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class=" fa fa-bars"></i></a>
+
+                    </div>
+
+                    <h:form >
+
+
+                        <ul class="nav navbar-nav navbar-right">
+
+                            <!-- ######################## logo dagalma ###################### -->
+                            <span class="navbar-brand pull-left"   >                            
+                                <p:graphicImage class="img-rounded  " library="custom/img" name="Dagalma1.png" height="20"/>  
+                            </span>
+                            <!-- ######################## fin logo dagalma ###################### -->
+
+
+                            <!-- ######################## Menu deconnecter ###################### -->
+
+                            <li>
+                                <a href="#" class="dropdown-toggle user-profile" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-user "/>
+                                    <h:outputLabel class="" value="#{loginBean.nowUser}"/>  ( <h:outputLabel value="#{(loginBean.nomEntite)}"/> )
+
+                                    <span class=" fa fa-angle-down"/>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
+                                    <li><p:commandLink value="#{msg['menu.haut.user.changerMdp']}" type="button" oncomplete="PF('changer_mdp').show();"/></li>
+                                    <li><p:commandLink value="Menu principal" action="menug" /></li>
+                                    <li><p:commandLink value="#{msg['menu.haut.user.deconnecter']}" action="#{loginBean.logOut()}" /></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+
+                        <!-- ################### Fin Menu deconnecter #########################" -->
+                        <!--/ul-->
+                    </h:form>
+                </div>
+
+                <div class="row bg-under-head">
+
+                    <ui:include src="../default/notification.xhtml"/>
+                </div>
+
+                <h:form id="sms3">
+
+
+                    <div class="modal " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Demandes de souscription</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <ui:include src="souscrit.xhtml"/> 
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal " id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Demandes de renouvellement</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <ui:include src="renouvel.xhtml"/> 
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal " id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                                    <h4 class="modal-title" id="myModalLabel">demandes d'attestation</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <ui:include src="attest.xhtml"/> 
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </nav>
+        </div>
+
+        <!--h:form>      
+            <p:dialog  header="renouvellement" showEffect="fade"  widgetVar="renouvel" modal="true"  width="650"  minHeight="350" resizable="false" >
+                <ui:include src="renouvel.xhtml"/> 
+            </p:dialog>
+        </h:form>
+        <h:form>       
+            <p:dialog  header="demandes d'attestation" showEffect="fade"  widgetVar="attest" modal="true"  width="650"  minHeight="350" resizable="false" >
+                <ui:include src="attest.xhtml"/>
+            </p:dialog>
+        </h:form-->
+        <h:form>
+            <p:remoteCommand name="newSms" process="@this" partialSubmit="true" actionListener="#{newMessageBean.init()}" action="#{numberAttestationBean.init()}" update="sms3" autoRun="false"/>
+        </h:form>
+
+        <p:dialog  header="changer votre mot de passe" showEffect="fade"  widgetVar="changer_mdp" modal="true"  width="450"  minHeight="350" resizable="false" >
+            <ui:include src="changer_mdp.xhtml"/>
+        </p:dialog>
+        <p:dialog  header="visualiser son code PIN" showEffect="fade"  widgetVar="pin_number" modal="true"  width="450"  minHeight="350" resizable="false" >
+            <ui:include src="pin_number.xhtml"/>
+        </p:dialog>
+
+        <h:form id="confirmation">
+            <p:confirmDialog header="Etes vous sûr" message="Supprimer" global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  />
+                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+        </h:form>
+
+    </ui:composition>
+
+</html>

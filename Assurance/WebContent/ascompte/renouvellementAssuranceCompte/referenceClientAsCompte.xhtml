@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+       <h:form id="client" class="form-horizontal">
+            <p:panel header="#{msg['message.client.titre']}" toggleable="true" collapsed="true" style="margin-bottom:20px">                                     
+                <p:panelGrid  columns="6" layout="grid" class="table table-responsive">
+                    <p:outputLabel  class="police_label" for="souscripteur:" value="#{msg['client.nom']}:"/>
+                    <p:outputLabel id="souscripteur" class="form-control" value="#{renouvellementAsCompteBean.assuranceCompteSelected.client.nom} #{renouvellementAsCompteBean.assuranceCompteSelected.client.prenom}"/>
+
+                    <p:outputLabel class="police_label" for="telephone" value="#{msg['client.tel']}: "/>
+                    <p:outputLabel id="telephone" value="#{renouvellementAsCompteBean.assuranceCompteSelected.client.telephoneMobile}" class="form-control"/>
+
+                    <p:outputLabel class="police_label" for="addresse" value="#{msg['client.adresse']}:"/>
+                    <h:outputLabel id="addresse" value="#{renouvellementAsCompteBean.assuranceCompteSelected.client.adresse}" class="form-control"/>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:composition>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+
+
+            <h:form  id="formliste" class="form-horizontal">
+                <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>   
+                <div class="panel-heading"> 
+
+                    <fieldset>
+                        <legend class="police_label text-center "><p:outputLabel value="#{msg['liste.etatSurLesOperations']}"></p:outputLabel></legend>
+
+                    </fieldset>
+
+                </div>
+
+                <p:panel id="t6" header="#{msg['recherche.titre']}" toggleable="true" collapsed="true" class="panel">
+                    <div class="panel-default" >
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="pays"  value="#{msg['titre.pays']}" class="pull-left text-left"/>                              
+                                    <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{activiteDuJourBean.paysSelect}" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.pays']}" itemDisabled="false" />
+                                        <f:selectItems var="pays" value="#{activiteDuJourBean.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />    
+                                        <p:ajax listener="#{activiteDuJourBean.trierPrametresByPays()}" update="t6" />
+                                    </h:selectOneMenu>
+
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="compagnie"  value="#{msg['titre.compagnie']}" class="pull-left text-left"/>                              
+                                    <h:selectOneMenu id="compagnie" value="#{activiteDuJourBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.compagnie']}" itemDisabled="false" />
+                                        <f:selectItems value="#{activiteDuJourBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                                    </h:selectOneMenu>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="courtier"  value="#{msg['titre.courtier']}" class="pull-left text-left"/>                               
+                                    <h:selectOneMenu id="courtier"  converter="entityConverter" value="#{activiteDuJourBean.courtierSelected}" class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.courtier']}" itemDisabled="false" />
+                                        <f:selectItems var="courtier" value="#{activiteDuJourBean.listCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="pv"  value="#{msg['titre.pdv']}" class="pull-left text-left"/>                          
+                                    <h:selectOneMenu id="pv"  value="#{activiteDuJourBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.pdv']}" itemDisabled="false" />
+                                        <f:selectItems var="pv" value="#{activiteDuJourBean.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                                    </h:selectOneMenu>
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="gt"  value="#{msg['titre.guichet']}" class="pull-left text-left"/>                            
+                                    <h:selectOneMenu id="gt"  value="#{activiteDuJourBean.guichetSelected}"  converter="entityConverter" class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.guichet']}" itemDisabled="false" />
+                                        <f:selectItems var="guichet" value="#{activiteDuJourBean.listGuichet}" itemLabel="#{guichet.designation}" itemValue="#{guichet}" />            
+                                    </h:selectOneMenu>
+
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">   
+                                    <p:outputLabel for="mask" value="#{msg['titre.dateDebut']}" />
+                                    <p:calendar id="mask" class="form-control"  pattern="dd-MM-yyyy" mask="true" value="#{activiteDuJourBean.dateDebutRecherche}" >
+                                    </p:calendar>
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <p:outputLabel for="mask2" value="#{msg['titre.dateFin']}" />
+                                    <p:calendar id="mask2" class="form-control"  pattern="dd-MM-yyyy" mask="true" value="#{activiteDuJourBean.dateFinRecherche}">
+                                    </p:calendar>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="btn-toolbar pull-right">  
+                                        <p:commandButton class="btn btn-purple" value="#{msg['btn.rechercher']}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{activiteDuJourBean.rechercheAvance()}"  update="facture,t6" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+
+                </p:panel>
+
+
+                <p:panel   toggleable="true" collapsed="false" class="panel">
+
+                    <div class="panel-default">
+                        <div class="panel-heading bg-purple-active">
+                            <div class="form-group">
+                                <div class="btn-toolbar">
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <p:outputLabel for="sc1" value="#{msg['titre.operationsDuJour']} &nbsp;" />
+                                        <p:selectBooleanCheckbox id="sc1"  value="#{activiteDuJourBean.operationsJours}" class="" >
+                                            <p:ajax listener="#{activiteDuJourBean.imprimerOperationsDuJour()}" update="sc1,sc2,sc3,sc4,facture" />
+                                        </p:selectBooleanCheckbox>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                        <p:outputLabel for="sc2" value="#{msg['titre.operationsDeLaSemaine']} &nbsp;"  />
+                                        <p:selectBooleanCheckbox id="sc2"  value="#{activiteDuJourBean.operationsSemaine}" class="" >
+                                            <p:ajax listener="#{activiteDuJourBean.imprimerOperationsDeLaSemaine()}" update="sc1,sc2,sc3,sc4,facture" />
+                                        </p:selectBooleanCheckbox>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                      <p:outputLabel for="sc3" value="#{msg['titre.operationsDuMois']} &nbsp;" />
+                                        <p:selectBooleanCheckbox id="sc3"  value="#{activiteDuJourBean.operationsMois}" class="" >
+                                            <p:ajax listener="#{activiteDuJourBean.imprimerOperationsDuMois()}" update="sc1,sc2,sc3,sc4,facture" />
+                                        </p:selectBooleanCheckbox>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                       <p:outputLabel for="sc4" value="#{msg['titre.operationsDeLAnnee']} &nbsp;"  />
+                                        <p:selectBooleanCheckbox id="sc4"  value="#{activiteDuJourBean.operationsAnnee}" class="" >
+                                            <p:ajax listener="#{activiteDuJourBean.imprimerOperationsdeLannee()}" update="sc1,sc2,sc3,sc4,facture" />
+                                        </p:selectBooleanCheckbox>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="panel-body">
+
+
+                            <div class="form-group">
+                                <div class="btn-toolbar">
+                                    <p:commandLink title="#{msg['btn.imprimer']}" value="#{msg['btn.imprimer']}"  action="#{activiteDuJourBean.doGetASimple()}" target="/"  class="btn btn-purple btn-xs"  ajax="false" > </p:commandLink>
+                                    
+                                    <p:commandLink title="#{msg['titre.exporterEnExcel']}" value="#{msg['titre.exporterEnExcel']}"  action="#{activiteDuJourBean.doGetAexelSimple()}" target="/"  class="btn btn-purple btn-xs "  ajax="false" ></p:commandLink>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="table-responsive">
+                                    <p:dataTable id="facture" editable="true" editMode="cell"
+                                                 resizableColumns="true"
+                                                 class="table"
+                                                 scrollable="true" 
+                                                 scrollWidth="3000"
+                                                 paginator="true" rows="20" emptyMessage="#{msg['tableau.vide']}"  paginatorPosition="bottom" value="#{activiteDuJourBean.listFacture}" var="facture"    style="padding:0px;margin: 0px; ">
+
+                                        <p:column headerText="#{msg['titre.dateValidation']}" filterBy="#{facture.pin}">
+                                            <p:outputLabel id="K" value="#{facture.datePayementOUrejetTransaction}" />
+
+                                        </p:column>
+
+                                        <p:column  headerText="#{msg['titre.numeroPolice']}"  class="col-md-2 col-lg-1"  filterBy="#{facture.objetVoiture.numeroPolice}"  >
+                                            <h:outputText  value="#{facture.objetVoiture.numeroPolice}" />
+                                        </p:column>
+
+                                        <p:column class="col-md-2 col-lg-2"  headerText="#{msg['titre.codeTransaction']}" filterBy="#{facture.codeFactureCourtier}">
+                                            <h:outputText value="#{facture.codeFactureCourtier}" rendered="#{facture.afficheCode}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg['titre.compagnie']}"   filterBy="#{facture.compagnie.abbreviation}">
+                                            <h:outputText value="#{facture.compagnie.abbreviation}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['titre.courtier']}"  filterBy="#{facture.courtier.abbreviation}">
+                                            <h:outputText value="#{facture.courtier.abbreviation}" />
+                                        </p:column>
+                                        <p:column headerText="Point de vente"  filterBy="#{facture.pointsVente.designation}">
+                                            <h:outputText value="#{facture.pointsVente.designation}" />
+                                        </p:column>
+                                        
+                                        <p:column headerText="Guichet"  filterBy="#{facture.guichet.designation}">
+                                            <h:outputText value="#{facture.guichet.designation}" />
+                                        </p:column>
+
+                                        <p:column  headerText="#{msg['control.client.nom']}"  filterBy="#{facture.objetVoiture.client.nom}"  >
+                                            <h:outputText value="#{facture.objetVoiture.client.nom}" />
+                                        </p:column>
+                                        
+                                        <p:column  headerText="Prénom"  filterBy="#{facture.objetVoiture.client.prenom}"  >
+                                            <h:outputText value="#{facture.objetVoiture.client.prenom}" />
+                                        </p:column>
+
+                                        <p:column  headerText="#{msg['control.categorie']}"  filterBy="#{facture.objetVoiture.categorie.libelle}" > 
+                                            <h:outputText value="#{facture.objetVoiture.categorie.libelle}" />
+                                        </p:column>
+
+                                        <p:column filterBy="#{facture.prixNette}" headerText="#{msg['tableau.primenette']}" class="text-right" >
+                                            <p:outputLabel value="#{facture.arrondireFormat2(facture.prixNette)}"  />
+                                        </p:column>
+                                        <p:column filterBy="#{facture.accessoire}" headerText="#{msg['tableau.accessoire']}" class="text-right" >
+                                            <p:outputLabel value="#{facture.arrondireFormat2(facture.accessoire)}" />
+                                        </p:column>
+                                        <p:column filterBy="#{facture.taxeFGAvalue}" headerText="#{msg['tableau.taxeFGA']}" class="text-right"  >
+                                            <p:outputLabel value="#{facture.arrondireFormat2(facture.taxeFGAvalue)}" />
+                                        </p:column>
+                                        <p:column filterBy="#{facture.tauxEnregistrementValue}" headerText="#{msg['menu.parametre.taxe']}" class="text-right"  >
+                                            <p:outputLabel value="#{facture.arrondireFormat2(facture.tauxEnregistrementValue)}" />
+                                        </p:column>
+                                        <p:column filterBy="#{facture.primeTtc}" headerText="#{msg['tableau.primettc']}" class="text-right" >
+                                            <p:outputLabel value="#{facture.arrondireFormat2(facture.primeTtc)}"  />
+                                        </p:column>
+                                        <p:column filterBy="#{facture.compenses()}" headerText="#{msg['titre.commission']}" class="text-right"  >
+                                            <p:outputLabel value="#{facture.arrondireFormat2(facture.compenses())}"  />
+                                        </p:column>
+                                        
+                                        <p:column filterBy="#{facture.commissionCompagnie}" headerText="#{msg['titre.commission']} #{msg['titre.compagnie']}" class="text-right"  >
+                                            <p:outputLabel value="#{facture.arrondireFormat2(facture.commissionCompagnie)}"  />
+                                        </p:column>
+                                        
+                                        
+                                        <p:columnGroup type="footer" id="primeTotal1">
+                                            <p:row>
+                                                <p:column   style="text-align:right" footerText="#{msg['tableau.total']} :"/>
+                                                <p:column   footerText="" />
+                                                <p:column   footerText="" />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column   footerText=""  />
+                                                <p:column style="text-align:right"  footerText="#{activiteDuJourBean.arrondireFormat2(activiteDuJourBean.totauxNette)}" />
+                                                <p:column style="text-align:right"  footerText="#{activiteDuJourBean.arrondireFormat2(activiteDuJourBean.totauxAccessoire)}"  />
+                                                <p:column style="text-align:right"  footerText="#{activiteDuJourBean.arrondireFormat2(activiteDuJourBean.totauxFga)}"  />
+                                                <p:column style="text-align:right"  footerText="#{activiteDuJourBean.arrondireFormat2(activiteDuJourBean.totauxtaxe)}"  />
+                                                <p:column style="text-align:right"  footerText="#{activiteDuJourBean.arrondireFormat2(activiteDuJourBean.totaux)}" />
+
+                                                <p:column style="text-align:right"  footerText="#{activiteDuJourBean.arrondireFormat2(activiteDuJourBean.totauxCommission)}" id="primeTotal" />
+                                            </p:row>
+
+                                        </p:columnGroup>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p:panel>
+
+            </h:form>
+
+
+
+
+
+        </div>
+
+
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+
+
+
+    </ui:composition> 
+
+</html>
+

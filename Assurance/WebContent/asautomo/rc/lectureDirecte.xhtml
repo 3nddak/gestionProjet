@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+    <ui:composition>
+        <div class="row">
+            <p:panel   header="Ajout Lecture Directe"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+                <ui:include src="rc_ajout.xhtml"/>
+            </p:panel>
+            <p:panel   header="Recherche"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+                <ui:include src="searchEngine.xhtml"/>
+            </p:panel>
+            <h:form  id="formliste" class="form-horizontal">
+                <p:panel   header="Liste des Lectures Directe"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                    <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-imprimer btn" actionListener="#{tableauRCBean.doGetA()}"   > 
+                        <i class=" glyphicon glyphicon-print"></i>
+                    </h:commandLink> 
+                    <p:commandButton value="Export" ajax="false"  icon="ui-icon-arrowthick-1-s">
+                        <p:fileDownload value="#{tableauRCBean.file}" />
+                    </p:commandButton>
+                    <p:dataTable class="table table-responsive table-bordered" var="trc" id="rcliste" rowExpandMode="single" rows="20" value="#{tableauRCBean.filtredListRC}" 
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" 
+                                 emptyMessage="#{msg['tableau.vide']}" sortOrder="descending" rowKey="#{trc.idTableauRC}"
+                                 rowsPerPageTemplate="10,20,30"
+                                editable="true" editMode="cell"
+                                 >     
+
+                        <p:column style="width:50px"  >
+
+                            <p:rowToggler  />
+                        </p:column>
+
+                        <p:column headerText="#{msg['vehicule.categorie']}" filterBy="#{trc.categorie.libelle}">
+                            <h:outputText value="#{trc.categorie.libelle}" />
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.garantie']}" filterBy="#{trc.garantie.libelle}">
+                            <h:outputText value="#{trc.garantie.libelle}" />
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.puissance']}" filterBy="#{trc.puissance}">
+                            <h:outputText value="[#{trc.puissance.inf};#{trc.puissance.sup}]" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['vehicule.energie']}" filterBy="#{trc.energie.libelleFr}">
+                            <h:outputText value="#{trc.energie.libelleFr}" />
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.nombreplace']}" filterBy="#{trc.nombreDePlace}">
+                            <h:outputText value="#{trc.nombreDePlace}" />
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.poids']}" filterBy="#{trc.poids}">
+                            <h:outputText value="[#{trc.poids.inf};#{trc.poids.sup}]" />
+                        </p:column>
+                        <p:column headerText="cylindre" filterBy="#{trc.cylindre}">
+                            <h:outputText value="[#{trc.cylindre.inf};#{trc.cylindre.sup}]" />
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.carrosserie']}" filterBy="#{trc.carrosserie}">
+                            <h:outputText value="#{trc.carrosserie}" />
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.typeVitre']}" filterBy="#{trc.typeVitres.typeVitre}">
+                            <h:outputText value="#{trc.typeVitres.typeVitre}" />
+                        </p:column>
+                        <p:column headerText="surprime" >
+                            <p:cellEditor>
+                                <f:facet name="output"><p:outputLabel id="Jxs" value="#{trc.surprimeParPassager}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText   value="#{trc.surprimeParPassager}"  class="pull-left" >
+                                        <p:ajax update="Jxs" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Nombre passager min" >
+                            <p:cellEditor>
+                                <f:facet name="output"><p:outputLabel id="Jxsd" value="#{trc.nombrePassagerMinimal}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:inputText   value="#{trc.nombrePassagerMinimal}"  class="pull-left" >
+                                        <p:ajax update="Jxsd" />
+                                    </p:inputText >
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{msg['garantie.prime']}" filterBy="#{trc.prime}">
+                            <h:outputText value="#{trc.prime}" > 
+                                <f:convertNumber pattern="###,##0" type="number" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Actions"> 
+
+                            <p:commandButton title="#{msg['btn.modifier']}" update="zone-ajout,:zone-ajout:trclist1"  action="#{tableauRCBean.modificationSelection()}"  icon="fa fa-edit" class="btn-primary primary btn-sm"  >
+                                <f:setPropertyActionListener value="#{trc}" target="#{tableauRCBean.tableauRCToUpdate}" />
+                            </p:commandButton>
+
+                            <p:commandButton  oncomplete="PF('supprimer').show()" update="rcliste,formliste" icon="fa fa-trash" title="#{msg['btn.supprimer']}" class="btn-danger danger btn-sm">
+                                <f:setPropertyActionListener value="#{trc}" target="#{tableauRCBean.tableauRCToDelete}" />
+                            </p:commandButton>
+
+                        </p:column>
+
+                        <p:rowExpansion >
+                            <div class="form-group">
+                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <h:outputText value="pays"/>
+                                        </span>
+                                        <h:outputLabel class="form-control"  value="#{trc.pays.designationPays}"  />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <h:outputText value="categorie"/>
+                                        </span>
+                                        <h:outputLabel class="form-control"  value="#{trc.categorie.libelle}"  />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <h:outputText value="garantie"/>
+                                        </span>
+                                        <h:outputLabel class="form-control"  value="#{trc.garantie.libelle}"  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <h:outputText value="prime"/>
+                                        </span>
+                                        <h:outputLabel class="form-control"  value="#{trc.prime}">
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </h:outputLabel>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <h:outputText value="puissance"/>
+                                        </span>
+                                        <h:outputLabel class="form-control"  value="[#{trc.puissance.inf} ; #{trc.puissance.sup}]"  />
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <h:outputText value="energie"/>
+                                        </span>
+                                        <h:outputLabel class="form-control"  value="#{trc.energie.libelleFr}"  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <h:outputText value="nombre de places"/>
+                                        </span>
+                                        <h:outputLabel class="form-control"  value="#{trc.nombreDePlace}"  />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <h:outputText value="poids"/>
+                                        </span>
+                                        <h:outputLabel class="form-control"  value="[#{trc.poids.inf} ; #{trc.poids.sup}]"  />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <h:outputText value="Cylindre"/>
+                                        </span>
+                                        <h:outputLabel class="form-control"  value="[#{trc.cylindre.inf} ; #{trc.cylindre.sup}]"  />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <h:outputText value="Type cylindre"/>
+                                        </span>
+                                        <h:outputLabel class="form-control"  value="#{trc.typeCylindre.designation}"  />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <h:outputText value="carrosserie"/>
+                                        </span>
+                                        <h:outputLabel class="form-control"  value="#{trc.carrosserie}"  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4 col-lg-4 col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <h:outputText value="Type de vitre"/>
+                                        </span>
+                                        <h:outputLabel class="form-control"  value="#{trc.typeVitre}"  />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:rowExpansion> 
+                    </p:dataTable>
+
+                </p:panel>
+
+            </h:form>
+            <p:dialog class="police_label" header="Modifier RC" showEffect="fade"  widgetVar="modifier" modal="true" width="1000" minHeight="600" resizable="false">
+                <ui:include src="rc_modifier.xhtml"/>
+            </p:dialog>
+            <h:form>
+                <p:growl id="msgs3" showDetail="false" />
+                <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                                 header="Suppression" severity="alert" widgetVar="supprimer">
+                    <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                    <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3, :formliste" action="#{tableauRCBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+                </p:confirmDialog>
+            </h:form>
+        </div>  
+    </ui:composition> 
+</html>
+

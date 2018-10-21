@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <h:form id="listCategorieForm" class="form-horizontal">
+            <p:growl id="msgss" globalOnly="true" showDetail="false"  life="3000"/>
+            <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                <fieldset> 
+                    <legend class=""> <p:outputLabel value="Garantie Catégorie Compagnie Produit"></p:outputLabel></legend>
+                    <div class="table-responsive">
+                        <p:dataTable id="listCategorieDataTable" class="table table-hover table-striped" rows="15" rowKey="#{cat.idGarantieCategorieCompagnieProduit}" editable="true" editMode="cell"
+                                     emptyMessage="#{msg['tableau.vide']}"
+                                     paginator="true" paginatorPosition="bottom"  var="cat" value="#{garantieCategorieCompagnieProduitBean.listGarantieCategorieCompagnieProduit}"
+                                     selection="#{garantieCategorieCompagnieProduitBean.selectedListGarantieCategorieCompagnieProduit}" >
+
+                            <p:column class="bg-blue" headerText="Pays" filterBy="#{cat.produit.compagnie.pays.designationPays}" >
+                                <p:outputLabel value="#{cat.produit.compagnie.pays.designationPays}"/>
+                            </p:column>
+                            <p:column class="bg-blue" headerText="Compagnie" filterBy="#{cat.produit.compagnie.designation}" >
+                                <p:outputLabel value="#{cat.produit.compagnie.designation}"/>
+                            </p:column>
+                            <p:column class="bg-blue" headerText="Produit" filterBy="#{cat.produit.nom}" >
+                                <p:outputLabel value="#{cat.produit.nom}"/>
+                            </p:column>
+                            <p:column  class="bg-beige" headerText="Catégorie" filterBy="#{cat.categorieGarantieAsSante.designation}" >
+                                <p:outputLabel value="#{cat.categorieGarantieAsSante.designation}"/>
+                            </p:column>
+                            <p:column  class="bg-beige" headerText="Garantie" filterBy="#{cat.garantieAsSante.designation}" >
+                                <p:outputLabel value="#{cat.garantieAsSante.designation}"/>
+                            </p:column>
+                            <p:column  class="bg-blue" headerText="Taux de remboursement" >
+                                <p:cellEditor  >
+                                    <f:facet name="output">
+                                        <p:outputLabel id="k12" value="#{cat.tauxRemboursement}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="k112" value="#{(cat.tauxRemboursement)}" >
+                                            <p:ajax event="keyup" update="" />
+                                            <pe:keyFilter  mask="num" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column  class="bg-blue"  headerText="Plafond remboursement" >
+                                <p:cellEditor  >
+                                    <f:facet name="output">
+                                        <p:outputLabel id="k22" value="#{cat.plafondRemboursement}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="k222" value="#{(cat.plafondRemboursement)}" >
+                                            <p:ajax event="keyup" update="" />
+                                            <pe:keyFilter  mask="num" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Activé" width="10%" style="width:36px;text-align:center" >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel  id="TA" class="#{cat.active}"> <i class="icon-default  text-green fa fa-check " /></p:outputLabel>
+                                        <p:outputLabel  id="TB" class="#{!cat.active}"> <i class="icon-default  text-red fa fa-close " /></p:outputLabel>
+                                    </f:facet>
+                                    <f:facet name="input"> 
+                                        <p:selectBooleanCheckbox value="#{cat.active}" >
+                                            <p:ajax update="TA,TB" />
+                                        </p:selectBooleanCheckbox>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Selection" selectionMode="multiple" width="8%" style="text-align: center;" />
+                        </p:dataTable>
+                    </div>
+
+                    <div class="btn-toolbar">
+                        <p:commandButton class="btn-danger btn" value="#{msg['btn.annuller']}" update="@form" action="#{garantieCategorieCompagnieProduitBean.cancel()}" />
+                        <p:commandButton class="btn-danger btn pull-right" value="#{msg['btn.supprimer']}" update="@form" action="#{garantieCategorieCompagnieProduitBean.deleteMultipleGarantieCategorieCompagnieProduit()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" >
+                            <p:confirm icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        <p:commandButton class="btn-imprimer btn pull-right" value="#{msg['btn.modifier']}" update="@form" action="#{garantieCategorieCompagnieProduitBean.updateMultipleGarantieCategorieCompagnieProduit()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                    </div>
+                </fieldset>
+
+            </div>
+        </h:form>
+    </ui:composition> 
+</html>
+

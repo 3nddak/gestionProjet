@@ -1,0 +1,95 @@
+ 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+
+    <ui:composition>
+
+        <h:form id="recherche" class="form-horizontal">
+            <p:panel  header="#{msg['titre.recherche']}" toggleable="true" collapsed="true"  style="margin-bottom:20px">
+                <div class="row">
+                    <p:panelGrid columns="4" class="table table-responsive" >
+                        
+                        <p:outputLabel for="etatan" value="#{msg['titre.etatDeLaDemande']} :"/>
+                        <h:selectOneMenu class="form-control"   id="etatan" value="#{annulationDemandeNCPAsAutoBean.typeDemande}"  >
+
+                            <f:selectItem itemLabel="#{msg['notification.nouvelleDemande']}" itemValue="#{1}"/>
+                            <f:selectItem itemLabel="#{msg['notification.demandeRejete']}" itemValue="#{3}"/>
+                            <f:selectItem itemLabel="#{msg['notification.demandeAnnuler']}" itemValue="#{4}"/>
+
+                            <p:ajax listener="#{annulationDemandeNCPAsAutoBean.traitementTypeDemande()}" update="@form" />
+                        </h:selectOneMenu>
+                        <p:outputLabel for="pays" value="#{msg['titre.pays']} :"/>
+                        <h:selectOneMenu class="form-control" converter="entityConverter"  id="pays" value="#{annulationDemandeNCPAsAutoBean.listerParametreByUserService.paysSelect}"  >
+
+                            <f:selectItems value="#{annulationDemandeNCPAsAutoBean.listerParametreByUserService.listpays}" var="pays"
+                                           itemLabel="#{pays.designationPays}" itemValue="#{pays}"/>
+                            <p:ajax listener="#{annulationDemandeNCPAsAutoBean.listerParametreByUserService.trierPrametresByPays()}" update="pss,courtier" />
+                        </h:selectOneMenu>
+                        <p:outputLabel for="pss" value="#{msg['titre.compagnie']} :"/>
+                        <h:selectOneMenu class="form-control"  converter="entityConverter"  id="pss" value="#{annulationDemandeNCPAsAutoBean.compagnieSelected}"  >
+                            <f:selectItem itemLabel="#{msg['titre.tous']}" itemDisabled="false" />
+                            <f:selectItems value="#{annulationDemandeNCPAsAutoBean.listerParametreByUserService.listCompagnie}" var="compagnie"
+                                           itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                        </h:selectOneMenu>
+
+                        <p:outputLabel for="courtier" value="#{msg['titre.courtier']} :"/>
+                        <h:selectOneMenu class="form-control"  converter="entityConverter"  id="courtier" value="#{annulationDemandeNCPAsAutoBean.courtierSelected}"  >
+                            <f:selectItem itemLabel="#{msg['titre.tous']}" itemDisabled="false" />
+                            <f:selectItems value="#{annulationDemandeNCPAsAutoBean.listerParametreByUserService.listCourtier}" var="courtier"
+                                           itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}"/>
+                        </h:selectOneMenu>
+
+                        <p:outputLabel for="numPolice" value="#{msg['tableau.numeropolice']} "/>
+                        <p:inputText id="numPolice" value="#{annulationDemandeNCPAsAutoBean.police}" class="form-control" />
+
+                        <p:outputLabel for="nom" value="#{msg['client.nom']}"/>
+                        <p:inputText id="nom" value="#{annulationDemandeNCPAsAutoBean.nom}" class="form-control" />
+
+                        <p:outputLabel for="prenom" value="#{msg['client.prenom']}"/>
+                        <p:inputText id="prenom" value="#{annulationDemandeNCPAsAutoBean.prenom}" class="form-control" />
+
+                        <p:outputLabel for="numPiece" value="Numéro Piece"/>
+                        <p:inputText id="numPiece" value="#{annulationDemandeNCPAsAutoBean.numeroPiece}" class="form-control" />
+
+                        <p:outputLabel for="immatriculation" value="#{msg['vehicule.immatriculation']}"/>
+                        <p:inputText id="immatriculation" value="#{annulationDemandeNCPAsAutoBean.immatriculation}" class="form-control" />
+
+                        <p:outputLabel for="chassis" value="#{msg['vehicule.numerochassis']}"/>
+                        <p:inputText id="chassis" value="#{annulationDemandeNCPAsAutoBean.numChassis}" class="form-control" />
+
+                        <p:outputLabel for="dateDmin" value="#{msg['titre.dateDemandeMin']}:"/>
+                        <p:calendar id="dateDmin" value="#{annulationDemandeNCPAsAutoBean.dateDemandeMin}" class="form-control" />
+                        <p:outputLabel for="dateDmax" value="#{msg['titre.dateDemandeMax']}:"/>
+                        <p:calendar id="dateDmax" value="#{annulationDemandeNCPAsAutoBean.dateDemandeMax}" class="form-control" />
+
+                        <p:outputLabel for="dateAuMin" value="#{msg['titre.dateAutorisationMin']} :"/>
+                        <p:calendar id="dateAuMin" value="#{annulationDemandeNCPAsAutoBean.dateAurorisationMin}" class="form-control" />
+                        <p:outputLabel for="dateAuMax" value="#{msg['titre.dateAutorisationMax']} :"/>
+                        <p:calendar id="dateAuMax" value="#{annulationDemandeNCPAsAutoBean.dateAutoristionMax}" class="form-control" />
+
+                        <p:outputLabel for="dateAnMin" value="#{msg['titre.dateAnnulationMin']} :"/>
+                        <p:calendar id="dateAnMin" value="#{annulationDemandeNCPAsAutoBean.dateAnnulationMin}" class="form-control" />
+                        <p:outputLabel for="dateAnMax" value="#{msg['titre.dateAnnulationMax']} :"/>
+                        <p:calendar id="dateAnMax" value="#{annulationDemandeNCPAsAutoBean.dateAnnulationMax}" class="form-control" />
+
+
+                    </p:panelGrid>
+                </div>
+                <div class="row">
+                    <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  icon="fa fa-search" update="formliste2" actionListener="#{annulationDemandeNCPAsAutoBean.rechercher()}" value="#{msg['btn.rechercher']}" title="#{msg['btn.rechercher']}" class="btn btn-success pull-right" >
+                    </p:commandButton>
+
+
+
+                </div>
+            </p:panel>
+        </h:form>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+           
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                   
+                    <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['titre.etat']}"></p:outputLabel></legend>
+            </fieldset>
+                    <h:form>
+                        <div class="panel-body col-lg-12 panel-border">
+                            <sec:authorize access="hasRole('ADMIN')">
+                                <div class="list-group col-lg-12">
+                                    <li href="#" class="list-group-item active">NCP-TECH</li>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{compagnieBean.doGetA()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Garanties par Compagnie </h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{courtierBean.doGetE()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Courtiers par Compagnie </h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{pointsVenteBean.doGetX()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des PDV par Courtier </h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{guichetsBean.doGetD()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Guichets par PDV </h:commandLink>                           
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{clientBean.doGetB()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Clients par Compagnie</h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{clientBean.doGetA()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Clients par Courtier</h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{clientBean.doGetC()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Clients par PDV </h:commandLink>                       
+                                </div>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('USER_CMP')">
+                                <div class="list-group col-lg-12">
+                                    <li href="#" class="list-group-item active text-uppercase">#{msg['titre.compagnie']}</li>                           
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{courtierBean.doGetA()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Courtiers </h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{pointsVenteBean.doGetX()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des PDV par Courtier </h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{guichetsBean.doGetD()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Guichets par PDV </h:commandLink>                           
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{clientBean.doGetD()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Clients </h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{clientBean.doGetA()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Clients par Courtier</h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{clientBean.doGetC()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Clients par PDV </h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{pointDeRetraitBean.doGetA()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Points de retrait par compagnie </h:commandLink>
+                                </div>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('USER_CRT')">
+                                <div class="list-group col-lg-12">
+                                    <li href="#" class="list-group-item active text-uppercase">#{msg['titre.courtier']}</li>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{compagnieBean.doGetA()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Garanties par Compagnie </h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{pointsVenteBean.doGetA()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des PDV </h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{guichetsBean.doGetD()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Guichets par PDV </h:commandLink>                           
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{clientBean.doGetD()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Clients </h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{clientBean.doGetB()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Clients par Compagnie</h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{clientBean.doGetC()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Clients par PDV </h:commandLink>        
+                                </div>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('USER_PVT')">
+                                <div class="list-group col-lg-12">
+                                    <li href="#" class="list-group-item active text-uppercase">#{msg['titre.pdv']}</li>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{compagnieBean.doGetA()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Garanties par Compagnie </h:commandLink>
+
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{clientBean.doGetB()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Clients par Compagnie</h:commandLink>
+                                    <h:commandLink target="_blank" class="list-group-item" actionListener="#{clientBean.doGetA()}" ><span class="badge">#{msg['btn.imprimer']}</span>Liste des Clients par courtier </h:commandLink>        
+
+                                    
+                                    <p:panel header="#{msg['client.liste']}" toggleable="true" collapsed="true" style="margin-bottom:20px">
+                                        <div>
+                                            <h:commandLink   target="_blank"  value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-imprimer btn police_label  " actionListener="#{clientBean.listClientPDV()}"   > 
+                                                <i class=" glyphicon glyphicon-print"></i>
+                                            </h:commandLink>  
+                                        </div>
+                                        <p:dataTable id="table" var="clientA" rowExpandMode="single"  rowKey="#{clientA.idClient}" value="#{clientBean.allClientByPDV}" widgetVar="clientsTable"
+                                                     emptyMessage="Aucun client avec ces critères" 
+                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     paginator="true" paginatorPosition="bottom" rowsPerPageTemplate="8,15,20" rows="8" filteredValue="#{clientBean.filtreClientPDV}" >
+                                        
+                                            
+                                            <p:column  filterBy="#{clientA.nom}" headerText="#{msg['client.nom']}" filterMatchMode="contains">
+                                                <h:outputText value="#{clientA.nom}" />
+                                            </p:column>
+                                            <p:column filterBy="#{clientA.prenom}" headerText="#{msg['client.prenom']}"  filterMatchMode="contains">
+                                                <h:outputText value="#{clientA.prenom}" />
+                                            </p:column>
+                                            <p:column filterBy="#{clientA.pays}" headerText="#{msg['client.pays']}"  filterMatchMode="contains">
+                                                <h:outputText value="#{clientA.pays}" />
+                                            </p:column>
+                                            
+                                            <p:column filterBy="#{clientA.adresse}" headerText="#{msg['client.adresse']}"  filterMatchMode="contains">
+                                                <h:outputText value="#{clientA.adresse}" />
+                                            </p:column>
+                                            <p:column filterBy="#{clientA.nationalite}" headerText="#{msg['client.nationalite']}"  filterMatchMode="contains">
+                                                <h:outputText value="#{clientA.nationalite}" />
+                                            </p:column>
+                                            <p:column filterBy="#{clientA.numeroPiece}" headerText="#{msg['client.numeropiece']}"  filterMatchMode="contains">
+                                                <h:outputText value="#{clientA.numeroPiece}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:panel>
+
+
+
+
+                                    <p:panel header="#{msg['courtier.liste']}" toggleable="true" collapsed="true" style="margin-bottom:20px">   
+                                        <div>
+                                            <h:commandLink   target="_blank"  value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-info btn police_label  " style="color:#fff;background:#5bc0de;border-color:#46b8da" actionListener="#{courtierBean.listDesCourtiersPDV()}"   > 
+                                                <i class=" glyphicon glyphicon-print"></i>
+                                            </h:commandLink>  
+                                        </div>
+                                        <p:dataTable sortOrder="descending" sortBy="#{courtier.idCourtier}" class="table_label" var="courtier" rowKey="#{courtier.idCourtier}" selection="#{courtierBean.triCourtierList}" id="courtierliste" reflow="true" rows="5" 
+                                                     value="#{courtierBean.courtierListToPrint}"
+                                                     emptyMessage="#{msg['tableau.vide']}"
+                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                     paginator="true" paginatorPosition="bottom" 
+                                                     style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd"
+                                                     filteredValue="#{courtierBean.filtreCourtier}"
+                                                     > 
+                                            
+                                            <p:column headerText="#{msg['courtier.abbreviation']}" filterBy="#{courtier.abbreviation}">
+                                                <h:outputText value="#{courtier.abbreviation}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['courtier.designation']}" filterBy="#{courtier.designation}">
+                                                <h:outputText value="#{courtier.designation}" />
+                                            </p:column>
+
+                                            <p:column headerText="#{msg['courtier.adresse']}" filterBy="#{courtier.adresse}">
+                                                <h:outputText value="#{courtier.adresse}" />
+                                            </p:column>
+                                            <p:column headerText="#{msg['courtier.telephone']}" filterBy="#{courtier.telephones}">
+                                                <h:outputText value="#{courtier.telephones}" />
+                                            </p:column>
+
+                                            <p:column  filterBy="#{courtier.pays.designationPays}" headerText="Pays" filterMatchMode="exact">
+                                                <f:facet name="filter">
+                                                    <p:selectOneMenu onchange="PF('ddd').filter()" >
+                                                        <f:selectItem itemLabel="Afficher tout" itemValue="#{null}" noSelectionOption="true" />
+                                                        <f:selectItems value="#{paysBean.paysList}" var="p" itemLabel="#{p.designationPays}" itemValue="#{p.designationPays}" />
+
+                                                    </p:selectOneMenu>
+                                                </f:facet>
+                                                <h:outputText value="#{courtier.pays.designationPays}" />
+                                            </p:column>
+                                            <p:column  filterBy="#{courtier.typeCourtier}" headerText="Type courtier" filterMatchMode="exact">
+                                                <f:facet name="filter">
+                                                    <p:selectOneMenu onchange="PF('ddd').filter()" >
+                                                        <f:selectItem itemLabel="Afficher tout" itemValue="#{null}" noSelectionOption="true" />
+                                                        <f:selectItem itemLabel="Externe" itemValue="courtier externe" />
+                                                        <f:selectItem itemLabel="Propre" itemValue="courtier propre" />
+                                                    </p:selectOneMenu>
+                                                </f:facet>
+                                                <h:outputText value="#{courtier.typeCourtier}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:panel>
+                                </div>
+                            </sec:authorize>
+                        </div>
+                    </h:form>
+                </div>         
+        </div>
+    </ui:composition>
+</html>
+

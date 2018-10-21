@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition>
+
+        <p:panel class="panel-border-none" header="#{msg['compte.information']}"  toggleable="true" collapsed="true">
+
+            <p:panelGrid class="table" columns="6">
+                <p:outputLabel value="#{msg['titre.typecompte']} :"/>
+                <h:outputText value="#{souscriptionAsCompteBean.assuranceCompte.typeCompte}"/>
+                <p:outputLabel value="#{msg['compte.intitule']} :"/>
+                <h:outputText value="#{souscriptionAsCompteBean.assuranceCompte.intituleCompte}"/>
+                <p:outputLabel value="#{msg['compte.dateOuverture']} :"/>
+                <h:outputText value="#{souscriptionAsCompteBean.assuranceCompte.dateOuvertureCompte}"/>
+                <p:outputLabel value="#{msg['compte.solde']}:"/>
+                <h:outputText value="#{souscriptionAsCompteBean.assuranceCompte.soldeCompte}"/>
+                <p:outputLabel value="#{msg['banque.detaille.code']} :"/>
+                <h:outputText value="#{souscriptionAsCompteBean.assuranceCompte.code}"/>
+                <p:outputLabel value="#{msg['banque.agence']}:"/>
+                <h:outputText value="#{souscriptionAsCompteBean.assuranceCompte.agence}"/>
+                <p:outputLabel  value="#{msg['titre.compte']} :"/>
+                <h:outputText value="#{souscriptionAsCompteBean.assuranceCompte.compte}"/>
+                <p:outputLabel  value="#{msg['banque.rib']}:"/>
+                <h:outputText value="#{souscriptionAsCompteBean.assuranceCompte.rib}"/>
+
+            </p:panelGrid>
+
+        </p:panel>
+
+
+        <p:panel header="COMPAGNIES-COURTIERS CHOISIES"  toggleable="true" collapsed="true" class="panel-border-none">
+            <div class="table-responsive">
+                <p:dataTable class="table_label table-responsive" var="compcour" reflow="true" rows="5" value="#{souscriptionAsCompteBean.listAssuranceCompte}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" 
+                             rowsPerPageTemplate="5,10,15"  emptyMessage="#{msg[tableau.vide]}"  >                                                    
+                    <p:column headerText="#{msg['titre.compagnie']}">
+                        <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                    </p:column>
+
+                    <p:column headerText="#{msg['titre.courtier']}">
+                        <h:outputText value="#{compcour.courtier.abbreviation}" />
+                    </p:column >
+
+                </p:dataTable>
+            </div>
+
+        </p:panel>
+
+
+    </ui:composition> 
+
+</html>
+

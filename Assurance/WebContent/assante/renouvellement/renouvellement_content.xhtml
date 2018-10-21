@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div class="panel-heading"> 
+                <fieldset>
+                    <legend class="text-center"><p:outputLabel value="Renouvellement"></p:outputLabel></legend>
+                </fieldset>
+            </div>
+            <h:form id="recherche" class="form-horizontal">
+                <p:panel  header="#{msg['titre.recherche']}" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                    <div class="row">
+                        <p:panelGrid columns="4" class="table table-responsive" >
+                            <p:outputLabel for="pays" value="#{msg['titre.pays']} :"/>
+                            <h:selectOneMenu class="form-control" converter="entityConverter"  id="pays" value="#{renouvellementAsSanteBean.paysSelect}"  >
+
+                                <f:selectItems value="#{renouvellementAsSanteBean.listpays}" var="pays"
+                                               itemLabel="#{pays.designationPays}" itemValue="#{pays}"/>
+                                <p:ajax listener="#{renouvellementAsSanteBean.trierPrametresByPays()}" update="pss,courtier" />
+                            </h:selectOneMenu>
+                            <p:outputLabel for="pss" value="#{msg['titre.compagnie']} :"/>
+                            <h:selectOneMenu class="form-control"  converter="entityConverter"  id="pss" value="#{renouvellementAsSanteBean.compagnieSelected}"  >
+
+                                <f:selectItems value="#{renouvellementAsSanteBean.listCompagnie}" var="compagnie"
+                                               itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                            </h:selectOneMenu>
+
+                            <p:outputLabel for="courtier" value="#{msg['titre.courtier']} :"/>
+                            <h:selectOneMenu class="form-control"  converter="entityConverter"  id="courtier" value="#{renouvellementAsSanteBean.courtierSelected}"  >
+
+                                <f:selectItems value="#{renouvellementAsSanteBean.listCourtier}" var="courtier"
+                                               itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}"/>
+                            </h:selectOneMenu>
+
+                            <p:outputLabel for="numPolice" value="#{msg['tableau.numeropolice']}"/>
+                            <p:inputText id="numPolice" value="#{renouvellementAsSanteBean.numeroPoliceRechercher}" class="form-control" />
+
+                            <p:outputLabel for="nom" value="#{msg['client.nom']} "/>
+                            <p:inputText id="nom" value="#{renouvellementAsSanteBean.nomRechercher}" class="form-control" />
+
+                            <p:outputLabel for="prenom" value="#{msg['client.prenom']} "/>
+                            <p:inputText id="prenom" value="#{renouvellementAsSanteBean.prenomRechercher}" class="form-control" />
+
+                            <p:outputLabel for="numPiece" value="#{msg['client.numeropiece']} "/>
+                            <p:inputText id="numPiece" value="#{renouvellementAsSanteBean.numeroPieceRechercher}" class="form-control" />
+
+                        </p:panelGrid>
+                    </div>
+                    <div class="row">
+                        <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  icon="fa fa-search" update="formliste" actionListener="#{renouvellementAsSanteBean.trierParParamettre()}" value="#{msg['btn.rechercher']}" title="#{msg['btn.rechercher']}" class="btn btn-success pull-right" />
+                        <p:commandButton icon="fa fa-times" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" action="#{renouvellementAsSanteBean.annulerRecherche()}" update="@form" class="btn btn-danger pull-right" />
+                    </div>
+                </p:panel>
+            </h:form>
+            <div id="liste">
+                <h:form  id="formliste" class="form-horizontal">
+                    <p:panel header ="Renouveler" toggleable="true">
+                        <p:dataTable rows="8" paginator="true" id="display2" paginatorPosition="bottom" rowExpandMode="single" emptyMessage="#{msg['tableau.vide']}" class="table table-responsive" var="asSante" value="#{renouvellementAsSanteBean.listeAssuranceSante}" rowKey="#{asSante.idFacture}" selection="#{renouvellementAsSanteBean.selectedAssuranceSante}">
+                            <p:column headerText="Renouveler" >
+                                <p:commandLink title="Renouveler" class=" btn-sm btn-info info glyphicon glyphicon-refresh"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" update="detail,display2"  action ="#{renouvellementAsSanteBean.loadAssuranceSante()}">
+                                    <f:setPropertyActionListener target="#{renouvellementAsSanteBean.selectedAssuranceSante}" value="#{asSante}"/>
+                                </p:commandLink>
+                            </p:column>
+                            <p:column headerText="#{msg['titre.numeroPolice']}" filterBy="#{asSante.numeroPolice}" >
+                                <h:outputText value="#{asSante.numeroPolice}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['titre.compagnie']}" filterBy="#{asSante.compagnie.abbreviation}">
+                                <h:outputText value="#{asSante.compagnie.abbreviation}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['client.nom']}" >
+                                <h:outputText value="#{asSante.client.nom}"/>
+                            </p:column>
+                            <p:column  headerText="#{msg['client.prenom']}">
+                                <h:outputText value="#{asSante.client.prenom}"/>
+                            </p:column>
+                            <p:column headerText="Produit">
+                                <h:outputText value="#{asSante.produitAsSante.nom}" />
+                            </p:column >
+                            <p:column headerText="Prime Annuelle Adulte">
+                                <h:outputText value="#{asSante.produitAsSante.primeAnnuelleAdulte}" >
+                                <f:convertNumber pattern="###,##0" type="number" />
+                                </h:outputText>
+                            </p:column >
+                            <p:column headerText="Prime Annuelle Mineur">
+                                <h:outputText value="#{asSante.produitAsSante.primeAnnuelleMineur}" >
+                                <f:convertNumber pattern="###,##0" type="number" />
+                                </h:outputText>
+                            </p:column >
+                            <p:column headerText="Prime TTC">
+                                <h:outputText value="#{asSante.primeTTCS}" >
+                                <f:convertNumber pattern="###,##0" type="number" />
+                                </h:outputText>
+                            </p:column >
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+            <div>
+
+                <h:form id="detail" class="form-horizontal">
+                    <p:growl id="msgsAux"  globalOnly="true"  severity="info,warn"/>   
+                    <div class="panel-body"> 
+                        <div class="row">                               
+                            <p:fieldset style="margin-bottom:20px">   
+                                <p:panel header="#{msg['titre.reference']}" toggleable="true" collapsed="true" style="margin-bottom:20px">                                     
+                                    <p:panelGrid  columns="6" layout="grid" class="table table-responsive">
+                                        <p:outputLabel  class="police_label" for="souscripteur:" value="#{msg['client.nom']} :"/>
+                                        <p:outputLabel id="souscripteur" class="form-control" value="#{renouvellementAsSanteBean.selectedAssuranceSante.client.nom}"/>
+
+                                        <p:outputLabel class="police_label" for="telephone" value="#{msg['client.tel']} : "/>
+                                        <p:outputLabel id="telephone" value="#{renouvellementAsSanteBean.selectedAssuranceSante.client.telephoneMobile}" class="form-control"/>
+
+                                        <p:outputLabel class="police_label" for="addresse" value="#{msg['client.adresse']} :"/>
+                                        <h:outputLabel id="addresse" value="#{renouvellementAsSanteBean.selectedAssuranceSante.client.adresse}" class="form-control"/>
+                                    </p:panelGrid>
+                                </p:panel>
+
+                                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                    <h:graphicImage library="images" name="ajax-loader.gif" />
+                                </p:dialog>                         
+                                <p:panel header="#{msg['souscription.auto.souscriptionInformation']}:#{remiseEnVigueurBean.lastFacture.redateFin()}" toggleable="true" collapsed="false" style="margin-bottom:20px">  
+                                    <p:panelGrid columns="2" layout="grid" class="table table-responsive">
+                                        <p:outputLabel  class="form-control bg-purple" for="assureur" value="#{msg['titre.compagnie']} :" />
+                                        <h:outputText  id="assureur" class="form-control"  value="#{renouvellementAsSanteBean.selectedAssuranceSante.compagnie.abbreviation}"/>
+                                        <p:outputLabel class="form-control bg-purple" for="police" value="#{msg['tableau.numeropolice']} :"/>
+                                        <h:outputText id="police" class="form-control "  value="#{renouvellementAsSanteBean.selectedAssuranceSante.numeroPolice}"/>
+                                        <p:outputLabel class="form-control bg-purple" for="prod" value="Produit :"/>
+                                        <h:outputText id="prod" class="form-control "  value="#{renouvellementAsSanteBean.selectedAssuranceSante.produitAsSante.nom}"/>
+                                        <p:outputLabel class="form-control bg-purple" for="datedebut" value="Date début contrat :"/>
+
+                                        <p:calendar id="datedebut"  pattern="dd/MM/yyyy" value="#{renouvellementAsSanteBean.dateDebutrenouvellement}" mask="true" placeholder="#{msg['souscription.datedebut']} " 
+                                                    required="true" readonlyInput="true" navigator="true"
+                                                    requiredMessage="#{msg['souscription.datedebut.requireMessage']}" 
+                                                    validatorMessage="#{msg['souscription.datedebut.validatorMessage']}"
+                                                    converterMessage="#{msg['souscription.datedebut.converterMessage']}"
+                                                    mindate="#{renouvellementAsSanteBean.datemax}" 
+                                                    >
+                                            <f:convertDateTime pattern="dd/MM/yyyy"  type="date"/>
+                                        </p:calendar>
+                                    </p:panelGrid>
+
+                                    <p:dataTable value="#{renouvellementAsSanteBean.garantieCategorieCompagnieProduit}" 
+                                                 rowKey="#{catgarcompdet.idGarantieCategorieCompagnieProduit}" var="catgarcompdet" id="gg"
+                                                 sortBy="#{catgarcompdet.categorieGarantieAsSante.idCategorieGarantieAsSante}"  
+                                                 >
+                                        <p:columnGroup type="header">
+
+                                            <p:column rowspan="2" headerText="Catégorie"/>
+                                            <p:column rowspan="2" headerText="Garantie" class="col-md-3"/>
+                                            <p:column rowspan="2" headerText="Taux remboursement" />
+                                            <p:column rowspan="2" headerText="Plafond remboursement"  />
+
+                                        </p:columnGroup>
+                                        <p:column groupRow="true" >
+                                            <h:outputText value="#{catgarcompdet.categorieGarantieAsSante.designation}" />
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{catgarcompdet.garantieAsSante.designation}" />
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{catgarcompdet.tauxRemboursement}" />
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{catgarcompdet.plafondRemboursement}" />
+                                        </p:column>
+                                    </p:dataTable>
+
+
+                                </p:panel>
+
+                                <p:panel header="Informations sur les beneficiaires" toggleable="true" collapsed="false" style="margin-bottom:20px">  
+                                    <p:dataTable value="#{renouvellementAsSanteBean.selectedAssuranceSante.beneficiaire}" 
+                                                 rowKey="#{benef.idClient}" var="benef" id="ggbConf"
+                                                 class="table table-bordered">
+
+                                        <p:column headerText="#{msg['client.nom']}" filterBy="#{benef.nom}" filterMatchMode="contains">
+                                            <h:outputText value="#{benef.nom}" />
+                                        </p:column >
+                                        <p:column headerText="#{msg['client.prenom']}" filterBy="#{benef.prenom}" filterMatchMode="contains">
+                                            <h:outputText value="#{benef.prenom}" />
+                                        </p:column >
+                                        <p:column  headerText="#{msg['client.datedenaissance']}" >     
+                                            <h:outputText value="#{benef.dateNaissance}"/>
+                                        </p:column>
+                                        <p:column headerText="#{msg['client.piece']}" filterBy="#{benef.typePiece}" filterMatchMode="contains">
+                                            <h:outputText value="#{benef.typePiece}" />
+                                        </p:column >
+                                        <p:column headerText="#{msg['client.numeropiece']}" filterBy="#{benef.numeroPiece}" filterMatchMode="contains">
+                                            <h:outputText value="#{benef.numeroPiece}" />
+                                        </p:column >
+                                    </p:dataTable>   
+                                </p:panel>
+                            </p:fieldset>
+                        </div> 
+                    </div>
+                    <p:panel toggleable="true" collapsed="false" style="margin-bottom:20px" id="cccc">
+                        <p:panelGrid columns="2" rendered="true" layout="grid" id="calculTotal" class="table table-responsive">
+                            <p:outputLabel class="form-control bg-purple" value="Rapport SP:" for="rfl"></p:outputLabel>
+                            <p:inputText id="rfl" class="text-right form-control" value="#{renouvellementAsSanteBean.rapportSP}">
+                                <p:ajax event="blur" update="ps,bn,rede,ref,acc,te,pttc"  />
+                                <p:ajax listener="#{renouvellementAsSanteBean.refreshDetail()}" update="ps,bn,rede,ref,acc,te,pttc" />
+                                <pe:keyFilter  mask="num" />
+                                <!--f:convertNumber pattern="###,##0" type="number" /-->
+                            </p:inputText>
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.primenette']}:" for="ps"></p:outputLabel>
+                            <h:outputText id="ps" class="form-control text-right" value="#{renouvellementAsSanteBean.selectedAssuranceSante.arrondireFormat2(renouvellementAsSanteBean.selectedAssuranceSante.prixNette)}"/>
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.bonus']}:" for="bn"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="bn" value="#{renouvellementAsSanteBean.selectedAssuranceSante.arrondireFormat2(renouvellementAsSanteBean.selectedAssuranceSante.bonus)}"/>
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.majoration']}:" for="rede"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="rede" value="#{renouvellementAsSanteBean.selectedAssuranceSante.arrondireFormat2(renouvellementAsSanteBean.selectedAssuranceSante.majoration)}"/>
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.reduction.exceptionnelle']}:" for="ref"></p:outputLabel>
+                            <h:outputText class="form-control text-right" id="ref" value="#{renouvellementAsSanteBean.selectedAssuranceSante.arrondireFormat2(renouvellementAsSanteBean.selectedAssuranceSante.valeurReduction())}"/>
+                            <p:outputLabel class="form-control bg-purple"  value="#{msg['tableau.accessoire']}:" for="acc"/>
+                            <h:outputText class="form-control text-right"  id="acc" value="#{renouvellementAsSanteBean.selectedAssuranceSante.arrondireFormat2(renouvellementAsSanteBean.selectedAssuranceSante.accessoire)}"/>
+                            <p:outputLabel class="form-control bg-purple" value=" #{msg['tableau.tauxenregistrement']}:" for="te"/>
+                            <h:outputText class="form-control text-right"  id="te" value="#{renouvellementAsSanteBean.selectedAssuranceSante.arrondireFormat2(renouvellementAsSanteBean.selectedAssuranceSante.valeurTaxes())}"/>
+                            <p:outputLabel class="form-control bg-purple" value="#{msg['tableau.primettc']}:" for="pttc"/>
+                            <h:outputText class="form-control text-right" id="pttc" value="#{renouvellementAsSanteBean.selectedAssuranceSante.arrondireFormat2(renouvellementAsSanteBean.selectedAssuranceSante.primeTTCS)}"/>
+                        </p:panelGrid>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" title="#{msg['btn.annuller']}" value="#{msg['btn.annuller']}" action="#{renouvellementAsSanteBean.reset()}" update="detail,formliste,recherche" class="btn-danger danger " ></p:commandButton>
+                                <p:commandButton onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" title="#{msg['btn.valider']}"  value="#{msg['btn.valider']}" action="#{renouvellementAsSanteBean.saveRenouvellement()}" update="detail,formliste,recherche,vvv,msgsAux" class="btn-success success" >
+                                    <p:confirm header="Confirmation" message="#{msg['supprimer.message']}" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </div>
+                        </div>
+                        <p:growl for="somekey" id="vvv" />
+                    </p:panel>
+                </h:form>
+
+            </div>
+        </div>
+
+        <pe:blockUI widgetVar="loadProcess">
+            <h:panelGrid columns="2">
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>
+            </h:panelGrid>
+        </pe:blockUI>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+        <p:confirmDialog header="Etes-vous sûr ?"  global="true" showEffect="fade" hideEffect="fade">
+            <h:form>
+                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes btn-xs btn btn-primary" icon="fa fa-check"  />
+                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no btn-xs btn btn-danger" icon="fa fa-close" />
+            </h:form>
+        </p:confirmDialog>
+    </ui:composition>
+</html>

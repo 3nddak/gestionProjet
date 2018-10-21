@@ -1,0 +1,1149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset>
+                <legend class="text-center text-uppercase"> <p:outputLabel value="BALANCE DES COMPTES"></p:outputLabel></legend>
+            </fieldset>
+
+            <div id="liste" class="panel">
+                <h:form  id="formliste" class="form-horizontal" >
+                    <p:growl id="msgs" showDetail="false"  globalOnly="true" life="3000"  severity="info,warn"/>
+
+                    <p:panel header="Infos" toggleable="true" toggleSpeed="500"  collapsed="true" style="margin-bottom:20px"> 
+                        <div class="panel-body"> 
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <p:outputLabel for="mask" value="DATE DEBUT" />
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <p:calendar id="mask" class="form-control" value="#{balanceBean.du}" pattern="dd-MM-yyyy" mask="true" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <p:outputLabel for="mask2" value="DATE FIN" />
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <p:calendar id="mask2" class="form-control" value="#{balanceBean.au}" pattern="dd-MM-yyyy" mask="true">
+                                        </p:calendar>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="typ"   value="Types de comptes" class="pull-left text-left" />
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu required="true"  id="typ"  value="#{balanceBean.typeComptes}" converter="omnifaces.SelectItemsConverter"
+                                                         class="form-control" >
+                                            <f:selectItem itemLabel="Auxiliaires" itemValue="0"  />
+                                            <f:selectItem itemLabel="Generaux" itemValue="1"  />
+                                            <f:selectItem itemLabel="Reels" itemValue="2"  />
+                                            <p:ajax update="pays,pss,courtier,pdv,gui" listener="#{balanceBean.typeComptestri()}"/>            
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr/>
+
+                            <div  class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="pays" value="Pays" class=""/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu disabled="#{balanceBean.typeComptes eq 1 or balanceBean.typeComptes eq 2? true:false}" id="pays" value="#{balanceBean.factureFortri.pays}" converter="omnifaces.SelectItemsConverter" class="form-control"
+
+                                                         >
+                                            <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                            <f:selectItems value="#{balanceBean.listPays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                        </h:selectOneMenu> 
+                                    </div>                        
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  for="pss" value="Compagnie " class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu disabled="#{balanceBean.typeComptes eq 1 or balanceBean.typeComptes eq 2? true:false}"  class="form-control" converter="omnifaces.SelectItemsConverter"  id="pss" value="#{balanceBean.factureFortri.compagnie}"  >
+                                            <f:selectItem  itemLabel="Choisir compagnie" itemValue="" /> 
+                                            <f:selectItems value="#{balanceBean.listCompagnie}" var="compagnie"
+                                                           itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>  
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="courtier"  value="#{msg['titre.courtier']}" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu disabled="#{balanceBean.typeComptes eq 1 or balanceBean.typeComptes eq 2? true:false}"  id="courtier"  value="#{balanceBean.factureFortri.courtier}" converter="omnifaces.SelectItemsConverter"
+                                                         class="form-control" >
+                                            <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""/>
+                                            <f:selectItems itemLabel="#{courtier.designation}" var="courtier"  itemValue="#{courtier}" value="#{balanceBean.listCourtier}"  />
+
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="pdv"   value="Points de vente" class="pull-left text-left" />
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu disabled="#{balanceBean.typeComptes eq 1 or balanceBean.typeComptes eq 2? true:false}"  id="pdv"  value="#{balanceBean.factureFortri.pointsVente}" converter="omnifaces.SelectItemsConverter"
+                                                         class="form-control" >
+                                            <f:selectItem itemLabel="Points de vente" itemValue=""/>
+                                            <f:selectItems itemLabel="#{pdv.designation}" var="pdv"  itemValue="#{pdv}" value="#{balanceBean.listPointsVente}"  />
+
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="gui"   value="Guichets" class="" />
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu disabled="#{balanceBean.typeComptes eq 1 or balanceBean.typeComptes eq 2? true:false}"  id="gui"  value="#{balanceBean.factureFortri.guichet}" converter="omnifaces.SelectItemsConverter"
+                                                         class="form-control" >
+                                            <f:selectItem itemLabel="Guichets" itemValue=""/>
+                                            <f:selectItems itemLabel="#{gui.designation}" var="gui"  itemValue="#{gui}" value="#{balanceBean.listGuichets}"  />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                        <h:outputLabel for="classe"   value="Classe" class="pull-left text-left" />
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu   id="classe"  value="#{balanceBean.classe}" converter="omnifaces.SelectItemsConverter"
+                                                           class="form-control" >
+                                            <f:selectItem itemLabel="Classe" itemValue=""/>
+                                            <f:selectItems itemLabel="#{classe.numeroClasse}" var="classe"  itemValue="#{classe}" value="#{balanceBean.ALlClasse}"  />
+
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="btn-toolbar">
+                                            <p:commandButton onstart="PF('statusDialog2').show()" onsuccess="PF('statusDialog2').hide()" value="Rechercher" update="formliste2,msgs" actionListener="#{balanceBean.afficher()}" class="btn btn-purple   pull-right"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p:dialog widgetVar="statusDialog2" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                <h:graphicImage library="images" name="ajax-loader.gif" />
+                            </p:dialog>
+                        </div>
+                    </p:panel>
+
+
+                </h:form>
+
+
+                <h:form id="formliste2" class="form-horizontal">
+                    <p:panel id ="field1" rendered="#{balanceBean.typeComptes eq 0 ?true:false}" header="BALANCE DES COMPTES" >
+                        <div class="panel-body" >
+                            <div class="btn-toolbar" >
+                                <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn-purple btn btn-xs"  actionListener="#{balanceBean.doGetAB()}" > 
+                                    <i class=" glyphicon glyphicon-print"></i>
+                                </h:commandLink> 
+                            </div>
+                            <div class="table-responsive" >
+                                <p:dataTable var="classe" class="table-bordered table-responsive" id="t1" value="#{balanceBean.listClasse}" rows="#{balanceBean.nbr}"
+                                             paginator="true" style="margin-bottom:20px"
+                                             paginatorPosition="bottom"
+                                             emptyMessage="#{msg['tableau.vide']}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                    <p:ajax event="page" listener="#{balanceBean.page}" oncomplete="newPropositionB()" />
+                                    <f:facet name="header">
+                                        <h:outputText value="#{balanceBean.periodeDu}  " />
+                                    </f:facet>
+                                    <p:columnGroup type="header">
+                                        <p:row>
+
+                                            <p:column rowspan="2" headerText="Numéro compte" />
+                                            <p:column rowspan="2" headerText="Intitulé des Comptes" />
+                                            <p:column colspan="2" headerText="SOLDE INITIAL" />
+                                            <p:column colspan="2" headerText="Mouvement" />
+                                            <p:column colspan="2" headerText="Solde" />
+                                        </p:row>
+                                        <p:row>
+                                            <p:column headerText="Débit" />
+                                            <p:column headerText="Crédit" />
+                                            <p:column headerText="Débit" />
+                                            <p:column headerText="Crédit" />
+                                            <p:column headerText="Débit" />
+                                            <p:column headerText="Crédit" />
+                                        </p:row>
+                                        <p:row id="re" rendered="#{balanceBean.classesPre.size() eq 0 ?false:true}" >
+
+                                            <p:column colspan="2" headerText=" Report" />
+
+                                            <p:column >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportSoldeInitDebit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportSoldeInitCredit }">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportDebit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportCredit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportSoldeD}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportSoldeC}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                        </p:row>
+                                    </p:columnGroup>
+                                    <p:subTable var="compte" value="#{balanceBean.comptesAuxiByClasse(classe.idClasse)}">
+                                        <f:facet name="header" >
+                                            <h:outputText value="#{classe.libelleClasse}" />
+                                        </f:facet>
+                                        <p:column >
+                                            <h:outputText style="font-size: smaller" value="#{compte.numCompte}" />
+                                        </p:column> 
+                                        <p:column >
+                                            <h:outputText value="#{compte.intitule}" />
+
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{compte.creditPrecedent-compte.debitPrecedent lt 0 ?compte.debitPrecedent-compte.creditPrecedent:0.0}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column> 
+                                        <p:column >
+                                            <h:outputText value="#{compte.creditPrecedent-compte.debitPrecedent gt 0 ?compte.creditPrecedent -compte.debitPrecedent:0.0}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText  value="#{compte.debit}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{compte.credit}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{(compte.soldecredit - compte.soldedebit) lt 0? -(compte.soldecredit - compte.soldedebit):0}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{(compte.soldecredit - compte.soldedebit) gt 0? (compte.soldecredit - compte.soldedebit):0}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+
+
+                                        <p:columnGroup type="footer">
+                                            <p:row>
+                                                <p:column footerText="Total classe #{classe.numeroClasse}" colspan="2" style="text-align:right"/>
+                                                <p:column> 
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.debitPrecedent}" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column> 
+                                                <p:column >
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.creditPrecedent}" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.debit}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                                <p:column >
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.credit}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.soldedebit}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.soldecredit}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+
+                                            </p:row>
+
+                                        </p:columnGroup>
+                                    </p:subTable>
+                                    <p:columnGroup type="footer">
+                                        <p:row>
+                                            <p:column footerText="Totaux " colspan="2" style="text-align:right"/>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.debitSoldePrecTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.creditSoldePrecTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.debitTotPage }">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.creditTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.totauxSoldeD}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.totauxSoldeC}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                        </p:row>
+                                        <p:row rendered="#{balanceBean.listClasse.size() gt balanceBean.nbr ?true:false}">
+                                            <p:column footerText="A reporter " colspan="2" style="text-align:right"/>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{(balanceBean.reportSoldeInitDebit+ balanceBean.debitSoldePrecTotPage)}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.reportSoldeInitCredit+ balanceBean.creditSoldePrecTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.sommeDebitAreporter() }">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.sommeCreditAreporter()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.reportSoldeD + balanceBean.totauxSoldeD}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.reportSoldeC + balanceBean.totauxSoldeC}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                        </p:row>
+
+                                        <p:row >
+
+                                            <p:column colspan="2" footerText="Totaux Balance" />
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.soldeInitialBalanceDebit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.soldeInitialBalanceCredit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText  value="#{balanceBean.AReportDebitBalance()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.AReportCreditBalance()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText  value="#{balanceBean.balanceSoldeD}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText  value="#{balanceBean.balanceSoldeC}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                        </p:row>
+                                    </p:columnGroup>
+
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </p:panel>
+
+                    <p:panel id ="field2" rendered="#{balanceBean.typeComptes eq 1 ?true:false}"  header="BALANCE DES COMPTES GENERAUX" style="margin-bottom:20px">
+                        <div class="panel-body">
+                            <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-info btn police_label  " style="color:#fff;background:#5bc0de;border-color:#46b8da"  actionListener="#{balanceBean.doGetAB()}" > 
+                                <i class=" glyphicon glyphicon-print"></i>
+                            </h:commandLink> 
+                            <div class="table-responsive">
+                                <p:dataTable var="classe" class="table-bordered table-striped table-condensed" id="t2" value="#{balanceBean.listClasse}" rows="#{balanceBean.nbr}"
+                                             paginator="true" style="margin-bottom:20px"
+                                             paginatorPosition="bottom"
+                                             emptyMessage="#{msg['tableau.vide']}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                    <p:ajax event="page" listener="#{balanceBean.page}" oncomplete="newPropositionB()" />
+                                    <f:facet name="header">
+                                        <h:outputText value="#{balanceBean.periodeDu}  " />
+                                    </f:facet>
+                                    <p:columnGroup type="header">
+                                        <p:row>
+
+                                            <p:column rowspan="2" headerText="Numéro compte" />
+                                            <p:column rowspan="2" headerText="Intitulé des Comptes" />
+                                            <p:column colspan="2" headerText="SOLDE INITIAL" />
+                                            <p:column colspan="2" headerText="Mouvement" />
+                                            <p:column colspan="2" headerText="Solde" />
+                                        </p:row>
+                                        <p:row>
+                                            <p:column headerText="Débit" />
+                                            <p:column headerText="Crédit" />
+                                            <p:column headerText="Débit" />
+                                            <p:column headerText="Crédit" />
+                                            <p:column headerText="Débit" />
+                                            <p:column headerText="Crédit" />
+                                        </p:row>
+                                        <p:row id="re" rendered="#{balanceBean.classesPre.size() eq 0 ?false:true}" >
+
+                                            <p:column colspan="2" headerText=" Report" />
+
+                                            <p:column >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportSoldeInitDebit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportSoldeInitCredit }">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportDebit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportCredit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportSoldeD}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportSoldeC}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                        </p:row>
+                                    </p:columnGroup>
+                                    <p:subTable var="compte" value="#{balanceBean.comptesGen1ByClasse(classe.idClasse)}">
+                                        <f:facet name="header" >
+                                            <h:outputText value="#{classe.libelleClasse}" />
+                                        </f:facet>
+                                        <p:column >
+                                            <h:outputText value="#{compte.numCompte}" />
+                                        </p:column> 
+                                        <p:column >
+                                            <h:outputText value="#{compte.intitule}" />
+
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{(compte.creditPrecedent-compte.debitPrecedent) lt 0 ? -(compte.creditPrecedent-compte.debitPrecedent):0}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column> 
+                                        <p:column >
+                                            <h:outputText value="#{(compte.creditPrecedent-compte.debitPrecedent) gt 0 ? compte.creditPrecedent-compte.debitPrecedent:0}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText  value="#{compte.debit}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{compte.credit}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{(compte.soldecredit - compte.soldedebit) lt 0? -(compte.soldecredit - compte.soldedebit):0}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{(compte.soldecredit - compte.soldedebit) gt 0? (compte.soldecredit - compte.soldedebit):0}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+
+                                        <p:columnGroup type="footer">
+                                            <p:row>
+                                                <p:column footerText="Total classe #{classe.numeroClasse}" colspan="2" style="text-align:right"/>
+                                                <p:column> 
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.debitPrecedent}" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column> 
+                                                <p:column >
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.creditPrecedent}" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.debit}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                                <p:column >
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.credit}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.soldedebit}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.soldecredit}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+
+                                            </p:row>
+
+                                        </p:columnGroup>
+                                    </p:subTable>
+                                    <p:columnGroup type="footer">
+                                        <p:row>
+                                            <p:column footerText="Totaux " colspan="2" style="text-align:right"/>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.debitSoldePrecTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.creditSoldePrecTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.debitTotPage }">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.creditTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.totauxSoldeD}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.totauxSoldeC}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                        </p:row>
+                                        <p:row rendered="#{balanceBean.listClasse.size() gt balanceBean.nbr ?true:false}">
+                                            <p:column footerText="A reporter " colspan="2" style="text-align:right"/>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{(balanceBean.reportSoldeInitDebit+ balanceBean.debitSoldePrecTotPage)}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.reportSoldeInitCredit+ balanceBean.creditSoldePrecTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.sommeDebitAreporter() }">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.sommeCreditAreporter()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.reportSoldeD + balanceBean.totauxSoldeD}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.reportSoldeC + balanceBean.totauxSoldeC}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                        </p:row>
+
+                                        <p:row >
+
+                                            <p:column colspan="2" footerText="Totaux Balance" />
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.soldeInitialBalanceDebit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.soldeInitialBalanceCredit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText  value="#{balanceBean.AReportDebitBalance()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.AReportCreditBalance()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText  value="#{balanceBean.balanceSoldeD}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText  value="#{balanceBean.balanceSoldeC}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                        </p:row>
+                                    </p:columnGroup>
+
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </p:panel>
+                    <p:panel id ="field3" rendered="#{balanceBean.typeComptes eq 2 ?true:false}" header="BALANCE DES COMPTES REELS" >
+                        <div class="panel-body"> 
+                            <div class="btn-toolbar">
+                                <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-imprimer btn btn-xs "   actionListener="#{balanceBean.doGetAB()}" > 
+                                    <i class=" glyphicon glyphicon-print"></i>
+                                </h:commandLink> 
+                            </div>
+                            <div class="table-responsive">
+                                <p:dataTable var="classe" class="table-bordered table-striped table table-condensed" id="t3" value="#{balanceBean.listClasse}" rows="#{balanceBean.nbr}"
+                                             paginator="true" 
+                                             paginatorPosition="bottom"
+                                             emptyMessage="#{msg['tableau.vide']}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                    <p:ajax event="page" listener="#{balanceBean.page}" oncomplete="newPropositionB()" />
+                                    <f:facet name="header">
+                                        <h:outputText value="#{balanceBean.periodeDu}  " />
+                                    </f:facet>
+                                    <p:columnGroup type="header">
+                                        <p:row>
+
+                                            <p:column rowspan="2" headerText="Numéro compte" />
+                                            <p:column rowspan="2" headerText="Intitulé des Comptes" />
+                                            <p:column colspan="2" headerText="SOLDE INITIAL" />
+                                            <p:column colspan="2" headerText="Mouvement" />
+                                            <p:column colspan="2" headerText="Solde" />
+                                        </p:row>
+                                        <p:row>
+                                            <p:column headerText="Débit" />
+                                            <p:column headerText="Crédit" />
+                                            <p:column headerText="Débit" />
+                                            <p:column headerText="Crédit" />
+                                            <p:column headerText="Débit" />
+                                            <p:column headerText="Crédit" />
+                                        </p:row>
+                                        <p:row id="re" rendered="#{balanceBean.classesPre.size() eq 0 ?false:true}" >
+
+                                            <p:column colspan="2" headerText=" Report" />
+
+                                            <p:column >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportSoldeInitDebit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportSoldeInitCredit }">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportDebit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportCredit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportSoldeD}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{balanceBean.reportSoldeC}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                        </p:row>
+                                    </p:columnGroup>
+                                    <p:subTable var="compte" value="#{balanceBean.comptesReelByClasse(classe.idClasse)}">
+                                        <f:facet name="header" >
+                                            <h:outputText value="#{classe.libelleClasse}" />
+                                        </f:facet>
+                                        <p:column >
+                                            <h:outputText value="#{compte.numCompte}" />
+                                        </p:column> 
+                                        <p:column >
+                                            <h:outputText value="#{compte.intitule}" />
+
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{(compte.creditPrecedent-compte.debitPrecedent) lt 0 ? -(compte.creditPrecedent-compte.debitPrecedent):0}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column> 
+                                        <p:column >
+                                            <h:outputText value="#{(compte.creditPrecedent-compte.debitPrecedent) gt 0 ? compte.creditPrecedent-compte.debitPrecedent:0}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText  value="#{compte.debit}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{compte.credit}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{(compte.soldecredit - compte.soldedebit) lt 0? -(compte.soldecredit - compte.soldedebit):0}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText value="#{(compte.soldecredit - compte.soldedebit) gt 0? (compte.soldecredit - compte.soldedebit):0}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+
+
+                                        <p:columnGroup type="footer">
+                                            <p:row>
+                                                <p:column footerText="Total classe #{classe.numeroClasse}" colspan="2" style="text-align:right"/>
+                                                <p:column> 
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.debitPrecedent}" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column> 
+                                                <p:column >
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.creditPrecedent}" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.debit}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                                <p:column >
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.credit}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.soldedebit}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{classe.soldecredit}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+
+                                            </p:row>
+
+                                        </p:columnGroup>
+                                    </p:subTable>
+                                    <p:columnGroup type="footer">
+                                        <p:row>
+                                            <p:column footerText="Totaux " colspan="2" style="text-align:right"/>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.debitSoldePrecTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.creditSoldePrecTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.debitTotPage }">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.creditTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.totauxSoldeD}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.totauxSoldeC}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                        </p:row>
+                                        <p:row rendered="#{balanceBean.listClasse.size() gt balanceBean.nbr ?true:false}">
+                                            <p:column footerText="A reporter " colspan="2" style="text-align:right"/>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{(balanceBean.reportSoldeInitDebit+ balanceBean.debitSoldePrecTotPage)}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.reportSoldeInitCredit+ balanceBean.creditSoldePrecTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.sommeDebitAreporter() }">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.sommeCreditAreporter()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.reportSoldeD + balanceBean.totauxSoldeD}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.reportSoldeC + balanceBean.totauxSoldeC}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                        </p:row>
+
+                                        <p:row >
+
+                                            <p:column colspan="2" footerText="Totaux Balance" />
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.soldeInitialBalanceDebit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.soldeInitialBalanceCredit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText  value="#{balanceBean.AReportDebitBalance()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{balanceBean.AReportCreditBalance()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText  value="#{balanceBean.balanceSoldeD}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column  >
+                                                <f:facet name="footer">
+                                                    <h:outputText  value="#{balanceBean.balanceSoldeC}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                        </p:row>
+                                    </p:columnGroup>
+
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </p:panel>
+                    <p:remoteCommand name="newPropositionB" partialSubmit="true" update="formliste2" autoRun="false"/> 
+                </h:form>
+
+
+            </div>
+        </div>
+    </ui:composition> 
+
+</html>
+

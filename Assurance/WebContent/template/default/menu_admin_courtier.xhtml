@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+
+      xmlns:p="http://primefaces.org/ui">
+
+
+
+    <ui:composition>
+        <div id="wrapper">
+
+            <div id="sidebar-wrapper">
+                <h:form class="form-horizontal">
+                    <ul class="menu-vertical">
+                        <li class="mv-item"> <h:commandLink value="Gestion des Utilisateurs" action="utilisateur"/></li>
+                        <li class="mv-item"><h:commandLink value="Gestion des Clients" action="client"/></li>
+                        <li class="mv-item"><h:commandLink value="Souscription" action="souscription"/></li>
+                        <li class="mv-item"><h:commandLink value="Gestion des courriers" action="espace_traitement_courtier"/></li>
+                        <li class="mv-item"><h:commandLink value="Gestion des Guichets" action="guichet"/></li>
+                        <li class="mv-item"><h:commandLink value="Points de ventes" action="pointsvente"/></li>
+
+                    </ul>
+                </h:form>
+                <div id="copyright">
+                    <span class="">Copyright © 2015 NCPTECH</span>
+                </div>
+
+            </div>
+        </div>
+
+
+    </ui:composition>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <ui:composition>
+        <div class="panel">
+
+            <div class="panel-body">
+                <fieldset><legend class="text-uppercase" ><h:outputLabel class="police_label" value="#{msg['credit.info']}"/></legend>
+                    <p:growl id="msgsl" globalOnly="true" showDetail="false"/>
+                    <ui:include src="infos_compcour.xhtml"/>
+                    <div class="form-group">
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.identifiantEmprunteur']}"  for="dureepretnem" class="" /><h:outputLabel value="*" class="etoile_rouge" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionBean.assuranceCredit.identifiant}"  id="dureepretnem" styleClass="form-control" placeholder="Identifiant emprunteur"
+                                             required="true"  requiredMessage="V#{msg['titre.identifiantEmprunteur.requiredMessage']}"  
+                                             >
+
+                                    <p:ajax event="keyup" update="dureepretMessagenem"/>
+
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="dureepretnem" id="dureepretMessagenem"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.numeroDuPret']}"  for="numpret" class="" /><h:outputLabel value="*" class="etoile_rouge" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionBean.assuranceCredit.numeroPret}"  id="numpret" styleClass="form-control" placeholder="#{msg['titre.numeroDuPret']}"
+                                             required="true"  requiredMessage="#{msg['titre.numeroDuPret.requiredMessage']}"  
+                                             >
+
+                                    <p:ajax event="keyup" update="numpretMessagenem"/>
+
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="numpret" id="numpretMessagenem"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.typeDeRemboursement']}"  for="piecect" class=" " /><h:outputLabel value="*" class="etoile_rouge "  />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                <h:selectOneMenu id="piecect" value="#{souscriptionBean.assuranceCredit.typeDePret}"  class="form-control"
+                                                 requiredMessage="#{msg['titre.typeDeRemboursement.requiredMessage']}">
+                                    <f:selectItem itemLabel="#{msg['titre.typeDeRemboursement']}"/> 
+                                    <f:selectItems value="#{souscriptionBean.typePret}" /> 
+                                    <p:ajax event="click" update="pieceMessagect"/> 
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="piecect" id="pieceMessagect"/>
+                            </div>
+                        </div> 
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.modeDeReglement']}"  for="mpiecect" class=" " /><h:outputLabel value="*" class="etoile_rouge "  />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                <h:selectOneMenu id="mpiecect" value="#{souscriptionBean.assuranceCredit.mensualiteDePayement}"  class="form-control"
+                                                 requiredMessage="#{msg['titre.modeDeReglement.requiredMessage']}">
+                                    <f:selectItem itemLabel="#{msg['titre.modeDeReglement']}"/> 
+                                    <f:selectItems value="#{souscriptionBean.payement}" /> 
+                                    <p:ajax event="click" update="mpieceMessagect"/> 
+                                    <p:ajax  update="formliste"/> 
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="mpiecect" id="mpieceMessagect"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.montantDePret']}"  for="montant" class=" " /><h:outputLabel value="*" class="etoile_rouge " />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionBean.assuranceCredit.montantPret}"  id="montant" styleClass="form-control" placeholder="#{msg['titre.montantDePret']}"
+                                             required="true"  requiredMessage="#{msg['titre.montantDePret.requiredMessage']}"  
+                                             >
+                                    <pe:keyFilter for="montant" mask="num"/>
+                                    <p:ajax event="keyup" update="montantMessage"/>
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="montant" id="montantMessage"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.tauxDuPret']}"  for="tauxPret" class=" " /><h:outputLabel value="*" class="etoile_rouge " />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionBean.assuranceCredit.tauxDuPret}"  id="tauxPret" styleClass="form-control" placeholder="#{msg['titre.tauxDuPret']}"
+                                             required="true"  requiredMessage="#{msg['titre.tauxDuPret.requiredMessage']}"  
+                                             >
+                                    <pe:keyFilter for="tauxPret" mask="num"/>
+                                    <p:ajax event="keyup" update="tauxPretMessage"/>
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="tauxPret" id="tauxPretMessage"/>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.dateDuPret']}"  for="datepret" class=""  /> <h:outputLabel value="*"  class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:calendar  value="#{souscriptionBean.assuranceCredit.dateDuPret}"  class="form-control" navigator="true" readonlyInput="true"   required="true" requiredMessage="#{msg['titre.dateDuPret.requiredMessage']}"   id="datepret"  pattern="dd/MM/yyyy" mask="true" placeholder="#{msg['titre.dateDuPret']}" >
+                                    <p:ajax event="dateSelect" update="datepretMessage"/>
+                                </p:calendar>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="datepret" id="datepretMessage"/> 
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12" jsf:rendered="#{souscriptionBean.groupe eq 0 ?true:false}">  
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.dateDeLaPremiereEcheance']}"  rendered="#{souscriptionBean.groupe eq 0?true:false}"  for="datepretech" class=""  /> <h:outputLabel value="*"  rendered="#{souscriptionBean.groupe eq 0 ?true:false}" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:calendar   value="#{souscriptionBean.assuranceCredit.datePremiereEcheance}"  class="form-control" navigator="true" readonlyInput="true"   required="true" requiredMessage="#{msg['titre.dateDeLaPremiereEcheance.requiredMessage']}"   id="datepretech"  pattern="dd/MM/yyyy" mask="true" placeholder="#{msg['titre.dateDeLaPremiereEcheance']}" >
+                                    <p:ajax event="dateSelect" update="datepretMessageech"/>
+                                </p:calendar>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="datepretech" id="datepretMessageech"/> 
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.pr']} &nbsp; #{msg['titre.dureeDuPret']}(#{msg['titre.mois']})"  for="dureepret" class=" " /><h:outputLabel value="*" class="etoile_rouge " />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionBean.assuranceCredit.dureePret}"  id="dureepret" styleClass="form-control" placeholder="#{msg['titre.dureeDuPret']}"
+                                             required="true"  requiredMessage="#{msg['titre.dureeDuPret.requiredMessage']}"  
+                                             >
+                                    <pe:keyFilter for="dureepret" mask="num"/>
+                                    <p:ajax event="keyup" update="dureepretMessage"/>
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="dureepret" id="dureepretMessage"/>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12" jsf:rendered="#{souscriptionBean.assuranceCredit.mensualiteDePayement eq souscriptionBean.autrepayement ?true:false}"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.nombreDeMensualite']}" rendered="#{souscriptionBean.assuranceCredit.mensualiteDePayement eq souscriptionBean.autrepayement ?true:false}" for="nodureepret" class=" " /><h:outputLabel rendered="#{souscriptionBean.assuranceCredit.mensualiteDePayement eq souscriptionBean.autrepayement ?true:false}" value="*" class="etoile_rouge " />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText rendered="#{souscriptionBean.assuranceCredit.mensualiteDePayement eq souscriptionBean.autrepayement ?true:false}" value="#{souscriptionBean.assuranceCredit.nombreMensualite}"  id="nodureepret" styleClass="form-control" placeholder="#{msg['titre.nombreDeMensualite']}"
+                                             required="true"  requiredMessage="#{msg['titre.nombreDeMensualite.requiredMessage']}"  
+                                             >
+                                    <pe:keyFilter for="nodureepret" mask="num"/>
+                                    <p:ajax event="keyup" update="nodureepretMessage"/>
+
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="nodureepret" id="nodureepretMessage"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12 " jsf:rendered="#{souscriptionBean.groupe eq 0 ?true:false}"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  rendered="#{souscriptionBean.groupe eq 0 ?true:false}" value="#{msg['titre.pretDuConjoint']}"  for="pnodureepret" class=" " /><h:outputLabel value="*"  rendered="#{souscriptionBean.groupe eq 0 ?true:false}" class="etoile_rouge " />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText  rendered="#{souscriptionBean.groupe eq 0 ?true:false}" value="#{souscriptionBean.assuranceCredit.pretConjoint}"  id="pnodureepret" styleClass="form-control" placeholder="#{msg['titre.pretDuConjoint']}"
+
+                                              >
+                                    <pe:keyFilter for="pnodureepret" mask="num"/>
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:inputText>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <p:separator rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalInitial ?false:true}" />
+
+                    <div class="form-group">
+
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalInitial ?false:true}" for="piececo" value="#{msg['titre.modeDeSouscription']}"   class="" />
+                            </div> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalInitial  ?false:true}" id="piececo" value="#{souscriptionBean.assuranceCredit.typeCautisation}" required="true"  class="form-control"
+                                                 requiredMessage="#{msg['titre.modeDeSouscription.requiredMessage']}">
+                                    <f:selectItems value="#{souscriptionBean.listTypeCautisation}" /> 
+                                    <p:ajax event="click" update="pieceMessageco"/> 
+                                    <!--p:ajax update="formliste" listener="" /-->
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="piececo" id="pieceMessageco"/>
+                            </div>
+                        </div> 
+                        <!--div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel rendered="#{ souscriptionBean.assuranceCredit.typeCautisation  ne null and souscriptionBean.assuranceCredit.typeCautisation eq souscriptionBean.cautisationAnnuelle ?true:false}" value="Periode de la cautisation"  for="nodureepr" class=" " /><h:outputLabel value="*" rendered="#{ souscriptionBean.assuranceCredit.typeCautisation  ne null and souscriptionBean.assuranceCredit.typeCautisation eq souscriptionBean.cautisationAnnuelle ?true:false}" class="etoile_rouge " />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText rendered="#{ souscriptionBean.assuranceCredit.typeCautisation  ne null and souscriptionBean.assuranceCredit.typeCautisation eq souscriptionBean.cautisationAnnuelle ?true:false}" value="#{souscriptionBean.assuranceCredit.periodeCautisation}"  id="nodureepr" styleClass="form-control" placeholder="periode cautisation"
+                                             required="true"  requiredMessage="Veuillez entrer la periode de la cautisation"  
+                                             >
+                                    <pe:keyFilter for="nodureepr" mask="num"/>
+                                    <p:ajax event="keyup" update="ureepretMessage"/>
+
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="nodureepr" id="ureepretMessage"/>
+                            </div>
+                        </div-->
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.dateDebut']}" rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalInitial  ?false:true}"  for="datepretecht" class=""  /> <h:outputLabel  value="*"  rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalInitial  ?false:true}" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:calendar  value="#{souscriptionBean.assuranceCredit.dateDebutSouscription}" rendered="#{souscriptionBean.assuranceCredit.typeCapitauxGaranite eq souscriptionBean.capitalInitial  ?false:true}"   class="form-control" navigator="true" readonlyInput="true"   required="true" requiredMessage="#{msg['titre.dateDebut.requiredMessage']}"   id="datepretecht"  pattern="dd/MM/yyyy" mask="true" placeholder="#{msg['titre.dateDebut']}" >
+                                    <p:ajax event="dateSelect" update="datepretMessageecht"/>
+                                </p:calendar>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="datepretecht" id="datepretMessageecht"/> 
+                            </div>
+                        </div>
+
+                    </div>
+
+                </fieldset>   
+            </div> 
+        </div>
+    </ui:composition>
+</html>

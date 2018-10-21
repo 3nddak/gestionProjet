@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['client.souscription']}"></p:outputLabel></legend>
+            </fieldset>
+            <h:form id="formliste" class="form-horizontal ">
+                <p:growl id="msgsAux"  globalOnly="true"  severity="info,warn"/>   
+                <p:wizard widgetVar="createForm"  flowListener="#{souscriptionAsVoyageBean.onFlowProcess2}"  nextLabel="#{msg['btn.suivant']}" backLabel="#{msg['btn.prescedent']}" >
+
+                    <p:tab id="typet"  title="#{msg['voyage.type']}" class="tab-pane" >
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="type.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>  
+                    <p:tab class="police_label" id="infoGroupe" rendered="#{souscriptionAsVoyageBean.groupe eq 1 and souscriptionAsVoyageBean.genreGroup eq 0?true:false}" title="#{msg['voyage.informationsDuGroupe']}">
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="info_groupe.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab id="infoEntreprise" rendered="#{souscriptionAsVoyageBean.groupe eq 1 and souscriptionAsVoyageBean.genreGroup eq 1 ?true:false}"  title="#{msg['voyage.informationsDeLEntreprise']}" class="tab-pane" >
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="info_entreprise.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab class="police_label" id="voyage" title="#{msg['titre.voyage']}">
+                        <ui:include src="voyage.xhtml"/>
+                    </p:tab>
+                    <p:tab id="personal"  title="#{souscriptionAsVoyageBean.groupe eq 1 and souscriptionAsVoyageBean.genreGroup eq 1 ? msg['titre.representant'] :msg['client.title']}" class="tab-pane" >
+                       
+                                <ui:include src="client.xhtml"/>
+                          
+                    </p:tab>
+                    <p:tab class="police_label" id="question" rendered="#{souscriptionAsVoyageBean.groupe eq 1?false:true}" title="#{msg['titre.question']}">
+                        <ui:include src="questionnaire_medical.xhtml"/>
+                    </p:tab>
+                    <p:tab id="questionGroupe" rendered="#{souscriptionAsVoyageBean.groupe eq 0?false:true}" class="tab-pane "  title="#{msg['titre.questionnaire']}">
+                        <div class="panel" style="border:none">
+                            <div class="panel-body">
+                                <ui:include src="questionnaire_medical_Group.xhtml"/>
+                            </div>
+                        </div>
+                    </p:tab>
+                    <p:tab class="police_label" rendered="#{souscriptionAsVoyageBean.groupe eq 0?true:false}" id="verification" title="#{msg['titre.verification']}">
+                        <ui:include src="verification.xhtml"/>
+                    </p:tab>
+                    <p:tab class="tab-pane " rendered="#{souscriptionAsVoyageBean.groupe eq 0?false:true}" id="verificationGroup" title="#{msg['titre.verification']}">
+                        <div class="panel" style="border:none">
+                            <div class="panel-body">
+                                <ui:include src="verificationGroup.xhtml"/>
+                            </div>
+                        </div>
+                    </p:tab>
+                </p:wizard>
+            </h:form>
+        </div>
+        <pe:blockUI widgetVar="loadProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>   
+            </h:panelGrid>  
+        </pe:blockUI>  
+    </ui:composition>
+</html>

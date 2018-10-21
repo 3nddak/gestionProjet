@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['client.souscription']}"></p:outputLabel></legend>
+            </fieldset>
+            <h:form id="formliste" class="form-horizontal ">
+                <p:growl id="msgsAux"  globalOnly="true"  severity="info,warn"/>   
+
+                <p:wizard    flowListener="#{souscriptionAsMrhBean.onFlowProcess2}"  nextLabel="#{msg['btn.suivant']}" backLabel="#{msg['btn.prescedent']}" >
+
+                    <p:tab id="formule" title="#{msg['titre.fornule']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="formule.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                   
+                    <p:tab id="logement"  title="#{msg['titre.logement']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="logement.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab id="piecemrh"  title="#{msg['titre.Pieces']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="pieces.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab id="mobillierEtObjetUsuels" title="#{msg['titre.MobiliersObjets']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="mobilier.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab id="compCour" title="#{msg['titre.compagnieCourtier']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="compcour.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab id="paquageGarantie" title="#{msg['titre.paquegegarantie']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="paquageGaranties.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab id="capitalAssure" title="#{msg['titre.Capitalassure']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="capitalAssure.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab id="client" title="#{msg['client.title']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="client.xhtml"/>
+                            </div> 
+                        </div>
+                    </p:tab>
+                    <p:tab id="verification" title="#{msg['titre.verification']}" class="tab-pane" >
+
+                        <div class="panel" style="border:none" >
+                            <div class="panel-body">
+                                <ui:include src="verification.xhtml"/>
+                            </div> 
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                <p:commandButton value="#{msg['btn.enregistrerTous']}" update="formliste,msgsAux" action="#{souscriptionAsMrhBean.souscrireAssuranceList()}" onstart="PF('loadProcess').block()" oncomplete="PF('loadProcess').unblock()" class="btn btn-success btn-xs pull-right">
+                                    <p:confirm header="#{msg['btn.confirmation']}" message="Etes-vous sûr?" icon="fa fa-trash"  />
+
+                                </p:commandButton>
+
+                            </div>
+                        </div>
+                    </p:tab>
+
+                </p:wizard>
+            </h:form>
+        </div>
+        <pe:blockUI widgetVar="loadProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif"/>   
+            </h:panelGrid>  
+        </pe:blockUI>  
+    </ui:composition>
+</html>

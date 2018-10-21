@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset>
+                <legend class="text-center text-uppercase"> <p:outputLabel value="Journal général"></p:outputLabel></legend>
+            </fieldset>
+
+            <div id="liste" class="panel">
+
+                <p:growl id="msgs" showDetail="false"  globalOnly="true" life="3000"  severity="info,warn"/>
+
+                <h:form  id="formliste" class="form-horizontal" >
+                    <p:panel header="Infos" toggleable="true" toggleSpeed="500"  collapsed="true" >                          
+                        <div class="panel-body"> 
+                            <div class="form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="mask" value="Date Debut " /> <h:outputLabel for="mask" value="*" class="etoile_rouge"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <p:calendar id="mask" required="true" value="#{journalBean.du}" pattern="dd-MM-yyyy" mask="true" >
+                                        </p:calendar>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="mask2" value="Date Fin  " /><h:outputLabel for="mask2" value="*" class="etoile_rouge"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <p:calendar id="mask2"  value="#{journalBean.au}" pattern="dd-MM-yyyy" mask="true">
+                                        </p:calendar>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr/>
+
+                            <div class="form-group">
+                                <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu id="pays" value="#{journalBean.factureFortri.pays}" converter="omnifaces.SelectItemsConverter" class="form-control"
+
+                                                         >
+                                            <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                            <f:selectItems value="#{journalBean.listPays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                        </h:selectOneMenu> 
+                                    </div>                        
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  for="pss" value="Compagnie " class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu   class="form-control" converter="omnifaces.SelectItemsConverter"  id="pss" value="#{journalBean.factureFortri.compagnie}"  >
+                                            <f:selectItem  itemLabel="Choisir compagnie" itemValue="" /> 
+                                            <f:selectItems value="#{journalBean.listCompagnie}" var="compagnie"
+                                                           itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+
+                                </div>  
+                                <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="courtier"  value="#{msg['titre.courtier']}" class="pull-left text-left"/>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu   id="courtier"  value="#{journalBean.factureFortri.courtier}" converter="omnifaces.SelectItemsConverter"
+                                                           class="form-control" >
+                                            <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""/>
+                                            <f:selectItems itemLabel="#{courtier.designation}" var="courtier"  itemValue="#{courtier}" value="#{journalBean.listCourtier}"  />
+
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="pdv"   value="Points de vente" class="pull-left text-left" />
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu   id="pdv"  value="#{journalBean.factureFortri.pointsVente}" converter="omnifaces.SelectItemsConverter"
+                                                           class="form-control" >
+                                            <f:selectItem itemLabel="Points de vente" itemValue=""/>
+                                            <f:selectItems itemLabel="#{pdv.designation}" var="pdv"  itemValue="#{pdv}" value="#{journalBean.listPointsVente}"  />
+
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="gui"   value="Guichets" class="pull-left text-left" />
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu   id="gui"  value="#{journalBean.factureFortri.guichet}" converter="omnifaces.SelectItemsConverter"
+                                                           class="form-control" >
+                                            <f:selectItem itemLabel="Guichets" itemValue=""/>
+                                            <f:selectItems itemLabel="#{gui.designation}" var="gui"  itemValue="#{gui}" value="#{journalBean.listGuichets}"  />
+
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="btn-toolbar">
+                                        <p:commandButton onstart="PF('statusDialog2').show()" onsuccess="PF('statusDialog2').hide()" value="Rechercher" update="formliste,msgs" actionListener="#{journalBean.afficherGrandLivre()}" class="btn btn-purple   pull-right" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p:dialog widgetVar="statusDialog2" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                            <h:graphicImage library="images" name="ajax-loader.gif" />
+                        </p:dialog>
+
+                    </p:panel>
+
+                    <p:panel header="Journaux" >
+                        <div class="panel-body">
+                            <div class="btn-toolbar">
+                                <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-imprimer btn-xs "  actionListener="#{journalBean.doGetA()}" > 
+                                    <i class="fa fa-print"></i>
+                                </h:commandLink>  
+                            </div>
+                            <div class="table-responsive">
+                                <p:dataTable var="compte" id="t1" value="#{journalBean.listTransactions}"
+                                             paginator="true" rows="#{journalBean.nbr}" paginatorPosition="bottom"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             class="table table-bordered table-condensed table-striped"
+                                             >
+                                    <p:ajax event="page" listener="#{journalBean.page}" oncomplete="newPropositionj()" />
+
+                                    <f:facet name="header">
+                                        <h:outputText value="#{journalBean.periodeDu}  " />
+                                    </f:facet>
+
+                                    <p:columnGroup type="header">
+                                        <p:row>
+
+                                            <p:column headerText="Jour" />
+                                            <p:column headerText="Libelle" />
+                                            <p:column headerText="N Compte" />
+
+                                            <p:column headerText="Mouvement Débit" />
+                                            <p:column headerText="Mouvement Crédit" />
+                                        </p:row>
+                                        <p:row id="re" rendered="#{journalBean.transactionsPre.size() eq 0 ?false:true}" >
+                                            <p:column colspan="3" headerText=" Report" />
+                                            <p:column     id="ff">
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{journalBean.reportDebit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column   >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{journalBean.reportCredit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <!--p:column   >
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{gLivjournalBean.reportCredit - journalBean.reportDebit}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column-->
+
+                                        </p:row>
+
+                                    </p:columnGroup>
+
+                                    <p:subTable var="journal" value="#{journalBean.journalByDate(compte)}">
+                                        <f:facet name="header" >
+                                            <h:outputText value="Article  #{compte.reference}" />
+                                        </f:facet>
+
+                                        <p:column headerText="Jour">
+                                            <h:outputText value="#{journal.transaction.dateTransaction}"  />
+                                        </p:column>                                               
+                                        <p:column headerText="Libelle">
+                                            <h:outputText value="#{journal.description}" />
+                                        </p:column>
+                                        <p:column headerText="N compte">
+                                            <h:outputText value="#{journal.compte.numCompte}" />
+                                        </p:column>
+
+                                        <p:column headerText="Débit">
+                                            <h:outputText value="#{journal.debit eq 0 ? null: journal.debit}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+
+                                        </p:column>
+                                        <p:column headerText="Crédit">
+                                            <h:outputText value="#{journal.credit eq 0 ?null:journal.credit}">
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:columnGroup type="footer">
+                                            <p:row>
+                                                <p:column footerText="Total article  #{compte.reference}" colspan="3" style="text-align:right"/>
+                                                <p:column >
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{journalBean.sommeDebitByDate() eq 0 ?null:journalBean.sommeDebitByDate()}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                                <p:column >
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{journalBean.sommeCreditByDate() eq 0 ?null:journalBean.sommeCreditByDate()}">
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+
+                                            </p:row>
+
+                                        </p:columnGroup>
+                                    </p:subTable>
+                                    <p:columnGroup type="footer">
+                                        <p:row>
+                                            <p:column footerText="Totaux " colspan="3" style="text-align:right"/>
+                                            <p:column    >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{journalBean.debitTotPage eq 0 ?null:journalBean.debitTotPage}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column    >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{journalBean.creditTotPage eq 0 ?null:journalBean.creditTotPage }">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+
+                                        </p:row>
+                                        <p:row rendered="#{journalBean.listTransactions.size() gt journalBean.nbr ?true:false}">
+                                            <p:column footerText="Areporter " colspan="3" style="text-align:right"/>
+                                            <p:column    >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{journalBean.sommeDebitAreporter()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column    >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{journalBean.sommeCreditAreporter()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                        </p:row>
+
+                                                <!--p:row  rendered="#{(journalBean.transactionsAffiche.size() + journalBean.transactionsPre.size()) eq journalBean.listTransactions.size()?true:false}" -->
+
+                                        <p:row>
+
+                                            <p:column colspan="3" footerText="Totaux Journal" />
+                                            <p:column    >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{journalBean.totalDebit() eq 0 ?null:journalBean.totalDebit()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column    >
+                                                <f:facet name="footer">
+                                                    <h:outputText value="#{journalBean.totalCredit() eq 0 ?null:journalBean.totalCredit()}">
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+
+                                        </p:row>
+                                    </p:columnGroup>
+
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </p:panel>
+                    <p:remoteCommand name="newPropositionj" partialSubmit="true" update="formliste" autoRun="false"/> 
+
+                </h:form>
+
+
+            </div>
+        </div>
+
+    </ui:composition> 
+
+</html>
+

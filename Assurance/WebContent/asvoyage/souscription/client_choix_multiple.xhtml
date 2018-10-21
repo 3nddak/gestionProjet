@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <p:panel rendered="#{souscriptionAsVoyageBean.groupe eq 0?false:true}" header="#{msg['liste.client']}">
+            <!--div class="panel">
+                <div class="panel-body">
+                    <div class="row"-->
+                        <p:dataTable rendered="#{souscriptionAsVoyageBean.hideChoixClientForm}"  widgetVar="clientsTable" id="clienttable2"  value="#{souscriptionAsVoyageBean.listClient}" var="client" 
+                                     selection="#{souscriptionAsVoyageBean.listClientOldSelected}" rowKey="#{client.idClient}" 
+                                     emptyMessage="#{msg['tableau.vide']}" 
+                                     rows="8"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     paginator="true" paginatorPosition="bottom" rowsPerPageTemplate="8,15,20">
+
+                            <p:ajax event="rowSelect" listener="#{souscriptionAsVoyageBean.onRowSelect}" />
+                            <p:ajax event="rowToggle" listener="#{souscriptionAsVoyageBean.onRowToggle}" update="clienttable2" />
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="#{msg['client.recherche.client']} :" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('clientsTable').filter()" style="width:500px" placeholder="Entrer les infos"/>
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:column style="width:50px">
+
+                                <p:rowToggler/>
+                            </p:column>
+                            <p:column headerText="#{msg['client.code']}" filterBy="#{client.numeroPiece}" filterMatchMode="contains">
+                                <h:outputText value="#{client.numeroPiece}" />
+                            </p:column>
+                            <p:column filterBy="#{client.type}" headerText="#{msg['client.type']}" class="col-lg-2">
+                                <f:facet name="filter">
+                                    <h:selectOneMenu class="form-control" onchange="PF('clientsTable').filter()" >
+                                        <f:selectItem itemLabel="#{msg['client.type']}" itemValue="#{null}" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="#{msg['client.type.physique']}" itemValue="1"/>
+                                        <f:selectItem itemLabel="#{msg['client.type.morale']}" itemValue="2" />
+                                    </h:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{client.type}" />
+                            </p:column>
+                            <p:column headerText="#{msg['client.nom']}" filterBy="#{client.nom}" filterMatchMode="contains">
+                                <h:outputText value="#{client.nom}" />
+                            </p:column >
+                            <p:column headerText="#{msg['client.prenom']}" filterBy="#{client.prenom}" filterMatchMode="contains">
+                                <h:outputText value="#{client.prenom}" />
+                            </p:column >
+                            <p:column headerText="#{msg['client.datedenaissance']}" filterMatchMode="contains">
+                                <h:outputText value="#{client.dateNaissance}" />
+                            </p:column >
+                            <p:column style="text-align: center; width: 50px;" selectionMode="multiple"/>
+                        </p:dataTable>
+                    <!--/div-->
+                    <div class="row #{souscriptionAsVoyageBean.hideChoixClientForm2}">
+                        <div class="btn-toolbar">
+                            <p:commandButton rendered="#{souscriptionAsVoyageBean.hideChoixClientForm2}" value="#{msg['btn.valider']}" class="btn-purple btn pull-right" update="formliste:clienttable3,formliste:pan,formliste" action="#{souscriptionAsVoyageBean.onRowSelect2()}" />
+                        </div>
+                    </div>
+                <!--/div> 
+            </div--> 
+        </p:panel>
+    </ui:composition>
+</html>

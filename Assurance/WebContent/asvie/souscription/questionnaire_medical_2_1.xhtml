@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition>
+        <ui:include src="infos_client.xhtml"/>
+        <p:outputPanel id="questionnaireForm"  >
+            <!--p:panel header="Répondre aux questions"-->
+            <div class="panel">
+                <div class="panel-heading bg-purple"><h3 class="panel-title">Répondre aux questions</h3> </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <fieldset><legend class="titre_entete text-left text-capitalize small" ></legend>
+                            <c:forEach items="#{souscriptionBean.assuranceCredit.listQuestionResponseAsVie}" var="q" >
+                                <p:outputPanel id="ll#{souscriptionBean.assuranceCredit.client.hashCode()}#{q.id()}" rendered="#{q.questionAsVie.booleanQuestion}">
+
+                                    <h:outputLabel id="l#{souscriptionBean.assuranceCredit.client.hashCode()}#{q.id()}" >#{q.questionAsVie.numeroQuestion}-#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                    <p:selectBooleanCheckbox id="a#{souscriptionBean.assuranceCredit.client.hashCode()}#{q.id()}" value="#{q.response}" >
+                                        <p:ajax update="ll#{souscriptionBean.assuranceCredit.client.hashCode()}#{q.id()}"  />
+                                    </p:selectBooleanCheckbox>
+                                    <p:outputLabel id="c#{souscriptionBean.assuranceCredit.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" value="#{q.questionSecondaire()}" />
+
+                                    <p:inputText id="d#{souscriptionBean.assuranceCredit.client.hashCode()}#{q.id()}" rendered="#{q.renderPrecision()}" class="form-control" value="#{q.precisions}" />
+                                </p:outputPanel>
+
+                                <p:outputPanel rendered="#{!q.questionAsVie.booleanQuestion}">
+                                    <h:outputLabel >#{q.questionAsVie.numeroQuestion}-#{q.questionAsVie.libelleQuestion}</h:outputLabel>
+                                    <p:inputText  class="form-control" value="#{q.precisions}" />
+                                </p:outputPanel>
+
+                            </c:forEach>
+                        </fieldset>
+                    </div> 
+
+                </div>
+            </div>
+                <!--/p:panel-->
+        </p:outputPanel>
+    </ui:composition>
+</html>

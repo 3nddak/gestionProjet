@@ -1,0 +1,1180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE urlrewrite
+    PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
+    "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+
+<urlrewrite>
+    
+    <rule>
+        <from>^/faces/accueil</from>
+        <to>/faces/template/accueil/accueil.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/faces/devise</from>
+        <to>/faces/template/devise/devise.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/acceuil</from>
+        <to>menugeneral.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/authentification</from>
+        <to>index.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>/faces/zonemonetaire</from>
+        <to>/faces/template/zonemonetaire/zone.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/pays</from>
+        <to>/faces/template/pays/pays.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/compagnie</from>
+        <to>/faces/template/compagnie/compagnie.xhtml</to>
+    </rule>
+   
+    <rule>
+        <from>^/faces/courtier</from>
+        <to>/faces/template/courtier/courtier.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/pointsvente</from>
+        <to>/faces/template/pointsvente/pointsvente.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/faces/guichet</from>
+        <to>/faces/template/guichet/guichet.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/profils</from>
+        <to>/faces/template/profil/profils.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/utilisateur</from>
+        <to>/faces/template/utilisateur/users.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/conditiongeneral</from>
+        <to>/faces/template/conditions_generale/conditions_generale.xhtml</to>
+    </rule>
+   
+    <rule>
+        <from>^/faces/typeassurance</from>
+        <to>/faces/template/typeassurance/clientTypeAssurance.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/compGar</from>
+        <to>/faces/template/compagniegarantie/compagniegarantie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/compte</from>
+        <to>/faces/template/compte/compte.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/operation</from>
+        <to>/faces/template/operationcomp/operation.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/grandlivre</from>
+        <to>/faces/template/grandlivre/grandlivre.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/journal</from>
+        <to>/faces/template/journal/journal.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/balance</from>
+        <to>/faces/template/balance/balance.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/langue</from>
+        <to>/faces/template/langue/langue.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/accessdenied</from>
+        <to>/faces/template/error/error_403.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/urlnotexist</from>
+        <to>/faces/template/error/error_404.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/pagenotfound</from>
+        <to>/faces/template/error/error_500.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/expired</from>
+        <to>/faces/template/error/expired.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/proprietecompte</from>
+        <to>/faces/template/proprietecompte/proprietecompte.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/allcomptestructure</from>
+        <to>/faces/template/allcomptestructure/allcomptestructure.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/typeComptes</from>
+        <to>/faces/template/typeComptes/typeComptes.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/stat</from>
+        <to>/faces/template/stat/stat.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/faces/etat</from>
+        <to>/faces/template/etat/etat.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/fri</from>
+        <to>/faces/template/statistique/statistique.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/societe</from>
+        <to>/faces/template/societe/societe.xhtml</to>
+    </rule>
+
+    
+    <rule>
+        <from>^/faces/remboursement</from>
+        <to>/faces/template/remboursement/remboursement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/st</from>
+        <to>/faces/template/st/st.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/etcompte</from>
+        <to>/faces/template/etcompte/etcompte.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/paramcompte</from>
+        <to>/faces/template/paramcompte/paramcompte.xhtml</to>
+    </rule>
+    
+    
+    <rule>
+        <from>^/faces/retrai</from>
+        <to>/faces/template/pointretrai/retrai.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/control</from>
+        <to>/faces/template/pointcontrol/control.xhtml</to>
+    </rule>
+   
+    <rule>
+        <from>^/faces/permission</from>
+        <to>/faces/template/permission_manager/permission.xhtml</to>
+    </rule>
+   
+    
+    <rule>
+        <from>^/faces/vcomp</from>
+        <to>/faces/template/validcomp/vcomp.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/trsfr</from>
+        <to>/faces/template/transferes/transfere.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/annulDeposit</from>
+        <to>/faces/template/transferesAnnulation/transfere.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/autoriserdeposit</from>
+        <to>/faces/template/autoriserdeposit/transfere.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/faces/echeance</from>
+        <to>/faces/template/contrateacheance/echeance.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/lesetat</from>
+        <to>/faces/template/lesetat/lesetat.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/echuouechoircontrat</from>
+        <to>/faces/template/echeancecontrat/operationDuJour.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/printOperationDuJour</from>
+        <to>/faces/template/printOperationDuJour/operationDuJour.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/faces/demo.appcache</from>
+        <to>/demo.appcache</to>
+    </rule>
+    <rule>
+        <from>^/faces/deposite</from>
+        <to>/faces/template/deposite/deposite.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/cmm</from>
+        <to>/faces/template/rcommission/commission.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/xetclient</from>
+        <to>/faces/template/etatclient/etatclient.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/ketatcompg</from>
+        <to>/faces/template/etatcompagnie/etatcompg.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/zetatcourt</from>
+        <to>/faces/template/etatcourtier/etatcourt.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/petatpdv</from>
+        <to>/faces/template/etatpdv/etatpdv.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/archive</from>
+        <to>/faces/template/archiveParam/archive.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/acManuel</from>
+        <to>/faces/template/archiveManuel/archiveManuel.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/listSauv</from>
+        <to>/faces/template/listSauvegarde/listSauv.xhtml</to>
+    </rule>
+    
+    
+    <rule>
+        <from>^/faces/menug</from>
+        <to>/faces/template/MenuGeneral/menug.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/typeAss</from>
+        <to>/faces/template/typeAssuranceUI/typeAssurance.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/packageunique</from>
+        <to>/faces/template/packageUniqueGarantie/package_unique_garantie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/changenativepassword</from>
+        <to>/faces/template/passwdchange/forcepasschange.xhtml</to>
+    </rule>
+   
+    <rule>
+        <from>^/faces/commissionmanager</from>
+        <to>/faces/template/commission_manager/commission_manager.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/imprimerOperation</from>
+        <to>/assuranceauto/asautomo/imprimerOperation/operationDuJour.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/bordereauProductionCommission</from>
+        <to>/assuranceauto/asautomo/bordereauProductionCommission/bordereauDuJour.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/bordereauProductionOac</from>
+        <to>/assuranceauto/asautomo/bordereau_production_commission/operationDuJour.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/listeCompagnieAsAuto</from>
+        <to>/faces/template/compagniestatistic/compagnie_statistic.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/listeCourtierAsAuto</from>
+        <to>/assuranceauto/template/courtierstatistic/courtier_statistic.xhtml</to>
+    </rule>
+    
+    <!-- ####################### ASSURANCE AUTO URL ##########################-->
+     
+    <rule>
+        <from>^/assuranceauto/echuouechoircontratAuto</from>
+        <to>/assuranceauto/template/echeancecontrat/operationDuJour_auto.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/compGar</from>
+        <to>/assuranceauto/template/compagniegarantie/compagniegarantie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/prime</from>
+        <to>/assuranceauto/asautomo/prime/prime.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/flotteasauto</from>
+        <to>/assuranceauto/asautomo/flotte/flotte.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/taxe</from>
+        <to>/assuranceauto/asautomo/taxe/taxe.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/senarioSituationAuto</from>
+        <to>/assuranceauto/asautomo/parametrageSenarioSituation/senario.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/natureEvenementSinistreAuto</from>
+        <to>/assuranceauto/asautomo/parametrageNatureEvenementSinistre/natureES.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assuranceauto/uzpdv</from>
+        <to>/assuranceauto/asautomo/dashPDV/utilisateurpdv.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/utilisateurcourtier</from>
+        <to>/assuranceauto/asautomo/dashcourt/utilisateurcourtier.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/utilisateurcompagnie</from>
+        <to>/assuranceauto/asautomo/dashcomp/utilisateurcomp.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assuranceauto/admincompagnie</from>
+        <to>/assuranceauto/asautomo/dashcomp/admincomp.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assuranceauto/utilisateur</from>
+        <to>/assuranceauto/asautomo/utilisateur/users.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/traitement</from>
+        <to>/assuranceauto/asautomo/compagnietraitement/traitement.xhtml</to>
+    </rule>
+
+    <rule>
+        <from>^/assuranceauto/souscription</from>
+        <to>/assuranceauto/asautomo/ClientVoiture/ClientVoiture.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/traitersinistreauto</from>
+        <to>/assuranceauto/asautomo/sinistreauto/sinistreauto.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/validersinistreauto</from>
+        <to>/assuranceauto/asautomo/validersinistreauto/validersinistreauto.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/listesinistreauto</from>
+        <to>/assuranceauto/asautomo/listesinistreauto/listesinistreauto.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/listeavenantsuspension</from>
+        <to>/assuranceauto/asautomo/listeavenantsuspension/listeavenantsuspension.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/declarationSinistreasauto</from>
+        <to>/assuranceauto/asautomo/declarationSinistre/declarationSinistre.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/renouvelement</from>
+        <to>/assuranceauto/asautomo/renouvelement/renouvelement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/remiseenvigueur</from>
+        <to>/assuranceauto/asautomo/remiseenvigueur/remiseenvigueur.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/simulation</from>
+        <to>/assuranceauto/asautomo/smul/ClientVoiture.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/client</from>
+        <to>/assuranceauto/asautomo/client/client.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/espace_courriers</from>
+        <to>/assuranceauto/asautomo/espace_courriers/espace_courriers.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/espace_traitement_compagnie</from>
+        <to>/assuranceauto/asautomo/espace_traitement_compagnie/espace_traitement_compagnie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/espace_traitement_courtier</from>
+        <to>/assuranceauto/asautomo/espace_traitement_courtier/espace_traitement_courtier.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/espace_traitement_pdv</from>
+        <to>/assuranceauto/asautomo/espace_traitement_pdv/espace_traitement_pdv.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/validation</from>
+        <to>/assuranceauto/asautomo/validation/validation.xhtml</to>
+    </rule>    
+    <rule>
+        <from>^/assuranceauto/mettreImmatriculation</from>
+        <to>/assuranceauto/asautomo/mettreImmatriculation/mettreImmatriculation.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/quittance</from>
+        <to>/assuranceauto/asautomo/quittanceEncaissement/quittanceEncaissement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/chartel</from>
+        <to>/assuranceauto/asautomo/uploadOrDownloadContrat/contrat.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/duplicata</from>
+        <to>/assuranceauto/asautomo/duplicate/contrat.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assuranceauto/coutPolice</from>
+        <to>/assuranceauto/asautomo/coutPolice/coutPolice.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/commissionsCompagnieCourtier</from>
+        <to>/assuranceauto/asautomo/commissionsCompagnieCourtier/commission.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/commissionNCPCourtierPV</from>
+        <to>/assuranceauto/asautomo/commissionNCPCourtierPV/commission.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/attestation</from>
+        <to>/assuranceauto/asautomo/attestation/attestation.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/demandeatt</from>
+        <to>/assuranceauto/asautomo/attestationcom/attestationcom.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/vdc</from>
+        <to>/assuranceauto/asautomo/attestationpv/attestationcom.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/actp</from>
+        <to>/assuranceauto/asautomo/attestationpdvcom/attestationcom.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/xttc</from>
+        <to>/assuranceauto/asautomo/attesttiondelivrer/attestationcom.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/rc</from>
+        <to>/assuranceauto/asautomo/rc/rc.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/annulation</from>
+        <to>/assuranceauto/asautomo/demandeAnnulationAsAuto/annulation.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/autorisation</from>
+        <to>/assuranceauto/asautomo/autorisationCourtierAsAuto/autorisation.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/ncpaCancel</from>
+        <to>/assuranceauto/asautomo/annulationAsAutoNCP/annulationNCP.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/guarantieauto</from>
+        <to>/assuranceauto/asautomo/guarantie/guarantie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/categorieauto</from>
+        <to>/assuranceauto/asautomo/guarantie_categorie/guarantie_categorie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/renouvelement</from>
+        <to>/assuranceauto/asautomo/renouvelement/renouvelement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/reception</from>
+        <to>/assuranceauto/asautomo/reception/reception.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/greception</from>
+        <to>/assuranceauto/asautomo/greception/greception.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/can</from>
+        <to>/assuranceauto/asautomo/voirAnnullation/annulationCompagnie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/zahler</from>
+        <to>/assuranceauto/asautomo/payement/payement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/paquegeGarantieAsAuto</from>
+        <to>/assuranceauto/asautomo/paquegeGarantieAsAuto/paquegeGarantieAsAuto.xhtml</to>
+    </rule>
+    
+    <!-- Nouveau lien statistique assurance Auto --> 
+    <rule>
+        <from>^/assuranceauto/statistiqueAsAuto</from>
+        <to>/assuranceauto/template/st/st_auto.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/xxfCompagnie</from>
+        <to>/faces/template/compagniestatistic/compagnie_statistic.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/zzaCourtier</from>
+        <to>/faces/template/courtierstatistic/courtier_statistic.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/listeCompagnieAsAuto</from>
+        <to>/assuranceauto/template/compagniestatistic/compagnie_statistic_auto.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/listeCourtierAsAuto</from>
+        <to>/assuranceauto/template/courtierstatistic/courtier_statistic_auto.xhtml</to>      
+    </rule>
+    <rule>
+        <from>^/assuranceauto/listePointVenteAsAuto</from>
+        <to>/assuranceauto/template/etatpdv/etatpdv_auto.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/listeClientsAsAuto</from>
+        <to>/assuranceauto/template/etatclient/etatclient_auto.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/fichierClientsAsAuto</from>
+        <to>/assuranceauto/asautomo/fichierclient/fichierclient.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/fichierContratsAsAuto</from>
+        <to>/assuranceauto/asautomo/fichiercontrat/fichiercontrat.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/fichierSinistresAsAuto</from>
+        <to>/assuranceauto/asautomo/fichiersinistre/fichiersinistre.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/listeContratsAsAuto</from>
+        <to>/assuranceauto/template/echeancecontrat/echeance_auto.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/bordereauAsAuto</from>
+        <to>/assuranceauto/template/lesetat/lesetat_auto.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/AutoimprimerOperation</from>
+        <to>assuranceauto/asautomo/imprimerOperation/operationDuJour.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assuranceauto/validationPayementAssuranceAuto</from>
+        <to>/assuranceauto/asautomo/validationSouscription/payement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/demandeNouvelleAssuranceAuto</from>
+        <to>/assuranceauto/asautomo/demande_Nouvelle/demande_nouvelle.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/demandeTraiteAssuranceAuto</from>
+        <to>/assuranceauto/asautomo/demande_Traite/demande_traite.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/demandeValideAssuranceAuto</from>
+        <to>/assuranceauto/asautomo/demande_Valide/demande_valide.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/demandeRejeteAssuranceAuto</from>
+        <to>/assuranceauto/asautomo/demande_Rejete/demande_rejete.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/effectiveAssuranceAutoSouscription</from>
+        <to>/assuranceauto/asautomo/souscription_effective/souscription_effective.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/sinistreauto</from>
+        <to>/assuranceauto/asautomo/sinistre/sinistre.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assuranceauto/avenantSuspension</from>
+        <to>/assuranceauto/asautomo/avenantSuspension/avenantSuspension.xhtml</to>
+    </rule>
+    
+    <!-- #######################FIN ASSURANCE AUTO URL ##########################-->
+    
+    
+    
+    
+    
+    
+    
+    
+    <!-- ####################### ASSURANCE VIE URL ##########################-->
+   
+    <rule>
+        <from>^/assurancevie/echuouechoircontratVie</from>
+        <to>/assurancevie/template/echeancecontrat/operationDuJour_vie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/conditiongeneral</from>
+        <to>/assurancevie/asvie/condition_general_compagnie/condition_general.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/asviesouscription</from>
+        <to>/assurancevie/asvie/souscription/souscription.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/asviegarantie</from>
+        <to>/assurancevie/asvie/garantie/garantie.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancevie/acvie</from>
+        <to>/assurancevie/asvie/accueil/accueil.xhtml</to>
+    </rule>
+  
+    
+    <rule>
+        <from>^/assurancevie/asviepaye</from>
+        <to>/assurancevie/asvie/payement/payement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/commission_manager</from>
+        <to>/assurancevie/asvie/commission_manager/commission_manager.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/demandeNouvelleAssuranceCredit</from>
+        <to>/assurancevie/asvie/demande_Nouvelle/demande_nouvelle.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/demandeTraiteAssuranceCredit</from>
+        <to>/assurancevie/asvie/demande_Traite/demande_traite.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/demandeValideAssuranceCredit</from>
+        <to>/assurancevie/asvie/demande_Valide/demande_valide.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/demandeRejeteAssuranceCredit</from>
+        <to>/assurancevie/asvie/demande_Rejete/demande_rejete.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/souscriptionEffectiveAssuranceCredit</from>
+        <to>/assurancevie/asvie/souscription_effective/souscription_effective.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/payementAssuranceCredit</from>
+        <to>/assurancevie/asvie/payement/payement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/nouvelleDemandeCompagnieAssuranceCredit</from>
+        <to>/assurancevie/asvie/asvietc/asvietc.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/questionnaire</from>
+        <to>/assurancevie/asvie/questionnaire_compagnie/questionnaire_compagnie.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancevie/questionValeurReponse</from>
+        <to>/assurancevie/asvie/question_valeur_reponse/question_valeur_reponse.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/etatConditionGenerale</from>
+        <to>/assurancevie/asvie/etatCondGeneral/etatCondGen.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/configurationCompagnie</from>
+        <to>/assurancevie/asvie/configurationGeneraleCompagnie/configuration_compagnie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/daylyOpAsVie</from>
+        <to>/assurancevie/asvie/imprimerOperation/operationDuJour.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/geneac</from>
+        <to>/assurancevie/asvie/dash/utlilisa.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/asviereception</from>
+        <to>/assurancevie/asvie/reception/asviereception.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/asviegreception</from>
+        <to>/assurancevie/asvie/greception/asviegreception.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/asvierenouvellement</from>
+        <to>/assurancevie/asvie/renouvellementAssuranceVie/renouvellementAsVie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/parametragetauxprime</from>
+        <to>/assurancevie/asvie/parametrageTauxDePrimeAsVie/parametrageTauxDePrimeAsVie.xhtml</to>
+    </rule>
+    
+    <!-- Nouveau lien statistique assurance Credit --> 
+    <rule>
+        <from>^/assurancevie/statistiqueAsCredit</from>
+        <to>/assurancevie/template/st/st_vie.xhtml</to>
+    </rule>
+   
+    <rule>
+        <from>^/assurancevie/listePointVenteAsCredit</from>
+        <to>/assurancevie/template/etatpdv/etatpdv_vie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/listeClientsAsCredit</from>
+        <to>/assurancevie/template/etatclient/etatclient_vie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/listeContratsAsCredit</from>
+        <to>/assurancevie/template/echeancecontrat/echeance_vie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/bordereauAsCredit</from>
+        <to>/assurancevie/template/lesetat/lesetat_vie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/listeCompagnieAsCredit</from>
+        <to>/assurancevie/template/compagniestatistic/compagnie_statistic_credit.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/listeCourtierAsCredit</from>
+        <to>/assurancevie/template/courtierstatistic/courtier_statistic_credit.xhtml</to>      
+    </rule>
+    <rule>
+        <from>^/assurancevie/CreditimprimerOperation</from>
+        <to>assurancevie/asvie/imprimerOperation/operationDuJour.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevie/imprimerContratAsCredit</from>
+        <to>assurancevie/asvie/printContratAsVie/printContratAsVie.xhtml</to>
+    </rule>
+    
+    <!-- #######################FIN ASSURANCE VIE URL ##########################-->
+    
+    
+    
+    
+    
+    
+    
+    
+    <!-- ####################### ASSURANCE VOYAGE URL ##########################-->
+  
+    <rule>
+        <from>^/assurancevoyage/echuouechoircontratVoyage</from>
+        <to>/assurancevoyage/template/echeancecontrat/operationDuJour_voyage.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/acvoyage</from>
+        <to>/assurancevoyage/asvoyage/accueil/accueil.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assuranceauto/acauto</from>
+        <to>/assuranceauto/asautomo/accueil/accueil.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancevoyage/voyagesouscription</from>
+        <to>/assurancevoyage/asvoyage/souscription/souscription.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/validationasvoyagepayement</from>
+        <to>/assurancevoyage/asvoyage/validationSouscription/payement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/commission_manager_AsVoyage</from>
+        <to>/assurancevoyage/asvoyage/commission_manager/commission_manager.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancevoyage/primeVoyage</from>
+        <to>/assurancevoyage/asvoyage/primeVoyage/primeVoyage.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancevoyage/demandeNouvelleAssuranceVoyage</from>
+        <to>/assurancevoyage/asvoyage/demande_Nouvelle/demande_nouvelle.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/demandeTraiteAssuranceVoyage</from>
+        <to>/assurancevoyage/asvoyage/demande_Traite/demande_traite.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/demandeValideAssuranceVoyage</from>
+        <to>/assurancevoyage/asvoyage/demande_Valide/demande_valide.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/demandeRejeteAssuranceVoyage</from>
+        <to>/assurancevoyage/asvoyage/demande_Rejete/demande_rejete.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/souscriptionEffectiveAssuranceVoyage</from>
+        <to>/assurancevoyage/asvoyage/souscription_effective/souscription_effective.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/nouvelleDemandeCompagnie</from>
+        <to>/assurancevoyage/asvoyage/asvoyagetc/asvoyagetc.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancevoyage/etatdesoperations</from>
+        <to>/assurancevoyage/asvoyage/imprimerOperation/operationDuJour.xhtml</to>
+    </rule>
+    
+    <!-- Nouveau lien statistique assurance Voyage --> 
+    <rule>
+        <from>^/assurancevoyage/statistiqueAsVoyage</from>
+        <to>/assurancevoyage/template/st/st_voyage.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancevoyage/listePointVenteAsVoyage</from>
+        <to>/assurancevoyage/template/etatpdv/etatpdv_voyage.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/listeClientsAsVoyage</from>
+        <to>/assurancevoyage/template/etatclient/etatclient_voyage.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/listeContratsAsVoyage</from>
+        <to>/assurancevoyage/template/echeancecontrat/echeance_voyage.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/bordereauAsVoyage</from>
+        <to>/assurancevoyage/template/lesetat/lesetat_voyage.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/listeCompagnieAsVoyage</from>
+        <to>/assurancevoyage/template/compagniestatistic/compagnie_statistic_voyage.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/listeCourtierAsVoyage</from>
+        <to>/assurancevoyage/template/courtierstatistic/courtier_statistic_voyage.xhtml</to>      
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/voyageimprimerOperation</from>
+        <to>assurancevoyage/asvoyage/imprimerOperation/operationDuJour.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/imprimerContratAsVoyage</from>
+        <to>assurancevoyage/asvoyage/printContratAsVoyage/printContratAsVoyage.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancevoyage/demandeAnnulationAsVoyage</from>
+        <to>assurancevoyage/asvoyage/demandeAnnulationAsVoyage/annulation.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/traitement</from>
+        <to>/assurancevoyage/asvoyage/traitementAnnulation/autorisation.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancevoyage/annulationAsVoyage</from>
+        <to>/assurancevoyage/asvoyage/annulationAsVoyage/annulationAsVoyage.xhtml</to>
+    </rule>
+    <!-- #######################FIN ASSURANCE VOYAGE URL ##########################-->
+    
+    <!-- #######################DEBUT ASSURANCE COMPTE URL ##########################-->
+    
+    <rule>
+        <from>^/assurancecompte/echuouechoircontratCompte</from>
+        <to>/assurancecompte/template/echeancecontrat/operationDuJour_compte.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancecompte/accompte</from>
+        <to>/assurancecompte/ascompte/accueil/accueil.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancecompte/primecompte</from>
+        <to>/assurancecompte/ascompte/parametrageTauxDePrimeAsCompte/parametrageTauxDePrimeAsCompte.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancecompte/comptesouscription</from>
+        <to>/assurancecompte/ascompte/souscription/souscription.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancecompte/nouvelleDemandeCompagnieAssuranceCompte</from>
+        <to>/assurancecompte/ascompte/ascomptetcc/ascomptetc.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancecompte/ascompterenouvellement</from>
+        <to>/assurancecompte/ascompte/renouvellementAssuranceCompte/renouvellementAsCompte.xhtml</to>
+    </rule>
+    
+    <!-- Nouveau lien statistique assurance Compte --> 
+    <rule>
+        <from>^/assurancecompte/listeCompagnieAsCompte</from>
+        <to>/assurancecompte/template/compagniestatistic/compagnie_statistic_compte.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancecompte/listeCourtierAsCompte</from>
+        <to>/assurancecompte/template/courtierstatistic/courtier_statistic_compte.xhtml</to>      
+    </rule>
+    <rule>
+        <from>^/assurancecompte/statistiqueAsCompte</from>
+        <to>/assurancecompte/template/st/st_compte.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancecompte/listePointVenteAsCompte</from>
+        <to>/assurancecompte/template/etatpdv/etatpdv_compte.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancecompte/listeClientsAsCompte</from>
+        <to>/assurancecompte/template/etatclient/etatclient_compte.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancecompte/listeContratsAsCompte</from>
+        <to>/assurancecompte/template/echeancecontrat/echeance_compte.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancecompte/bordereauAsCompte</from>
+        <to>/assurancecompte/template/lesetat/lesetat_compte.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancecompte/validationPayementAssuranceCompte</from>
+        <to>/assurancecompte/ascompte/validationSouscription/payement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancecompte/demandeNouvelleAssuranceCompte</from>
+        <to>/assurancecompte/ascompte/demande_Nouvelle/demande_nouvelle.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancecompte/demandeTraiteAssuranceCompte</from>
+        <to>/assurancecompte/ascompte/demande_Traite/demande_traite.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancecompte/demandeValideAssuranceCompte</from>
+        <to>/assurancecompte/ascompte/demande_Valide/demande_valide.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancecompte/demandeRejeteAssuranceCompte</from>
+        <to>/assurancecompte/ascompte/demande_Rejete/demande_rejete.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancecompte/souscriptionEffectiveAssuranceCompte</from>
+        <to>/assurancecompte/ascompte/souscription_effective/souscription_effective.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancecompte/imprimerOperation</from>
+        <to>assurancecompte/ascompte/imprimerOperation/operationDuJour.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancecompte/imprimerContratAsCompte</from>
+        <to>assurancecompte/ascompte/printContratAsCompte/printContratAsCompte.xhtml</to>
+    </rule>
+    
+    <!-- #######################FIN ASSURANCE COMPTE URL ##########################-->
+    
+    <!-- ####################### ASSURANCE VIE URL ##########################-->
+   
+    <rule>
+        <from>^/assurancemrh/acmrh</from>
+        <to>/assurancemrh/asmrh/accueil/accueil.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancemrh/asmrhsouscription</from>
+        <to>/assurancemrh/asmrh/souscriptionMrh/souscriptionMrh.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancemrh/categoriemrh</from>
+        <to>/assurancemrh/asmrh/categorie/categorie.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancemrh/compagniegarantiemrh</from>
+        <to>/assurancemrh/asmrh/compagnieGarantieAsMrh/compagniegarantie.xhtml</to>
+    </rule>
+  
+    <rule>
+        <from>^/assurancemrh/mrhgarantie</from>
+        <to>/assurancemrh/asmrh/garantieAsmrh/garantie.xhtml</to>
+    </rule>
+
+    <rule>
+        <from>^/assurancemrh/mrhimprimerOperation</from>
+        <to>/assurancemrh/asmrh/imprimerOperation/operationDuJour.xhtml</to>
+    </rule>
+    <!-- NOTIFICATION MRH -->
+    
+     
+    <!-- Nouveau lien statistique assurance Compte --> 
+    <rule>
+        <from>^/assurancemrh/statistiqueAsMrh</from>
+        <to>/assurancemrh/template/st/st_mrh.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/xxfCompagnie</from>
+        <to>/faces/template/compagniestatistic/compagnie_statistic.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/faces/zzaCourtier</from>
+        <to>/faces/template/courtierstatistic/courtier_statistic.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancemrh/listeCompagnieAsMrh</from>
+        <to>/assurancemrh/template/compagniestatistic/compagnie_statistic_mrh.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancemrh/listeCourtierAsMrh</from>
+        <to>/assurancemrh/template/courtierstatistic/courtier_statistic_mrh.xhtml</to>      
+    </rule>
+    <rule>
+        <from>^/assurancemrh/listePointVenteAsMrh</from>
+        <to>/assurancemrh/template/etatpdv/etatpdv_mrh.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancemrh/listeClientsAsMrh</from>
+        <to>/assurancemrh/template/etatclient/etatclient_mrh.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancemrh/listeContratsAsMrh</from>
+        <to>/assurancemrh/template/echeancecontrat/echeance_mrh.xhtml</to>
+    </rule>   
+    <rule>
+        <from>^/assurancemrh/AutoimprimerOperation</from>
+        <to>assurancemrh/asautomo/imprimerOperation/operationDuJour.xhtml</to>
+    </rule>
+    
+    
+    
+    <rule>
+        <from>^/assurancemrh/demandeNouvelleAssuranceMrh</from>
+        <to>/assurancemrh/asmrh/demande_Nouvelle/demande_nouvelle.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancemrh/demandeTraiteAssuranceMrh</from>
+        <to>/assurancemrh/asmrh/demande_Traite/demande_traite.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancemrh/demandeValideAssuranceMrh</from>
+        <to>/assurancemrh/asmrh/demande_Valide/demande_valide.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancemrh/demandeRejeteAssuranceMrh</from>
+        <to>/assurancemrh/asmrh/demande_Rejete/demande_rejete.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancemrh/souscriptionEffectiveAssuranceMrh</from>
+        <to>/assurancemrh/asmrh/souscription_effective/souscription_effective.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancemrh/validationPayementAssuranceMrh</from>
+        <to>/assurancemrh/asmrh/validationSouscription/payement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancemrh/primemrh</from>
+        <to>/assurancemrh/asmrh/primeMrh/primeMrh.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancemrh/nouvelleDemandeCompagnieAssuranceMrh</from>
+        <to>/assurancemrh/asmrh/traitement_Compagnie/tcasmrh.xhtml</to>
+    </rule>
+     
+    <!-- #######################FIN ASSURANCE VIE URL ##########################-->
+    
+     <!-- #######################DEBUT ASSURANCE SANTE URL ##########################-->
+      <rule>
+        <from>^/assurancesante/acsante</from>
+        <to>/assurancesante/assante/accueil/accueil.xhtml</to>
+    </rule>
+     <rule>
+        <from>^/assurancesante/santesouscription</from>
+        <to>/assurancesante/assante/souscription/souscription.xhtml</to>
+    </rule>
+     <rule>
+        <from>^/assurancesante/garantieAsSante</from>
+        <to>/assurancesante/assante/garanties/garantie.xhtml</to>
+    </rule>
+     <rule>
+        <from>^/assurancesante/rapportSp</from>
+        <to>/assurancesante/assante/rapportsp/rapport.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/categorieGarantieAsSante</from>
+        <to>/assurancesante/assante/categoriegarantie/categoriegarantie.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/garantieCategorieCompagnieProduit</from>
+        <to>/assurancesante/assante/garantiecategoriecompagnieproduit/garantiecategoriecompagnieproduit.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/produits</from>
+        <to>/assurancesante/assante/produits/produits.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/nouvelleDemandeCompagnieAssuranceSante</from>
+        <to>/assurancesante/assante/traitement_compagnie/tcassante.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/validationSouscriptionAsSante</from>
+        <to>/assurancesante/assante/validationSouscription/payement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/renewSouscriptionAsSante</from>
+        <to>/assurancesante/assante/renouvellement/renouvellement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/souscriptionAsSante</from>
+        <to>/assurancesante/assante/souscription/souscription.xhtml</to>
+    </rule>
+    
+    
+    
+    <rule>
+        <from>^/assurancesante/demandeNouvelleAssuranceSante</from>
+        <to>/assurancesante/assante/demande_Nouvelle/demande_nouvelle.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/demandeTraiteAssuranceSante</from>
+        <to>/assurancesante/assante/demande_Traite/demande_traite.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/demandeValideAssuranceSante</from>
+        <to>/assurancesante/assante/demande_Valide/demande_valide.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/demandeRejeteAssuranceSante</from>
+        <to>/assurancesante/assante/demande_Rejete/demande_rejete.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/souscriptionEffectiveAssuranceSante</from>
+        <to>/assurancesante/assante/souscription_effective/souscription_effective.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/validationPayementAssuranceSante</from>
+        <to>/assurancesante/assante/validationSouscription/payement.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/primesante</from>
+        <to>/assurancesante/assante/primeSante/primeSante.xhtml</to>
+    </rule>
+    <rule>
+        <from>^/assurancesante/nouvelleDemandeCompagnieAssuranceSante</from>
+        <to>/assurancesante/assante/traitement_Compagnie/tcassante.xhtml</to>
+    </rule>
+    
+    <rule>
+        <from>^/assurancesante/santeimprimerOperation</from>
+        <to>assurancesante/assante/imprimerOperation/operationDuJour.xhtml</to>
+    </rule>
+    <!-- #######################FIN ASSURANCE SANTE URL ##########################-->
+    
+    <rule>
+        <from>^/faces/editselfuser</from>
+        <to>/faces/template/selfuseredit/selfuser.xhtml</to>
+    </rule>
+    
+</urlrewrite>
+
+
+

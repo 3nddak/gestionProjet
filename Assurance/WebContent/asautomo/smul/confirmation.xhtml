@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <ui:composition>
+
+        <fieldset><legend>#{msg['btn.confirmation']}</legend>
+
+            <p:panel header="#{msg['message.client.titre']}"  toggleable="true" collapsed="false">
+
+                <p:panelGrid class="table" columns="6">
+
+                    <p:outputLabel for="nom2" value="#{msg['client.souscripteur']} :"/>
+                    <h:outputText id="nom2" value="#{objetBean.clientSelected.nom} #{objetBean.nom}"/>
+                    <p:outputLabel for="tel2" value="#{msg['client.tel']} :"/>
+                    <h:outputText id="tel2" value="#{objetBean.clientSelected.telephoneMobile} #{objetBean.telephoneMobile}"/>
+                    <p:outputLabel for="addresse2" value="#{msg['client.adresse']} :"/>
+                    <h:outputText id="addresse2" value="#{objetBean.clientSelected.adresse} #{objetBean.adresse}"/>
+
+
+                </p:panelGrid>
+
+            </p:panel>
+            <p:panel header="#{msg['simulation.auto.caracteristiqueVehicule']}"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                <p:panelGrid columns="8" class="table">
+
+                    <p:outputLabel for="imm" value="#{msg['vehicule.immatriculation']} :"/>
+                    <h:outputText id="imm" value="#{objetBean.voiture.numeroImmatriculation}"/>
+                    <p:outputLabel for="pui2" value="#{msg['vehicule.puissance']} :"/>
+                    <h:outputText id="pui2" value="#{objetBean.voiture.puissance}"/>
+                    <p:outputLabel for="puiR" value="#{msg['vehicule.puissancereelle']} :"/>
+                    <h:outputText id="puiR" value="#{objetBean.voiture.puissanceReelle}"/>
+                    <p:outputLabel for="vn2" value="#{msg['vehicule.valeurneuf']} :"/>
+                    <h:outputText id="vn2" value="#{objetBean.voiture.valeurNeuve}">
+                        <f:convertNumber pattern="###,##0" type="number" />
+                    </h:outputText>         
+                    <p:outputLabel for="vn12" value="#{msg['vehicule.valeurvenale']} :"/>
+                    <h:outputText id="vn12" value="#{objetBean.voiture.valeurvenale}">
+                        <f:convertNumber pattern="###,##0" type="number" />
+                    </h:outputText>    
+                    <p:outputLabel for="ma2" value="#{msg['vehicule.marque']} :"/>
+                    <h:outputText id="ma2" value="#{objetBean.voiture.marque}"/>
+                    <p:outputLabel for="en2" value="#{msg['vehicule.energie']} :"/>
+                    <h:outputText id="en2" value="#{objetBean.energ.libelleFr}"/>
+                    <p:outputLabel for="ge2" value="#{msg['vehicule.genre']} :"/>
+                    <h:outputText id="ge2" value="#{objetBean.voiture.genre}"/>
+                    <p:outputLabel for="ty2" value="#{msg['vehicule.typeVitre']} :"/>
+                    <h:outputText id="ty2" value="#{objetBean.voiture.typeVitres.typeVitre}"/>
+                    <p:outputLabel for="np2" value="#{msg['vehicule.nombreplace']} :"/>
+                    <h:outputText id="np2" value="#{objetBean.voiture.nombrePlaces}"/>
+                    <p:outputLabel for="numc2" value="#{msg['vehicule.numerochassis']} :"/>
+                    <h:outputText id="numc2" value="#{objetBean.voiture.numChassis}"/>
+                    <p:outputLabel for="numm2" value="#{msg['vehicule.numeromoteur']} :"/>
+                    <h:outputText id="numm2" value="#{objetBean.voiture.numMoteur}"/>
+
+                    <p:outputLabel for="dm2a" value="#{msg['vehicule.miseencirculation']} :"/>
+                    <h:outputText id="dm2a" value="#{objetBean.formatDate(objetBean.voiture.miseEnCirculation)}"/>
+
+
+                </p:panelGrid>
+
+            </p:panel>
+            <p:panel header="#{msg['garantie.selectionner']}"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                <p:dataGrid  value="#{objetBean.selectedObjetGuaranties}" var="guarantie" columns="4" layout="grid" class="table"> 
+
+                    #{guarantie.symbole}
+                </p:dataGrid>
+            </p:panel>
+            <p:panel header="#{msg['titre.compagnieCourtierChoisie']}"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+                <div class="table-responsive">
+                    <p:dataTable class="table table-bordered " var="factur" reflow="true" rows="5" value="#{objetBean.factureListSimulation}"> 
+
+
+                        <p:column headerText="#{msg['titre.compagnie']}">
+                            <h:outputText value="#{factur.compagnie.abbreviation}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['titre.courtier']}">
+                            <h:outputText value="#{factur.courtier.abbreviation}" />
+                        </p:column >
+
+                    </p:dataTable>
+                </div>
+
+            </p:panel>
+            <div class="row">
+                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                    <p:commandButton value="#{msg['btn.enregistrer']}" update="formliste" action="#{objetBean.enregistrerSouscriptionForSumulation()}" onstart="PF('loadProcess').block()" oncomplete="PF('loadProcess').unblock(),PF('modifier').show()" class="btn btn-success btn-xs pull-right"/>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset> <legend>Simulation</legend>
+            <ui:include src="simulationForSimulation.xhtml"/>
+        </fieldset>
+
+    </ui:composition> 
+</html>

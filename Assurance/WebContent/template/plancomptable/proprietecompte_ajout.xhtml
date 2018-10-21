@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:outputPanel id="ajout" style="text-align:center;">
+                    <h:form class="form-horizontal" id="devise-ajout" > 
+                        <p:focus context="devise-ajout"/>
+                        <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>
+                        <!--p:messages id="msgs" showDetail="false" closable="true" autoUpdate="true" /-->
+                        <!--p:messages id="msgs" globalOnly="true" closable="true" showDetail="false" autoUpdate="true">
+                            <p:effect type="pulsate" event="load" delay="200" speed="300">
+                                <f:param name="mode" value="show" />
+                            </p:effect>
+                        </p:messages-->
+                        <div class="form-group">
+                            <div class="col-lg-8">
+                                <h:outputLabel  class="police_label pull-left" for="classeplancomptable" value="Classe" /> <h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-8">
+                                <h:selectOneMenu id="classeplancomptable"  class="form-control" value="#{planComptableBean.classeSelected}"                                    >
+                                    <f:selectItems value="#{planComptableBean.allClasses}" var="c" itemLabel="#{c.libelleClasse}" itemValue="#{c}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-8">
+                                <h:outputLabel  class="police_label pull-left" for="numeroplancomptable" value="Numero de Compte" /> <h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-8">
+                                <p:inputText id="numeroplancomptable" maxlength="4" value="#{planComptableBean.numero}" styleClass="form-control" placeholder="Numero de Compte">
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-8">
+                                <h:outputLabel for="intitule" class=" police_label pull-left" value="Intitulé du Compte"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-8">
+                                <p:inputText id="libelle" required="true"  value="#{planComptableBean.intitule}" class="form-control" placeholder="Intituler du Compte *">
+                                </p:inputText>                             
+                            </div>
+                        </div>
+                        
+
+                        <div class="form-group">
+                            <div class="col-lg-7 ">
+                                <p:commandButton value="Annuler" action="#{planComptableBean.annuler()}" type="reset" id="annuler" class="btn btn-danger pull-left" style="background: #d9534f;color:#fff;border-color: #d43f3a; font-family: cursive;">           
+                                </p:commandButton>
+                                <p:commandButton value="Ajouter" action="#{planComptableBean.ajouter()}" update="msgs,formliste,ajout" oncomplete="PF('ajouter').hide()" class="btn btn-success   pull-right" style="background: #5cb85c;color:#fff;border-color:#4cae4c; font-family: cursive;">                                    
+                                </p:commandButton>
+                            </div>
+
+
+                        </div>
+                    </h:form>
+                </p:outputPanel>
+            </div>
+        </div>
+        <!-- Fin du dialogue--> 
+    </ui:composition> 
+
+</html>
+

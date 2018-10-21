@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <ui:composition >
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="table-responsive"> 
+                    <p:dataTable sortOrder="descending"  class="table table-bordered" var="mobile"  value="#{souscriptionAsMrhBean.listMobillierEtObjetUsuel}"
+                                 rows="10" 
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginator="true" paginatorPosition="bottom" rowsPerPageTemplate="10,20,30"
+                                 emptyMessage="#{msg['tableau.vide']}" editable="true" editMode="cell"
+                                 rowKey="#{mobile.hashCode()}" >
+
+                        <p:column headerText="#{msg['titre.typeMobile']}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputLabel id="typii" value="#{mobile.typeMobillierObjetUsuel.toString()}" >
+                                    </h:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{mobile.typeMobillierObjetUsuel}"  class="form-control"
+                                                    >
+                                        <f:selectItems value="#{souscriptionAsMrhBean.typemobilierObjetUsuel}" /> 
+                                        <p:ajax event="click" update="typii"/> 
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="#{msg['titre.Description']}" >
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="ss44" value="#{mobile.description}">
+
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{mobile.description}">
+                                        <p:ajax event="keyup" update ="ss44"  />
+
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.Estimation.valeur']}" >
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel id="ss55" value="#{mobile.estimationValeur}">
+
+                                    </p:outputLabel>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{mobile.estimationValeur}">
+                                        <p:ajax event="keyup" update ="ss55"  />
+
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        
+                        <p:column headerText="#{msg['titre.action']}">
+                            <div class="btn-toolbar">
+                                <p:commandButton icon="fa fa-trash" class="btn btn-danger" title="Supprimer la ligne" action="#{souscriptionAsMrhBean.removeMobilier()}"  update="formliste">
+                                    <f:setPropertyActionListener value="#{mobile}" target="#{souscriptionAsMrhBean.mobillierEtObjetUsuelToDelete}" />
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+
+                </div>
+            </div>
+        </div>
+
+
+    </ui:composition>
+
+</html>

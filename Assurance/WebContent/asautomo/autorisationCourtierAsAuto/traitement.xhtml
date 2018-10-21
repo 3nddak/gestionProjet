@@ -1,0 +1,97 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <div id="liste">
+
+            <h:form  id="formliste3" class="form-horizontal">
+
+                <p:panel header ="#{msg['titre.traitementDeLaDemande']}" toggleable="true">
+                    <div class="form-group">
+                        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
+                                <h:outputLabel rendered="#{autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.isExist}"  value="#{msg['titre.etatDeLaDemande']} : "  for="motifrff" class=" pull-left" />
+                            </div>
+                            <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
+                                <h:outputLabel rendered="#{autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.isExist}"  value="#{autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.libelleEtaDemandeCourtier}"  id="motifrff" class=" pull-left" />
+                            </div>
+                            <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                <p:panel id="motif" header ="#{msg['titre.motifDeLaDemande']}" toggleable="true">
+                                    <div class="panel panel-border-none">
+                                        <div class="panel-body">
+                                            <p jsf:id="sta" title="#{msg['titre.motifDeLaDemande']}" >
+                                                #{autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.motifDemandePV}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </p:panel>
+                            </div>
+                            <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                <p:panel id="motir" header ="#{msg['titre.motifDuRefus']}" toggleable="true" rendered="#{autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.refuser()}">
+                                    <div class="panel panel-border-none">
+                                        <div class="panel-body">
+                                            <p jsf:id="stamm" title="#{msg['titre.motifDuRefus']}">
+                                                #{autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.motifRejet}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </p:panel>
+                            </div>
+                            <div class="panel panel-border-none">
+                                <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                        <h:outputLabel  value="#{msg['titre.autoriser']}"  rendered="#{!autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.dejaTraiterParCourtier}" for="autorisers" class=" pull-left" />
+                                    </div>
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                        <p:selectBooleanCheckbox id="autorisers"  rendered="#{!autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.dejaTraiterParCourtier}" value="#{autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.autoriser}"  class="form-control" >
+                                            <p:ajax update="@form"/>
+                                        </p:selectBooleanCheckbox>
+                                    </div> 
+                                </div> 
+                                <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">  
+                                        <h:outputLabel id="motifl" rendered="#{!autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.dejaTraiterParCourtier1}"  value="#{msg['titre.motifDuRefus']}"  for="motifr" class=" pull-left" />
+                                    </div>
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+
+                                        <p:inputTextarea  rendered="#{!autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.dejaTraiterParCourtier1  }" id="motifr"  requiredMessage="#{msg['titre.motifDuRefus.requiredMessage']}" required="true"  value="#{autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.motifRefusCourtier}" title="motif refus" class="form-control" >
+
+                                            <p:ajax event="keyup" update="telMessage"/>
+
+                                        </p:inputTextarea>
+                                    </div> 
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                        <p:message for="motifr" id="telMessage" class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:commandLink rendered="#{!autorisationDemandeAnnulationCourtierAsAuto.demandeAnnulationAsAuto.dejaTraiterParCourtier}" title="#{msg['btn.enregistrer']}" value="#{msg['btn.enregistrer']}" update="formliste2" onsuccess="PF('traiter').hide()"  action="#{autorisationDemandeAnnulationCourtierAsAuto.enregistrer()}"   class="btn btn-success"   >
+                                    <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['question.etesVousSur']}"  icon="ui-icon-alert" />
+                                </p:commandLink>
+                            </div>
+                        </div>
+                    </div>
+                </p:panel>
+
+
+            </h:form>
+
+
+        </div>
+    </ui:composition>
+
+
+</html>
+

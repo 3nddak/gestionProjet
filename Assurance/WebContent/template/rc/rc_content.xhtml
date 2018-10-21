@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#tabMass1" aria-controls="tabMass1" role="tab" data-toggle="tab">Lecture Directe</a>
+                </li>
+                <li role="presentation">
+                    <a href="#tabMass2" aria-controls="tabMass2" role="tab" data-toggle="tab">Lecture Directe Compagnie</a>
+                </li>
+                <li role="presentation">
+                    <a href="#tabMass3" aria-controls="tabMass3" role="tab" data-toggle="tab">Lecture Directe Courtier</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tabMass1">
+                    <div role="tabpanel" class="tab-pane" id="tabMass1">
+                        <ui:include src="lectureDirecte.xhtml"/>
+                    </div>  
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tabMass2">
+                    <ui:include src="lectureDirecteCompagnie.xhtml"/>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tabMass3">
+                    <ui:include src="lectureDirecteCourtier.xhtml"/>
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

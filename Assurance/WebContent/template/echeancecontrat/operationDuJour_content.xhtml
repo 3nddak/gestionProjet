@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+
+
+            <h:form  id="formliste" class="form-horizontal">
+                <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>   
+                <div class="panel-heading"> 
+
+                    <fieldset>
+                        <legend class="police_label text-center "><p:outputLabel value="#{msg['liste.contrat']}"></p:outputLabel></legend>
+
+                    </fieldset>
+
+                </div>
+                <p:panel id="t6" header="#{msg['recherche.titre']}" toggleable="true" collapsed="true" class="panel">
+                    <div class="panel-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="pays"  value="#{msg['titre.pays']}" class="pull-left text-left"/>                              
+                                    <h:selectOneMenu id="pays"   class="form-control"  converter="entityConverter" value="#{etatDesOPerationsBean.paysSelect}" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.tousLesPays']}" itemDisabled="false" />
+                                        <f:selectItems var="pays" value="#{etatDesOPerationsBean.listpays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />    
+                                        <p:ajax listener="#{etatDesOPerationsBean.trierPrametresByPays()}" update="t6" />
+                                    </h:selectOneMenu>
+
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="compagnie"  value="#{msg['titre.compagnie']}" class="pull-left text-left"/>                              
+                                    <h:selectOneMenu id="compagnie" value="#{etatDesOPerationsBean.compagnieSelected}"  converter="entityConverter"  class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.tousLesCompagnies']}" itemDisabled="false" />
+                                        <f:selectItems value="#{etatDesOPerationsBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                                    </h:selectOneMenu>
+
+
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="courtier"  value="#{msg['titre.courtier']}" class="pull-left text-left"/>                               
+                                    <h:selectOneMenu id="courtier"  converter="entityConverter" value="#{etatDesOPerationsBean.courtierSelected}" class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.courtier']}" itemDisabled="false" />
+                                        <f:selectItems var="courtier" value="#{etatDesOPerationsBean.listCourtier}" itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}" />            
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="pv"  value="#{msg['titre.pdv']}" class="pull-left text-left"/>                          
+                                    <h:selectOneMenu id="pv"  value="#{etatDesOPerationsBean.pvSelected}"  converter="entityConverter" class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.pdv']}" itemDisabled="false" />
+                                        <f:selectItems var="pv" value="#{etatDesOPerationsBean.listPointsVente}" itemLabel="#{pv.designation}" itemValue="#{pv}" />            
+                                    </h:selectOneMenu>
+
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="gt"  value="#{msg['titre.guichet']}" class="pull-left text-left"/>                            
+                                    <h:selectOneMenu id="gt"  value="#{etatDesOPerationsBean.guichetSelected}"  converter="entityConverter" class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.guichet']}" itemDisabled="false" />
+                                        <f:selectItems var="guichet" value="#{etatDesOPerationsBean.listGuichet}" itemLabel="#{guichet.designation}" itemValue="#{guichet}" />            
+                                    </h:selectOneMenu>
+
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <h:outputLabel for="gtb" rendered="#{!etatDesOPerationsBean.isBranche}" value="#{msg['titre.branche']}" class="pull-left text-left"/>                            
+                                    <h:selectOneMenu id="gtb" rendered="#{!etatDesOPerationsBean.isBranche}"  value="#{etatDesOPerationsBean.brancheRechercher}"  converter="entityConverter" class="form-control" >                                          
+                                        <f:selectItem itemLabel="#{msg['titre.branche']}" itemDisabled="false" noSelectionOption="true" />
+                                        <f:selectItems var="branche" value="#{etatDesOPerationsBean.listBranches}" itemLabel="#{branche}" itemValue="#{branche}" />            
+                                    </h:selectOneMenu>
+
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <p:outputLabel for="mask" value="#{msg['titre.dateDebut']}" />
+                                    <p:calendar id="mask" class="form-control"  pattern="dd-MM-yyyy" mask="true" value="#{etatDesOPerationsBean.dateDebutRecherche}" >
+                                    </p:calendar>
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <p:outputLabel for="mask" value="#{msg['titre.dateFin']}" />
+                                    <p:calendar id="mask2" class="form-control"   pattern="dd-MM-yyyy" mask="true" value="#{etatDesOPerationsBean.dateFinRecherche}">
+                                    </p:calendar>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="btn-toolbar pull-right">
+                                        <p:commandButton class="btn btn-imprimer" value="#{msg['btn.rechercher']}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" action="#{etatDesOPerationsBean.rechercheAvanceAEchoire()}"  update="facture,t6" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p:panel>
+
+
+                <p:panel   toggleable="true" collapsed="false" class="panel" >
+
+                    <div class="panel-default">
+
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="btn-toolbar">
+                                    <p:commandLink title="#{msg['titre.exporterEnExcel']}"  action="#{etatDesOPerationsBean.doGetAexel()}" target="/"  class="btn btn-imprimer btn-xs"  ajax="false" >
+                                     Excel&nbsp;<i class="fa fa-file-excel-o"/>
+                                    </p:commandLink>
+                                </div>
+                            </div>
+                            <div class="form-group table-responsive">
+                                <p:dataTable id="facture" editable="true" editMode="cell"
+                                             resizableColumns="true"
+                                             class="table" 
+                                             paginator="true" rows="20" emptyMessage="#{msg['tableau.vide']}"  paginatorPosition="bottom" value="#{etatDesOPerationsBean.listAssurance}" var="facture"    style="padding:0px;margin: 0px; ">
+                                    <p:column  headerText="#{msg['titre.branche']}"  filterBy="#{facture.branche}" > 
+                                        <h:outputText value="#{facture.branche}" />
+                                    </p:column>
+                                    <p:column headerText="#{msg['assurance.dateEcheance']}" filterBy="#{facture.dateFinContrat}">
+                                        <p:outputLabel id="K" value="#{facture.dateFinContrat}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="#{msg['titre.numeroPolice']}"  class="col-md-2 col-lg-2"  filterBy="#{facture.numeroPolice}"  >
+                                        <h:outputText  value="#{facture.numeroPolice}" />
+                                    </p:column>
+
+                                    <p:column headerText="#{msg['titre.compagnie']}"   filterBy="#{facture.compagnie.abbreviation}">
+                                        <h:outputText value="#{facture.compagnie.abbreviation}" />
+                                    </p:column>
+                                    <p:column headerText="#{msg['titre.courtier']}"  filterBy="#{facture.courtier.abbreviation}">
+                                        <h:outputText value="#{facture.courtier.abbreviation}" />
+                                    </p:column>
+
+                                    <p:column  headerText="#{msg['control.client.nom']}"  filterBy="#{facture.client.nom}"  >
+                                        <h:outputText value="#{facture.client.nom}" />
+                                    </p:column>
+
+
+                                    <p:column  headerText="#{msg['tableau.primenette']}"  filterBy="#{facture.prixNette}" class="text-right" > 
+                                        <h:outputText value="#{facture.arrondireFormat2(facture.prixNette)}"  />
+                                    </p:column>
+                                    <p:column  headerText="#{msg['tableau.accessoire']}"  filterBy="#{facture.accessoire}" class="text-right" > 
+                                        <h:outputText value="#{facture.arrondireFormat2(facture.accessoire)}"  />
+                                    </p:column>
+
+                                    <p:column filterBy="#{facture.primeTTCS}" headerText="#{msg['tableau.primettc']}"  class="text-right" >
+                                        <h:outputText value="#{facture.arrondireFormat2(facture.primeTTCS)}"  />
+                                    </p:column>
+                                    <p:column  headerText="#{msg['titre.commission']}" class="text-right"   >
+                                        <h:outputText value="#{facture.arrondireFormat2(facture.compenses())}" />
+                                    </p:column>
+                                    <p:column  headerText="#{msg['titre.etat']}" class="text-right"   >
+                                        <h:outputText value="#{facture.labelEcheance}" />
+                                    </p:column>
+                                    <p:columnGroup type="footer" id="primeTotal1" class="text-right">
+                                        <p:row>
+                                            <p:column   style="text-align:right" footerText="#{msg['tableau.total']} :"/>
+                                            <p:column   footerText="" />
+                                            <p:column   footerText=""  />
+                                            <p:column   footerText=""  />
+                                            <p:column   footerText=""  />
+                                            <p:column   footerText=""  />
+                                            <p:column style="text-align: right"   footerText="#{etatDesOPerationsBean.arrondireFormat2(etatDesOPerationsBean.totauxNette)}" />
+                                            <p:column style="text-align: right" footerText="#{etatDesOPerationsBean.arrondireFormat2(etatDesOPerationsBean.totauxNccessoire)}" />
+                                            <p:column style="text-align: right"  footerText="#{etatDesOPerationsBean.arrondireFormat2(etatDesOPerationsBean.totaux)}"  />
+
+
+                                            <p:column style="text-align: right"  footerText="#{etatDesOPerationsBean.arrondireFormat2(etatDesOPerationsBean.totauxCommission)}" id="primeTotal" />
+
+                                        </p:row>
+
+                                    </p:columnGroup>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </div>
+                </p:panel>
+
+            </h:form>
+
+
+        </div>
+
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+
+
+
+    </ui:composition> 
+
+</html>
+

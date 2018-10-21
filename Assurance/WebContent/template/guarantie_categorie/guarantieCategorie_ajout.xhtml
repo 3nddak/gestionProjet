@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+
+                <p:outputPanel id="ajout" style="text-align:center;" >
+                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 col-lg-offset-3">
+                        <p:growl id="msgs" showDetail="false" globalOnly="true" />
+
+                        <h:form id="form1" class="form-horizontal">                        
+                            <div class="form-group">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="libelle" value="#{msg['categorie.libelle']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                    <p:inputText id="libelle" required="true" value="#{guarantieCategorieBean.libelle}" styleClass="form-control" placeholder="#{msg['categorie.libelle']}"
+                                                 requiredMessage="#{msg['categorie.libelle.requireMessage']}"
+                                                 >
+                                        <p:ajax event="keyup" update="libelleMessage"/>
+                                    </p:inputText>
+                                    <p:message for="libelle" id="libelleMessage" class="errorClass"/>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="ist" value="Deux ou 3 roux?" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                    <p:selectBooleanCheckbox id="ist" value="#{guarantieCategorieBean.deuxOU3roux}">
+
+                                    </p:selectBooleanCheckbox>
+
+                                </div> 
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                        <p:selectCheckboxMenu id="menu1"   value="#{guarantieCategorieBean.selectedGuaranties}" label="#{msg['garantie.titre']}"
+                                                              filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                                            <f:selectItems value="#{guarantieCategorieBean.guanrantieList}" var="guarantie" itemLabel="#{guarantie.libelle}" itemValue="#{guarantie}" />
+                                            <p:ajax listener="#{guarantieCategorieBean.triGuarantie()}" update="display" />
+                                        </p:selectCheckboxMenu>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12">
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:dataTable class="table_label table-responsive" id="display" reflow="true" rows="5" editable="true" var="car" editMode="cell" value="#{guarantieCategorieBean.guarantieCategorieList}"  > 
+                                        <p:column headerText="Id">
+                                            <h:outputText value="#{car.guarantie.libelle}" />
+                                        </p:column>
+
+                                        <p:column headerText="Statut">
+                                            <p:cellEditor >
+                                                <f:facet name="output"><h:outputText value="#{car.status}" /></f:facet>
+                                                <f:facet  name="input">
+                                                    <h:selectOneMenu rendered="#{(car.guarantie.statut eq 'obligatoire') ?false:true }" value="#{car.status}" style="width:100%">
+                                                        <f:selectItem itemLabel="Optionnelle" itemValue="optionnelle" />
+                                                        <f:selectItem itemLabel="Obligatoire" itemValue="obligatoire" />
+                                                    </h:selectOneMenu>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                            
+                    
+
+
+                            <div class="form-group">
+                                <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12 pull-left">
+                                    <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" action="#{guarantieCategorieBean.annuler()}" update="formliste,annuler,form1,ajout,legende" id="annuler" class="btn btn-danger danger form-control"/>
+                                </div>
+                                <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12 pull-right">
+                                    <p:commandButton value="#{msg['btn.enregistrer']}" title="#{msg['btn.enregistrer']}" update="msgs,formliste,annuler,form1,ajout,legende" action="#{guarantieCategorieBean.ajouter()}"  class="btn btn-success success form-control">
+                                        <!--f:ajax execute="@form" render="@form" /-->
+                                    </p:commandButton>
+                                </div>
+                            </div>
+
+                        </h:form>
+                    </div>
+                </p:outputPanel>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

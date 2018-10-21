@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html manifest="demo.appcache" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      > 
+
+    <ui:composition>
+        <tr>
+            <td>Interface Administration</td>
+            <td>
+                <h:selectOneMenu class="form-control"   id="admin" requiredMessage="Veuillez renseigner le theme"   value="#{userThemeBean.utilisateur.couleur}" converter="entityConverter"  >
+                    <f:selectItem itemLabel="Liste des thèmes" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{userThemeBean.listCouleur}" var="c" itemLabel="#{c.description}" itemValue="#{c}"  />
+                    <p:ajax event="click" listener="#{userThemeBean.afficherAdmin()}" update="adminc,admint"  />
+                </h:selectOneMenu>
+            </td>
+            <td >
+                <p:outputPanel id="adminc" class="#{userThemeBean.admin}"  >
+                    <span  class="btn-lg btn pull-right"  style="background-color: #{userThemeBean.utilisateur.couleur.codeCouleur}"/>
+                </p:outputPanel>
+                <p:outputPanel id="admint" class="#{!userThemeBean.admin}" >
+                    <span  class="btn-lg btn pull-right"  style="background-color: #{userThemeBean.retournerCouleur(userThemeBean.utilisateur.themeAdmin).codeCouleur}"/>
+                </p:outputPanel>
+            </td>
+
+        </tr>
+    </ui:composition>
+
+</html>

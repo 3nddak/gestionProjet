@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset>
+                <legend class="text-uppercase text-center"><p:outputLabel value="#{msg['titre.nouvelleDemande']}"></p:outputLabel></legend>
+            </fieldset>
+            <div class="panel-default">
+                <div class="panel-body"> 
+                    <h:form  id="searchForm" class="form-horizontal">
+                        <p:panel id="serachPanel" header="#{msg['recherche.titre']}" toggleable="true" collapsed="false" >
+                            <ui:include src="searchengine_demande_nouvelle.xhtml" />
+                        </p:panel>
+                    </h:form>
+                </div>
+            </div>
+            <div class="panel-default">
+                <div class="panel-body"> 
+                    <h:form  id="dataListeForm" class="form-horizontal">
+                        <p:panel  header="#{msg['titre.nouvelleDemande']}" toggleable="true" collapsed="false">
+                            <p:dataTable id="dataListe" editable="true" editMode="cell"
+                                         resizableColumns="true"
+                                         class="table table-condensed" 
+                                         paginator="true" rows="20" emptyMessage="#{msg['tableau.vide']}"  paginatorPosition="bottom" value="#{nouvelleDemandeAsVieBean.listAssuranceCredit}" var="assCredit"    style="padding:0px;margin: 0px; ">
+
+                                
+                                <p:column headerText="#{msg['titre.dateDemande']}" class="col-lg-1 col-md-1"   >
+                                    <h:outputText value="#{assCredit.dateTransaction}" />
+                                </p:column>
+                                <p:column headerText="#{msg['titre.dateDebut']}" class="col-lg-1 col-md-1"   >
+                                    <h:outputText value="#{assCredit.dateDuPret}" />
+                                </p:column>
+                                <p:column headerText="#{msg['titre.dateFin']}"  class="col-lg-1 col-md-1"  >
+                                    <h:outputText value="#{assCredit.finDuPret}" />
+                                </p:column>
+                                <p:column class="col-md-2 col-lg-2"  headerText="#{msg['titre.codeTransaction']} " filterBy="#{assCredit.codeTransaction}">
+                                    <h:outputText value="#{assCredit.codeTransaction}" />
+                                </p:column>
+                                <p:column headerText="#{msg['titre.compagnie']}" filterBy="#{assCredit.compagnie.abbreviation}" class="col-lg-1 col-md-1">
+                                    <h:outputText value="#{assCredit.compagnie.abbreviation}" />
+                                </p:column>
+                                <p:column headerText="#{msg['titre.courtier']}"  filterBy="#{assCredit.courtier.abbreviation}" class="col-lg-1 col-md-1">
+                                    <h:outputText value="#{assCredit.courtier.abbreviation}" />
+                                </p:column>
+                                <p:column  headerText="#{msg['control.client.nom']}"  filterBy="#{assCredit.client.nom}" class="col-lg-1 col-md-1"  >
+                                    <h:outputText value="#{assCredit.client.nom}" />
+                                </p:column>
+                                <p:column filterBy="#{assCredit.primeTTC}" headerText="#{msg['tableau.primettc']}" class="col-lg-1 col-md-1"  >
+                                    <p:outputLabel value="#{assCredit.arrondireFormat2(assCredit.primeTTC)}" />
+                                </p:column>
+                                <p:column headerText="#{msg['titre.actions']}" class="col-lg-2 col-md-2"  >
+                                    <p:commandLink title="#{msg['tableaux.detail']}"  class=" btn-xs btn btn-imprimer" oncomplete="PF('detailasvie').show()"  update="detailasvie" >
+                                        <i class="fa fa-search-plus"/>
+                                        <f:setPropertyActionListener target="#{nouvelleDemandeAsVieBean.assuranceCredit}" value="#{assCredit}" />
+                                    </p:commandLink>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+        <p:dialog header="#{msg['tableaux.detail']}" widgetVar="detailasvie" modal="true" width="1000" height="400" id="detailasvie" >
+            <ui:include src="detail.xhtml"/>
+        </p:dialog>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+    </ui:composition> 
+</html>
+

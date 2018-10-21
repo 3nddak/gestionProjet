@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-6 col-lg-12 col-sm-12">
+                <p:outputPanel id="ajout" style="text-align:center;">
+                    <p:growl id="msgs2" showDetail="false"  globalOnly="true" life="3000"  severity="info,warn"/>
+
+                    <div class="form-group">
+                        <div class="col-lg-4 col-md-6 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel class="police_label pull-left"  value="numeroPiece du Client"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:inputText class="form-control" id="msgnum" required="true" requiredMessage="ce champ est obligatoir" value="#{ecritureComptableBean.transaction.numpiece}" placeholder="numeroPiece">
+                                    <p:ajax event="keyup" update="msgn" />
+
+                                </p:inputText>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:message id="msgn" for="msgnum"/>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel class="police_label pull-left" value="Valeur"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:inputText required="true" value="#{ecritureComptableBean.valeur}" placeholder="Valeur"  class="form-control">
+                                    <p:ajax event="keyup" listener="#{ecritureComptableBean.simulationNewSolde}" update="formliste:ajax,formliste:ajax2" />
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel class="police_label pull-left" value="Reference"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:inputText value="#{ecritureComptableBean.transaction.reference}" placeholder="Reference" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--div class="form-group">
+                        <div class="col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel  value="Date Operation" for="dateOperation" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <p:calendar id="mask1" required="true" class="pull-left" requiredMessage="ce champ est obligatoir"  pattern="dd-MM-yyyy" value="#{ecritureComptableBean.transaction.dateTransaction}"  mask="true" placeholder="date operation  *" />
+                            </div>
+                        </div>
+
+                    </div-->
+                    <div class="form-group">
+                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel class="police_label pull-left" value="Compte A Crediter"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                                <p:inputText class="form-control" value="#{ecritureComptableBean.selectedObjetc}" required="true" placeholder="Compte A Crediter">
+                                    <p:ajax event="keyup" listener="#{ecritureComptableBean.selectNumCompteCredit}" update="formliste:ajax,formliste:strc"  />
+                                </p:inputText>
+                            </div>
+                            <div class="col-lg-6  col-md-6 col-xs-12 col-sm-12">
+                                <h:outputText class="text-primary" id="strc" value="#{ecritureComptableBean.structurec}" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <h:outputLabel class="police_label pull-left" value="Compte A Debiter"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                                <p:inputText class="form-control" value="#{ecritureComptableBean.selectedObjetd}" required="true" placeholder="Compte A Debiter">
+                                    <p:ajax event="keyup" listener="#{ecritureComptableBean.selectNumCompteDebit}" update="formliste:ajax2,formliste:strd"  />
+                                </p:inputText>
+                            </div>  
+                            <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                                <h:outputText class="text-primary" id="strd" value="#{ecritureComptableBean.structured}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                            <div class="col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                <div id="monaccordeon" class="panel-group col-lg-12 col-md-12 col-xs-12 col-sm-12  ">
+                                    <p:panel id="ajax" class="panel pull-left">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">
+                                                <a class="accordion-toggle" href="#item1" dataparent="#monaccordeon" data-toggle="collapse"> Detail compte </a>
+                                            </h3>
+                                        </div>
+                                        <div id="item1" class="panel-collapse collapse">
+                                            <div class="panel-body">
+
+
+                                                <div class="form-group">
+
+                                                    <div class="col-md-12 col-lg-6 col-sm-12 col-xs-12">
+                                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <h:outputText value="Ancien solde"/>
+                                                                </span>
+                                                                <h:outputLabel class="form-control"  value="#{ecritureComptableBean.compteAcrediter.solde}"  />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--div class="col-md-12 col-lg-6 col-sm-12 col-xs-12">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <h:outputText value="SoldePrecedent"/>
+                                                            </span>
+                                                            <h:outputLabel class="form-control"  value="#{ecritureComptableBean.compteAcrediter.soldePrecedent}"  />
+                                                        </div>
+                                                    </div>
+                                                </div-->
+                                                <div class="form-group">
+                                                    <div class="col-md-12 col-lg-6 col-sm-12 col-xs-12">
+                                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <h:outputText value="Nouveau Solde"/>
+                                                                </span>
+                                                                <h:outputLabel class="form-control"  value="#{ecritureComptableBean.newSolde1}"  />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p:panel>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                                <div id="monaccordeon2" class="panel-group col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                    <p:panel id="ajax2" class="panel pull-left">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">
+                                                <a class="accordion-toggle" href="#item2" dataparent="#monaccordeon2" data-toggle="collapse"> Detail compte </a>
+                                            </h3>
+                                        </div>
+                                        <div id="item2" class="panel-collapse collapse ">
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <h:outputText value="Ancien solde"/>
+                                                            </span>
+                                                            <h:outputLabel class="form-control"  value="#{ecritureComptableBean.compteAdebiter.solde}"  />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <h:outputText value="Nouveau Solde"/>
+                                                            </span>
+                                                            <h:outputLabel class="form-control"  value="#{ecritureComptableBean.newSolde2}"  />
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p:panel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--div class="form-group">
+                         
+                        <div class="col-lg-6">
+                            <p:inplace id="ajax2" editor="true">
+                                <h:outputLabel class="police_label pull-left" value="Detail Compte"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+
+                                <p:panel header="Etat pre_Validation">
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-lg-6 col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <h:outputText value="solde"/>
+                                                </span>
+                                                <h:outputLabel class="form-control"  value="#{ecritureComptableBean.compteAdebiter.solde}"  />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 col-lg-6 col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <h:outputText value="SoldePrecedent"/>
+                                                </span>
+                                                <h:outputLabel class="form-control"  value="#{ecritureComptableBean.compteAdebiter.soldePrecedent}"  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p:panel>
+                                <p:panel header="Etat post_Validation">
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-lg-6 col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <h:outputText value="Nouveau Solde"/>
+                                                </span>
+                                                <h:outputLabel class="form-control"  value="#{ecritureComptableBean.newSolde2}"  />
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </p:panel>
+                            </p:inplace>
+
+                        </div>
+                    </div-->
+
+
+
+
+                    <div class="form-group">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-lg-2 col-sm-12 col-xs-12 pull-left">
+                                <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" update="ajax,ajax2" type="reset" id="annuler" class="btn btn-danger danger pull-left form-control"/>
+                            </div>
+                            <div class="col-md-4 col-lg-2 col-sm-12 col-xs-12 pull-right">
+                                <p:commandButton value="#{msg['btn.valider']}" title="#{msg['btn.valider']}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"  actionListener="#{ecritureComptableBean.controleRemb()}" update="formliste,msgs2" class="btn btn-success form-control success" />
+                            </div>
+                            <p:growl id="msgs" for="somekey" />
+                        </div>
+                    </div>
+                </p:outputPanel>
+            </div>
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                            <h:graphicImage library="images" name="ajax-loader.gif" />
+            </p:dialog>
+        </div>
+    </ui:composition> 
+
+</html>
+

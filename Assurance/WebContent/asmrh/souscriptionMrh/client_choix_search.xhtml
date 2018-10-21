@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:panel rendered="#{!souscriptionAsMrhBean.hideAjoutClientForm}"   header="Recherche"  toggleable="true" collapsed="true" style="border: none">
+          <div class="form-group">
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['titre.branche']}"  for="branche" class="pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu id="branche"  value="#{souscriptionAsMrhBean.brancheRechercher}" class="form-control" requiredMessage="Veuillez choisir la branche">
+                            <f:selectItem itemValue="" itemLabel="Tout"/> 
+                            <f:selectItems value="#{souscriptionAsMrhBean.BRANCHES}" /> 
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.type']}"  for="typeClient" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:selectOneMenu id="typeClientr" value="#{souscriptionAsMrhBean.typeClientRechercher}" title="#{msg['client.type']}"  class="form-control">
+                            <f:selectItem itemValue="" itemLabel="Type"/>
+                            <f:selectItem itemValue="Client physique" itemLabel="#{msg['client.type.physique']}"/>
+                            <f:selectItem itemValue="Client moral" itemLabel="#{msg['client.type.morale']}"/> 
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.nom']}"  for="nom" class=" pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{souscriptionAsMrhBean.nomRechercher}"
+                                     id="nomr" class="form-control" placeholder="#{msg['client.nom']}">
+
+                        </p:inputText>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.prenom']}"  for="prenomr" class=" pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{souscriptionAsMrhBean.prenomRechercher}" id="prenomr" styleClass="form-control" placeholder="#{msg['client.prenom']}"  >
+                        </p:inputText>  
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                        <h:outputLabel  value="#{msg['client.pays']}"  for="designationPaysr" class=" pull-left" style=""/>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                        <p:autoComplete id="designationPaysr"  class="form-control" value="#{souscriptionAsMrhBean.paysClientCRechercher}" forceSelection="true"  completeMethod="#{souscriptionAsMrhBean.completeMethod}"  >
+                        </p:autoComplete>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h:outputLabel  value="#{msg['client.numeropiece']}" for="numpiecer" class="pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:inputText value="#{souscriptionAsMrhBean.numeroPieceRechercher}"  id="numpiecer" class="form-control" placeholder="#{msg['client.numeropiece']}" >
+
+                        </p:inputText> 
+                    </div>
+                </div>
+            </div> 
+
+            <div class="form-group">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="btn-toolbar pull-right">
+                        <p:commandButton onstart="PF('statusDialog2').show()" onsuccess="PF('statusDialog2').hide()" value="#{msg['btn.rechercher']}" update="formliste,clienttable" actionListener="#{souscriptionAsMrhBean.rechercheAvanceForClient()}" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+            <p:dialog widgetVar="statusDialog2" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <h:graphicImage library="images" name="ajax-loader.gif" />
+            </p:dialog>
+        </p:panel>
+        
+    </ui:composition>
+</html>

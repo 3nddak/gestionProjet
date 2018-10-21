@@ -1,0 +1,521 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <fieldset ><legend class="text-center text-uppercase"><p:outputLabel value="#{msg['titre.validationDeDeposit']}" /></legend>
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#tabMass1" aria-controls="tabMass1" role="tab" data-toggle="tab">#{msg['titre.autorisationDesDeposits']}</a></li>
+                    <!--li role="presentation"><a href="#tabMass2" aria-controls="tabMass2" role="tab" data-toggle="tab">Situation des deposits envoyés</a></li-->
+                </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="tabMass1">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <h:form id="choix" class="form-horizontal">
+
+                                    <h:selectOneRadio  id="filtreR" value="#{validationEcritureComptableBean.option}" >
+                                        <f:selectItem itemLabel="#{msg['titre.depositsAAutoriser']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{msg['titre.depositsAutorises']}"  itemValue="1"  />
+                                        <p:ajax listener="#{validationEcritureComptableBean.afficher()}" update="f1,opv" />
+
+                                    </h:selectOneRadio> 
+
+                                </h:form>
+
+                                <h:form id="f1" class="form-horizontal" >
+
+                                    <p:panel id="t1" rendered="#{validationEcritureComptableBean.renderDepositAValide}" header="Deposits à autoriser" toggleable="false" collapsed="false" class="panel-default">
+                                        <div class="panel-body"> 
+                                            <p:panel header="#{msg['recherche.titre']}" toggleable="true" toggleSpeed="500"   collapsed="true" class="panel-default" >                          
+                                                <div class="panel-body"> 
+                                                    <div class="form-group">
+                                                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <h:outputLabel for="mask" value="#{msg['titre.dateDebut']}" />
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <p:calendar id="mask" class="form-horizontal"  value="#{validationEcritureComptableBean.dateDebut}" pattern="dd-MM-yyyy" mask="true" >
+                                                                </p:calendar>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <h:outputLabel for="mask2" value="#{msg['titre.dateFin']}" />
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <p:calendar id="mask2" class="form-horizontal" value="#{validationEcritureComptableBean.dateFin}" pattern="dd-MM-yyyy" mask="true">
+                                                                </p:calendar>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <hr/>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                <h:outputLabel for="pays" value="#{msg['titre.pays']}" class="pull-left text-left"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                <h:selectOneMenu id="pays" value="#{validationEcritureComptableBean.paysSelected}" converter="omnifaces.SelectItemsConverter" class="form-control"
+
+                                                                                 >
+                                                                    <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                                                    <f:selectItems value="#{validationEcritureComptableBean.listpays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                                                </h:selectOneMenu> 
+                                                            </div>                        
+                                                        </div>
+
+                                                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                <h:outputLabel  for="pss" value="#{msg['titre.compagnie']}" class="pull-left text-left"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                <h:selectOneMenu   class="form-control" converter="omnifaces.SelectItemsConverter"  id="pss" value="#{validationEcritureComptableBean.compagnieSelected}"  >
+                                                                    <f:selectItem  itemLabel="#{msg['titre.choisirCompagnie']}" itemValue="" /> 
+                                                                    <f:selectItems value="#{validationEcritureComptableBean.listCompagnie}" var="compagnie"
+                                                                                   itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                                                </h:selectOneMenu>
+                                                            </div>
+                                                        </div>  
+                                                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                                                <h:outputLabel for="courtier"  value="#{msg['titre.courtier']}" class="pull-left text-left"/>
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <h:selectOneMenu   id="courtier"  value="#{validationEcritureComptableBean.courtierSelected}" converter="omnifaces.SelectItemsConverter"
+                                                                                   class="form-control" >
+                                                                    <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""/>
+                                                                    <f:selectItems itemLabel="#{courtier.designation}" var="courtier"  itemValue="#{courtier}" value="#{validationEcritureComptableBean.listCourtier}"  />
+
+                                                                </h:selectOneMenu>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <h:outputLabel for="pdv"   value="#{msg['titre.pdv']}" class="pull-left text-left" />
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <h:selectOneMenu   id="pdv"  value="#{validationEcritureComptableBean.pvSelected}" converter="omnifaces.SelectItemsConverter"
+                                                                                   class="form-control" >
+                                                                    <f:selectItem itemLabel="#{msg['titre.pdv']}" itemValue=""/>
+                                                                    <f:selectItems itemLabel="#{pdv.designation}" var="pdv"  itemValue="#{pdv}" value="#{validationEcritureComptableBean.listPointsVente}"  />
+
+                                                                </h:selectOneMenu>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <h:outputLabel for="gui"   value="#{msg['titre.guichet']}" class="pull-left text-left" />
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <h:selectOneMenu   id="gui"  value="#{validationEcritureComptableBean.guichetSelected}" converter="omnifaces.SelectItemsConverter"
+                                                                                   class="form-control" >
+                                                                    <f:selectItem itemLabel="#{msg['titre.guichet']}" itemValue=""/>
+                                                                    <f:selectItems itemLabel="#{gui.designation}" var="gui"  itemValue="#{gui}" value="#{validationEcritureComptableBean.listGuichet}"  />
+
+                                                                </h:selectOneMenu>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <div class="btn-toolbar">
+                                                                    <p:commandButton onstart="PF('statusDialog2').show()" onsuccess="PF('statusDialog2').hide()" value="Rechercher" update="@form"  actionListener="#{validationEcritureComptableBean.trier()}" class="btn btn-imprimer pull-right" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p:dialog widgetVar="statusDialog2" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                                        <h:graphicImage library="images" name="ajax-loader.gif" />
+                                                    </p:dialog>
+                                                </div>
+                                            </p:panel> 
+                                            <hr/>
+                                            <p:panel   header="#{msg['titre.listeDesDepositsAAutoriser']}" toggleable="false" collapsed="false" class="panel-default">
+                                                <div class="panel-body">
+                                                    <div class="btn-toolbar">
+                                                        <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-imprimer btn-xs  "  actionListener="#" > 
+                                                            <i class=" glyphicon glyphicon-print"></i>
+                                                        </h:commandLink>  
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <p:dataTable scrollable="true"  scrollWidth="100%" var="preJournal" value="#{validationEcritureComptableBean.listPrejournalnonAutoriser}" rows="25" 
+                                                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                                     paginator="true" paginatorPosition="bottom"    class="table table-bordered table-condensed table-striped"
+                                                                     rowsPerPageTemplate="25,50,100,150"  emptyMessage="#{msg['tableau.vide']}" >
+
+                                                            <p:columnGroup type="header">
+                                                                <p:growl>     
+                                                                    <p:column rowspan="2" headerText="#{msg['titre.dateDemande']}"  />
+                                                                    <p:column colspan="3" headerText="#{msg['titre.informationsDuCompteADebiter']}" />
+                                                                    <p:column colspan="3" headerText="#{msg['titre.informationsDuCompteACrediter']}" />
+                                                                    <p:column rowspan="2" headerText="#{msg['titre.valeur']}"  />
+                                                                    <p:column rowspan="2" headerText="#{msg['titre.actions']}"  />
+                                                                </p:growl>
+                                                                <p:row>
+                                                                    <p:column headerText="#{msg['comptabilite.compte.numero']}" />
+                                                                    <p:column headerText="#{msg['comptabilite.compte.libelle']}" />
+                                                                    <p:column headerText="#{msg['titre.societe']}" />
+                                                                    <p:column headerText="#{msg['comptabilite.compte.numero']}" />
+                                                                    <p:column headerText="#{msg['comptabilite.compte.libelle']}" />
+                                                                    <p:column headerText="#{msg['titre.societe']}" />
+                                                                </p:row>
+                                                            </p:columnGroup>
+
+
+
+                                                            <p:column >
+                                                                <p:outputLabel value="#{preJournal.dateTransaction}"></p:outputLabel>
+                                                            </p:column>
+                                                            <p:column >
+                                                                <p:outputLabel value="#{preJournal.compteAdebiter.numCompte}"></p:outputLabel>
+                                                            </p:column>
+                                                            <p:column >
+                                                                <p:outputLabel value="#{preJournal.compteAdebiter.libelleCompte}"></p:outputLabel>
+                                                            </p:column>
+
+                                                            <p:column >
+                                                                <p:outputLabel value="#{preJournal.societeCD}"></p:outputLabel>
+                                                            </p:column>
+
+                                                            <p:column >
+                                                                <p:outputLabel value="#{preJournal.compteAcrediter.numCompte}"></p:outputLabel>
+                                                            </p:column>
+                                                            <p:column >
+                                                                <p:outputLabel value="#{preJournal.compteAcrediter.libelleCompte}"></p:outputLabel>
+                                                            </p:column>
+
+                                                            <p:column >
+                                                                <p:outputLabel value="#{preJournal.societeCC}"></p:outputLabel>
+                                                            </p:column>
+                                                            <p:column >
+                                                                <p:outputLabel value="#{preJournal.valeur}"><f:convertNumber pattern="###,##0" type="number" /></p:outputLabel>
+                                                            </p:column>
+
+                                                            <p:column>
+                                                                <div class="btn-toolbar">
+                                                                    <p:commandLink onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" update="@form,sms,opv" title="Valider" action="#{validationEcritureComptableBean.autoriserPreJournal()}"   class="btn btn-xs btn-purple"  >
+                                                                        <f:setPropertyActionListener value="#{preJournal}" target="#{validationEcritureComptableBean.preJournalSelect}" />
+                                                                        <i class="fa fa-list-alt"/>
+                                                                        <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['question.etesVousSur']}" icon="ui-icon-alert" />
+                                                                    </p:commandLink>
+                                                                    <p:commandLink onstart="PF('statusDialog').show()"   onsuccess="PF('statusDialog').hide()" update="@form,sms,opv" title="Annuler" action="#{validationEcritureComptableBean.cancelAutorisationPreJournal()}"   class="btn btn-xs btn-purple"  >
+                                                                        <f:setPropertyActionListener value="#{preJournal}" target="#{validationEcritureComptableBean.preJournalSelect}" />
+                                                                        <i class="fa fa-list-alt"/>
+                                                                        <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['question.etesVousSur']}" icon="ui-icon-alert" />
+                                                                    </p:commandLink>
+                                                                    <p:commandLink onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" update="detail"  oncomplete="PF('detail').show()"  title="#{msg['tableaux.detail']}"    class="btn btn-xs btn-primary"  >
+                                                                        <f:setPropertyActionListener value="#{preJournal}" target="#{validationEcritureComptableBean.preJournalSelect}" />
+                                                                        <i class="fa fa-list"/>
+                                                                    </p:commandLink>
+                                                                    <p:commandLink  title="#{msg['btn.imprimer']}" class=" btn btn-xs btn-purple" ajax="false" target="/rapport" disabled="#{preJournal.ajustificatif}"    action="#{validationEcritureComptableBean.doGetA()}" >
+                                                                        <f:setPropertyActionListener value="#{preJournal}" target="#{validationEcritureComptableBean.preJournalSelect}" />
+                                                                        <i class="fa fa-print"/>
+                                                                    </p:commandLink>
+                                                                </div>
+                                                            </p:column>
+                                                            <p:growl for="somekey" id="sms" />
+                                                        </p:dataTable>
+
+                                                    </div>
+                                                </div>
+                                            </p:panel>
+                                        </div>
+                                    </p:panel>
+
+                                </h:form>
+                                <h:form id="opv" class="form-horizontal">
+                                    <p:panel id="t2" rendered="#{validationEcritureComptableBean.renderDepositValide}" header="Deposits autorisés" toggleable="false" collapsed="false" style="margin-bottom:20px">
+                                        <p:panel header="#{msg['recherche.titre']}" toggleable="true" toggleSpeed="500"   collapsed="true" >                          
+                                            <div class="panel-body"> 
+                                                <div class="form-group">
+                                                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <h:outputLabel for="mask" value="#{msg['titre.dateDebut']}" /> <h:outputLabel for="mask" value="*" class="etoile_rouge" />
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <p:calendar id="mask" class="form-control" required="true" value="#{gLivreBean.du}" pattern="dd-MM-yyyy" mask="true" >
+                                                            </p:calendar>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <p:outputLabel for="mask2" value="#{msg['titre.dateFin']}" /><h:outputLabel for="mask2" value="*" class="etoile_rouge" />
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <p:calendar id="mask2" class="form-control"  value="#{gLivreBean.au}" pattern="dd-MM-yyyy" mask="true">
+                                                            </p:calendar>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <hr/>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <h:outputLabel for="pays" value="#{msg['titre.pays']}" class="pull-left text-left"/>
+                                                        </div>
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <h:selectOneMenu id="pays" value="#{gLivreBean.factureFortri.pays}" converter="omnifaces.SelectItemsConverter" class="form-control"
+
+                                                                             >
+                                                                <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                                                <f:selectItems value="#{gLivreBean.listPays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                                            </h:selectOneMenu> 
+                                                        </div>                        
+                                                    </div>
+
+
+                                                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <h:outputLabel  for="pss" value="#{msg['titre.compagnie']}" class="pull-left text-left"/>
+                                                        </div>
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <h:selectOneMenu   class="form-control" converter="omnifaces.SelectItemsConverter"  id="pss" value="#{gLivreBean.factureFortri.compagnie}"  >
+                                                                <f:selectItem  itemLabel="#{msg['titre.choisirCompagnie']}" itemValue="" /> 
+                                                                <f:selectItems value="#{gLivreBean.listCompagnie}" var="compagnie"
+                                                                               itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                                            </h:selectOneMenu>
+                                                        </div>
+                                                    </div>  
+                                                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                                            <h:outputLabel for="courtier"  value="#{msg['titre.courtier']}" class="pull-left text-left"/>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <h:selectOneMenu   id="courtier"  value="#{gLivreBean.factureFortri.courtier}" converter="omnifaces.SelectItemsConverter"
+                                                                               class="form-control" >
+                                                                <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""/>
+                                                                <f:selectItems itemLabel="#{courtier.designation}" var="courtier"  itemValue="#{courtier}" value="#{gLivreBean.listCourtier}"  />
+
+                                                            </h:selectOneMenu>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <h:outputLabel for="pdv"   value="#{msg['titre.pdv']}" class="pull-left text-left" />
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <h:selectOneMenu   id="pdv"  value="#{gLivreBean.factureFortri.pointsVente}" converter="omnifaces.SelectItemsConverter"
+                                                                               class="form-control" >
+                                                                <f:selectItem itemLabel="#{msg['titre.pdv']}" itemValue=""/>
+                                                                <f:selectItems itemLabel="#{pdv.designation}" var="pdv"  itemValue="#{pdv}" value="#{gLivreBean.listPointsVente}"  />
+
+                                                            </h:selectOneMenu>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                                            <h:outputLabel for="gui"   value="#{msg['titre.guichet']}" class="pull-left text-left" />
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <h:selectOneMenu   id="gui"  value="#{gLivreBean.factureFortri.guichet}" converter="omnifaces.SelectItemsConverter"
+                                                                               class="form-control" >
+                                                                <f:selectItem itemLabel="#{msg['titre.guichet']}" itemValue=""/>
+                                                                <f:selectItems itemLabel="#{gui.designation}" var="gui"  itemValue="#{gui}" value="#{gLivreBean.listGuichets}"  />
+
+                                                            </h:selectOneMenu>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <h:outputLabel for="ncp"   value="NCP" class="pull-left text-left" />
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <h:selectOneMenu   id="ncp"  value="#{gLivreBean.ncp}"
+                                                                               class="form-control" >
+                                                                <f:selectItem itemLabel="NCP" itemValue=""/>
+                                                                <f:selectItem itemLabel="NCP" itemValue="ncp"/>
+
+                                                            </h:selectOneMenu>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                                            <div class="btn-toolbar">
+                                                                <p:commandButton onstart="PF('statusDialog2').show()" onsuccess="PF('statusDialog2').hide()" value="Rechercher"  actionListener="#{gLivreBean.afficherGrandLivre()}" class="btn btn-imprimer   pull-right" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p:dialog widgetVar="statusDialog2" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                                    <h:graphicImage library="images" name="ajax-loader.gif" />
+                                                </p:dialog>
+                                            </div>
+                                        </p:panel> 
+                                        <p:panel   header="#{msg['titre.listeDesDepositsAutorise']}" toggleable="false" collapsed="false" class="panel-default">
+                                            <div>
+                                                <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-imprimer btn-xs  "  actionListener="#" > 
+                                                    <i class=" glyphicon glyphicon-print"></i>
+                                                </h:commandLink>  
+                                            </div>
+                                            <div class="table-responsive">
+                                                <p:dataTable var="preJournal" scrollable="true"  scrollWidth="100%" value="#{validationEcritureComptableBean.listPrejournalAutoriser}"
+                                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px"   class="table table-bordered table-striped table-condensed"
+                                                             rowsPerPageTemplate="25,50,100,150,200"  emptyMessage="#{msg['tableau.vide']}" rows="25" >
+                                                    <p:columnGroup type="header">
+                                                        <p:growl>     
+
+                                                            <p:column rowspan="2" headerText="#{msg['titre.dateDemande']}"  />
+                                                            <p:column colspan="3" headerText="#{msg['titre.informationsDuCompteADebiter']}" />
+                                                            <p:column colspan="3" headerText="#{msg['titre.informationsDuCompteACrediter']}" />
+                                                            <p:column rowspan="2" headerText="#{msg['titre.valeur']}"  />
+                                                            <p:column rowspan="2" headerText="#{msg['titre.actions']}"  />
+
+                                                        </p:growl>
+                                                        <p:row>
+                                                            <p:column headerText="#{msg['comptabilite.compte.numero']}" />
+                                                            <p:column headerText="#{msg['comptabilite.compte.libelle']}" />
+                                                            <p:column headerText="#{msg['titre.societe']}" />
+                                                            <p:column headerText="#{msg['comptabilite.compte.numero']}" />
+                                                            <p:column headerText="#{msg['comptabilite.compte.libelle']}" />
+                                                            <p:column headerText="#{msg['titre.societe']}" />
+                                                        </p:row>
+                                                    </p:columnGroup>
+
+
+
+                                                    <p:column >
+                                                        <p:outputLabel value="#{preJournal.dateTransaction}"></p:outputLabel>
+                                                    </p:column>
+                                                    <p:column >
+                                                        <p:outputLabel value="#{preJournal.compteAdebiter.numCompte}"></p:outputLabel>
+                                                    </p:column>
+                                                    <p:column >
+                                                        <p:outputLabel value="#{preJournal.compteAdebiter.libelleCompte}"></p:outputLabel>
+                                                    </p:column>
+
+                                                    <p:column >
+                                                        <p:outputLabel value="#{preJournal.societeCD}"></p:outputLabel>
+                                                    </p:column>
+
+                                                    <p:column >
+                                                        <p:outputLabel value="#{preJournal.compteAcrediter.numCompte}"></p:outputLabel>
+                                                    </p:column>
+                                                    <p:column >
+                                                        <p:outputLabel value="#{preJournal.compteAcrediter.libelleCompte}"></p:outputLabel>
+                                                    </p:column>
+
+                                                    <p:column >
+                                                        <p:outputLabel value="#{preJournal.societeCC}"></p:outputLabel>
+                                                    </p:column>
+                                                    <p:column >
+                                                        <p:outputLabel value="#{preJournal.valeur}"><f:convertNumber pattern="###,##0" type="number" /></p:outputLabel>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <div class="btn-toolbar">
+                                                            <p:commandLink onstart="PF('statusDialog').show()"  onsuccess="PF('statusDialog').hide()" update="detail"  oncomplete="PF('detail').show()"  title="#{msg['tableaux.detail']}"    class=" btn btn-xs btn-primary"  >
+                                                                <f:setPropertyActionListener value="#{preJournal}" target="#{validationEcritureComptableBean.preJournalSelect}" />
+                                                                <i class="fa fa-list-alt" />
+                                                            </p:commandLink>
+                                                            <p:commandLink  title="#{msg['titre.imprimer']}" class=" btn btn-xs btn-imprimer" ajax="false" target="/rapport" disabled="#{preJournal.ajustificatif}"  action="#{validationEcritureComptableBean.doGetA()}" >
+                                                                <f:setPropertyActionListener value="#{preJournal}" target="#{validationEcritureComptableBean.preJournalSelect}" />
+                                                                <i class="fa fa-list" />
+                                                            </p:commandLink>
+                                                        </div>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </div>
+                                        </p:panel>
+                                    </p:panel>
+
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p:dialog widgetVar="detail" id="detail">
+                    <h:form class="form-horizontal">
+                        <p:panel header="#{msg['titre.informationsDuCompteADebiter']}" collapsed="false" closable="true">
+                            <p:panelGrid columns="2" layout="grid">
+                                <p:outputLabel for="ncd" value="#{msg['comptabilite.compte.numero']}" />
+                                <p:outputLabel id="ncd"  value="#{validationEcritureComptableBean.preJournalSelect.compteAdebiter.numCompte}" />
+                                <p:outputLabel for="ncl" value="#{msg['comptabilite.compte.libelle']}" />
+                                <p:outputLabel id="ncl"  value="#{validationEcritureComptableBean.preJournalSelect.compteAdebiter.libelleCompte}" />
+                                <p:outputLabel for="ncs" value="#{msg['titre.societe']}" />
+                                <p:outputLabel id="ncs"  value="#{validationEcritureComptableBean.preJournalSelect.societeCD}" />
+
+                            </p:panelGrid>
+                        </p:panel>
+                        <p:panel header="#{msg['titre.informationsDuCompteACrediter']}" collapsed="false" closable="true">
+                            <p:panelGrid columns="2" layout="grid">
+                                <p:outputLabel for="ndd" value="#{msg['comptabilite.compte.numero']}" />
+                                <p:outputLabel id="ndd"  value="#{validationEcritureComptableBean.preJournalSelect.compteAcrediter.numCompte}" />
+                                <p:outputLabel for="ndl" value="#{msg['comptabilite.compte.libelle']}" />
+                                <p:outputLabel id="ndl"  value="#{validationEcritureComptableBean.preJournalSelect.compteAcrediter.libelleCompte}" />
+                                <p:outputLabel for="nds" value=" #{msg['titre.societe']}" />
+                                <p:outputLabel id="nds"  value="#{validationEcritureComptableBean.preJournalSelect.societeCC}" />
+                            </p:panelGrid> 
+
+                        </p:panel>
+                        <p:panel >
+                            <p:panelGrid columns="2" layout="grid">
+                                <p:outputLabel for="ndds" value="#{msg['titre.dateDemande']}" />
+                                <p:outputLabel id="ndds"  value="#{validationEcritureComptableBean.preJournalSelect.dateTransaction}" />
+                                <p:outputLabel for="nddv" value="#{msg['titre.dateValidation']}" />
+                                <p:outputLabel id="nddv"  value="#{validationEcritureComptableBean.preJournalSelect.dateValidation}" />
+                                <p:outputLabel for="nddj" value="#{msg['titre.payement']}" />
+                                <p:outputLabel id="nddj"  value="#{validationEcritureComptableBean.preJournalSelect.typePayementNom}" />
+                                <p:outputLabel for="ndls" value="#{msg['titre.Description']}" />
+                                <p:outputLabel id="ndls"  value="#{validationEcritureComptableBean.preJournalSelect.description}" />
+                                <p:outputLabel for="ndss" value="#{msg['titre.valeur']}" />
+                                <p:outputLabel id="ndss"  value="#{validationEcritureComptableBean.preJournalSelect.valeur}" >
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:outputLabel>
+                            </p:panelGrid>
+                        </p:panel>
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <h:graphicImage library="images" name="ajax-loader.gif" />
+                </p:dialog>
+
+                <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                    <h:form class="form-horizontal">
+                        <p:commandButton value="#{msg['supprimer.oui']}" type="button" class="ui-confirmdialog-yes " icon="fa fa-check" actionListener="#{factureCourtierBean.comptabilite()}" />
+                        <p:commandButton value="#{msg['supprimer.non']}" type="button" class="ui-confirmdialog-no" icon="fa fa-close" />
+                    </h:form>
+                </p:confirmDialog>
+
+                <h:form class="form-horizontal">
+                    <p:remoteCommand name="newProposition" process="@this" actionListener ="#{validationEcritureComptableBean.ini()}" update="f1:t1,opv:t2" autoRun="false"/>
+                </h:form>
+            </fieldset>
+        </div>
+    </ui:composition>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <ui:composition>
+        <div class="panel">
+            <ui:include src="infos_question.xhtml"/>
+            <div class="panel-body">
+                <fieldset><legend class="text-uppercase" style="font-size: 15px"><h:outputLabel class="police_label" value="#{msg['voyage.informationSurLAssuranceVoyage']}"/></legend>
+
+                    <p:separator rendered="false" />
+                    <p:panel rendered="false" header="#{msg['titre.questionnaire']}"  toggleable="true" collapsed="true">
+                        <ui:include src="confirm_questionnaire_medical.xhtml" />
+                    </p:panel>
+
+                    <p:separator rendered="#{souscriptionAsVoyageBean.renderedBeneficiaireDatable}" />
+                    <p:panel header="#{msg['titre.beneficiaires']}" rendered="#{souscriptionAsVoyageBean.renderedBeneficiaireDatable}" toggleable="true" collapsed="true">
+                        <p:dataTable class="table_label table-responsive" var="ben" id="cd" reflow="true" rows="10" value="#{souscriptionAsVoyageBean.allBeneficiaireAsVoyages}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     paginator="true" paginatorPosition="bottom" style="margin-bottom:20px"
+                                     rowsPerPageTemplate="10,20,50,100"  emptyMessage="#{msg[tableau.vide]}" >
+                            <p:column headerText="#{msg['client.nom']}" class="text-center">
+                                <p:outputLabel value="#{ben.nom}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['client.prenom']}" class="text-center">
+                                <p:outputLabel value="#{ben.prenom}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['client.datedenaissance']}" class="text-center">
+                                <p:outputLabel value="#{ben.dateNaissance}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+
+                    <p:separator/>
+                    <div class="form-group">
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+                            <p:growl id="msgsll" globalOnly="true" showDetail="false"/>
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <p:outputPanel id="disp">
+                                    <p:dataTable class="table_label table-responsive" var="compcour" id="ver" reflow="true" rows="5" value="#{souscriptionAsVoyageBean.listAssuranceVoyageTosave}"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                 rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg[tableau.vide]}" 
+                                                 >  
+                                        <p:column headerText="#{msg['titre.compagnie']}">
+                                            <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                                        </p:column>
+
+                                        <p:column headerText="#{msg['titre.courtier']}">
+                                            <h:outputText value="#{compcour.courtier.abbreviation}" />
+                                        </p:column >
+
+                                        <p:column headerText="#{msg['tableau.primenette']}">
+                                            <h:outputText value="#{compcour.prixNette}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.reduction']}">
+                                            <h:outputText value="#{compcour.reduction}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.majoration']}">
+                                            <h:outputText value="#{compcour.majoration}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.accessoire']}">
+                                            <h:outputText value="#{compcour.accessoire}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.tauxenregistrement']}">
+                                            <h:outputText value="#{compcour.valeurTaxes()}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column  headerText="#{msg['tableau.montantttc']}">
+                                            <h:outputText value="#{compcour.primeTTC}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        
+                                        <p:column rendered ="#{!souscriptionAsVoyageBean.forceSave(compcour.compagnie.idCompagnie)}" headerText="#{msg['titre.action']}">
+                                            <p:commandLink class="btn btn-danger fa fa-send-o" title="#{msg['titre.forcerLEnregistrement']}" rendered ="#{!souscriptionAsVoyageBean.forceSave(compcour.compagnie.idCompagnie)}" action="#{souscriptionAsVoyageBean.souscrireAssuranceNonValide()}" update="@form" >
+                                                <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['question.etesVousSur']}" icon="ui-icon-check"  />
+                                                <f:setPropertyActionListener value="#{compcour}" target="#{souscriptionAsVoyageBean.assuranceVoyageToForce}" />
+                                            </p:commandLink>
+                                        </p:column >
+                                    </p:dataTable>
+                                    <div class="btn-toolbar pull-left">
+                                        <p:commandButton class="btn btn-danger" value="#{msg['titre.quitter']}" action="#{souscriptionAsVoyageBean.terminer()}" update="msgsAux,formliste" >
+                                            <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['question.etesVousSur']}" icon="ui-icon-check"  />
+                                        </p:commandButton>
+                                    </div>
+                                    <div class="btn-toolbar pull-right">
+                                        <p:commandButton class="btn btn-success" value="#{msg['btn.enregistrer']}" action="#{souscriptionAsVoyageBean.saveSouscription()}" update="msgsAux,formliste" >
+                                            <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['question.etesVousSur']}" icon="ui-icon-check"  />
+                                        </p:commandButton>
+                                    </div>
+                                    <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                                        <h:form>
+                                            <p:commandButton value="#{msg['supprimer.oui']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="#{msg['supprimer.non']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </h:form>
+                                    </p:confirmDialog>
+                                </p:outputPanel>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>   
+            </div> 
+        </div>
+    </ui:composition>
+</html>

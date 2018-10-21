@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['demande.gestion']}"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row">
+                <div class="col-lg-3 col-md-3 col-xs-12 col-sm-6" id="espace_message">
+
+                    <ui:include src="recherche.xhtml"/>
+
+                    <ui:include src="liste_messages.xhtml"/>
+                    <h:form id="f">
+                        <p:remoteCommand name="newProposition"    process="f" partialSubmit="true"  actionListener ="#{espaceCompagnieAsCompteBean.init()}"  update="message1:facture" autoRun="false"/> 
+                    </h:form>
+
+                </div>
+                <div class="col-lg-9 col-md-9 col-xs-12 col-sm-6 " id="espace_detail">
+                    <div class="panel">
+                        <h:form  class="form-horizontal" id="detail">
+                            <div class="panel-heading bg-purple">  
+                                <h:outputLabel class="" value="SOCIETE DE COURTAGE" ></h:outputLabel>
+                            </div>
+
+                            <div class="panel-body"> 
+                                <p:panel  header="VOIR LES REFERENCES DU CLIENT" toggleable="true" collapsed="true" toggleSpeed="500" >                          
+
+                                    <p:panelGrid columns="6" class="table">
+                                        <h:outputLabel value="Souscripteur"/>
+                                        <h:outputText value="#{espaceCompagnieAsCompteBean.client.nom} #{espaceCompagnieAsCompteBean.client.prenom}"/>
+                                        <h:outputLabel value="Date de naissance"/>
+                                        <h:outputText value="#{espaceCompagnieAsCompteBean.client.dateNaissance}"/>
+                                        <h:outputLabel value="Téléphone"/>
+                                        <h:outputText  value="#{espaceCompagnieAsCompteBean.client.telephoneMobile}"/>
+                                        <h:outputLabel value="Adresse"/>
+                                        <h:outputText  value="#{espaceCompagnieAsCompteBean.client.adresse}"/>
+                                    </p:panelGrid>
+
+                                </p:panel>
+                                <br/>
+                                <p:panel  header="VOIR LE TYPE D'OPERATIONS" toggleable="true" collapsed="false"  toggleSpeed="500"  >                                              
+                                    <p:panelGrid columns="4" class="table">
+                                        <p:outputLabel value="Type Compte :"/>
+                                        <h:outputText value="#{espaceCompagnieAsCompteBean.selectedAssurance.typeCompte}"/>
+                                        <p:outputLabel value="Intitulé du compte :"/>
+                                        <h:outputText value="#{espaceCompagnieAsCompteBean.selectedAssurance.intituleCompte}"/>
+                                        <p:outputLabel value="Date d’ouverture du compte :"/>
+                                        <h:outputText value="#{espaceCompagnieAsCompteBean.selectedAssurance.dateOuvertureCompte}"/>
+                                        <p:outputLabel value="Solde du compte :"/>
+                                        <h:outputText value="#{espaceCompagnieAsCompteBean.selectedAssurance.soldeCompte}">
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </h:outputText>
+                                        <p:outputLabel value="Code :"/>
+                                        <h:outputText value="#{espaceCompagnieAsCompteBean.selectedAssurance.code}"/>
+                                        <p:outputLabel value="Agence :"/>
+                                        <h:outputText value="#{espaceCompagnieAsCompteBean.selectedAssurance.agence}"/>
+                                        <p:outputLabel  value="Compte :"/>
+                                        <h:outputText value="#{espaceCompagnieAsCompteBean.selectedAssurance.compte}"/>
+                                        <p:outputLabel  value="RIB:"/>
+                                        <h:outputText value="#{espaceCompagnieAsCompteBean.selectedAssurance.rib}"/>
+                                        <p:outputLabel  value="Capital Assuré :"/>
+                                        <h:outputText  value="#{espaceCompagnieAsCompteBean.selectedAssurance.capitalAssure}">
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                        </h:outputText>
+
+                                    </p:panelGrid>
+
+                                </p:panel>
+                                <br/>
+                                <p:panel  header="VOIR LES CONDITIONS GENERALES " toggleable="true" collapsed="false"  toggleSpeed="500"  >                                              
+                                    <p:dataTable class="table table-striped table-condensed" var="condition" id="cd" rows="10" value="#{espaceCompagnieAsCompteBean.selectedAssurance.listConditionGenerale}"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 paginator="true" paginatorPosition="bottom" 
+                                                 rowsPerPageTemplate="10,20,30,40,50"  emptyMessage="#{msg[tableau.vide]}" >
+                                        <p:column headerText="Condition Generale">
+                                            <p:outputLabel value="#{condition.designation}" />
+                                        </p:column>
+                                        <p:column headerText="verification">
+                                            <p:outputLabel value="" ><i class="#{condition.isVerifier} fa fa-check text-green"/><i class="#{!condition.isVerifier} text-red fa fa-close"/></p:outputLabel>
+                                        </p:column>
+                                    </p:dataTable> 
+
+                                </p:panel>
+
+
+                            </div>
+
+                            <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                                <h:form>
+                                    <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{factureCourtierBean.comptabilite()}" />
+                                    <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </h:form>
+                            </p:confirmDialog>
+                        </h:form>
+                        <ui:include src="detail.xhtml"/>
+
+                        <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                            <h:form>
+                                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  />
+                                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </h:form>
+                        </p:confirmDialog>
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                            <h:graphicImage library="images" name="ajax-loader.gif" />
+                        </p:dialog>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ui:composition> 
+</html>
+

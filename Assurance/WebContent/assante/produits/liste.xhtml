@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <h:form id="listProduitForm" class="form-horizontal">
+            <p:growl id="msgss" globalOnly="true" showDetail="false"  life="3000"/>
+            <div class="table-responsive">
+                <p:dataTable id="listProduitDataTable" class="table table-hover table-bordered table-striped" rows="15" rowKey="#{produit.id}" editable="true" editMode="cell"
+                             emptyMessage="#{msg['tableau.vide']}"
+                             paginator="true" paginatorPosition="bottom"  var="produit" value="#{produitAsSanteBean.listpProduitAsSante}"
+                             selection="#{produitAsSanteBean.listpProduitAsSanteSlected}"
+                              scrollable="true"
+                                     resizableColumns="true">
+
+                    <p:column  headerText="#{msg['titre.produit.nom']}" filterBy="#{produit.nom}" >
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="nomp" value="#{produit.nom}" /></f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{produit.nom}" required="true" requiredMessage="Veuillez entrer le nom" >
+                                    <p:ajax event="keyup" update="nomp"  /> 
+                                </p:inputText></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column  headerText="#{msg['titre.Description']}" filterBy="#{produit.description}" >
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="descp" value="#{produit.description}" /></f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{produit.description}" >
+                                    <p:ajax event="keyup" update="descp"  /> 
+                                </p:inputText></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column  headerText="#{msg['titre.produit.age.min.enfant']}" filterBy="#{produit.ageMinMineur}" >
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="descpme" value="#{produit.ageMinMineur}" /></f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{produit.ageMinMineur}" >
+                                    <p:ajax event="keyup" update="descpme"  /> 
+                                </p:inputText></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column  headerText="#{msg['titre.produit.age.max.enfant']}" filterBy="#{produit.ageMaxMineur}" >
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="descpma" value="#{produit.ageMaxMineur}" /></f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{produit.ageMaxMineur}" >
+                                    <p:ajax event="keyup" update="descpma"  /> 
+                                </p:inputText></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column  headerText="#{msg['titre.produit.age.max.adulte']}" filterBy="#{produit.ageMaxAdulte}" >
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="descpmad" value="#{produit.ageMaxAdulte}" /></f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{produit.ageMaxAdulte}" >
+                                    <p:ajax event="keyup" update="descpmad"  /> 
+                                </p:inputText></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column  headerText="#{msg['titre.produit.prime.enfant']}" filterBy="#{produit.primeAnnuelleMineur}" >
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="descpmadp" value="#{produit.primeAnnuelleMineur}" /></f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{produit.primeAnnuelleMineur}" >
+                                    <p:ajax event="keyup" update="descpmadp"  /> 
+                                </p:inputText></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column  headerText="#{msg['titre.produit.prime.adulte']}" filterBy="#{produit.primeAnnuelleAdulte}" >
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="descpmadpa" value="#{produit.primeAnnuelleAdulte}" /></f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{produit.primeAnnuelleAdulte}" >
+                                    <p:ajax event="keyup" update="descpmadpa"  /> 
+                                </p:inputText></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                   
+
+                    <p:column  headerText="#{msg['titre.produit.accessoire']}" filterBy="#{produit.accessoire}" >
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="descpmadpaac" value="#{produit.accessoire}" /></f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{produit.accessoire}" >
+                                    <p:ajax event="keyup" update="descpmadpaac"  /> 
+                                </p:inputText></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+
+                    <p:column headerText="%"  class="text-center" >
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <!--p:outputLabel id="Ma"  /-->
+                                <i jsf:id="MaT" class="text-green icon-default fa fa-check #{produit.actived}" />
+                                <i jsf:id="MaF" class=" icon-default  text-red fa fa-close #{!produit.actived}" />
+                            </f:facet>
+                            <f:facet name="input"> 
+                                <p:selectBooleanCheckbox value="#{produit.actived}" >
+                                    <p:ajax update="MaT,MaF" />
+                                </p:selectBooleanCheckbox>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Selection" selectionMode="multiple"  style="text-align: center;" />
+                </p:dataTable>
+            </div>
+            <p:commandButton class="btn-danger btn" value="#{msg['btn.annuller']}" update="@form" action="#{produitAsSanteBean.cancel()}" />
+            <p:commandButton class="btn-danger btn pull-right" value="#{msg['btn.supprimer']}" update="@form" action="#{produitAsSanteBean.deleteListe()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" >
+                                <p:confirm header="Confirmation" message="Etes-vous sûr ?"  icon="ui-icon-alert" />
+                
+            </p:commandButton>
+            <p:commandButton class="btn-purple btn pull-right" value="#{msg['btn.modifier']}" update="@form" action="#{produitAsSanteBean.updateListe()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        </h:form>
+    </ui:composition> 
+</html>
+

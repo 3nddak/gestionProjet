@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+         <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:outputPanel id="users" style="text-align:center;" class="panel">
+                    <h:form id="formliste" class="form-horizontal">
+                        <ui:include src="selfuser_search.xhtml"/>
+
+                        <div class="row">
+                            
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <div class="table-responsive">
+                                    <p:dataTable sortOrder="descending" sortBy="#{utilisateur.idUtilisateur}" class="table table-bordered" var="utilisateur"  rows="5" rowKey="#{utilisateur.idUtilisateur}" selection="#{selfUserBean.triUtilisateurList}" value="#{selfUserBean.allUtilisateurs}"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                 paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" scrollWidth="50%" scrollHeight="150">
+
+                                        <p:column headerText="#{msg['utilisateur.nom']}" filterBy="#{utilisateur.nom}">
+                                            <h:outputText value="#{utilisateur.nom}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['utilisateur.prenom']}" filterBy="#{utilisateur.prenom}">
+                                            <h:outputText value="#{utilisateur.prenom}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['utilisateur.pseudo']}" filterBy="#{utilisateur.login}">
+                                            <h:outputText value="#{utilisateur.login}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['utilisateur.email']}" filterBy="#{utilisateur.email}" >
+                                            <h:outputText value="#{utilisateur.email}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['titre.profil']}" filterBy="#{utilisateur.profil.code}">
+                                            <h:outputText value="#{utilisateur.profil.code}" />
+                                        </p:column>
+                                        <p:column headerText="Structure" filterBy="#{utilisateur.compagnie.designation}#{utilisateur.courtier.designation}#{utilisateur.pointsVente.designation}#{utilisateur.pointRetrait.libelle}">
+                                            <h:outputText value="#{utilisateur.compagnie.designation} #{utilisateur.courtier.designation} #{utilisateur.pointsVente.designation} #{utilisateur.pointRetrait.libelle} #{utilisateur.societe.designation}" />
+                                        </p:column>
+                                        <p:column headerText="Actions" class="col-lg-1 col-md-1">
+                                            <p:commandButton update="passwd" rendered="#{sec:areAnyGranted('ROLE_USER_CRT')}" class="btn-primary primary"  oncomplete="PF('pass').show()" icon="fa fa-key" title="#{msg['btn.changerMdp']}">
+                                                <f:setPropertyActionListener value="#{utilisateur}" target="#{selfUserBean.utilisateurSelected}" />
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+                </p:outputPanel>
+            </div>
+        </div>
+    </ui:composition> 
+
+</html>
+

@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <h:form class="form-horizontal" id="pin_number">
+                    <p:messages id="msgs" globalOnly="true" closable="true" showDetail="false" autoUpdate="true">
+                        <p:effect type="pulsate" event="load" delay="200">
+                            <f:param name="mode" value="show" />
+                        </p:effect>
+                    </p:messages>
+
+                    <div class="form-group">
+                        <div class="col-md-12  col-lg-12">
+                            <p:outputPanel rendered="#{loginBean.renderVisualiserButton}">
+                                <h:outputLabel  for="ancienMdp" class=" police_label pull-left" value="Mot de passe"  />
+                                <span class="etoile_rouge pull-left">*</span>
+                                <p:password rendered="#{loginBean.renderVisualiserButton}" id="ancienMdp" value="#{loginBean.oldPassword}"
+                                            required="true" requiredMessage="Veuillez votre mot de passe" 
+                                            styleClass="form-control" a:placeholder="Mot de passe" >
+                                </p:password>
+                            </p:outputPanel>
+                            <h:message for="ancienMdp"  id="ancienMdpMessage" class="errorClass" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12  col-lg-12">
+                            <p:outputPanel rendered="#{loginBean.renderPinPanel}">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Code PIN"/>
+                                    </span>
+                                    <h:outputLabel class="form-control" value="#{loginBean.pin}"/>
+                                </div>
+                            </p:outputPanel>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 col-lg-12 ">
+                            <p:commandButton value="Annuler" type="reset" update="pin_number" class="btn btn-danger pull-left" style="background: #d9534f;color:#fff;border-color: #d43f3a; font-family: cursive;">
+                                <p:ajax update="pin_number"/>
+                            </p:commandButton>
+
+                            <p:commandButton rendered="#{loginBean.renderVisualiserButton}" validateClient="true" action="#{loginBean.checkAccountPinNumber()}"  value="Visualiser" update="pin_number,msgs"  class="btn btn-primary  pull-right" style="background: #337ab7;color:#fff;border-color: #337ab7; font-family: cursive;">
+                                <f:ajax execute="@form" render="@form" />   
+                            </p:commandButton>
+
+                            <p:commandButton rendered="#{loginBean.renderOKButton}" validateClient="true" oncomplete="PF('pin_number').hide()"  value="OK"  class="btn btn-primary  pull-right" style="background:green;color:#fff;border-color: green; font-family: cursive;">
+
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </h:form> 
+            </div>
+        </div>
+    </ui:composition> 
+</html>

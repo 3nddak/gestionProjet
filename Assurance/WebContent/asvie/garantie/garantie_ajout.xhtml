@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <p:outputPanel id="ajout">
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pays" value="#{msg['titre.pays']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="pays" value="#{garantieAsvieBean.pays}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                 requiredMessage="#{msg['compagnie.pays.requireMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                    <f:selectItems value="#{garantieAsvieBean.listPays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                    <f:ajax event="click" render="paysMessage" />
+                                    <p:ajax update="pss" listener="#{garantieAsvieBean.compagnieByPays()}"/>
+                                </h:selectOneMenu> 
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pays"  id="paysMessage" class="errorClass" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12" >
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pss" value="#{msg['titre.compagnie']}"/><h:outputLabel value="*" class="etoile_rouge"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  class="form-control" required="true" requiredMessage="#{msg['courtier.compagnie.requireMessage']}" converter="entityConverter"  id="pss" value="#{garantieAsvieBean.garantieAsvie.compagnie}"  >
+                                    <f:selectItem itemDisabled="true" itemLabel="#{msg['titre.choisirCompagnie']}" /> 
+                                    <f:selectItems value="#{garantieAsvieBean.listCompagnie}" var="compagnie"
+                                                   itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                    <f:ajax event="click" render="pssMessage" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pss"  id="pssMessage" class="errorClass" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                        <h:outputLabel for="libelle" value="#{msg['garantie.libelle']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                        <p:inputText id="libelle" required="true" value="#{garantieAsvieBean.garantieAsvie.libelle}" styleClass="form-control" placeholder="#{msg['garantie.libelle']}"
+                                     requiredMessage="#{msg['garantie.libelle.requireMessage']}"
+                                     >
+                            <f:ajax event="blur" render="libelleMessage"/>
+                        </p:inputText>
+                        <h:message for="libelle" id="libelleMessage" class="errorClass" />
+                    </div> 
+
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                        <h:outputLabel for="symbole" value="#{msg['garantie.symbole']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                        <p:inputText id="symbole" required="true" value="#{garantieAsvieBean.garantieAsvie.symbole}" styleClass="form-control" placeholder="#{msg['garantie.symbole']}"
+                                     requiredMessage="#{msg['garantie.symbole.requireMessage']}"     
+                                     >
+                            <f:ajax event="blur" render="symboleMessage"/>
+                        </p:inputText>
+                        <h:message for="symbole" id="symboleMessage" class="errorClass"/>
+                    </div> 
+
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="btn-toolbar">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" action="#{garantieAsvieBean.annuler()}" update="garantie-ajout" id="annuler" class="btn btn-xs btn-danger pull-left">
+                                <p:ajax update="libelleMessage" />
+                                <p:ajax update="symboleMessage" />
+                            </p:commandButton>
+
+
+
+                            <p:commandButton value="#{msg['btn.enregistrer']}" title="#{msg['btn.enregistrer']}" update="msgs,formliste,garantie-ajout" action="#{garantieAsvieBean.saveOne()}"  class="btn btn-success btn-xs pull-right">
+
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Fin du dialogue--> 
+
+        </p:outputPanel>
+
+    </ui:composition> 
+
+</html>
+

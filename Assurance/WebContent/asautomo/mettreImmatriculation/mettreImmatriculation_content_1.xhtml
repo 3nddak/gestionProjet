@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <h:form id="f1">
+            <p:panel id="t1" header="Mettre numero D'immatriculation" toggleable="true" collapsed="false" style="margin-bottom:20px">
+                <p:dataTable editable="true" editMode="cell" scrollable="true"  scrollWidth="100%" var="facture" value="#{mettreImmatricualtionBean.listFactureSansImmatriculation}" rows="10" 
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px"   class="table_label table table-responsive"
+                             rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg['tableau.vide']}" >
+                    
+                    <p:column headerText="Nom Client" >
+                        <p:outputLabel value="#{facture.objetVoiture.client.nom}"></p:outputLabel>
+                    </p:column>
+                    <p:column headerText="Compagnie" >
+                        <p:outputLabel value="#{facture.compagnie.abbreviation}"></p:outputLabel>
+                    </p:column>
+                    <p:column headerText="Courtier" >
+                        <p:outputLabel value="#{facture.courtier.abbreviation}"></p:outputLabel>
+                    </p:column>
+                    <p:column headerText="Numero Police" >
+                        <p:outputLabel value="#{facture.objetVoiture.numeroPolice}"></p:outputLabel>
+                    </p:column>
+                    <p:column headerText="Numero Chassis" >
+                        <p:outputLabel value="#{facture.objetVoiture.numChassis}"></p:outputLabel>
+                    </p:column>
+                    <p:column headerText="Prime TTC" >
+                        <p:outputLabel value="#{facture.arrondireFormat2(facture.primeTtc)}"></p:outputLabel>
+                    </p:column>
+
+                    <p:column headerText="Immatriculation" >
+                        <p:cellEditor >
+                            <f:facet name="output">
+                                <p:outputLabel id="ssss" value="#{facture.objetVoiture.numeroImmatriculation}">
+
+                                </p:outputLabel>
+                            </f:facet>
+                            <f:facet name="input">
+
+                                <p:inputText value="#{facture.objetVoiture.numeroImmatriculation}">
+                                    <p:ajax event="keyup" update="ssss" />
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Action">
+                        <p:commandLink onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" update="@form" title="Mettre numero d'immatriculation" action="#{mettreImmatricualtionBean.saveImmatriculation()}"   class="glyphicon glyphicon-save"  >
+                            <f:setPropertyActionListener value="#{facture}" target="#{mettreImmatricualtionBean.factureSelected}" />
+                            <p:confirm header="Confirmation" message="ETes-vous sûr ?" icon="ui-icon-alert" />
+                        </p:commandLink>
+                    </p:column>
+                    <p:growl for="somekey" id="sms" />
+                </p:dataTable>
+
+
+
+            </p:panel>
+
+        </h:form>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+
+        <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+            <h:form>
+                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{factureCourtierBean.comptabilite()}" />
+                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </h:form>
+        </p:confirmDialog>
+    </ui:composition>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset>
+                <legend class="text-center text-uppercase"> <p:outputLabel value="GESTION DES Deposit"></p:outputLabel></legend>
+            </fieldset>
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#tabMass1" aria-controls="tabMass1" role="tab" data-toggle="tab">deposits</a>
+                </li>
+                <li role="presentation">
+                    <a href="#tabMass2" aria-controls="tabMass2" role="tab" data-toggle="tab">Remboursement de déposits</a>
+                </li>
+
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tabMass1">
+                    <ui:include src="gestionDesposit.xhtml"/>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tabMass2">
+                    <ui:include src="remboursement.xhtml"/>
+                </div>
+
+
+            </div>
+
+        </div>
+    </ui:composition> 
+
+</html>
+

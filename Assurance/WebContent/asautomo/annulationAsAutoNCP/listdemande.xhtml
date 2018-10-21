@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div id="liste">
+
+            <h:form  id="formliste2" class="form-horizontal">
+
+                <p:panel header ="#{msg['titre.listeDesDemandesDAnnulation']}" toggleable="true">
+                    <p:dataTable rows="8" paginator="true"   emptyMessage="#{msg['tableau.vide']}" class="table table-responsive" var="demande" value="#{annulationDemandeNCPAsAutoBean.listDemandeAnnulationAsAuto}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150"  
+                                 rowsPerPageTemplate="2,3,4,5,6,7"  > 
+                                 
+                        <p:column headerText="#{msg['titre.codeTransaction']}" >
+                            <p:outputLabel value="#{demande.facture.idTransaction}" />
+                        </p:column>
+                        <p:column headerText="#{msg['tableau.numeropolice']}" filterBy="#{demande.facture.objetVoiture.numeroPolice}" >
+                            <h:outputText value="#{demande.facture.objetVoiture.numeroPolice}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.dateDemande']}"  >
+                            <h:outputText value="#{demande.dateDemandeAnnulation}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.compagnie']}" filterBy="#{demande.facture.compagnie.abbreviation}">
+                            <h:outputText value="#{demande.facture.compagnie.abbreviation}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.courtier']}" filterBy="#{demande.facture.courtier.abbreviation}">
+                            <h:outputText value="#{demande.facture.courtier.abbreviation}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['client.nom']}" >
+                            <h:outputText value="#{demande.facture.objetVoiture.client.nom}"/>
+                        </p:column>
+                        <p:column  headerText="#{msg['client.prenom']}">
+                            <h:outputText value="#{demande.facture.objetVoiture.client.prenom}"/>
+                        </p:column>
+                        <p:column  headerText="#{msg['client.numeroDIdentite']}">
+                            <h:outputText value="#{demande.facture.objetVoiture.client.numeroPiece}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.immatriculation']}">
+                            <h:outputText value="#{demande.facture.objetVoiture.numeroImmatriculation}"/>
+                        </p:column>
+                        <p:column  headerText="#{msg['vehicule.numeroserie']}">
+                            <h:outputText value="#{demande.facture.objetVoiture.numSerie}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.marque']}" >
+                            <h:outputText value="#{demande.facture.objetVoiture.marque}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.numerochassis']}">
+                            <h:outputText value="#{demande.facture.objetVoiture.numChassis}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['vehicule.categorie']}" >
+                            <h:outputText value="#{demande.facture.objetVoiture.categorie.libelle}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.etatDeLaDemande']}" >
+                            <h:outputText value="#{demande.libelleEtaDemandeNCP}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.dateAutorisation']}" >
+                            <h:outputText value="#{demande.dateAutorisation}"/>
+                        </p:column>
+                      
+                        <p:column headerText="#{msg['titre.dateAnnulation']}" >
+                            <h:outputText value="#{demande.dateAnnullation}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['titre.action']}">
+                            <p:commandLink title="#{msg['titre.traiter']}"  oncomplete="PF('traiter').show()" class=" btn btn-xs btn-primary fa fa-file" update="traiter"  >
+                               
+                                <f:setPropertyActionListener target="#{annulationDemandeNCPAsAutoBean.demandeAnnulationAsAuto}" value="#{demande}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+
+                </p:panel>
+
+
+            </h:form>
+
+
+        </div>
+    </ui:composition>
+
+
+</html>
+

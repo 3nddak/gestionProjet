@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+    <ui:composition>
+
+        <p:panel   header="Ajout Condition General"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <ui:include src="condition_general_compagnie_ajout.xhtml"/>
+        </p:panel>
+        <p:panel   header="Recherche"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <ui:include src="condition_general_compagnie_search.xhtml"/>
+        </p:panel>
+        <h:form  id="formliste" class="form-horizontal">
+            <p:panel   header="Liste des Conditions Generales"  toggleable="true" collapsed="false" style="margin-bottom:20px">
+
+                <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-purple btn-xs" actionListener="#{tableauRCBean.doGetA()}"   > 
+                    <i class=" glyphicon glyphicon-print"></i>
+                </h:commandLink> 
+                <div class="table-responsive">
+                    <p:dataTable class="table table-bordered" var="c_comp" id="rcliste" rowExpandMode="single" rows="20" value="#{conditionGBean.listConditionGeneral}" 
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginator="true" paginatorPosition="bottom"  
+                                 emptyMessage="#{msg['tableau.vide']}" sortOrder="descending" rowKey="#{c_comp.idReference}"
+                                 rowsPerPageTemplate="10,20,30"
+
+                                 >     
+
+                        <p:column headerText="Designation" filterBy="#{c_comp.designation}">
+                            <h:outputText value="#{c_comp.designation}" />
+                        </p:column>
+                        <p:column headerText="Description" filterBy="#{c_comp.description}">
+                            <h:outputText value="#{c_comp.description}" />
+                        </p:column>
+                        <p:column headerText="Valeur" filterBy="#{c_comp.valeur}">
+                            <h:outputText value="#{c_comp.valeur}" />
+                        </p:column>
+                        <p:column headerText="Fonction" filterBy="#{c_comp.functionName}">
+                            <h:outputText value="#{c_comp.functionName}" />
+                        </p:column>
+
+                        <p:column headerText="Compagnie" filterBy="#{c_comp.compagnie.abbreviation}}">
+                            <h:outputText value="#{c_comp.compagnie.abbreviation}" />
+                        </p:column>
+                        <p:column headerText="Activer">
+                            <i class="text-green icon-default fa fa-check #{c_comp.activer}" />
+                            <i  class=" icon-default  text-red fa fa-close #{!c_comp.activer}" />
+
+                            <!--h:outputText value="" /-->
+                        </p:column>
+
+                        <p:column headerText="Actions"> 
+
+                            <p:commandButton title="#{msg['btn.modifier']}" update="zone-ajout"  action="#{conditionGBean.update()}"  icon="fa fa-edit" class="btn-primary btn btn-sm" >
+                                <f:setPropertyActionListener value="#{c_comp}" target="#{conditionGBean.CGToUpdate}" />
+                            </p:commandButton>
+
+                            <p:commandButton  oncomplete="PF('supprimer').show()" update="rcliste,formliste" icon="fa fa-trash" title="#{msg['btn.supprimer']}" class="btn-danger danger btn-sm">
+                                <f:setPropertyActionListener value="#{c_comp}" target="#{conditionGBean.CGToDelete}" />
+                            </p:commandButton>
+
+                        </p:column>
+
+                    </p:dataTable>
+                </div>  
+            </p:panel>
+
+        </h:form>
+
+        <h:form class="form-control">
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="" id="confirmation" message="#{msg['supprimer.message']}"
+                             header="Suppression" severity="alert" widgetVar="supprimer">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3, :formliste" action="#{conditionGBean.deleteOne()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+
+    </ui:composition> 
+</html>
+

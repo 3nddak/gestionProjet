@@ -1,0 +1,580 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+        <h:form class="form-horizontal">
+            <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+            <p:panel   header="Recherche avancée"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+                <div class="row">
+                    <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="pays" value="#{lectureDirectCourtierBean.lectureDirecteCompagnieToSave.pays}" converter="omnifaces.SelectItemsConverter" class="form-control"
+
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemDisabled="true"/>
+                                    <f:selectItems value="#{lectureDirectCourtierBean.paysList}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                    <p:ajax update="pss,trclist2,courtier,categorie" listener="#{lectureDirectCourtierBean.feshTableauRCByPays()}"/>
+                                </h:selectOneMenu> 
+                            </div>                        
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pss" value="Compagnie :"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  class="form-control" required="true" requiredMessage="Veuillez choisir la compagnie" converter="omnifaces.SelectItemsConverter"  id="pss" value="#{lectureDirectCourtierBean.idComp}"  >
+                                    <f:selectItem itemDisabled="true" itemLabel="Choisir compagnie" /> 
+                                    <f:selectItems value="#{lectureDirectCourtierBean.listCompagnie2}" var="compagnie"
+                                                   itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie.idCompagnie}"/>
+                                    <p:ajax   listener="#{lectureDirectCourtierBean.listlectureDirecteCompagnieByCompagnie()}" update="trclist2,courtier" />
+                                    <f:ajax event="click" render="pssMessage" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pss"  id="pssMessage" class="errorClass" />
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <label >#{msg['titre.courtier']}</label><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <h:selectOneMenu  required="true" id="courtier"  value="#{lectureDirectCourtierBean.lectureDirecteCourtierToSave.courtier}" converter="omnifaces.SelectItemsConverter"
+                                                  requiredMessage="#{msg['pv.courtier.requireMessage']}"  class="form-control" >
+                                    <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""/>
+                                    <f:selectItems itemLabel="#{courtier.designation}" var="courtier"  itemValue="#{courtier}" value="#{lectureDirectCourtierBean.listCourtier}"  />
+                                    <p:ajax event="click" update="courtierMessage"/>
+                                </h:selectOneMenu>
+                                <h:message for="courtier"  id="courtierMessage" class="errorClass" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 ">
+                                <h:message id="courMessage" for="courtier"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="categorie" value="#{msg['vehicule.categorie']}" class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="categorie" value="#{lectureDirectCourtierBean.categorieSelected}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                    <f:selectItem itemLabel="#{msg['vehicule.categorie']}" noSelectionOption="true" />
+                                    <f:selectItems value="#{lectureDirectCourtierBean.listCategorie}" var="cat" itemLabel="#{cat.libelle}" itemValue="#{cat}" /> 
+                                    <p:ajax listener="#{lectureDirectCourtierBean.feshGarantieByCategorie()}" update="" />
+                                </h:selectOneMenu> 
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+                <div class="row" >
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="garantieS" value="Garanties" class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  id="garantieS" value="#{lectureDirectCourtierBean.garantieSelected}" converter="omnifaces.SelectItemsConverter"  class="police_label form-control">
+                                    <f:selectItem itemLabel="#{msg['garantie.titre']}" noSelectionOption="true" />
+                                    <f:selectItems value="#{lectureDirectCourtierBean.guarantieList}" var="garantie" itemLabel="#{garantie.libelle}" itemValue="#{garantie}" />
+                                    <p:ajax  update="" />
+                                </h:selectOneMenu>
+                            </div>    
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="typeVitreS" value="Type Vitre" class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  class="form-control"  converter="entityConverter"  id="typeVitreS" value="#{lectureDirectCourtierBean.typeVitreSelected}"  >
+                                    <f:selectItem itemLabel="Choisir type vitre" noSelectionOption="true" />
+                                    <f:selectItems value="#{lectureDirectCourtierBean.typeVitreList}" var="typeV" itemLabel="#{typeV.typeVitre}" itemValue="#{typeV}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="puissanceS" value="Puissance"  class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-6 col-xs-6">
+                                <p:inputText id="puissanceS" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCourtierBean.puissanceValue}"  styleClass="form-control"  title="Puissance" placeholder="Puissance" >
+                                </p:inputText>
+                            </div>
+                            <pe:keyFilter for="puissanceS" mask="int"/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.energie']}"  for="energieS" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  id="energieS"  value="#{lectureDirectCourtierBean.energieSelected}" converter="omnifaces.SelectItemsConverter"  class="form-control" >
+                                    <f:selectItem itemLabel="#{msg['vehicule.energie']}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{lectureDirectCourtierBean.energieList}" var="en" itemLabel="#{en.libelleFr} -- #{en.libelleEn}" itemValue="#{en}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" >
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="nplcS" value="#{msg['vehicule.nombreplace']}" class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="nplcS" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCourtierBean.nombrePlace}" styleClass="form-control"  title="Nbr places" placeholder="Nbr places" >
+                                </p:inputText>
+                                <pe:keyFilter for="nplcS" mask="int"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="poidsS" value="Poids" class="pull-left text-left"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-6 col-xs-6">
+                                <p:inputText id="poidsS" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCourtierBean.poidsValue}" class="form-control"  title="Poids" placeholder="Poids" >
+                                </p:inputText>
+                            </div>
+                            <pe:keyFilter for="poidsS" mask="num"/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="typecylindreS" value="Type Cylindre" class="pull-left text-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  class="form-control"  converter="entityConverter"  id="typecylindreS" value="#{lectureDirectCourtierBean.typeCylindreSelected}"  >
+                                    <f:selectItem itemLabel="Type Cylindre" noSelectionOption="true" /> 
+                                    <f:selectItems value="#{lectureDirectCourtierBean.typeCylindreList}" var="tc" itemLabel="#{tc.designation}" itemValue="#{tc}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="cylindreS" value="Cylindre" class="pull-left text-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="cylindreS"  converterMessage="#{msg['format.integer.converterMessage']}"  value="#{lectureDirectCourtierBean.cylindreValue}"  class="form-control"  title="Cylindre" placeholder="Cylindre" >
+
+                                </p:inputText>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group ">
+                            <div class="col-lg-12  col-md-12 col-xs-12 col-sm-12">
+                                <div class="col-lg-2 col-md-12 pull-right col-xs-12 col-sm-12">
+                                    <p:commandButton id="searchS" action="#{lectureDirectCourtierBean.searchMethod3()}"  update="@form,trclist2" value="Rechercher"  class="btn-success success form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row" >
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                        <p:dataTable  id="trclist2" value="#{lectureDirectCourtierBean.filterListLectureDirecteCompagnie}" rows="8" var="trc1"
+                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                      paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" sortOrder="descending"
+                                      editable="true" editMode="cell"
+                                      rowsPerPageTemplate="8,15,20" class="table table-responsive table-bordered"
+                                      >
+
+                            <p:column headerText="#{msg['vehicule.categorie']}" filterBy="#{trc1.categorie.libelle}" >
+                                <h:outputText value="#{trc1.categorie.libelle}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.garantie']}" filterBy="#{trc1.garantie.libelle}" >
+                                <h:outputText value="#{trc1.garantie.libelle}" />
+                            </p:column>
+                            <p:column headerText="Compagnie" filterBy="#{trc1.compagnie.designation}" >
+                                <h:outputText value="#{trc1.compagnie.designation}" />
+                            </p:column>
+
+                            <p:column headerText="Puissance Inf" filterBy="#{trc1.puissance.inf}">
+                                <h:outputText value="#{trc1.puissance.inf}" />
+                            </p:column>
+                            <p:column headerText="Puissance Sup" filterBy="#{trc1.puissance.sup}">
+                                <h:outputText value="#{trc1.puissance.sup}" />
+                            </p:column>
+
+
+                            <p:column headerText="#{msg['vehicule.energie']}" filterBy="#{trc1.energie.libelleFr}" >
+                                <h:outputLabel value="#{trc1.energie.libelleFr}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.nombreplace']}" filterBy="#{trc1.nombreDePlace}">
+                                <h:outputLabel  value="#{trc1.nombreDePlace}" />
+                            </p:column>
+
+                            <p:column headerText="Poids Inf" filterBy="#{trc1.poids.inf}">
+                                <h:outputText value="#{trc1.poids.inf}" />
+                            </p:column>
+                            <p:column headerText="Poids Sup" filterBy="#{trc1.poids.sup}">
+                                <h:outputText value="#{trc1.poids.sup}" />
+                            </p:column>
+                            <p:column headerText="Cylindre Inf" filterBy="#{trc1.cylindre.inf}">
+                                <h:outputText value="#{trc1.cylindre.inf}" />
+                            </p:column>
+                            <p:column headerText="Cylindre Sup" filterBy="#{trc1.cylindre.sup}">
+                                <h:outputText value="#{trc1.cylindre.sup}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.carrosserie']}" filterBy="#{trc1.carrosserie}">
+                                <h:outputText value="#{trc1.carrosserie}" />
+                            </p:column>
+                            <p:column headerText="#{msg['vehicule.typeVitre']}" filterBy="#{trc1.typeVitre}">
+                                <h:outputText value="#{trc1.typeVitre}" />
+                            </p:column>
+                            <p:column headerText="type cylindre" filterBy="#{trc1.typeCylindre}">
+                                <h:outputText value="#{trc1.typeCylindre}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['garantie.prime']}" filterBy="#{trc1.prime}" >
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:outputLabel id="P" value="#{trc1.prime}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{trc1.prime}" rendered="#{(trc1.prime eq null) ?false:true }" >
+                                            <p:ajax event="keyup" update="P"  /> 
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Actions"> 
+                                <p:commandButton  update="trclist2,@form" icon="fa fa-trash" action="#{lectureDirectCourtierBean.removeOneLigneLectureDirecteCompagnie()}" title="#{msg['btn.supprimer']}" class="btn-danger danger btn-sm">
+                                    <f:setPropertyActionListener value="#{trc1}" target="#{lectureDirectCourtierBean.temporalLigneLectureDirecteCompagnieToRemove}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:commandButton  value="#{msg['btn.enregistrer']}" action="#{lectureDirectCourtierBean.saveLectureDirecteCourtier}" update="@form,msgs,gggg"   class="btn btn-success success">
+
+                        </p:commandButton>
+                    </div>
+                </div>
+            </p:panel>
+        </h:form>
+
+        <p:panel   header="Recherche"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+            <ui:include src="searchEngineRCCourtier.xhtml"/>
+        </p:panel>
+
+        <h:form id="gggg" class="form-horizontal">
+            <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+            <p:panel   header="Lecture directe des courtiers" toggleable="true" id="ppp" collapsed="false" style="margin-bottom:20px">
+
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:dataTable  var="trc" id="rcliste2" rowExpandMode="single" rows="20" value="#{lectureDirectCourtierBean.allLectureDirecteCourtier}" 
+                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                      paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" 
+                                      emptyMessage="#{msg['tableau.vide']}" sortOrder="descending" rowKey="#{trc.idLectureDirecteCourtier}"
+                                      selection="#{lectureDirectCourtierBean.selectedLectureDirecteCourtier}" rowStyleClass="#{lectureDirectCourtierBean.LectureDirecteCourtierColor(trc)}"
+                                      editable="true" editMode="cell"
+                                      rowsPerPageTemplate="10,20,30" class="table table-responsive table-bordered"
+                                      > 
+                            <p:column style="width:50px"  >
+
+                                <p:rowToggler  />
+                            </p:column>
+
+
+                            <p:column headerText="Courtier" filterBy="#{trc.courtier.abbreviation}" >
+                                <h:outputText value="#{trc.courtier.abbreviation}" />
+                            </p:column>
+                            <p:column headerText="Compagnie" filterBy="#{trc.lectureDirecteCompagnie.compagnie.designation}" >
+                                <h:outputText value="#{trc.lectureDirecteCompagnie.compagnie.designation}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.categorie']}" filterBy="#{trc.lectureDirecteCompagnie.categorie.libelle}" >
+                                <h:outputText value="#{trc.lectureDirecteCompagnie.categorie.libelle}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.garantie']}" filterBy="#{trc.lectureDirecteCompagnie.garantie.libelle}" >
+                                <h:outputText value="#{trc.lectureDirecteCompagnie.garantie.libelle}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.puissance']}" filterBy="#{trc.lectureDirecteCompagnie.puissance}">
+                                <h:outputText value="[#{trc.lectureDirecteCompagnie.puissance.inf};#{trc.lectureDirecteCompagnie.puissance.sup}]" />
+                            </p:column>
+
+
+                            <p:column headerText="#{msg['vehicule.energie']}" filterBy="#{trc.lectureDirecteCompagnie.energie.libelleFr}">
+                                <h:outputLabel value="#{trc.lectureDirecteCompagnie.energie.libelleFr}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.nombreplace']}" filterBy="#{trc.lectureDirecteCompagnie.nombreDePlace}">
+                                <h:outputLabel  value="#{trc.lectureDirecteCompagnie.nombreDePlace}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['vehicule.poids']}" filterBy="#{trc.lectureDirecteCompagnie.poids}">
+                                <h:outputText value="[#{trc.lectureDirecteCompagnie.poids.inf};#{trc.lectureDirecteCompagnie.poids.sup}]" />
+                            </p:column>
+                            <p:column headerText="cylindre" filterBy="#{trc.lectureDirecteCompagnie.cylindre}">
+                                <h:outputText value="[#{trc.lectureDirecteCompagnie.cylindre.inf};#{trc.lectureDirecteCompagnie.cylindre.sup}]" />
+                            </p:column>
+                            <p:column headerText="#{msg['vehicule.carrosserie']}" filterBy="#{trc.lectureDirecteCompagnie.carrosserie}">
+                                <h:outputText value="#{trc.lectureDirecteCompagnie.carrosserie}" />
+                            </p:column>
+                            <p:column headerText="#{msg['vehicule.typeVitre']}" filterBy="#{trc.lectureDirecteCompagnie.typeVitre}">
+                                <h:outputText value="#{trc.lectureDirecteCompagnie.typeVitre}" />
+                            </p:column>
+                            <p:column headerText="type cylindre" filterBy="#{trc.lectureDirecteCompagnie.typeCylindre}">
+                                <h:outputText value="#{trc.lectureDirecteCompagnie.typeCylindre}" />
+                            </p:column>
+                            <p:column headerText="#{msg['garantie.prime']}"  filterBy="trc.prime">
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:outputLabel id="K" value="#{trc.prime}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{trc.prime}" rendered="#{(trc.prime eq null) ?false:true }" >
+                                            <p:ajax event="keyup" update="K"  /> 
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Activer" width="5%">
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:outputLabel id="ss0" value="#{trc.active}" /></f:facet>
+                                    <f:facet name="input"> 
+                                        <p:selectBooleanCheckbox value="#{trc.active}" >
+                                            <p:ajax update="ss0" />
+                                        </p:selectBooleanCheckbox>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Actions">
+                                <p:commandButton title="Enregistrer"  action="#{lectureDirectCourtierBean.updateLetureDirecteCourtier()}"  icon="fa fa-save"   class="btn btn-primary primary"  update="@form" >
+                                    <f:setPropertyActionListener value="#{trc}" target="#{lectureDirectCourtierBean.lectureDirecteCourtierToUpdate}" />
+                                </p:commandButton>
+                                <p:commandButton  title="Réinitialiser" oncomplete="PF('reinitialize').show()"   icon="fa fa-refresh"   class="btn btn-success success" update="@form" >
+                                    <f:setPropertyActionListener value="#{trc}" target="#{lectureDirectCourtierBean.lectureDirecteCourtierToInitialize}" />
+                                </p:commandButton>
+                                <p:commandButton title="supprimer"  oncomplete="PF('supprimer22').show()" update="rcliste2,formliste"  icon="fa fa-remove"   class="btn btn-danger danger" >
+                                    <f:setPropertyActionListener value="#{trc}" target="#{lectureDirectCourtierBean.lectureDirecteCourtierToDelete}" />
+                                </p:commandButton>
+
+                            </p:column>
+                            <p:column selectionMode="multiple" style="width:50px;text-align:center" /> 
+
+                            <p:rowExpansion >
+                                <div class="form-group">
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="pays"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.lectureDirecteCompagnie.pays.designationPays}"  />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="categorie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.lectureDirecteCompagnie.categorie.libelle}"  />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="garantie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.lectureDirecteCompagnie.garantie.libelle}"  />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="prime"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.prime}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="puissance"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="[#{trc.lectureDirecteCompagnie.puissance.inf} ; #{trc.lectureDirecteCompagnie.puissance.sup}]"  />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="energie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.lectureDirecteCompagnie.energie.libelleFr}"  />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+
+
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="nombre de places"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.lectureDirecteCompagnie.nombreDePlace}"  />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="poids"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="[#{trc.lectureDirecteCompagnie.poids.inf} ; #{trc.lectureDirecteCompagnie.poids.sup}]"  />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="carrosserie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.lectureDirecteCompagnie.carrosserie}"  />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="Type de vitre"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.lectureDirecteCompagnie.typeVitre}"  />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="Type de cylindre"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.lectureDirecteCompagnie.designation}"  />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="cylindre"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="[#{trc.lectureDirecteCompagnie.inf} ; #{trc.cylindre.sup}]"  />
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4 col-lg-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="compagnie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control"  value="#{trc.lectureDirecteCompagnie.compagnie.designation}"  />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </p:rowExpansion> 
+                        </p:dataTable>
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:commandButton rendered="#{lectureDirectCourtierBean.displayOptionLinkForCourtier}" title="Enregistrer les modifications de  la selection" value="#{msg['btn.enregistrer']}"  action="#{lectureDirectCourtierBean.updateLetureDirecteCourtierSelection()}"   class="btn btn-primary primary" icon="fa fa-save" update="@form" />
+                        <p:commandButton rendered="#{lectureDirectCourtierBean.displayOptionLinkForCourtier}" title="Reinitialiser la selection" value="Reinitialiser" oncomplete="PF('reinitializeAll').show()" class="btn btn-success success" icon="fa fa-refresh" update="@form" />
+                        <p:commandButton rendered="#{lectureDirectCourtierBean.displayOptionLinkForCourtier}" title="supprimer la selection" value="supprimer" oncomplete="PF('supprimerTout').show()" class="btn btn-danger danger" icon="fa fa-remove"  update="@form" />
+                    </div>
+                </div>
+            </p:panel>
+        </h:form> 
+        <h:form class="form-horizontal">
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                             header="Suppression" severity="alert" widgetVar="supprimer22">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer22').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,gggg:rcliste2" action="#{lectureDirectCourtierBean.supprimerLectureDirecteCourtier()}"  oncomplete="PF('supprimer22').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+        <h:form class="form-horizontal">
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="police_label" id="confirmation" message="Voulez vous réinitialiser ?"
+                             header="Réinitialisation" severity="alert" widgetVar="reinitialize">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('reinitialize').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,gggg" action="#{lectureDirectCourtierBean.reinitialseLetureDirecteCourtier()}"   oncomplete="PF('reinitialize').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+        <h:form class="form-horizontal">
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="police_label" id="confirmation" message="Voulez vous réinitialiser ?"
+                             header="Réinitialisation" severity="alert" widgetVar="reinitializeAll">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('reinitializeAll').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,gggg" action="#{lectureDirectCourtierBean.reinitializeLetureDirecteCourtierSelection()}"   oncomplete="PF('reinitializeAll').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+
+
+        <h:form class="form-horizontal">
+            <p:growl id="msgs3" showDetail="false" />
+            <p:confirmDialog class="police_label" id="confirmation" message="Voulez vous supprimer ?"
+                             header="Réinitialisation" severity="alert" widgetVar="supprimerTout">
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimerTout').hide();" type="button" class="btn-danger danger" />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,gggg" action="#{lectureDirectCourtierBean.deleteLetureDirecteCourtierSelection()}"  oncomplete="PF('supprimerTout').hide()" class="btn-primary primary"/>
+            </p:confirmDialog>
+        </h:form>
+    </ui:composition> 
+</html>
+

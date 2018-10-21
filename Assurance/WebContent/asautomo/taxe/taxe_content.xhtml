@@ -1,0 +1,477 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <p:panel header="GESTION DES TAXES"  style="margin-bottom:20px"> 
+                <p:tabView  id="tabv" >
+                    <p:tab title="Taxes FGA et Taux d'enregistrement"  >
+                        <h:form class="form-horizontal">
+                            <p:dataTable  class="table table-bordered table-responsive" rows="10" emptyMessage="" paginatorPosition="bottom" paginator="true" value="#{taxesBean.compagnieList}" var="compagnie" editMode="cell" editable="true" >
+                                <p:column headerText="Compagnie" filterBy="#{compagnie.abbreviation}" >
+                                    <p:outputLabel value="#{compagnie.abbreviation}"/>
+                                </p:column>
+                                <p:column headerText="Taxe FGA" width="20%"  >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV" value="#{compagnie.taxeFga}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnie.taxeFga}"  >
+                                                <p:ajax event="keyup" update="VV"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Taux d'enregistrement" width="20%" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="HH" value="#{compagnie.taxePrimeNette}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnie.taxePrimeNette}"  >
+                                                <p:ajax event="keyup" update="HH"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Accesoire" width="20%" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="HH1" value="#{compagnie.acessoire}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:outputLabel>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnie.acessoire}"  >
+                                                <p:ajax event="keyup" update="HH1"/>
+                                                <p:ajax event="blur" update="@this"/>
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Action" width="10%">
+                                    <p:commandLink title="valider"  action="#{taxesBean.saveOnetaxeFGA()}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="btn-sm btn-sm sm glyphicon glyphicon-send" update="@form" >
+                                        <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert" />
+                                        <f:setPropertyActionListener target="#{taxesBean.compagnie}" value="#{compagnie}" />
+                                    </p:commandLink>
+
+                                </p:column>
+                            </p:dataTable>
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                    <p:commandButton class="btn-danger danger" value="Annuler" update="@form" action="#{taxesBean.init()}" />
+                                    <p:commandButton class="btn-success success" value="Valider" update="@form" action="#{taxesBean.saveTaxeFGA()}" >
+                                        <p:confirm header="Confirmation" message="Etes-vous sûr ?" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                    <p:growl id="dets" for="somekey"/>
+                                </div>
+                            </div>
+
+                        </h:form>
+                        <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                            <h:form >
+                                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{factureCourtierBean.comptabilite()}" />
+                                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </h:form>
+                        </p:confirmDialog>
+                    </p:tab>
+
+                    <p:tab title="Taxes Generiques sur les garanties">
+
+                        <h:form class="form-horizontal">
+                            <p:dataTable  class="table table-bordered table-responsive"  rows="10" emptyMessage="" paginatorPosition="bottom" paginator="true" value="#{taxesBean.garantieCompagnieList}" var="compagniegarantie" editMode="cell" editable="true" >
+                                <p:column headerText="Compagnie" filterBy="#{compagniegarantie.compagnie.abbreviation}" >
+                                    <p:outputLabel value="#{compagniegarantie.compagnie.abbreviation}"/>
+                                </p:column>
+                                <p:column headerText="Garantie" filterBy="#{compagniegarantie.guarantie.symbole}" >
+
+                                    <p:outputLabel id="VV" value="#{compagniegarantie.guarantie.libelle}" />
+
+                                </p:column>
+                                <p:column headerText="Taxe generique" width="20%" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="HH" value="#{compagniegarantie.taxeGarantie}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagniegarantie.taxeGarantie}"  >
+                                                <p:ajax event="keyup" update="HH"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Action" width="10%">
+
+                                    <p:commandLink title="valider"  action="#{taxesBean.saveOnetaxeEnreg()}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="btn-sm btn-sm sm glyphicon glyphicon-send" update="@form" >
+                                        <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert" />
+                                        <f:setPropertyActionListener target="#{taxesBean.garantieCompagnie}" value="#{compagniegarantie}" />
+                                    </p:commandLink>
+
+
+
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                    <p:commandButton class="btn-danger danger" value="Annuler" update="@form" action="#{taxesBean.init()}" />
+
+                                    <p:commandButton class="btn-success success" value="Valider" update="@form" action="#{taxesBean.saveTaxeGenerique()}" >
+                                        <p:confirm header="Confirmation" message="Etes-vous sûr ?" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                    <p:growl id="dets" for="somekey"/>
+                                </div>
+                            </div>
+
+                        </h:form>
+                        <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                            <h:form>
+                                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{factureCourtierBean.comptabilite()}" />
+                                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </h:form>
+                        </p:confirmDialog>
+                    </p:tab>
+                    <p:tab title="Accessoire" id="gg">
+
+
+                        <h:form>
+                            <p:panel   header="Definir la valeur des parametres des courtiers autonomes"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+                                <div class="form-group" >
+                                    <p:outputLabel for="pssp" value="Pays :"/>
+                                    <h:selectOneMenu  class="form-control" converter="entityConverter"  id="pssp" value="#{compagnieCategorieAccesoireBean.pays}"  >
+                                        <f:selectItem itemValue="" itemLabel="Choisir le pays"/> 
+                                        <f:selectItems value="#{compagnieCategorieAccesoireBean.listPays}" var="pays"
+                                                       itemLabel="#{pays.designationPays}" itemValue="#{pays}"/>
+                                        <p:ajax update="psscout,psscat" listener="#{compagnieCategorieAccesoireBean.trierCourtierParPays()}" />
+                                    </h:selectOneMenu>
+                                </div>
+
+                                <div class="form-group" >
+                                    <p:outputLabel for="psscout" value="Courtier :"/>
+                                    <h:selectOneMenu  class="form-control" converter="entityConverter"  id="psscout" value="#{compagnieCategorieAccesoireBean.courtier}"  >
+                                        <f:selectItem itemValue="" itemLabel="Choisir courtier"/> 
+                                        <f:selectItems value="#{compagnieCategorieAccesoireBean.listCourtier}" var="courtier"
+                                                       itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}"/>
+                                        <p:ajax update="psscom" listener="#{compagnieCategorieAccesoireBean.trierCompagnieParCourtier()}" />
+                                    </h:selectOneMenu>
+                                </div>
+
+                                <div class="form-group" >
+                                    <p:outputLabel for="psscom" value="Compagnie :"/>
+                                    <p:selectCheckboxMenu  label="Selectionner compagnie"  class="form-control" converter="entityConverter"  id="psscom" value="#{compagnieCategorieAccesoireBean.listCompagnieSelect}"  >
+                                        <f:selectItem itemValue="" itemLabel="Choisir compagnie"/> 
+                                        <f:selectItems value="#{compagnieCategorieAccesoireBean.listCompagnie}" var="compagnie"
+                                                       itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+
+                                    </p:selectCheckboxMenu >
+                                </div>
+                                <div class="form-group" >
+                                    <p:outputLabel for="psscat" value="Categorie :"/>
+                                    <p:selectCheckboxMenu  label="Selectionner categorie"  class="form-control" converter="entityConverter"  id="psscat" value="#{compagnieCategorieAccesoireBean.listCategorieSelect}"  >
+                                        <f:selectItem itemValue="" itemLabel="Choisir categorie"/> 
+                                        <f:selectItems value="#{compagnieCategorieAccesoireBean.listCategorie}" var="categorie"
+                                                       itemLabel="#{categorie.libelle}" itemValue="#{categorie}"/>
+
+                                    </p:selectCheckboxMenu>
+                                </div>
+                                <div class="form-group" >
+                                    <p:outputLabel for="pssacc" value="Accesssoire :"/>
+                                    <p:inputText id="pssacc" value="#{compagnieCategorieAccesoireBean.accessoire}" />
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:commandLink  update="tabv:listacc" title="Enregistrer" value="Enregistrer"  action="#{compagnieCategorieAccesoireBean.saveAll()}"  class="btn btn-primary primary" >
+
+                                        </p:commandLink>
+                                    </div>
+                                </div>
+                            </p:panel>
+                        </h:form>    
+
+
+
+                        <h:form class="form-horizontal" id="listacc">
+                            <p:dataTable rowKey="#{cca.hashCode()}" class="table table-bordered table-responsive"  rows="10" emptyMessage="" paginatorPosition="bottom" paginator="true" selection="#{compagnieCategorieAccesoireBean.listCompagnieCategorieAccesoireClone}" value="#{compagnieCategorieAccesoireBean.listCompagnieCategorieAccesoire}" var="cca" editMode="cell" editable="true" >
+                                <p:column headerText="Pays" filterBy="#{cca.compagnie.pays.codePays}">
+                                    <p:outputLabel value="#{cca.compagnie.pays.codePays}"/>
+                                </p:column>
+                                <p:column headerText="Compagnie" filterBy="#{cca.compagnie.abbreviation}">
+                                    <p:outputLabel value="#{cca.compagnie.abbreviation}"/>
+                                </p:column>
+                                <p:column headerText="Courtier" filterBy="#{cca.courtier.abbreviation}">
+                                    <p:outputLabel value="#{cca.courtier.abbreviation}"/>
+                                </p:column>
+                                <p:column headerText="Categorie" filterBy="#{cca.categorie.libelle}">
+                                    <p:outputLabel value="#{cca.categorie.libelle}"/>
+                                </p:column>
+                                <p:column headerText="Accesoire">
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="HH" value="#{cca.accesoire}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:outputLabel>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{cca.accesoire}"  >
+                                                <p:ajax event="keyup" update="HH"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Action">
+                                    <p:commandLink title="Enregistrer"  action="#{compagnieCategorieAccesoireBean.saveOne()}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="btn-sm btn-sm sm glyphicon glyphicon-send" update="@form" >
+                                        <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert" />
+                                        <f:setPropertyActionListener target="#{compagnieCategorieAccesoireBean.compagnieCategorieAccesoire}" value="#{cca}" />
+                                    </p:commandLink>
+                                </p:column>
+                                <p:column width="5%"  selectionMode="multiple" style="width: 16px;text-align: center; color: black;" />
+                            </p:dataTable>
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <p:commandButton title="Enregistrer les modifications de  la selection" value="#{msg['btn.enregistrer']}"  action="#{compagnieCategorieAccesoireBean.saveList()}" icon="fa fa-save"   class="btn btn-primary primary"  update="@form" >
+                                        <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                        </h:form>
+                        <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                            <h:form>
+                                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </h:form>
+                        </p:confirmDialog>
+                    </p:tab>
+                    <p:tab title="Gestion des fractionnements" >
+                        <h:form class="form-horizontal">
+                            <p:dataTable rows="10" class="table table-bordered table-responsive" emptyMessage="" paginatorPosition="bottom" paginator="true" value="#{taxesBean.allcompagnie}" var="compagnieFraction" editMode="cell" editable="true" >
+                                <p:column headerText="Compagnie" width="10%" filterBy="#{compagnieFraction.abbreviation}" >
+                                    <p:outputLabel value="#{compagnieFraction.abbreviation}"/>
+                                </p:column>
+                                <p:column headerText="1 MOIS" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV" value="#{compagnieFraction.mois1}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.mois1}"  >
+                                                <p:ajax event="keyup" update="VV"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="2 MOIS" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV2" value="#{compagnieFraction.mois2}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.mois2}"  >
+                                                <p:ajax event="keyup" update="VV2"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="3 MOIS"  >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV3" value="#{compagnieFraction.mois3}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.mois3}"  >
+                                                <p:ajax event="keyup" update="VV3"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="4 MOIS" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV4" value="#{compagnieFraction.mois4}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.mois4}"  >
+                                                <p:ajax event="keyup" update="VV4"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="5 MOIS"  >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV5" value="#{compagnieFraction.mois5}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.mois5}"  >
+                                                <p:ajax event="keyup" update="VV5"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="6 MOIS" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV6" value="#{compagnieFraction.mois6}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.mois6}"  >
+                                                <p:ajax event="keyup" update="VV6"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="7 MOIS" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV7" value="#{compagnieFraction.mois7}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.mois7}"  >
+                                                <p:ajax event="keyup" update="VV7"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="8 MOIS" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV8" value="#{compagnieFraction.mois8}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.mois8}"  >
+                                                <p:ajax event="keyup" update="VV8"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="9 MOIS" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV9" value="#{compagnieFraction.mois9}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.mois9}"  >
+                                                <p:ajax event="keyup" update="VV9"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="10 MOIS" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV10" value="#{compagnieFraction.mois10}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.mois10}"  >
+                                                <p:ajax event="keyup" update="VV10"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="11 MOIS" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV11" value="#{compagnieFraction.mois11}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.mois11}"  >
+                                                <p:ajax event="keyup" update="VV11"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="12 MOIS" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV12" value="#{compagnieFraction.mois12}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.mois12}"  >
+                                                <p:ajax event="keyup" update="VV12"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Prorata" >
+                                    <p:cellEditor >
+                                        <f:facet name="output" >
+                                            <p:outputLabel id="VV12d" value="#{compagnieFraction.fractionnementJournalie}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText   value="#{compagnieFraction.fractionnementJournalie}"  >
+                                                <p:ajax event="keyup" update="VV12d"/>
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Action" width="10%">
+                                    <p:commandLink title="valider"  action="#{taxesBean.saveOneFraction()}"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="btn-sm btn-sm sm glyphicon glyphicon-send" update="@form" >
+                                        <p:confirm header="Confirmation" message="Etes-vous sûr?" icon="ui-icon-alert" />
+                                        <f:setPropertyActionListener target="#{taxesBean.compagnieFractionne}" value="#{compagnieFraction}" />
+                                    </p:commandLink>
+
+                                </p:column>
+
+                            </p:dataTable>
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                    <p:commandButton class="btn-danger danger" value="Annuler" update="@form" action="#{taxesBean.init()}" />
+                                    <p:commandButton class="btn-success success" value="Valider" update="@form" action="#{taxesBean.saveFractionnement()}" >
+                                        <p:confirm header="Confirmation" message="Etes-vous sûr ?" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                    <p:growl id="dets" for="somekey"/>
+                                </div>
+                            </div>
+
+
+                        </h:form>
+                        <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+                            <h:form>
+                                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </h:form>
+                        </p:confirmDialog>
+                    </p:tab>
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <h:graphicImage library="images" name="ajax-loader.gif" />
+                    </p:dialog>
+                </p:tabView> 
+            </p:panel>
+        </div>
+    </ui:composition>
+</html>

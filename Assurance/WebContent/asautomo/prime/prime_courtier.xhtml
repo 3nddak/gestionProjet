@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+        <h:form class="form-inline">
+            <p:panel   header="Definir la valeur des parametres des courtiers autonomes"  toggleable="true" collapsed="true" style="margin-bottom:20px">
+
+                <div class="form-group" >
+                    <p:outputLabel for="pss" value="Compagnie :"/>
+                    <h:selectOneMenu  class="form-control" converter="entityConverter"  id="pss" value="#{primeBean.compagnieSelect}"  >
+                        <f:selectItem itemValue="" itemLabel="Choisir compagnie"/> 
+                        <f:selectItems value="#{primeBean.allCompagnies}" var="compagnie"
+                                       itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                        <p:ajax update="cou" listener="#{primeBean.trierCourtierParCompagine()}" event="change" />
+                    </h:selectOneMenu>
+                </div>
+
+                <div class="form-group" >
+                    <p:outputLabel for="cou" value="Courtier :"/>
+                    <h:selectOneMenu  class="form-control"  converter="entityConverter" id="cou" value="#{primeBean.courtierSelect}"  >
+                        <f:selectItem itemValue="" itemLabel="Choisir courtier"/> 
+                        <f:selectItems value="#{primeBean.courtierList}" var="courtier"
+                                       itemLabel="#{courtier.abbreviation}" itemValue="#{courtier}"/>
+                        <p:ajax update="pss" listener="#{primeBean.trierCourtierParCompagine()}" event="change" />
+                    </h:selectOneMenu>
+                </div>
+
+                <div class="form-group" >
+                    <p:commandButton  action="#{primeBean.trierCompagnieGarantieParCourtier()}" update="@form"  icon="fa fa-search"  value="Rechercher" title="Rechercher" class="form-control btn btn-primary primary">
+
+                    </p:commandButton>
+                </div>
+
+                <hr/>
+                <!-- drfghjnkljhgfghjklmkjhgfghjklkjhgfghjkljhg -->
+                <div class="form-group" >
+                    <p:dataTable class="table_label table-responsive table" var="gcc" id="display" editable="true" editMode="cell" reflow="true" rows="5" value="#{primeBean.compGarantiList}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                 rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg['tableau.vide']}" >                      
+                        <p:column headerText="Compagnie">
+                            <h:outputText value="#{gcc.compagnie.abbreviation}" > 
+                            </h:outputText>
+                        </p:column >
+
+                        <p:column headerText="Categorie">
+                            <h:outputText value=" #{gcc.categorie.libelle}" > 
+                            </h:outputText>
+                        </p:column >
+                        <p:column headerText="Guarantie">
+                            <h:outputText value="#{gcc.guarantie.symbole}" > 
+                            </h:outputText>
+                        </p:column >
+
+                        <p:column headerText="Taux">
+                            <h:outputText value="#{gcc.taux}" />
+
+                        </p:column>
+                        <p:column headerText="Constante">
+                            <h:outputText value="#{gcc.cte}" />
+
+                        </p:column>
+                        <p:column headerText="Taux Remorque">
+                            <h:outputText value="#{gcc.tauxR}" />
+
+                        </p:column>
+                        <p:column headerText="Constante Remorque">
+
+                            <h:outputText value="#{gcc.cteR}" />
+
+                        </p:column>
+                        <p:column headerText="op1">
+                            <h:outputText value="#{gcc.option1}" />
+                        </p:column>
+                        <p:column headerText="op2">
+                            <h:outputText value="#{gcc.option2}" />
+                        </p:column>
+                        <p:column headerText="op3">
+
+                            <h:outputText value="#{gcc.option3}" />
+
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+                <div class="form-group">
+                    <p:commandButton  value="#{msg['btn.enregistrer']}" action="#{primeBean.saveListcompaCourtierPrime()}" update="@form,ggg"   class="btn btn-success success">
+
+                    </p:commandButton>
+                </div>
+
+            </p:panel>
+
+        </h:form>
+
+        <h:form id="ggg">
+            <p:panel   header="Paramètres des primes des courtiers autonomes" toggleable="true" id="ppp" collapsed="false" style="margin-bottom:20px">
+
+                <p:dataTable rowKey="#{ccp.idCompagnieCourtierPrime}" selection="#{primeBean.compagnieCourtierPrimeLisSelectiont}" class="table_label table-responsive" var="ccp"  editable="true" editMode="cell" reflow="true" rows="15" value="#{primeBean.compagnieCourtierPrimeList}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" 
+                             rowsPerPageTemplate="2,3,4,5,6,7,15"  emptyMessage="#{msg['tableau.vide']}" >                      
+                    <p:column width="16px">
+                        <p:rowToggler/>
+                    </p:column>
+                    <p:column headerText="Compagnie" filterBy="#{ccp.compagnieGuarantie.compagnie.abbreviation}">
+                        <h:outputText value="#{ccp.compagnieGuarantie.compagnie.abbreviation}" > 
+                        </h:outputText>
+                    </p:column >
+                    <p:column headerText="Courtier" filterBy="#{ccp.courtier.abbreviation}">
+                        <h:outputText value="#{ccp.courtier.abbreviation}" > 
+                        </h:outputText>
+                    </p:column >
+
+                    <p:column headerText="Categorie" filterBy="#{ccp.compagnieGuarantie.categorie.libelle}">
+                        <h:outputText value=" #{ccp.compagnieGuarantie.categorie.libelle}" > 
+                        </h:outputText>
+                    </p:column >
+                    <p:column headerText="Guarantie" filterBy="#{ccp.compagnieGuarantie.guarantie.libelle}">
+                        <h:outputText value="#{ccp.compagnieGuarantie.guarantie.symbole}" > 
+                        </h:outputText>
+                    </p:column >
+
+                    <p:column headerText="Taux">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="ss7" value="#{ccp.taux}" /></f:facet>
+                            <f:facet name="input"><p:inputText  rendered="#{ccp.taux eq null ?false:true}" value="#{ccp.taux}" style="width:100%" label="Year">
+                                    <p:ajax event="keyup" update="ss7"   />
+                                    <pe:keyFilter  mask="num" />
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Constante">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="ss6" value="#{ccp.cte}" /></f:facet>
+                            <f:facet name="input"><p:inputText rendered="#{ccp.cte eq null ?false:true}"  value="#{ccp.cte}" style="width:100%" label="Year">
+                                    <p:ajax event="keyup" update="ss6"   />
+                                    <pe:keyFilter  mask="num" />
+                                </p:inputText></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Taux Remorque">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="ss5" value="#{ccp.tauxR}" /></f:facet>
+                            <f:facet name="input"><p:inputText  rendered="#{ccp.tauxR eq null ?false:true}" value="#{ccp.tauxR}" style="width:100%" label="Year">
+                                    <p:ajax event="keyup" update="ss5"   />
+                                    <pe:keyFilter  mask="num" />
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="opt1">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="ss3" value="#{ccp.option1}" /></f:facet>
+                            <f:facet name="input"><p:inputText rendered="#{ccp.optionedefine}"  value="#{ccp.option1}" style="width:100%" label="Year">
+                                    <p:ajax event="keyup" update="ss3"   />
+                                    <pe:keyFilter  mask="num" />
+                                </p:inputText></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="opt2">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="ss2" value="#{ccp.option2}" /></f:facet>
+                            <f:facet name="input">
+                                <p:inputText rendered="#{ccp.optionedefine}"   value="#{ccp.option2}" style="width:100%" label="Year">
+                                    <p:ajax event="keyup" update="ss2"   />
+                                    <pe:keyFilter  mask="num" />
+                                </p:inputText></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="opt3">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="ss1" value="#{ccp.option3}" /></f:facet>
+                            <f:facet name="input"><p:inputText rendered="#{ccp.optionedefine}"  value="#{ccp.option3}" style="width:100%" label="Year">
+                                    <p:ajax event="keyup" update="ss1"   />
+                                    <pe:keyFilter  mask="num" />
+                                </p:inputText></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Activer" width="5%">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel id="ss0" value="#{ccp.isActive}" /></f:facet>
+                            <f:facet name="input"> 
+                                <p:selectBooleanCheckbox value="#{ccp.isActive}" >
+                                    <p:ajax update="ss0" />
+                                </p:selectBooleanCheckbox>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Actions" width="15%">
+                        <p:commandButton title="#{msg['btn.enregistrer']}"  action="#{primeBean.updateCCP()}"   class="btn-sm btn-primary primary" icon="fa fa-save" update="@form" >
+                            <f:setPropertyActionListener value="#{ccp}" target="#{primeBean.compagnieCourtierPrime}" />
+                        </p:commandButton>
+                        <p:commandButton title="#{msg['btn.supprimer']}" action="#{primeBean.removeCCP()}"   class="btn-sm btn-danger danger" icon="fa fa-remove" update="@form" >
+                            <f:setPropertyActionListener value="#{ccp}" target="#{primeBean.compagnieCourtierPrime}" />
+                        </p:commandButton>
+                        <p:commandButton  title="Reinitialiser" action="#{primeBean.reinitialseCCP()}"   class="btn-sm btn-success success" icon="fa fa-refresh" update="@form" >
+                            <f:setPropertyActionListener value="#{ccp}" target="#{primeBean.compagnieCourtierPrime}" />
+                       </p:commandButton>
+
+                    </p:column>
+
+                    <p:column width="5%"  selectionMode="multiple" style="width: 16px;text-align: center; color: black;" />
+                    <p:rowExpansion>
+                        <p:panel header="Valeur des Parametres de base">
+                            <p:panelGrid columns="2" layout="grid" columnClasses="label,value">
+                                <p:outputLabel value="Taux" rendered="#{ccp.compagnieGuarantie.taux eq null ?false:true}"  />
+                                <p:outputLabel value="#{ccp.compagnieGuarantie.taux}"   rendered="#{ccp.compagnieGuarantie.taux eq null ?false:true}" />
+                                <p:outputLabel value="Taux Remorque"  rendered="#{ccp.compagnieGuarantie.tauxR eq null ?false:true}" />
+                                <p:outputLabel value="#{ccp.compagnieGuarantie.tauxR}"  rendered="#{ccp.compagnieGuarantie.tauxR eq null ?false:true}"  />
+                                <p:outputLabel value="Constante"  rendered="#{ccp.compagnieGuarantie.cte eq null ?false:true}"/>
+                                <p:outputLabel value="#{ccp.compagnieGuarantie.cte}"   rendered="#{ccp.compagnieGuarantie.cte eq null ?false:true}" />
+                                <p:outputLabel value="Constante remorques"  rendered="#{ccp.compagnieGuarantie.cteR eq null ?false:true}" />
+                                <p:outputLabel value="#{ccp.compagnieGuarantie.cteR}"   rendered="#{ccp.compagnieGuarantie.cteR eq null ?false:true}" />
+                                <p:outputLabel value="Option1" rendered="#{ccp.compagnieGuarantie.option }" />
+                                <p:outputLabel value="#{ccp.compagnieGuarantie.option1}"  rendered="#{ccp.compagnieGuarantie.option}"  />
+                                <p:outputLabel value="Option2" rendered="#{ccp.compagnieGuarantie.option }" />
+                                <p:outputLabel value="#{ccp.compagnieGuarantie.option2}"  rendered="#{ccp.compagnieGuarantie.option}" />
+                                <p:outputLabel value="Option3" rendered="#{ccp.compagnieGuarantie.option}" />
+                                <p:outputLabel value="#{ccp.compagnieGuarantie.option3}" rendered="#{ccp.compagnieGuarantie.option}"  />
+                            </p:panelGrid>
+                        </p:panel>
+                    </p:rowExpansion>
+                </p:dataTable>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <p:commandButton title="Enregistrer les modifications de  la selection" value="#{msg['btn.enregistrer']}"  action="#{primeBean.updateSlection()}" icon="fa fa-save"   class="btn btn-primary primary"  update="@form" />
+                    </div>
+                    <div class="form-group">
+                        <p:commandButton title="supprimer la selection" value="#{msg['btn.supprimer']}" action="#{primeBean.deleteSlection()}"   class="btn btn-danger danger" icon="fa fa-remove" update="@form" />
+                    </div>
+                    <div class="form-group">
+                        <p:commandButton title="Reinitialiser la selection" value="Reinitialiser" action="#{primeBean.reinitialiseSlection()}"   class="btn btn-block btn-success success" icon="fa fa-refresh" update="@form" />
+                    </div>
+                </div>
+            </p:panel>
+        </h:form> 
+    </ui:composition> 
+
+</html>
+

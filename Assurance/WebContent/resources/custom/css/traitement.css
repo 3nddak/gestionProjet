@@ -1,0 +1,20 @@
+/* #############################################Debut traitement #########################################*/
+.nonTraite{
+    background:  #9acfea;
+}
+
+.traite{
+    background: #d9534f;
+}
+
+.valideP{
+    background: #4cae4c;
+}
+
+.rejete{
+    background: #d9534f;
+}
+.valideC{
+    background: #aed248;
+}
+/*######################### FIN Traitement #########################################*/

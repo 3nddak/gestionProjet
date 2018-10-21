@@ -1,0 +1,42 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+            <h:form id="mailto" class="form-horizontal">
+                <div class="table-responsive">
+                    <p:growl for="somekey" id="jjf"/>
+
+                </div>
+                <div class="form-group">
+                    <p:outputLabel for="destinataire" value="#{msg['message.destinataire']}" class="col-md-3 col-sm-4 control-label"/>
+                    <div class="col-md-9 col-sm-8">
+                        <h:inputText id="destinataire" value="#{souscriptionEffectiveAsAutoBean.adresseRecepteur}" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p:outputLabel for="objet" value="#{msg['message.objet']}" class="col-md-3 col-sm-4"/>
+                    <div class="col-md-9 col-sm-8">
+                        <p:inputText id="objet" value="#{souscriptionEffectiveAsAutoBean.objet}" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p:outputLabel for="message" value="#{msg['message.titre']} " class="col-md-3 col-sm-4 control-label"/>
+                    <div class="col-md-9 col-sm-8">
+                        <p:inputTextarea id="message" value="#{souscriptionEffectiveAsAutoBean.message}" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <p:commandButton   class="btn-danger btn btn-xs pull-left" icon="fa fa-close" oncomplete="PF('mailTo').hide()" value="#{msg['btn.annuller']}"/> 
+                        <p:commandButton update="mailto:jjf" timeout="30000"   icon="fa fa-send" onstart="PF('mailTo').hide()"  actionListener="#{souscriptionEffectiveAsAutoBean.sendEmail()}" class="btn-success btn btn-xs pull-right"  value="#{msg['btn.envoyer']}"/> 
+                    </div>
+                </div>
+            </h:form>   
+    </ui:composition>
+</html>

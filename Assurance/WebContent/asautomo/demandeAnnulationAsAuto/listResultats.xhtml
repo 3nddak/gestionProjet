@@ -1,0 +1,77 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div id="liste">
+
+            <h:form  id="formliste" class="form-horizontal">
+
+                <p:panel header ="Resultats de la  recherche" toggleable="true">
+                    <p:dataTable rows="8" paginator="true"   emptyMessage="#{msg['tableau.vide']}" class="table table-responsive" var="facture" value="#{demandeAnnulationPVBean.listFacture}" rowKey="#{facture.idFacture}" selection="#{demandeAnnulationPVBean.demandeAnnulationAsAuto.facture}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150"  
+                                 rowsPerPageTemplate="2,3,4,5,6,7"  
+                                 selectionMode="single"  >
+                        <p:column headerText="Numero Transaction" >
+                            <p:outputLabel value="#{facture.idTransaction}" />
+                        </p:column>
+                        <p:column headerText="NumPolice" filterBy="#{facture.objetVoiture.numeroPolice}" >
+                            <h:outputText value="#{facture.objetVoiture.numeroPolice}"/>
+                        </p:column>
+                        <p:column headerText="Compagnie" filterBy="#{facture.compagnie.abbreviation}">
+                            <h:outputText value="#{facture.compagnie.abbreviation}"/>
+                        </p:column>
+                        <p:column headerText="Courtier" filterBy="#{facture.courtier.abbreviation}">
+                            <h:outputText value="#{facture.courtier.abbreviation}"/>
+                        </p:column>
+                        <p:column headerText="Nom" >
+                            <h:outputText value="#{facture.objetVoiture.client.nom}"/>
+                        </p:column>
+                        <p:column  headerText="Prenom">
+                            <h:outputText value="#{facture.objetVoiture.client.prenom}"/>
+                        </p:column>
+                        <p:column  headerText="numero d'identité">
+                            <h:outputText value="#{facture.objetVoiture.client.numeroPiece}"/>
+                        </p:column>
+                        <p:column headerText="Immatricutlation">
+                            <h:outputText value="#{facture.objetVoiture.numeroImmatriculation}"/>
+                        </p:column>
+                        <p:column  headerText="Numéro Série">
+                            <h:outputText value="#{facture.objetVoiture.numSerie}"/>
+                        </p:column>
+                        <p:column headerText="Marque" >
+                            <h:outputText value="#{facture.objetVoiture.marque}"/>
+                        </p:column>
+                        <p:column headerText="Numéro Chassie">
+                            <h:outputText value="#{facture.objetVoiture.numChassis}"/>
+                        </p:column>
+                        <p:column headerText="Catégorie" >
+                            <h:outputText value="#{facture.objetVoiture.categorie.libelle}"/>
+                        </p:column>
+                        <p:column headerText="Action">
+                            <p:commandLink title="faire la demande" class=" btn btn-xs btn-primary fa fa-file" oncomplete="PF('traiter').show()" action="#{demandeAnnulationPVBean.isExiste()}"  update="traiter"  >
+                               
+                                <f:setPropertyActionListener target="#{demandeAnnulationPVBean.demandeAnnulationAsAuto.facture}" value="#{facture}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+
+                </p:panel>
+
+
+            </h:form>
+
+
+        </div>
+    </ui:composition>
+
+
+</html>
+

@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta charseet="utf_8"/>
+        <meta name="viewport" content="width-device-width, initial-scale=1"/>
+        <meta http-equiv="X-UA-Conpatible" content="IE=edge"/>
+        <link rel="icon" type="image/png" href="../resources/custom/img/icon.png" />
+        <h:outputStylesheet library="bootstrap/css" name="bootstrap.css" />
+        <!-- Font Awesome -->
+        <h:outputStylesheet  library="font-awesome/css" name="font-awesome.css" />
+        <h:outputStylesheet library="custom/css" name="assurance.css"/>
+        <title>E-ASSURANCE|CHANGEMENT DE MOT DE PASSE</title>
+    </h:head> 
+
+    <h:body>
+        <div class="row">
+            <div class="container">
+                <h:form id="formpass"  styleClass="form-passwordchange">
+                    <h2 class="form-login-heading-Password text-uppercase text-center">
+                        <h:outputLabel value="Activation de Compte"/> 
+                    </h2>
+                    <p:growl id="msgs"  globalOnly="true"  severity="info,warn"/>  
+                    <div class="login-wrap">
+                         <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="ancienMdp" class=" police_label pull-left" value="Ancien mot de passe"  /><span class="etoile_rouge pull-left">*</span>
+                                <p:password id="ancienMdp" value="#{loginBean.oldPassword}" required="#{loginBean.req}" requiredMessage="Veuillez saisir l'ancien mot de passe" 
+                                            styleClass="form-control" a:placeholder="Ancien mot de passe" >
+                                </p:password>
+                                <h:message for="ancienMdp"  id="ancienMdpMessage" class="errorClass" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="nouveauMdp" class=" police_label pull-left" value="Nouveau mot de passe"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                <p:password  id="nouveauMdp" value="#{loginBean.newPassword}" 
+                                             styleClass="form-control" a:placeholder="Nouveau mot de passe*"  required="#{loginBean.req}"
+                                             requiredMessage="#{msg['utilisateur.motdepasse.requireMessage']}"
+                                             validatorMessage="#{msg['utilisateur.motdepasse.validatorMessage']}" binding="#{composantMotDePasse2}">
+                                    <f:validateLength minimum="6"/>
+                                    <f:ajax event="blur" render="passwordMessage confirmationMessage" execute=" nouveauMdp repeterMdp" />
+                                </p:password>
+                                <h:message id="passwordMessage" for="nouveauMdp" class="errorClass" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="repeterMdp" class=" police_label pull-left" value="Comfirmer Mot de passe"  /><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                <p:password id="repeterMdp" value="#{loginBean.confirmPassword}"
+                                            styleClass="form-control" a:placeholder="Confirmer Mot de passe*"  
+                                            required="#{loginBean.req}" requiredMessage="#{msg['utilisateur.motdepasseconfirmation.requireMessage']}">
+                                    <f:validator validatorId="PasswordValidator" />
+                                    <f:attribute name="composantMotDePasse2" value="#{composantMotDePasse2}" />
+                                    <f:ajax event="blur" render="passwordMessage confirmationMessage" />
+                                </p:password>
+                                <h:message id="confirmationMessage" for="repeterMdp" class="errorClass" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:commandButton value="Annuler" action="#{loginBean.reset()}" class="btn btn-danger pull-left " style="background: #d9534f;color:#fff;border-color: #d43f3a; font-family: cursive; margin-top: 20px;">
+                                    <p:ajax listener="#{loginBean.setFalse}"  />
+                                </p:commandButton>
+
+                                <p:commandButton action="#{loginBean.changePasswordForTheFirstTime()}"  value="Activer" update="msgs"  class="btn btn-primary  pull-right" style="background: #337ab7;color:#fff;border-color: #337ab7; font-family: cursive; margin-top: 20px;">
+                                    <f:ajax execute="@form" />
+                                    <p:ajax listener="#{loginBean.setTrue}"  />
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </div>
+                           </div>
+                </h:form> 
+            </div>
+        </div>
+        <h:outputScript library="custom/js" name="jquery.backstretch.min.js"></h:outputScript>
+        <script type="text/javascript">
+            $.backstretch("../resources/custom/img/log_bg.jpg", {speed: 500, fade: 750});
+        </script>
+        <br />
+    </h:body>
+</html>
+

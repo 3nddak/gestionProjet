@@ -1,0 +1,513 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+        <div id="liste" class="row">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <div class="panel">
+                    <h:form  id="formliste" class="form-horizontal">
+
+                        <p:panel header="#{msg['client.liste']}" style="margin-bottom:2px">                              
+                            <div class="">
+                                <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn-imprimer btn btn-xs" actionListener="#{clientBean.doGetA()}"   > 
+                                    <i class=" glyphicon glyphicon-print"></i>
+                                </h:commandLink>
+                            </div>
+                            <div class="panel-body">
+
+                                <div class="row">
+                                    <p:inputText class="col-lg-2 col-md-4" value="#{clientBean.stringToSearchClient}"  placeholder="#{msg['client.recherche.client']}">
+                                        <p:ajax event="keyup"  update="client" delay="100" />
+                                    </p:inputText>
+                                    <p:inputText class="col-lg-2 col-md-4" value="#{clientBean.stringToSearchObjet}" placeholder="#{msg['client.recherche.voiture']}" >
+                                        <p:ajax event="keyup"  update="client" delay="100" />
+                                    </p:inputText>
+                                    <p:inputText class="col-lg-2 col-md-4"  value="#{clientBean.stringToSearchfacture}" placeholder="#{msg['client.recherche.demande']}" >
+                                        <p:ajax event="keyup"  update="client" delay="100" />
+                                    </p:inputText>
+                                </div>
+                                <div class="row">
+                                    <p:outputPanel class="table_label" id="client">
+                                        <div class="table-responsive">
+                                            <p:dataTable class="table table-bordered" paginatorPosition="bottom" rows="5" id="clientliste" rowExpandMode="single" var="client" value="#{clientBean.clientList}"
+                                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                         emptyMessage="#{msg['tableau.vide']}" paginator="true" style="margin-bottom:2px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" > 
+                                                <p:ajax event="rowToggle" listener="#{clientBean.onRowToggle}" update="voituresliste" />
+                                                <p:column style="width:35px">
+                                                    <p:rowToggler/>
+                                                </p:column>
+
+                                                <p:column headerText="#{msg['client.nom']}">
+                                                    <h:outputText value="#{client.nom}" />
+                                                </p:column>
+                                                <p:column headerText="#{msg['client.prenom']}">
+                                                    <h:outputText value="#{client.prenom}" />
+                                                </p:column>
+
+                                                <p:column headerText="#{msg['client.pays']}">
+                                                    <h:outputText value="#{client.pays}" />
+                                                </p:column>
+                                                <p:column headerText="#{msg['client.adresse']}">
+                                                    <h:outputText value="#{client.adresse}" />
+                                                </p:column>
+                                                <p:column headerText="Actions">
+
+                                                    <p:commandButton update="modification" oncomplete="PF('modifier').show()" icon="fa fa-edit" title="#{msg['btn.modifier']}" class="btn btn-xs btn-primary primary">
+                                                        <f:setPropertyActionListener value="#{client}" target="#{clientBean.clientSelected}" />
+                                                    </p:commandButton>
+
+
+
+                                                    <p:commandButton  oncomplete="PF('supprimer').show()" icon="fa fa-trash" title="#{msg['btn.supprimer']}" class="btn-danger btn danger btn-xs ">
+                                                        <f:setPropertyActionListener value="#{client}" target="#{clientBean.clientSelected}" />
+                                                    </p:commandButton>
+
+                                                    <p:commandButton  oncomplete="PF('detailclient').show()" update="clientDetail"  icon="fa fa-search" title="" class="btn btn-imprimer btn-xs  ">
+                                                        <f:setPropertyActionListener value="#{client}"  target="#{clientBean.clientSelected}" />
+                                                    </p:commandButton>
+                                                </p:column>
+
+                                                <p:rowExpansion class="table-responsive" >  
+                                                    <p:dataTable  var="vehicule" rowExpandMode="single" class="table table-bordered table-hover tableTwo" id="voituresliste" value="#{clientBean.vehiculeClientList}" 
+                                                                  >
+
+                                                        <p:ajax event="rowToggle" listener="#{clientBean.onRowToggle2}" update="voituresliste" />
+                                                        <p:column style="width:35px">
+                                                            <p:rowToggler  />
+                                                        </p:column>
+                                                        <p:column headerText="#{msg['vehicule.categorie']}">
+                                                            <h:outputText value="#{vehicule.categorie.libelle}" />
+                                                        </p:column>
+                                                        <p:column headerText="#{msg['vehicule.immatriculation']}">
+                                                            <h:outputText value="#{vehicule.numeroImmatriculation}" />
+                                                        </p:column>
+                                                        <p:column headerText="#{msg['vehicule.numeromoteur']}">
+                                                            <h:outputText value="#{vehicule.numMoteur}" />
+                                                        </p:column>
+                                                        <p:column headerText="#{msg['vehicule.numeroserie']}">
+                                                            <h:outputText value="#{vehicule.numSerie}" />
+                                                        </p:column>
+                                                        <p:column headerText="Actions">
+                                                            <p:commandButton  oncomplete="PF('detail').show()" update="carDetail"  icon="fa fa-search" title="Détaille" class="btn btn-xs btn-imprimer">
+                                                                <f:setPropertyActionListener value="#{vehicule}"  target="#{clientBean.vehiculeSelected}" />
+                                                            </p:commandButton>
+                                                        </p:column>
+                                                        <p:rowExpansion>  
+                                                            <p:dataTable var="facture"  id="facturesliste" class="table table-bordered table-hover" rowStyleClass="#{clientBean.factureColor(facture.statut)}" rowExpandMode="single" reflow="true" value="#{clientBean.factureVehiculeList}">
+                                                                <p:column  headerText="#{msg['titre.courtier']}" >
+                                                                    <h:outputText value="#{facture.courtier.abbreviation}" />
+                                                                </p:column>
+
+                                                                <p:column headerText="#{msg['titre.compagnie']}">
+                                                                    <h:outputText value="#{facture.compagnie.abbreviation}" />
+                                                                </p:column>
+
+
+                                                                <p:column headerText="#{msg['client.nom']}">
+                                                                    <h:outputText />
+                                                                </p:column>
+
+                                                                <p:column headerText="#{msg['souscription.periode']}">
+                                                                    <h:outputText value="#{facture.periode}" />
+                                                                </p:column>
+
+                                                                <p:column headerText="Actions">
+                                                                    <p:commandButton action="#{clientBean.detailFacture()}" oncomplete="PF('detailfactureCompagnie').show()" update="detail"  icon="fa fa-search" title="Détaille" class="btn btn-xs btn-imprimer">
+                                                                        <f:setPropertyActionListener value="#{facture}"  target="#{clientBean.factureCompagnieSelected}" />
+                                                                    </p:commandButton>
+
+                                                                </p:column>
+                                                            </p:dataTable>
+                                                        </p:rowExpansion> 
+                                                    </p:dataTable>
+                                                </p:rowExpansion> 
+
+                                            </p:dataTable>
+                                        </div>
+                                    </p:outputPanel>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </h:form>
+
+                    <p:dialog  header="MODIFICATION" showEffect="fade"  widgetVar="modifier" modal="true" width="auto" minHeight="500" resizable="false">
+                        <ui:include src="client_modifier.xhtml"/>
+                    </p:dialog>
+                    <p:dialog  header="" widgetVar="detailfactureCompagnie" showEffect="fade"  width="900" height="400" resizable="false">
+                        <ui:include src="factureCompagnie.xhtml"/>
+                    </p:dialog>
+                    <h:form class="form-horizontal">
+                        <p:growl id="msgs3" showDetail="false" />
+                        <p:confirmDialog id="confirmation" message="Voulez vous vraiment supprimer cette ligne"
+                                         header="Suppression" severity="alert" 
+                                         widgetVar="supprimer">
+
+
+                            <p:commandButton value="Non" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                            <p:commandButton value="Oui" update="msgs3,formliste"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+                        </p:confirmDialog>
+                    </h:form>
+                    <p:dialog header="Détails du vehicule"  id="carDetail" showEffect="fade"  widgetVar="detail" width="900" minHeight="800" resizable="false">
+
+                        <p:outputPanel  style="width:100%">
+                            <f:facet name="header">
+
+                                <h:outputText value="#{vehicule.client.nom}" />
+                            </f:facet>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="Carrosserie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.carrosserieConduitesInterieure}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="ChargrUtile"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.chargeUtile}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="datev"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.datev}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="Immatriculation"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.numeroImmatriculation}"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="energie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.energie.libelleFr}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="genre"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.genre}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="marque"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.marque}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="poidsVide"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.poidsVide}"/>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="miseEnCirculation"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.miseEnCirculation}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="nombrePlaces"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.nombrePlaces}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="nomObjet"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.nomObjet}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="ptac"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.ptac}"/>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="numChassis"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.numChassis}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="numMoteur"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.numMoteur}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="numSerie"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.numSerie}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="puissance"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.puissance}"/>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <h:outputText value="puissanceReelle"/>
+                                            </span>
+                                            <h:outputLabel class="form-control" value="#{clientBean.vehiculeSelected.puissanceReelle}"/>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                        </p:outputPanel>
+
+                    </p:dialog>
+
+                    <p:dialog header="Détails du client"  id="clientDetail" showEffect="fade"  widgetVar="detailclient" width="1000" minHeight="1000" resizable="false">
+                        <div class="form-group">
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.type']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.fax}"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.nom']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.nom}"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.prenom']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.prenom}"  />
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.lieuemission']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.lieuEmission}"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.bp']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.codeZip}"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.email']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.email}"  />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.pays']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.pays}" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.lieudenaissance']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.lieuNaissance}"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.datedenaissance']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.dateNaissance}"  />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.nationalite']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.nationalite}"  />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.adresse']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.adresse}"/> 
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.piece']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.typePiece}"  />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.numeropiece']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.numeroPiece}"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.dateemissionpiece']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.dateEmissionPiece}"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="#{msg['client.dateexpirationpiece']}"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.dateExpirationPiece}" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group hide">
+
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Pseudo"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.pseudo}"  />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <h:outputText value="Password"/>
+                                    </span>
+                                    <h:outputLabel class="form-control"  value="#{clientBean.clientSelected.password}" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </p:dialog>
+                </div>
+
+
+            </div>
+        </div>
+
+    </ui:composition> 
+
+</html>
+

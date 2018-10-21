@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <ui:composition>
+        <div class="panel ">
+            <div class="panel-body">
+                <fieldset><legend class="text-uppercase" style="font-size: 15px"><h:outputLabel class="police_label" value="#{msg['simulation.auto.caracteristiqueVehicule']}"/></legend>
+                    <p:growl id="msgsl" globalOnly="true" showDetail="false"/>
+                    <ui:include src="infos_1.xhtml"/>
+                    <div class="form-group">
+
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-4 col-lg-3 col-sm-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="rem" value="#{msg['vehicule.remorque']}"   class="pull-left text-left" />
+                            </div> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:selectBooleanCheckbox  id="rem" label="#{msg['vehicule.remorque']}" value="#{objetBean.remorque}"  />
+                            </div> 
+                        </div> 
+                        <div class="col-md-4 col-lg-3 col-sm-12 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel value="#{msg['vehicule.immatricule']}" />
+                            </div> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                <p:selectBooleanCheckbox value="#{objetBean.immatriculationVehicule}">
+                                    <p:ajax update="formliste" />
+                                </p:selectBooleanCheckbox>
+
+                            </div> 
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                    
+
+                        <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel value="#{msg['vehicule.immatriculation']}"  for="numeroImmatriculation" class=" pull-left" /><h:outputLabel  value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText disabled="#{!objetBean.immatriculationVehicule}" value="#{objetBean.voiture.numeroImmatriculation}"  id="numeroImmatriculation" class="form-control" placeholder="#{msg['vehicule.immatriculation']}"
+                                             required="true" requiredMessage="#{msg['vehicule.immatriculation.requiredMessage']}"  
+                                             >
+                                    <f:ajax event="keyup" render="imaMessage"/>
+                                </p:inputText>
+                                <p:message for="numeroImmatriculation"  id="imaMessage" class="errorClass"/>
+                            </div> 
+                        </div>
+
+                        <!--div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.carrosserie']}"  for="carrosserieConduitesInterieure" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                <h:selectOneMenu id="carrosserieConduitesInterieure" value="#{objetBean.voiture.carrosserieConduitesInterieure}" class="form-control"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['vehicule.carrosserie']}" itemValue=""/>
+                                    <f:selectItems value="#{objetBean.allCarrosserie}" var="c" itemLabel="#{c.carrosserie}" itemValue="#{c.carrosserie}"/> 
+                                </h:selectOneMenu>   
+                            </div>
+                        </div--> 
+                         <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.genre']}"  for="genre" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                <h:selectOneMenu id="genre" value="#{objetBean.voiture.genre}"  required="true" class="form-control"
+                                                 requiredMessage="#{msg['vehicule.genre.requiredMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['vehicule.genre']}" itemDisabled="true"/>
+                                    <f:selectItems value="#{genreAndTypeVitreBean.allGenre}" var="gen" itemLabel="#{gen.genre}" itemValue="#{gen.genre}"/> 
+                                    <f:ajax event="click" render="genreMessage" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="genre" id="genreMessage"/>
+                            </div>
+                        </div> 
+                        <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.chargeutile']}"  for="poids" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="poids" value="#{objetBean.voiture.poids}" class="form-control" placeholder="#{msg['vehicule.chargeutile']}"
+                                             >
+                                </p:inputText>
+                            </div>
+                        </div> 
+
+
+                    </div>
+
+                    <div class="form-group">
+                         <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.cylindre']}" rendered="#{objetBean.estDeuxroux()}" for="cylindre" class=" pull-left" />&nbsp;<label jsf:rendered="#{objetBean.estDeuxroux()}" >(cm<sup>3</sup>)&nbsp;</label><h:outputLabel rendered="#{objetBean.estDeuxroux()}"   value="*" class="etoile_rouge" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="cylindre" required="true" value="#{objetBean.voiture.cylindre}" rendered="#{objetBean.estDeuxroux()}" class="form-control" placeholder="#{msg['vehicule.cylindre']}"
+                                             >
+                                </p:inputText>
+                            </div>
+                        </div> 
+
+                        <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="cyl" value="#{msg['vehicule.typecylindre']}" rendered="#{objetBean.estDeuxroux()}"   class=" pull-left" /><h:outputLabel rendered="#{objetBean.estDeuxroux()}"  value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="cyl" required="true" value="#{objetBean.voiture.typecylindre}" rendered="#{objetBean.estDeuxroux()}"  class="form-control" converter="omnifaces.SelectItemsConverter"
+                                                 requiredMessage="#{msg['vehicule.typecylindre.requiredMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['vehicule.typecylindre']}" noSelectionOption="true"/>
+                                    <f:selectItems var="cyli" itemLabel="#{cyli.designation}" itemValue="#{cyli}" value="#{objetBean.typeCylindreList}"/> 
+                                    <f:ajax event="click" render="cylMessage" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="cyl"  id="cylMessage" class="errorClass"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.typeVitre']}"  for="typevitre" class=" pull-left" /><h:outputLabel value="*"  rendered="#{!objetBean.estDeuxroux()}"  class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="typevitre" value="#{objetBean.voiture.typeVitres}"  required="#{!objetBean.estDeuxroux()}" class="form-control" converter="omnifaces.SelectItemsConverter"
+                                                 requiredMessage="#{msg['vehicule.typevitre.requireMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['vehicule.typeVitre']}" itemDisabled="true"/>
+                                    <f:selectItems value="#{genreAndTypeVitreBean.allTypeVitre}" var="typ" itemLabel="#{typ.typeVitre}" itemValue="#{typ}"/> 
+                                    <f:ajax event="click" render="typeenergieMessage" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="typevitre" id="typeenergieMessage" />
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.energie']}"  for="energie" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="energie" value="#{objetBean.idEnergie}" required="true" class="form-control"
+                                                 requiredMessage="#{msg['vehicule.energie.requireMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['vehicule.energie']}" itemValue=""/>
+                                    <f:selectItems value="#{objetBean.energieItems}"/> 
+                                    <f:ajax event="click" render="energieMessage" />
+                                    <f:ajax  listener="#{objetBean.energieObject()}" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="energie" id="energieMessage" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.marque']}"  for="marque" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:autoComplete  id="marque" required="true" forceSelection="true"  requiredMessage="#{msg['vehicule.marque.requiredMessage']}" class="form-control" value="#{objetBean.voiture.marque}" completeMethod="#{objetBean.completeMethod2}"  >
+                                    <p:ajax  event="itemSelect" update="tmarque" listener="#{objetBean.typesMByMarque()}" />
+                                    <f:ajax event="keyup" render="marqueMessage"/>
+                                </p:autoComplete>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="marque"  id="marqueMessage"/>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.typemarque']}"  for="tmarque" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu disabled="#{objetBean.voiture.marque eq null ?true:false}" id="tmarque" value="#{objetBean.voiture.typeMarqueVehicule}" class="form-control"
+
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['vehicule.marque']}" noSelectionOption="true" itemDisabled="true"/>
+                                    <f:selectItems value="#{objetBean.listTypeMarqueVehicule}" var="tm" itemLabel="#{tm.libelle}" itemValue="#{tm.libelle}"/> 
+                                    <f:ajax event="click" render="tmMessage" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="tmarque"  id="tmMessage"/>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.miseencirculation']}"  for="miseEnCirculation" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                <p:calendar id="miseEnCirculation"  class="form-control"   value="#{objetBean.voiture.miseEnCirculation}" yearRange="c-100:c+10" required="true" mask="true" pattern="dd/MM/yyyy" mindate="#{objetBean.datemin}" maxdate="#{objetBean.datemax}" 
+                                            requiredMessage="#{msg['vehicule.miseencirculation.requiredMessage']}"
+                                            readonlyInput="true" navigator="true"
+                                            >
+
+                                    <p:ajax event="dateSelect" update="miseMessage"/>
+                                </p:calendar>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="miseEnCirculation" id="miseMessage"/>
+
+                            </div> 
+                        </div>
+
+
+                         <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pl" value="#{msg['vehicule.nombreplace']}"   class=" pull-left" /><h:outputLabel rendered="#{!objetBean.estDeuxroux()}" value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="pl" value="#{objetBean.voiture.nombrePlaces}" required="#{!objetBean.estDeuxroux()}" class="form-control"
+                                                 requiredMessage="#{msg['vehicule.nombredeplace.requiredMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['vehicule.nombreplace']}" itemValue=""/>
+                                    <f:selectItems value="#{objetBean.nbPlace2}"/> 
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                         <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.numerochassis']}"  for="numChassis" class=" pull-left" /><h:outputLabel rendered="#{!objetBean.immatriculationVehicule}" value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText  value="#{objetBean.voiture.numChassis}" id="numChassis" styleClass="form-control" placeholder="#{msg['vehicule.numerochassis']}"
+                                              required="#{!objetBean.immatriculationVehicule}" requiredMessage="#{msg['vehicule.numerosChassis.requiredMessage']}"  >
+                                    <p:ajax event="keyup" update="numChassisMessage"/>                                          
+                                </p:inputText>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="numChassis" id="numChassisMessage"/>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.numeromoteur']}"  for="numMoteur" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{objetBean.voiture.numMoteur}" id="numMoteur" class="form-control" placeholder="#{msg['vehicule.numeromoteur']}"
+                                             required="true" requiredMessage="#{msg['vehicule.numeroMoteur.requiredMessage']}"  >
+                                    <p:ajax event="keyup" update="numMoteurMessage"/>
+                                </p:inputText>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="numMoteur" id="numMoteurMessage"/>
+                            </div> 
+                        </div>
+
+                    </div> 
+                    <div class="form-group">
+
+                        <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel value="#{msg['vehicule.puissance']}"  for="pui" class=" pull-left" /><h:outputLabel rendered="#{!objetBean.estDeuxrouxPuissance()}"  value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText id="pui" value="#{objetBean.voiture.puissance}" required="#{!objetBean.estDeuxrouxPuissance()}" requiredMessage="#{msg['vehicule.puissance.requiredMessage']}"  class="form-control" placeholder="#{msg['vehicule.puissance']}"
+                                             >
+                                    <p:ajax event="keyup" update="puissanceMessage"/>
+                                </p:inputText>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="pui" id="puissanceMessage"/>
+                            </div>
+                        </div> 
+                        <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.puissancereelle']}"  for="puissanceReelle" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{objetBean.voiture.puissanceReelle}" id="puissanceReelle" styleClass="form-control" placeholder="#{msg['vehicule.puissancereelle']}"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.valeurneuf']}"  for="valeurneuf" class=" pull-left" /><h:outputLabel rendered="#{!objetBean.estDeuxrouxValeurNeuve()}" value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <!--p:tooltip for="valeurneuf" showEvent="click" hideEvent="blur"  value="Veuillez saisir 0 comme valeur si cette valeur n'existe pas"/--> 
+
+                                <p:inputText value="#{objetBean.voiture.valeurNeuve}"  id="valeurneuf" styleClass="form-control" placeholder="#{msg['vehicule.valeurneuf']}"
+                                             required="#{!objetBean.estDeuxrouxValeurNeuve()}"  requiredMessage="#{msg['vehicule.valeurneuf.requiredMessage']}"  
+                                             >
+                                    <pe:keyFilter for="valeurneuf" mask="num"/>
+                                    <p:ajax event="keyup" update="valeurneufMessage"/>
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:inputText>
+                                
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="valeurneuf" id="valeurneufMessage"/>
+                            </div>
+                        </div>
+                         <div class="col-md-3 col-lg-3 col-sm-4  col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['vehicule.valeurvenale']}"  for="valeurvenale" class=" pull-left" /><h:outputLabel rendered="#{!objetBean.estDeuxrouxValeurVenale()}" value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                 <!--p:tooltip for="valeurvenale"  showEvent="click" hideEvent="blur"  value="Veuillez saisir 0 comme valeur si cette valeur n'existe pas"/--> 
+
+                                <p:inputText value="#{objetBean.voiture.valeurvenale}"  id="valeurvenale" styleClass="form-control" placeholder="#{msg['vehicule.valeurvenale']}"
+                                             required="#{!objetBean.estDeuxrouxValeurVenale()}"  requiredMessage="#{msg['vehicule.valeurvenale.requiredMessage']}"  
+                                             >
+                                    <pe:keyFilter for="valeurvenale" mask="num"/>
+                                    <p:ajax event="keyup" update="valeurvenaleMessage"/>
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:inputText>
+                               
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="valeurvenale" id="valeurvenaleMessage"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:commandButton id="btn_reset" class="btn btn-danger danger" value="#{msg['btn.annuller']}" type="reset"/>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset> 
+            </div>
+        </div>
+    </ui:composition> 
+</html>

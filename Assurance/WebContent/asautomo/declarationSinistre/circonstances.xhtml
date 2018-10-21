@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <div class="panel">
+
+            <div class="panel-body">
+
+                <fieldset><legend class="text-uppercase" ><h:outputLabel class="police_label" value="Information sur le logement"/></legend>
+                    <p:growl id="msgslm" globalOnly="true" showDetail="false"/>
+
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="Date et heure de survenance"  for="dateDepart" class="pull-left"  /> <h:outputLabel value="*"  class="etoile_rouge pull-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:calendar value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.dateSinistre}" navigator="true" readonlyInput="true" class="form-control"  required="true" requiredMessage="Veuillez preciser la date et l'heure de survenance"  id="dateDepart" pattern="dd/MM/yyyy HH:mm:ss"  mask="true" placeholder="Date/heure" >
+                                <p:ajax event="dateSelect" update="dateDepart"/> 
+                            </p:calendar>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="dateDepart" id="dateDepartMessage"/> 
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="Lieu de Survenance"  for="adresse" class=" " /><h:outputLabel value="*" class="etoile_rouge " />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.lieuSurvenance}"  id="adresse" styleClass="form-control" placeholder="lieu survenance"
+                                         required="true"  requiredMessage="Veuillez entrer le lieu de survenance"  
+                                         >
+                                <p:ajax event="keyup" update="adresseMessage"/>
+
+                            </p:inputText>
+
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="adresse" id="adresseMessage"/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="Code postal"  for="codePo" class=" " /><h:outputLabel value="*" class="etoile_rouge " />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.codePostal}"  id="codePo" styleClass="form-control" placeholder="code postal"
+                                         required="true"  requiredMessage="Veuillez entrer le code postal"  
+                                         >
+
+                                <p:ajax event="keyup" update="codePoMessage"/>
+
+                            </p:inputText>
+
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="codePo" id="codePoMessage"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel  value="Pays"  for="pays" class=" " />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:inputText value="#{declarationSinistreBean.declaratonSinistreAssuranceAuto.paysSurvenance}"  id="commune" styleClass="form-control" placeholder="pays de survenance"
+                                         requiredMessage="Veuillez entrer le pays de survenance"  
+                                         >
+
+                                <p:ajax event="keyup" update="communeMessage"/>
+
+                            </p:inputText>
+
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:message for="commune" id="communeMessage"/>
+                        </div>
+                    </div>
+
+
+                </fieldset>   
+            </div> 
+        </div>
+    </ui:composition>
+</html>

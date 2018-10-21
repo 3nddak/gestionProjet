@@ -1,0 +1,92 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <div id="liste">
+
+            <h:form  id="formliste3" class="form-horizontal">
+
+                <p:panel header ="#{msg['titre.traitementDeLaDemande']}" >
+                    <div class="form-group">
+                        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
+                                <h:outputLabel rendered="#{autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.isExist}"  value="#{msg['titre.etatDeLaDemande']} : "  for="motifrff" class=" pull-left" />
+                            </div>
+                            <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
+                                <h:outputLabel rendered="#{autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.isExist}"  value="#{autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.libelleEtaDemandeCourtier}"  id="motifrff" class=" pull-left" />
+                            </div>
+                            <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                <p:panel id="motif" header ="#{msg['titre.motifDeDaDemande']}" >
+                                    <div class="panel panel-border-none">
+                                        <div class="panel-body">
+                                            <p jsf:id="sta" title="#{msg['titre.motifDeDaDemande']}" >
+                                                #{autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.motifDemandePV}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </p:panel>
+                            </div>
+                            <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                <p:panel id="motir" header ="#{msg['titre.motifDuRefus']}" toggleable="true" rendered="#{autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.refuser()}">
+                                    <div class="panel panel-border-none">
+                                        <div class="panel-body">
+                                            <p jsf:id="stamm" title="#{msg['titre.motifDuRefus']}">
+                                                #{autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.motifRejet}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </p:panel>
+                            </div>
+                            <div class="panel panel-border-none">
+                                <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                        <h:outputLabel  value="#{msg['titre.autoriser']}"  rendered="#{!autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.dejaTraiterParCourtier}" for="autorisers" class=" pull-left" />
+                                    </div>
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                        <p:selectBooleanCheckbox id="autorisers"  rendered="#{!autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.dejaTraiterParCourtier}" value="#{autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.autoriser}"  class="form-control" >
+                                            <p:ajax update="@form"/>
+                                        </p:selectBooleanCheckbox>
+                                    </div> 
+                                </div> 
+                                <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">  
+                                        <h:outputLabel id="motifl" rendered="#{!autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.dejaTraiterParCourtier1}"  value="#{msg['titre.motifDuRefus']}"  for="motifr" class=" pull-left" />
+                                    </div>
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+
+                                        <p:inputTextarea  rendered="#{!autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.dejaTraiterParCourtier1  }" id="motifr"  requiredMessage="#{msg['titre.motifDuRefus.requiredMessage']}" required="true"  value="#{autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.motifRefusCourtier}" title="motif refus" class="form-control" >
+
+                                            <p:ajax event="keyup" update="telMessage"/>
+
+                                        </p:inputTextarea>
+                                    </div> 
+                                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                        <p:message for="motifr" id="telMessage" class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:commandLink rendered="#{!autorisationDemandeAnnulationAsVoyage.demandeAnnulationAsVoyage.dejaTraiterParCourtier}" title="#{msg['btn.enregistrer']}" value="#{msg['btn.enregistrer']}" update="formliste2" onsuccess="PF('traiter').hide()"  action="#{autorisationDemandeAnnulationAsVoyage.enregistrer()}"   class="btn btn-success"   >
+                                    <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['question.etesVousSur']}"  icon="ui-icon-alert" />
+                                </p:commandLink>
+                            </div>
+                        </div>
+                    </div>
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:composition>
+
+</html>
+

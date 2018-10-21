@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <h:form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-lg-4 col-md-4 col-xs-12 col-sm-6">
+                    <h:outputLabel for="pays"  value="#{msg['titre.pays']}"/>                              
+                    <h:selectOneMenu  id="pays"   class="form-control"   converter="entityConverter" value="#{produitAsSanteBean.pays}" >                                          
+                        <f:selectItem itemLabel="#{msg['titre.pays']}" itemDisabled="false" />
+                        <f:selectItems var="pays" value="#{produitAsSanteBean.listPays}" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />            
+                        <p:ajax listener="#{produitAsSanteBean.updateListCompagnie()}" update="compagnie" />
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-lg-4 col-md-4 col-xs-12 col-sm-6">
+                    <h:outputLabel for="compagnie"  value="#{msg['titre.compagnie']}" />                              
+                    <h:selectOneMenu id="compagnie" value="#{produitAsSanteBean.produitAsSante.compagnie}"  converter="entityConverter"  class="form-control" >                                          
+                        <f:selectItem itemLabel="#{msg['titre.compagnie']}" itemDisabled="false" />
+                        <f:selectItems value="#{produitAsSanteBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}" />            
+                    </h:selectOneMenu>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <h:outputLabel value="#{msg['titre.produit.nom']}" for="description" />
+                    <p:inputText class="form-control" id="nom" value="#{produitAsSanteBean.produitAsSante.nom}" />
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <h:outputLabel value="#{msg['titre.Description']}" for="description" />
+                    <p:inputText class="form-control"  id="description" value="#{produitAsSanteBean.produitAsSante.description}" />
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <h:outputLabel value="#{msg['titre.produit.age.min.enfant']}" for="pame" />
+                    <p:inputText class="form-control" id="pame" value="#{produitAsSanteBean.produitAsSante.ageMinMineur}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <h:outputLabel value="#{msg['titre.produit.age.max.enfant']}" for="pames" />
+                    <p:inputText class="form-control" id="pames" value="#{produitAsSanteBean.produitAsSante.ageMaxMineur}" />
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <h:outputLabel value="#{msg['titre.produit.age.max.adulte']}" for="pamap" />
+                    <p:inputText class="form-control"  id="pamap" value="#{produitAsSanteBean.produitAsSante.ageMaxAdulte}" />
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <h:outputLabel value="#{msg['titre.produit.prime.enfant']}" for="ppe" />
+                    <p:inputText class="form-control" id="ppe" value="#{produitAsSanteBean.produitAsSante.primeAnnuelleMineur}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <h:outputLabel value="#{msg['titre.produit.prime.adulte']}" for="ppap" />
+                    <p:inputText class="form-control" id="ppap" value="#{produitAsSanteBean.produitAsSante.primeAnnuelleAdulte}" />
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 ">
+                    <h:outputLabel value="#{msg['titre.produit.accessoire']}" for="pa" />
+                    <p:inputText class="form-control" id="pa" value="#{produitAsSanteBean.produitAsSante.accessoire}" />
+                </div>
+            </div>
+
+            <div class="btn-toolbar">
+                <p:commandButton class="btn-danger btn" value="#{msg['btn.annuller']}" update="@form" action="#{produitAsSanteBean.cancel()}" />
+
+                <p:commandButton class="btn-imprimer btn pull-right" value="#{msg['btn.enregistrer']}" update="@form,listProduitForm" action="#{produitAsSanteBean.saveOne()}" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+            </div>
+
+        </h:form> 
+    </ui:composition>
+
+</html>
+
+

@@ -1,0 +1,217 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:adm="http://github.com/adminfaces"
+	template="#{layoutMB.template}">
+
+
+	<ui:define name="metadata">
+		<ui:param name="enableSlideMenu" value="false" />
+		<!-- disables slide menu (only on this page) on small screens -->
+		<ui:param name="autoShowNavbar" value="false" />
+		<!-- disables auto show navbar (only on this page) on small devices -->
+		<script type="text/javascript" src="../../resources/js/fr.js"></script>
+		<style type="text/css">
+.header-right.ui-datatable .ui-datatable-header {
+	text-align: right !important;
+}
+
+.year-spinner input {
+	width: 100px
+}
+
+.ui-button-text-only .ui-button-text {
+	padding: 0.3em 0.4em;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+	display: none;
+}
+</style>
+	</ui:define>
+	<ui:define name="title">
+        Table des sinistres cumulés
+    </ui:define>
+
+	<ui:define name="description">
+        Cette page vous affiche la liste des sinistres par souscripteur et par bénéficiaire .
+    </ui:define>
+
+	<ui:define name="body">
+		<p:spacer />
+
+		<div>
+
+			<h:form id="form">
+			<ui:define name="description">
+        Cette page vous affiche la liste des sinistres par souscripteur et par bénéficiaire .
+    </ui:define>
+    <center>
+					<h:panelGrid columns="9" cellpadding="10">
+
+						<div>
+
+							<p:outputLabel for="button" value="Date debut:"
+								style="margin-left:0px; margin-right:20px; " />
+							<p:calendar id="button" value="#{tableSinistres.date_deb}" required="true"
+								pattern="dd-MM-yyyy" mask="true" locale="fr" disabled="false	" />
+
+							<p:outputLabel for="button1" value="Date fin:"
+								style="margin-left:20px; margin-right:20px; " />
+							<p:calendar id="button1" value="#{tableSinistres.date_fin}" required="true"
+								pattern="dd-MM-yyyy" mask="true" />
+
+
+         <p:outputLabel for="advanced" value="Service :" style="margin-left:20px; margin-right:20px; " />
+        <p:selectOneMenu id="advanced" value="#{tableSinistres.service_id}" panelStyle="width:100px" style="width:100px" filter="true" filterMatchMode="startsWith" styleClass="btn btn-primary btn-block">
+         <f:selectItem itemLabel="Tous les services" itemValue="0"/>
+            <f:selectItems value="#{tableSinistres.listServices}" var="service" itemValue="#{service.id}" itemLabel="#{service.nom}" />
+        </p:selectOneMenu>
+       
+							<p:commandButton value="Valider"
+								styleClass="btn btn-primary btn-block" icon="fa fa-thumbs-up"
+								style="margin-left:20px;"
+								actionListener="#{tableSinistres.buttonSinPaye()}" />
+						</div>
+
+					</h:panelGrid>
+				
+				</center>
+				<h:panelGrid columns="3">
+				<div>
+				 
+        <p:outputLabel for="advanced" value="Prestataires :" style="margin-left:20px; margin-right:20px; margin-top:50px;  margin-bottom:50px; " />
+        <p:selectOneMenu id="benef" value="#{tableSinistres.beneficiaire}" panelStyle="width:200px" style="width:200px" filter="true" filterMatchMode="startsWith" styleClass="btn btn-primary btn-block">
+         <f:selectItem itemLabel="Tous les Prestataires" itemValue="0"/>
+            <f:selectItems value="#{tableSinistres.listBenef}" var="service" itemValue="#{service.nom}" itemLabel="#{service.nom}" style="width:200px" />
+        </p:selectOneMenu>
+				
+				</div>
+					<div>
+						<p:commandButton styleClass="btn btn-primary btn-block"
+							value="Imprimer" type="button" icon="fa fa-print"
+							style="margin-left:5px; margin-right:20px; ">
+							<p:printer target="zone1" />
+						</p:commandButton>
+					</div>
+				</h:panelGrid>
+			</h:form>
+		</div>
+		<p:spacer />
+
+		<div>
+		<p:layout id="zone1">
+		<center>
+		<div>
+		
+		   <p:link><h4>Sinistres payés aux prestataires du <b>#{tableSinistres.date_deb.toLocaleString()}</b>  au <b>#{tableSinistres.date_fin.toLocaleString()}.</b> </h4></p:link>
+		   
+		</div>
+		</center>
+		
+		<p:spacer/>
+		<!-- rowsPerPageTemplate="15,25,100,20000" rows="100" -->
+			<p:dataTable  value="#{tableSinistres.siniPayeParAssu}"
+				var="cp" class="table1" paginator="false" resizableColumns="true"
+				liveResize="true" rowStyleClass=""
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} 
+      {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				
+				styleClass="btn btn-primary btn-block">
+				<!--       <p:column>
+         <f:facet name="header">
+            <h:outputText value="ID" />
+         </f:facet>
+         <h:outputText value="#{cp.id}" />
+      </p:column>
+       -->
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText styleClass="btn btn-primary btn-block"
+								value="Date reception" />
+						</f:facet>
+						<h:outputText value="#{cp.dateDeclare}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText styleClass="btn btn-primary btn-block"
+								value="N° Facture" />
+						</f:facet>
+						<h:outputText value="#{cp.libelletFacture}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText styleClass="btn btn-primary btn-block"
+								value="N° Dossier" />
+						</f:facet>
+						<h:outputText value="#{cp.numDossier}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText styleClass="btn btn-primary btn-block"
+								value="Souscripteur" />
+						</f:facet>
+						<h:outputText value="#{cp.souscriptuer}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText styleClass="btn btn-primary btn-block"
+								value="Police" />
+						</f:facet>
+						<h:outputText value="#{cp.numPolice}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText styleClass="btn btn-primary btn-block"
+								value="Ref paiement" />
+						</f:facet>
+						<h:outputText value="#{cp.banque} #{cp.cheque}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText styleClass="btn btn-primary btn-block"
+								value="Service" />
+						</f:facet>
+						<h:outputText value="#{tableSinistres.getNameService(cp.service.id)}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText styleClass="btn btn-primary btn-block"
+								value="Date paiement" />
+						</f:facet>
+						<h:outputText value="#{cp.date}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText styleClass="btn btn-primary btn-block"
+								value="Montant paye" />
+						</f:facet>
+						<h:outputText value="#{tableSinistres.getFormaterDouble(cp.paye)}" />
+					</p:column>
+					
+				<p:columnGroup type="footer">
+				<p:row>
+					<h1><b><p:column colspan="8" style="color:white;" footerText="TOTAL"/></b></h1>
+					<h1><b><p:column colspan="1" footerText="#{tableSinistres.totalSin}"  style="color:white;"/></b></h1>
+				</p:row>
+				</p:columnGroup>
+			</p:dataTable>
+</p:layout>
+
+		</div>
+
+
+		<p:spacer />
+
+	</ui:define>
+
+	<ui:define name="code">
+
+
+	</ui:define>
+</ui:composition>

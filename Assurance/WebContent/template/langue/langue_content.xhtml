@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+
+        <div class="container-fluid" >
+            <div id="liste" class="row-fluid">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+
+                    <div class="panel">
+                        <h:form  id="formliste" class="form-horizontal" >
+                            <div class="panel-heading"> 
+
+                                <fieldset>
+                                    <legend class=" police_label text-center"><p:outputLabel value="GESTION DES LANGUES"></p:outputLabel></legend>
+                                    <div class="form-horizontal">
+                                        <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8">
+                                            <div class="col-lg-2 small col-md-2 col-xs-2 col-sm-2">
+                                                <p:commandButton value="#{msg['btn.ajouter']}" icon="fa fa-plus" class=" police_label btn-success btn-lg btn-sm btn-xs pull-right" type="button" onclick="PF('ajouter').show();"/>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </fieldset>
+
+                            </div>
+
+                            <div class="panel panel-body">
+                                <p:outputPanel id="devise">
+                                    <p:dataTable class="table_label table-responsive" var="langue" id="langueliste" reflow="true" rows="10" value="#{langueBean.allLangue}"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                 paginator="true" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" > 
+                                        <f:facet name="header">
+                                            <p:outputPanel >
+                                                <p:outputLabel  value="Rechercher : " />
+                                                <p:inputText id="globalFilter" onkeyup="ddd.filter()" style="width:150px" placeholder="Rechercher"/>
+                                            </p:outputPanel>
+                                        </f:facet>
+                                       
+
+                                        <p:column headerText="Libelle">
+                                            <h:outputText value="#{langue.libelle}" />
+                                        </p:column>
+
+                                        <p:column headerText="Symbole">
+                                            <h:outputText value="#{langue.symbole}" />
+                                        </p:column >
+                                        <p:column headerText="Actions" class="col-lg-2">
+
+                                            <p:commandButton update="modification" oncomplete="PF('modifier').show()" icon="fa fa-edit" title="Modification" class="btn btn-primary" style="background: #337ab7;color:#fff;border-color: #337ab7;">
+                                                <f:setPropertyActionListener value="" target="" />
+                                            </p:commandButton>
+
+
+
+                                            <p:commandButton  oncomplete="PF('supprimer').show()" icon="fa fa-trash" title="Supprimer" class="btn btn-danger" style="background: #d9534f;color:#fff;border-color: #d43f3a;">
+                                                <f:setPropertyActionListener value="" target="" />
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:outputPanel>
+                            </div>
+                        </h:form>
+                        <p:dialog  class="police_label" header="Ajout" showEffect="fade" widgetVar="ajouter" modal="true" width="500" minHeight="800" resizable="false">
+                            <ui:include src="langue_ajout.xhtml"/>
+                           <p:ajax update="devise-ajout:libelleMessage"/>
+                        </p:dialog> 
+                        <p:dialog class="police_label" header="Modification" showEffect="fade"  widgetVar="modifier" modal="true" width="600" minHeight="500" resizable="false">
+                            <ui:include src="langue_modifier.xhtml"/>
+                        </p:dialog>
+                        <h:form id="devise-sup">
+                            <p:messages id="msgs3" showDetail="false" />
+                            <p:confirmDialog class="police_label" id="confirmation" message="Voulez vraiment supprimer cette ligne"
+                                             header="Suppression" severity="alert" 
+                                             widgetVar="supprimer">
+
+
+                                <p:commandButton value="Non" onclick="PF('supprimer').hide();" type="button" class="btn btn-primary" style="background: #337ab7;color:#fff;border-color: #337ab7;"  />
+                                <p:commandButton value="Oui" update="msgs3,formliste" action="#{deviseBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn btn-danger" style="background: #d9534f;color:#fff;border-color: #d43f3a;" />
+                            </p:confirmDialog>
+                        </h:form>
+
+                        <!--div class="panel-footer"> 
+
+                        </div--> 
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+    </ui:composition> 
+
+</html>
+

@@ -1,0 +1,330 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="sms1">
+
+
+
+        <sec:authorize ifAllGranted="NOTIFICATION"> 
+            <ul class="nav  navbar-right-ok" >
+
+                <li class="">
+                    <!--demandes rejetées -->
+
+                    <a href="#" class="dropdown-toggle" title="#{msg['notification.dr']}"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                        <h:outputLabel value="#{msg['notification.dr']}"  style="background-color:#ffffff; color:black " class="pull-left badge" /><sup><h:outputLabel class="badge small" value="#{newMessageBean.demandeRejete+notificationAsCompteBean.demandeRejetee+notificationAsVoyageBean.demandeRejetee+notificationsAsVieBean.demandeRejetee}" style="background-color: slategrey" /></sup></a>
+                    <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                        <!--demandes rejetées // auto -->
+                        <li>                             
+                            <h:commandLink    value=" Automobile"  title="Automobile"  action="#{newMessageBean.getPagesDemandeRejete()}">
+                                <h:outputLabel value="#{newMessageBean.demandeRejete}" style="background-color: #ec971f" class="badge pull-right" />
+                                <f:setPropertyActionListener value="#{newMessageBean.stautDemR}" target="#{allMessageBean.statut}" /> 
+                                <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                            </h:commandLink>
+
+                        </li>
+                        <!--demandes rejetées // Voyage -->
+                        <li  > 
+                            <h:commandLink   value="Voyage" title="Assurance Voyage" action="#{notificationAsVoyageBean.getPagesDemandeRejete()}">
+                                <h:outputLabel value="#{notificationAsVoyageBean.demandeRejetee}" style="background-color: #e4b9b9" class="badge pull-right" />
+
+                            </h:commandLink>
+
+                        </li>
+                        <!--demandes rejetées // credit -->
+                        <li  > 
+                            <h:commandLink   value=" Crédit" title=" Assurance Crédit" action="#{notificationsAsVieBean.getPagesDemandeRejete()}">
+                                <h:outputLabel value="#{notificationsAsVieBean.demandeRejetee}" style="background-color: #e4b9b9" class="badge pull-right" />
+
+                            </h:commandLink>
+
+                        </li>
+                        <!--demandes rejetées // compte -->
+                        <li  > 
+                            <h:commandLink   value=" Compte" title="Assurance Compte" action="#{notificationAsCompteBean.getPagesDemandeTraitee()}">
+                                <h:outputLabel value="#{notificationAsCompteBean.demandeRejetee}" style="background-color: #e4b9b9" class="badge pull-right" />
+
+                            </h:commandLink>
+
+                        </li>
+
+                    </ul>
+                </li>
+
+
+
+                <li class="">
+                    <!--recu de paiement-->
+
+                    <a href="#" class="dropdown-toggle" title="#{msg['notification.rp']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                        <h:outputLabel value="#{msg['notification.rp']}"  style="background-color:#ffffff;color:black " class="pull-left badge" /><sup><h:outputLabel class="badge small" value="#{newMessageBean.numeroPolice+notificationAsCompteBean.souscriptioneffective+notificationsAsVieBean.souscriptioneffective+notificationAsVoyageBean.souscriptioneffective}" style="background-color:lawngreen" /></sup></a>
+                    <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                        <!--recu de paiement // auto-->
+                        <li>                             
+                            <h:commandLink    value=" Automobile"  title="Automobile"  action="#{newMessageBean.getPagesSouscriptionEffective()}">
+                                <h:outputLabel value="#{newMessageBean.numeroPolice}" style="background-color: #ec971f" class="badge pull-right" />
+                                <f:setPropertyActionListener value="#{newMessageBean.stautSousE}" target="#{allMessageBean.statut}" /> 
+                                <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                            </h:commandLink>
+
+                        </li>
+                        <!--recu de paiement // Voyage-->
+                        <li  > 
+                            <h:commandLink   value="Voyage" title="Assurance Voyage" action="#{notificationAsVoyageBean.getPagesSouscriptionEffective()}">
+                                <h:outputLabel value="#{notificationAsVoyageBean.souscriptioneffective}" style="background-color: #e4b9b9" class="badge pull-right" />
+
+                            </h:commandLink>
+
+                        </li>
+                        <!--recu de paiement // credit-->
+                        <li  > 
+                            <h:commandLink   value="Crédit" title=" Crédit" action="#{notificationsAsVieBean.getPagesSouscriptionEffective()}">
+                                <h:outputLabel value="#{notificationsAsVieBean.souscriptioneffective}" style="background-color: #e4b9b9" class="badge pull-right" />
+                            </h:commandLink>
+
+                        </li>
+                        <!--recu de paiement // compte-->
+                        <li  > 
+                            <h:commandLink   value="Compte" title="Assurance Compte" action="#{notificationAsCompteBean.getPagesSouscriptionEffective()}">
+                                <h:outputLabel value="#{notificationAsCompteBean.souscriptioneffective}" style="background-color: #e4b9b9" class="badge pull-right" />
+
+                            </h:commandLink>
+
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li class="">
+
+                    <!--demandes acceptées -->
+
+                    <a href="#" class="dropdown-toggle" title="#{msg['notification.da']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                        <h:outputLabel value="#{msg['notification.da']}"  style="background-color: #ffffff; color:black " class="pull-left badge" /><sup><h:outputLabel class="badge small" value="#{newMessageBean.demandevalide+notificationAsCompteBean.demandeValidee+notificationAsVoyageBean.demandeValidee+notificationsAsVieBean.demandeValidee}" style="background-color:#aed248" /></sup></a>
+                    <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                        <!--demandes acceptées // auto-->
+                        <li>                             
+                            <h:commandLink    value=" Automobile"  title="Automobile"  action="#{newMessageBean.getPagesDemandeValideParClient()}">
+                                <h:outputLabel value="#{newMessageBean.demandevalide}" style="background-color: #ec971f" class="badge pull-right" />
+                                <f:setPropertyActionListener value="#{newMessageBean.demandeValide}" target="#{allMessageBean.statut}" /> 
+                                <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                            </h:commandLink>
+
+                        </li>
+                        <!--demandes acceptées // Voyage-->
+                        <li  > 
+                            <h:commandLink   value=" Voyage" title="Assurance Voyage" action="#{notificationAsVoyageBean.getPagesDemandeValideParClient()}">
+                                <h:outputLabel value="#{notificationAsVoyageBean.demandeValidee}" style="background-color: #e4b9b9" class="badge pull-right" />
+                            </h:commandLink>
+
+                        </li>
+
+                        <!--demandes acceptées // credit-->
+                        <li  > 
+                            <h:commandLink   value=" Crédit" title=" Assurance Crédit" action="#{notificationsAsVieBean.getPagesDemandeValideParClient()}">
+                                <h:outputLabel value="#{notificationsAsVieBean.demandeValidee}" style="background-color: #e4b9b9" class="badge pull-right" />
+                            </h:commandLink>
+
+                        </li>
+
+                        <!--demandes acceptées // compte-->
+                        <li  > 
+                            <h:commandLink   value=" Compte" title="Assurance Compte" action="#{notificationAsCompteBean.getPagesDemandeValideParClient()}">
+                                <h:outputLabel value="#{notificationAsCompteBean.demandeValidee}" style="background-color: #e4b9b9" class="badge pull-right" />
+                            </h:commandLink>
+
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="">
+
+                    <!--demandes envoyées-->
+
+                    <a href="#" class="dropdown-toggle" title="#{msg['notification.de']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                        <h:outputLabel value="#{msg['notification.de']}"  style="background-color:#ffffff;color:black " class="pull-left badge" /><sup><h:outputLabel class="badge small" value="#{newMessageBean.numberNewFacture+notificationAsCompteBean.nouvelleDemande+notificationAsVoyageBean.nouvelleDemande+notificationsAsVieBean.nouvelleDemande}" style="background-color:#ec971f" /></sup></a>
+                    <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                        <!--demandes envoyées // auto-->
+                        <li>                             
+                            <h:commandLink    value=" Automobile"  title="Automobile"  action="#{newMessageBean.pagesNouvelleD}">
+                                <h:outputLabel value="#{newMessageBean.numberNewFacture}" style="background-color: #ec971f" class="badge pull-right" />
+                                <f:setPropertyActionListener value="#{newMessageBean.stautNouD}" target="#{allMessageBean.statut}" /> 
+                                <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                            </h:commandLink>
+
+                        </li>
+
+                        <!--demandes envoyées // Voyage-->
+                        <li  > 
+                            <h:commandLink   value="Voyage" title="Assurance Voyage" action="#{notificationAsVoyageBean.getPagesNouvelleD()}">
+                                <h:outputLabel value="#{notificationAsVoyageBean.nouvelleDemande}" style="background-color: #e4b9b9" class="badge pull-right" />
+
+                            </h:commandLink>
+
+                        </li>
+
+                        <!--demandes envoyées // credit-->
+                        <li  > 
+                            <h:commandLink   value="Crédit" title=" Assurance Crédit" action="#{notificationsAsVieBean.getPagesNouvelleD()}">
+                                <h:outputLabel value="#{notificationsAsVieBean.nouvelleDemande}" style="background-color: #e4b9b9" class="badge pull-right" />
+
+                            </h:commandLink>
+
+                        </li>
+
+                        <!--demandes envoyées // compte-->
+                        <li  > 
+                            <h:commandLink   value="Compte" title="Assurance Compte" action="#{notificationAsCompteBean.getPagesNouvelleD()}">
+                                <h:outputLabel value="#{notificationAsCompteBean.nouvelleDemande}" style="background-color: #e4b9b9" class="badge pull-right" />
+                            </h:commandLink>
+
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="">
+                    <!--demandes traitées -->
+
+                    <a  href="#" class="dropdown-toggle"  title="#{msg['notification.dt']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                        <h:outputLabel value="#{msg['notification.dt']}"  style="background-color:#ffffff;color:black " class="pull-left badge" /> <sup><h:outputLabel class="badge small" value="#{newMessageBean.demandeTraite+notificationAsCompteBean.demandeTraitee+notificationAsVoyageBean.demandeTraitee+notificationsAsVieBean.demandeTraitee}" style="background-color:#a94442" /></sup></a>
+                    <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                        <!--demandes traitées // auto -->
+                        <li>                             
+                            <h:commandLink    value="Automobile"  title="Automobile"  action="#{newMessageBean.getPagesDemandeTraitee()}">
+                                <h:outputLabel value="#{newMessageBean.demandeTraite}" style="background-color: #ec971f" class="badge pull-right" />
+                                <f:setPropertyActionListener value="#{newMessageBean.demandeTraitee}" target="#{allMessageBean.statut}" /> 
+                                <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                            </h:commandLink>
+
+                        </li>
+                        <!--demandes traitées // Voyage -->
+                        <li  > 
+                            <h:commandLink   value="Voyage" title="Assurance Voyage" action="#{notificationAsVoyageBean.getPagesDemandeTraitee()}">
+                                <h:outputLabel value="#{notificationAsVoyageBean.demandeTraitee}" style="background-color: #e4b9b9" class="badge pull-right" />
+                            </h:commandLink>
+
+                        </li>
+                        <!--demandes traitées // credit -->
+                        <li  > 
+                            <h:commandLink   value="Crédit" title=" Assurance Crédit" action="#{notificationsAsVieBean.demandeTraitee}">
+                                <h:outputLabel value="#{notificationsAsVieBean.demandeTraitee}" style="background-color: #e4b9b9" class="badge pull-right" />
+                            </h:commandLink>
+
+                        </li>
+                        <!--demandes traitées // compte -->
+                        <li  > 
+                            <h:commandLink   value="Compte" title="Assurance Compte" action="#{notificationAsCompteBean.demandeTraitee}">
+                                <h:outputLabel value="#{notificationAsCompteBean.demandeTraitee}" style="background-color: #e4b9b9" class="badge pull-right" />
+                            </h:commandLink>
+
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="" >
+                    <!--Nouvelles demandes -->
+                    
+                    <a href="#" class="dropdown-toggle" title="#{msg['notification.de']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                        <h:outputLabel value="#{msg['notification.nd']}"  style="background-color:#ffffff;color:black " class="pull-left badge" /><sup><h:outputLabel class="badge small" value="#{newMessageBean.numberNewFacture+notificationAsCompteBean.nouvelleDemande+notificationAsVoyageBean.nouvelleDemande+notificationsAsVieBean.nouvelleDemande}" style="background-color:#ec971f" /></sup></a>
+                    <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                        <!--demandes envoyées // auto-->
+                        <li>                             
+                            <h:commandLink    value=" Automobile"  title="Automobile"  action="#{newMessageBean.pagesNouvelleD}">
+                                <h:outputLabel value="#{newMessageBean.numberNewFacture}" style="background-color: #ec971f" class="badge pull-right" />
+                                <f:setPropertyActionListener value="#{newMessageBean.stautNouD}" target="#{allMessageBean.statut}" /> 
+                                <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                            </h:commandLink>
+
+                        </li>
+
+                        <!--demandes envoyées // Voyage-->
+                        <li  > 
+                            <h:commandLink   value="Voyage" title="Assurance Voyage" action="#{notificationAsVoyageBean.getPagesNouvelleD()}">
+                                <h:outputLabel value="#{notificationAsVoyageBean.nouvelleDemande}" style="background-color: #e4b9b9" class="badge pull-right" />
+
+                            </h:commandLink>
+
+                        </li>
+
+                        <!--demandes envoyées // credit-->
+                        <li  > 
+                            <h:commandLink   value="Crédit" title=" Assurance Crédit" action="#{notificationsAsVieBean.getPagesNouvelleD()}">
+                                <h:outputLabel value="#{notificationsAsVieBean.nouvelleDemande}" style="background-color: #e4b9b9" class="badge pull-right" />
+
+                            </h:commandLink>
+
+                        </li>
+
+                        <!--demandes envoyées // compte-->
+                        <li  > 
+                            <h:commandLink   value="Compte" title="Assurance Compte" action="#{notificationAsCompteBean.getPagesNouvelleD()}">
+                                <h:outputLabel value="#{notificationAsCompteBean.nouvelleDemande}" style="background-color: #e4b9b9" class="badge pull-right" />
+                            </h:commandLink>
+
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="">
+
+                    <!--demandes en cours de validation-->
+                    <a  href="#" class="dropdown-toggle"  title="#{msg['notification.dt']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                        <h:outputLabel value="#{msg['notification.dt']}"  style="background-color:#ffffff;color:black " class="pull-left badge" /> <sup><h:outputLabel class="badge small" value="#{newMessageBean.demandeTraite+notificationAsCompteBean.demandeTraitee+notificationAsVoyageBean.demandeTraitee+notificationsAsVieBean.demandeTraitee}" style="background-color:#a94442" /></sup></a>
+                    <ul class="dropdown-menu animated fadeInDown pull-right">
+
+                        <!--demandes traitées // auto -->
+                        <li>                             
+                            <h:commandLink    value="Automobile"  title="Automobile"  action="#{newMessageBean.getPagesDemandeTraitee()}">
+                                <h:outputLabel value="#{newMessageBean.demandeTraite}" style="background-color: #ec971f" class="badge pull-right" />
+                                <f:setPropertyActionListener value="#{newMessageBean.demandeTraitee}" target="#{allMessageBean.statut}" /> 
+                                <p:ajax oncomplete="#{allMessageBean.listerFacture()}"  />
+                            </h:commandLink>
+
+                        </li>
+                        <!--demandes traitées // Voyage -->
+                        <li  > 
+                            <h:commandLink   value="Voyage" title="Assurance Voyage" action="#{notificationAsVoyageBean.getPagesDemandeTraitee()}">
+                                <h:outputLabel value="#{notificationAsVoyageBean.demandeTraitee}" style="background-color: #e4b9b9" class="badge pull-right" />
+                            </h:commandLink>
+
+                        </li>
+                        <!--demandes traitées // credit -->
+                        <li  > 
+                            <h:commandLink   value="Crédit" title=" Assurance Crédit" action="#{notificationsAsVieBean.demandeTraitee}">
+                                <h:outputLabel value="#{notificationsAsVieBean.demandeTraitee}" style="background-color: #e4b9b9" class="badge pull-right" />
+                            </h:commandLink>
+
+                        </li>
+                        <!--demandes traitées // compte -->
+                        <li  > 
+                            <h:commandLink   value="Compte" title="Assurance Compte" action="#{notificationAsCompteBean.demandeTraitee}">
+                                <h:outputLabel value="#{notificationAsCompteBean.demandeTraitee}" style="background-color: #e4b9b9" class="badge pull-right" />
+                            </h:commandLink>
+
+                        </li>
+                    </ul>
+                </li>
+
+
+            </ul>
+        </sec:authorize>   
+
+
+
+    </h:form>
+
+</ui:composition>

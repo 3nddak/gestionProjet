@@ -1,0 +1,902 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+
+        <div class="container-fluid">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tabMass1" aria-controls="tabMass1" role="tab" data-toggle="tab">Prime compagnie</a></li>
+                <li role="presentation"><a href="#tabMass2" aria-controls="tabMass2" role="tab" data-toggle="tab">Prime courtier</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tabMass1">
+                    <fieldset>
+                        <legend class="text-center text-uppercase"> <p:outputLabel value="GESTION DES PRIMES"></p:outputLabel></legend>
+                    </fieldset>
+                    <div id="liste" class="row">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+                            <div class="panel">
+                                <div class="panel-body"> 
+                                    <h:form  id="formliste" class="form-horizontal">
+                                        <p:fieldset  legend="Effectuer une opertation : #{opDivBean.ajoutModif}" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                            <div class="row">
+                                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                                    <p:outputPanel id="ajout" style="text-align:center;">
+                                                        <p:growl id="msgs" showDetail="false" globalOnly="true" />
+                                                        <div class="form-group">
+                                                            <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                <h:outputLabel value="#{msg['courtier.compagnie']}"    class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                                                <h:selectOneMenu id="sel" value="#{primeBean.compagnie}" required="true"
+                                                                                 requiredMessage="#{msg['courtier.compagnie.requireMessage']}" class="form-control" converter="omnifaces.SelectItemsConverter"
+
+                                                                                 >
+                                                                    <f:ajax event="click" render="compMessage" />
+                                                                    <p:ajax  listener="#{primeBean.categorieByCompagnie()}" update="formliste:cat,formliste:garantie" />
+                                                                    <f:selectItem itemLabel="compagnie" itemValue=""/>
+                                                                    <f:selectItems var="compagnie" itemLabel="#{compagnie.abbreviation}" value="#{primeBean.allCompagnies}"  /> 
+
+                                                                </h:selectOneMenu>
+                                                                <p:message for="sel"  id="compMessage" class="errorClass"/>
+                                                            </div>
+                                                            <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                <h:outputLabel for="cat" value="#{msg['vehicule.categorie']}"   class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                                                <h:selectOneMenu id="cat" value="#{primeBean.categorie}" required="true" class="form-control" converter="omnifaces.SelectItemsConverter"
+                                                                                 requiredMessage="#{msg['vehicule.categorie.requiredMessage']}"
+                                                                                 >
+                                                                    <f:selectItem itemLabel="#{msg['vehicule.categorie']}" itemValue=""/>
+                                                                    <f:selectItems var="categorie" itemLabel="#{categorie.libelle}" value="#{primeBean.allCategories}"/> 
+                                                                    <p:ajax  listener="#{primeBean.guarantiesByCategorie}" update="formliste:garantie" />
+                                                                    <f:ajax event="click" render="catMessage" />
+                                                                </h:selectOneMenu>
+                                                                <p:message for="cat"  id="catMessage" class="errorClass"/>
+                                                            </div>
+
+                                                            <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                <h:outputLabel for="garantie" value="#{msg['vehicule.garantie']}"   class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                                                <h:selectOneMenu required="true" id="garantie" value="#{primeBean.garantie}"  converter="omnifaces.SelectItemsConverter"  class="police_label form-control">
+                                                                    <f:selectItem itemLabel="#{msg['garantie.titre']}" itemValue=""/>
+                                                                    <f:selectItems var="garantie" itemLabel="#{garantie.symbole}" value="#{primeBean.allGuarantiesByC}"/>
+                                                                    <p:ajax update="formliste:jj" />
+                                                                </h:selectOneMenu>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <p:panel id="jj" class="panel">
+                                                                <div class="panel-body">
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-6 col-lg-6 col-sm-12">
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12 ">
+                                                                                <h:outputLabel for="t1" rendered="#{(primeBean.garantie.idRegle eq 0 ) or (primeBean.garantie.idRegle eq 1) or (primeBean.garantie.idRegle eq 2 ) ?true:false}" value="Taux" class="pull-left"/>
+                                                                            </div>
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <pe:inputNumber id="t1" required="true" rendered="#{(primeBean.garantie.idRegle eq 0 ) or (primeBean.garantie.idRegle eq 1) or (primeBean.garantie.idRegle eq 2 ) ?true:false}" value="#{primeBean.taux}" title="Taux" class="pull-left"  />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6 col-lg-6 col-sm-12">
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <h:outputLabel for="t2" rendered="#{(primeBean.garantie.idRegle eq 0 ) or (primeBean.garantie.idRegle eq 1) or (primeBean.garantie.idRegle eq 2 ) ?true:false}" value="Taux Remorque" class="pull-left"  />
+                                                                            </div>
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <pe:inputNumber id="t2" required="true" rendered="#{(primeBean.garantie.idRegle eq 0 ) or (primeBean.garantie.idRegle eq 1) or (primeBean.garantie.idRegle eq 2 ) ?true:false}" value="#{primeBean.tauxR}" title="Taux" class="pull-left"   />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <h:outputLabel for="t3" rendered="#{(primeBean.garantie.idRegle eq 3 )and ( primeBean.option eq false) or (primeBean.garantie.idRegle eq 4) and ( primeBean.option eq false) ?true:false}" value="Constante" class="pull-left"/>
+                                                                            </div>
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <pe:inputNumber id="t3" required="true"  rendered="#{(primeBean.garantie.idRegle eq 3 ) and ( primeBean.option eq false) or (primeBean.garantie.idRegle eq 4) and ( primeBean.option eq false) ?true:false}" value="#{primeBean.constante}" title="Constant" class="pull-left" />
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <h:outputLabel for="t4" rendered="#{(primeBean.garantie.idRegle eq 3 ) and ( primeBean.option eq false) or (primeBean.garantie.idRegle eq 4) and ( primeBean.option eq false)  ?true:false}" value="Constante Rrporque" class="pull-left"/>
+                                                                            </div>
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <pe:inputNumber id="t4" required="true"   rendered="#{(primeBean.garantie.idRegle eq 3 ) and ( primeBean.option eq false) or (primeBean.garantie.idRegle eq 4) and ( primeBean.option eq false)  ? true:false}" value="#{primeBean.constanteR}" title="Constant" class="pull-left" />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <h:outputLabel for="t5" rendered="#{(primeBean.garantie.idRegle eq 3 ) or (primeBean.garantie.idRegle eq 4) }" value="Option" class="pull-left" />
+                                                                            </div>
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <p:selectBooleanCheckbox id="t5" rendered="#{(primeBean.garantie.idRegle eq 3 ) or (primeBean.garantie.idRegle eq 4)or (primeBean.garantie.idRegle eq 7) }" value="#{primeBean.option}"  class="pull-left" > <p:ajax update="formliste:jj" /> </p:selectBooleanCheckbox>
+                                                                            </div>
+                                                                        </div> 
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <h:outputLabel for="t6"  value="Constante Opt1" rendered="#{(primeBean.option)}" class="pull-left"/>
+                                                                            </div>
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <pe:inputNumber id="t6" required="true" rendered="#{(primeBean.option) }"  value="#{primeBean.option1}" title="Constant" class="pull-left" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <h:outputLabel for="t61"  value="Capital Assuré op1" rendered="#{(primeBean.option)}" class="pull-left"/>
+                                                                            </div>
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <pe:inputNumber id="t61" required="true" rendered="#{(primeBean.option) }"  value="#{primeBean.capitauxAssureop1}" title="Constant" class="pull-left" />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <h:outputLabel  for="t7" value="Constante Opt2" rendered="#{(primeBean.option) }" class="pull-left" />
+                                                                            </div>
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <pe:inputNumber id="t7" required="true" rendered="#{(primeBean.option) }" value="#{primeBean.option2}" title="Constant" class="pull-left" />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <h:outputLabel for="t62"  value="Capital Assuré op2" rendered="#{(primeBean.option and primeBean.garantie.idRegle eq 7)}" class="pull-left"/>
+                                                                            </div>
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <pe:inputNumber id="t62" required="true" rendered="#{(primeBean.option) }"  value="#{primeBean.capitauxAssureop2}" title="Constant" class="pull-left" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <h:outputLabel for="t8" value="Constante Opt3" rendered="#{(primeBean.option) }" class="pull-left" />
+                                                                            </div>
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <pe:inputNumber id="t8" required="true" rendered="#{(primeBean.option) }" value="#{primeBean.option3}"  title="Constant" class="pull-left" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <h:outputLabel for="t63"  value="Capital Assuré op3" rendered="#{(primeBean.option)}" class="pull-left"/>
+                                                                            </div>
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <pe:inputNumber id="t63" required="true" rendered="#{(primeBean.option) }"  value="#{primeBean.capitauxAssureop3}" title="Constant" class="pull-left" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                        <p:selectCheckboxMenu label="Selectionner Sinistres" value="#{primeBean.sinistreListSelected}" converter="entityConverter"  >                  
+                                                                            <f:selectItems  value="#{primeBean.sinistreList}"  var="sinistre"
+                                                                                            itemLabel="#{sinistre.designation}" itemValue="#{sinistre}" />
+
+                                                                        </p:selectCheckboxMenu>
+                                                                    </div>
+                                                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                        <p:commandButton value="ok" update="sinistre" action="#{primeBean.updateTable()}"  />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+
+                                                                    <p:dataTable var="sinistregc" editMode="cell" editable="true" value="#{primeBean.sinistreGarantieCompagnieList}" id="sinistre" >
+                                                                        <p:column headerText="Sinistre">
+                                                                            <p:outputLabel value="#{sinistregc.sinistre.designation}" />
+
+                                                                        </p:column>
+                                                                        <p:column headerText="Activé" >
+                                                                            <p:cellEditor>
+                                                                                <f:facet name="output">
+                                                                                    <p:outputLabel id="a6" value="#{sinistregc.active}" />
+                                                                                </f:facet>
+                                                                                <f:facet name="input">
+                                                                                    <p:selectBooleanCheckbox value="#{sinistregc.active}">
+                                                                                        <p:ajax update="a6"/>
+                                                                                    </p:selectBooleanCheckbox>
+                                                                                </f:facet>
+                                                                            </p:cellEditor>
+                                                                        </p:column>
+
+                                                                        <p:column headerText="Illimité" >
+                                                                            <p:cellEditor>
+                                                                                <f:facet name="output">
+                                                                                    <p:outputLabel id="a5" value="#{sinistregc.illimite}" />
+                                                                                </f:facet>
+                                                                                <f:facet name="input">
+                                                                                    <p:selectBooleanCheckbox value="#{sinistregc.illimite}">
+                                                                                        <p:ajax update="a5"/>
+                                                                                    </p:selectBooleanCheckbox>
+                                                                                </f:facet>
+                                                                            </p:cellEditor>
+                                                                        </p:column>
+                                                                        <p:column headerText="valeur à neuf" >
+                                                                            <p:cellEditor>
+                                                                                <f:facet name="output">
+                                                                                    <p:outputLabel id="a3" value="#{sinistregc.valeurNeuf}" />
+                                                                                </f:facet>
+                                                                                <f:facet name="input">
+                                                                                    <p:selectBooleanCheckbox value="#{sinistregc.valeurNeuf}">
+                                                                                        <p:ajax update="a3"/>
+                                                                                    </p:selectBooleanCheckbox>
+                                                                                </f:facet>
+                                                                            </p:cellEditor>
+                                                                        </p:column>
+                                                                        <p:column headerText="valeur Venale" >
+                                                                            <p:cellEditor>
+                                                                                <f:facet name="output">
+                                                                                    <p:outputLabel id="a2" value="#{sinistregc.valeurVenale}" />
+                                                                                </f:facet>
+                                                                                <f:facet name="input">
+                                                                                    <p:selectBooleanCheckbox value="#{sinistregc.valeurVenale}">
+                                                                                        <p:ajax update="a2"/>
+                                                                                    </p:selectBooleanCheckbox>
+                                                                                </f:facet>
+                                                                            </p:cellEditor>
+                                                                        </p:column  >
+                                                                        <p:column headerText="valeur de remplacement" >
+                                                                            <p:cellEditor>
+                                                                                <f:facet name="output">
+                                                                                    <p:outputLabel id="a2x" value="#{sinistregc.valeurDeRemplacement}" />
+                                                                                </f:facet>
+                                                                                <f:facet name="input">
+                                                                                    <p:selectBooleanCheckbox value="#{sinistregc.valeurDeRemplacement}">
+                                                                                        <p:ajax update="a2x"/>
+                                                                                    </p:selectBooleanCheckbox>
+                                                                                </f:facet>
+                                                                            </p:cellEditor>
+                                                                        </p:column  >
+                                                                        <p:column headerText="Montant " >
+                                                                            <p:cellEditor>
+                                                                                <f:facet name="output">
+                                                                                    <p:outputLabel id="sss1" value="#{sinistregc.valeurNumerique}" />
+                                                                                </f:facet>
+                                                                                <f:facet name="input">
+                                                                                    <p:inputText value="#{sinistregc.valeurNumerique}">
+                                                                                        <p:ajax event="keyup" update="sss1"   />
+                                                                                        <pe:keyFilter  mask="num" />
+                                                                                    </p:inputText>
+                                                                                </f:facet>
+                                                                            </p:cellEditor>
+                                                                        </p:column>
+                                                                        <p:column  headerText="activé option/tranche">
+                                                                            <p:cellEditor>
+                                                                                <f:facet name="output">
+                                                                                    <p:outputLabel id="a1" value="#{sinistregc.optionOuTrancheactive}" />
+                                                                                </f:facet>
+                                                                                <f:facet name="input">
+                                                                                    <p:selectBooleanCheckbox value="#{sinistregc.optionOuTrancheactive}">
+                                                                                        <p:ajax update="a1"/>
+                                                                                    </p:selectBooleanCheckbox>
+                                                                                </f:facet>
+                                                                            </p:cellEditor>
+                                                                        </p:column>
+                                                                        <p:column headerText="Montant op1/trch1" >
+                                                                            <p:cellEditor>
+                                                                                <f:facet name="output">
+                                                                                    <p:outputLabel id="ss1" value="#{sinistregc.optionOuTranche1}" />
+                                                                                </f:facet>
+                                                                                <f:facet name="input">
+                                                                                    <p:inputText value="#{sinistregc.optionOuTranche1}">
+                                                                                        <p:ajax event="keyup" update="ss1"   />
+                                                                                        <pe:keyFilter  mask="num" />
+                                                                                    </p:inputText>
+                                                                                </f:facet>
+                                                                            </p:cellEditor>
+                                                                        </p:column>
+                                                                        <p:column headerText="Montant op2/trch2" >
+                                                                            <p:cellEditor>
+                                                                                <f:facet name="output">
+                                                                                    <p:outputLabel id="ss2" value="#{sinistregc.optionOuTranche2}" />
+                                                                                </f:facet>
+                                                                                <f:facet name="input">
+                                                                                    <p:inputText value="#{sinistregc.optionOuTranche2}">
+                                                                                        <p:ajax event="keyup" update="ss2"   />
+                                                                                        <pe:keyFilter  mask="num" />
+                                                                                    </p:inputText>
+                                                                                </f:facet>
+                                                                            </p:cellEditor>
+                                                                        </p:column>
+                                                                        <p:column headerText="Montant op3/trch3" >
+                                                                            <p:cellEditor>
+                                                                                <f:facet name="output">
+                                                                                    <p:outputLabel id="ss3" value="#{sinistregc.optionOuTranche3}" />
+                                                                                </f:facet>
+                                                                                <f:facet name="input">
+                                                                                    <p:inputText value="#{sinistregc.optionOuTranche3}">
+                                                                                        <p:ajax event="keyup" update="ss3"   />
+                                                                                        <pe:keyFilter  mask="num" />
+                                                                                    </p:inputText>
+                                                                                </f:facet>
+                                                                            </p:cellEditor>
+                                                                        </p:column>
+
+                                                                    </p:dataTable>
+                                                                </div>
+
+
+                                                            </p:panel>
+                                                        </div>
+
+                                                        <div class="form-group">
+
+                                                            <div class="col-md-12 col col-lg-12">
+
+                                                                <div class="col-md-4 col col-lg-2 pull-left">
+                                                                    <p:commandButton value="#{msg['btn.annuller']}" actionListener="#{primeBean.annuler()}" class="btn btn-danger danger form-control"/>
+                                                                </div>
+
+                                                                <div class="col-md-4 col col-lg-2 pull-right">
+                                                                    <p:commandButton value="Enregistrer" action="#{primeBean.enregistrer()}" update="formliste2:display,formliste,msgs" class="btn btn-success form-control success "/>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </p:outputPanel>
+                                                </div>
+                                            </div>
+                                        </p:fieldset>
+                                    </h:form>
+                                </div>
+                            </div>
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <h:form id="formliste2">
+
+                                        <p:outputPanel id="courtier">
+
+                                            <p:fieldset legend="Primes proposées" style="margin-bottom:20px">   
+
+                                                <div class="form-group">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                        <p:outputPanel id="display22">
+                                                            <p:dataTable class="table_label table table-responsive" var="gcc" id="display" editable="true" editMode="cell"  rows="10" value="#{primeBean.listGCC}"
+                                                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                                         paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150"  
+                                                                         rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg['tableau.vide']}" 
+                                                                         selection="#{primeBean.listSelectioncompagnie_Guarantie}"
+                                                                         rowKey="#{gcc.idCompagnie_Guarantie}">                      
+                                                                <p:column headerText="Compagnie" class="col-lg-2 col-md-2" filterBy="#{gcc.compagnie.abbreviation}">
+                                                                    <h:outputText value="#{gcc.compagnie.abbreviation}" > 
+                                                                    </h:outputText>
+                                                                </p:column >
+
+                                                                <p:column headerText="Categorie" filterBy="#{gcc.categorie.libelle}">
+                                                                    <h:outputText value=" #{gcc.categorie.libelle}" > 
+                                                                    </h:outputText>
+                                                                </p:column >
+                                                                <p:column headerText="Guarantie" filterBy="#{gcc.guarantie.symbole}">
+                                                                    <h:outputText value="#{gcc.guarantie.symbole}" > 
+                                                                    </h:outputText>
+                                                                </p:column >
+
+                                                                <p:column headerText="Taux">
+                                                                    <p:cellEditor>
+                                                                        <f:facet name="output"><h:outputText value="#{gcc.taux}" /></f:facet>
+                                                                        <f:facet name="input"><p:inputText  rendered="#{gcc.taux eq null ?false:true}" value="#{gcc.taux}" style="width:100%" label="Year"/></f:facet>
+                                                                    </p:cellEditor>
+                                                                </p:column>
+                                                                <p:column headerText="Constante">
+                                                                    <p:cellEditor>
+                                                                        <f:facet name="output"><h:outputText value="#{gcc.cte}" /></f:facet>
+                                                                        <f:facet name="input"><p:inputText rendered="#{gcc.cte eq null ?false:true}"  value="#{gcc.cte}" style="width:100%" label="Year">
+
+                                                                            </p:inputText></f:facet>
+                                                                    </p:cellEditor>
+                                                                </p:column>
+                                                                <p:column headerText="Taux Remorque">
+                                                                    <p:cellEditor>
+                                                                        <f:facet name="output"><h:outputText value="#{gcc.tauxR}" /></f:facet>
+                                                                        <f:facet name="input"><p:inputText  rendered="#{gcc.tauxR eq null ?false:true}" value="#{gcc.tauxR}" style="width:100%" label="Year"/></f:facet>
+                                                                    </p:cellEditor>
+                                                                </p:column>
+                                                                <p:column headerText="Constante Remorque">
+                                                                    <p:cellEditor>
+                                                                        <f:facet name="output"><h:outputText value="#{gcc.cteR}" /></f:facet>
+                                                                        <f:facet name="input"><p:inputText rendered="#{gcc.cteR eq null ?false:true}"  value="#{gcc.cteR}" style="width:100%" label="Year">
+
+                                                                            </p:inputText></f:facet>
+                                                                    </p:cellEditor>
+                                                                </p:column>
+                                                                <p:column headerText="op1">
+                                                                    <p:cellEditor>
+                                                                        <f:facet name="output"><h:outputText value="#{gcc.option1}" /></f:facet>
+                                                                        <f:facet name="input"><p:inputText rendered="#{gcc.option}"  value="#{gcc.option1}" style="width:100%" label="Year">
+
+                                                                            </p:inputText></f:facet>
+                                                                    </p:cellEditor>
+                                                                </p:column>
+                                                                <p:column headerText="op2">
+                                                                    <p:cellEditor>
+                                                                        <f:facet name="output">
+                                                                            <h:outputText value="#{gcc.option2}" />
+                                                                        </f:facet>
+                                                                        <f:facet name="input">
+                                                                            <p:inputText rendered="#{gcc.option}"   value="#{gcc.option2}" style="width:100%" label="Year">
+
+                                                                            </p:inputText>
+                                                                        </f:facet>
+                                                                    </p:cellEditor>
+                                                                </p:column>
+                                                                <p:column headerText="op3">
+                                                                    <p:cellEditor>
+                                                                        <f:facet name="output"><h:outputText value="#{gcc.option3}" /></f:facet>
+                                                                        <f:facet name="input"><p:inputText rendered="#{gcc.option}"  value="#{gcc.option3}" style="width:100%" label="Year">
+
+                                                                            </p:inputText></f:facet>
+                                                                    </p:cellEditor>
+                                                                </p:column>
+                                                                <p:column headerText="Franchise">
+                                                                    <p:cellEditor>
+                                                                        <f:facet name="output"><h:outputText value="#{gcc.franchise}" /></f:facet>
+                                                                        <f:facet name="input"><p:inputText  value="#{gcc.franchise}" style="width:100%" label="Year">
+
+                                                                            </p:inputText></f:facet>
+                                                                    </p:cellEditor>
+                                                                </p:column>
+
+                                                                <p:column headerText="Actions">
+
+                                                                    <p:commandButton title="#{msg['btn.enregistrer']}"  action="#{primeBean.modificationSelection()}"   class="btn-sm btn-primary primary" icon="fa fa-save" update="@form" >
+                                                                        <f:setPropertyActionListener value="#{gcc}" target="#{primeBean.compagnie_GuarantieSelected}" />
+                                                                    </p:commandButton>
+                                                                    <p:commandButton title="#{msg['btn.supprimer']}" oncomplete="PF('supprimer').show()" class="btn-sm btn-danger danger" icon="fa fa-remove" >
+                                                                        <f:setPropertyActionListener value="#{gcc}" target="#{primeBean.compagnie_GuarantieSelected}" />
+                                                                    </p:commandButton>
+                                                                    <p:commandButton title="Modifier sinistre" oncomplete="PF('sinistre').show()" actionListener="#{primeBean.updateSinistreDialog()}" update="@form:sdialog" class="btn-sm btn-primary primary" icon="fa fa-edit" >
+                                                                        <f:setPropertyActionListener value="#{gcc}" target="#{primeBean.compagnie_GuarantieSelected}" />
+                                                                    </p:commandButton>
+
+                                                                </p:column>
+                                                                <p:column width="5%"  selectionMode="multiple" style="width: 16px;text-align: center; color: black;" />
+                                                            </p:dataTable>
+                                                            <p:dialog widgetVar="sinistre" id="sdialog" minHeight="100" >
+                                                                <p:panel id="ppp">
+                                                                    <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                        <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                            <p:selectCheckboxMenu label="Selectionner Sinistres" value="#{primeBean.sinistreListSelected}" converter="entityConverter"  >                  
+                                                                                <f:selectItems  value="#{primeBean.sinistreList}"  var="sinistre"
+                                                                                                itemLabel="#{sinistre.designation}" itemValue="#{sinistre}" />
+
+                                                                            </p:selectCheckboxMenu>
+                                                                        </div>
+                                                                        <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                            <p:commandButton value="ok" update="sinistrem" action="#{primeBean.updateTable()}"  />
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                        <p:dataTable var="sinistregc" editMode="cell" editable="true" value="#{primeBean.sinistreGarantieCompagnieList}" id="sinistrem" >
+                                                                            <p:column headerText="Sinistre">
+                                                                                <p:outputLabel value="#{sinistregc.sinistre.designation}" />
+
+                                                                            </p:column>
+                                                                            <p:column headerText="Activé" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="a6m" value="#{sinistregc.active}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:selectBooleanCheckbox value="#{sinistregc.active}">
+                                                                                            <p:ajax update="a6m"/>
+                                                                                        </p:selectBooleanCheckbox>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+
+                                                                            <p:column headerText="Illimité" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="a5m" value="#{sinistregc.illimite}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:selectBooleanCheckbox value="#{sinistregc.illimite}">
+                                                                                            <p:ajax update="a5m"/>
+                                                                                        </p:selectBooleanCheckbox>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column headerText="valeur à neuf" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="a3m" value="#{sinistregc.valeurNeuf}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:selectBooleanCheckbox value="#{sinistregc.valeurNeuf}">
+                                                                                            <p:ajax update="a3m"/>
+                                                                                        </p:selectBooleanCheckbox>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column headerText="valeur Venale" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="a2m" value="#{sinistregc.valeurVenale}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:selectBooleanCheckbox value="#{sinistregc.valeurVenale}">
+                                                                                            <p:ajax update="a2m"/>
+                                                                                        </p:selectBooleanCheckbox>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column  >
+                                                                            <p:column headerText="valeur de remplacement" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="a2xv" value="#{sinistregc.valeurDeRemplacement}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:selectBooleanCheckbox value="#{sinistregc.valeurDeRemplacement}">
+                                                                                            <p:ajax update="a2xv"/>
+                                                                                        </p:selectBooleanCheckbox>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column  >
+                                                                            <p:column headerText="Montant " >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="sss1m" value="#{sinistregc.valeurNumerique}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:inputText value="#{sinistregc.valeurNumerique}">
+                                                                                            <p:ajax event="keyup" update="sss1m"   />
+                                                                                            <pe:keyFilter  mask="num" />
+                                                                                        </p:inputText>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column  headerText="activé option/tranche">
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="a1m" value="#{sinistregc.optionOuTrancheactive}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:selectBooleanCheckbox value="#{sinistregc.optionOuTrancheactive}">
+                                                                                            <p:ajax update="a1m"/>
+                                                                                        </p:selectBooleanCheckbox>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column headerText="Montant op1/trch1" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="ss1m" value="#{sinistregc.optionOuTranche1}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:inputText value="#{sinistregc.optionOuTranche1}">
+                                                                                            <p:ajax event="keyup" update="ss1m"   />
+                                                                                            <pe:keyFilter  mask="num" />
+                                                                                        </p:inputText>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column headerText="Montant op2/trch2" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="ss2m" value="#{sinistregc.optionOuTranche2}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:inputText value="#{sinistregc.optionOuTranche2}">
+                                                                                            <p:ajax event="keyup" update="ss2m"   />
+                                                                                            <pe:keyFilter  mask="num" />
+                                                                                        </p:inputText>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column headerText="Montant op3/trch3" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="ss3m" value="#{sinistregc.optionOuTranche3}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:inputText value="#{sinistregc.optionOuTranche3}">
+                                                                                            <p:ajax event="keyup" update="ss3m"   />
+                                                                                            <pe:keyFilter  mask="num" />
+                                                                                        </p:inputText>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column headerText="Action">
+                                                                                <p:commandButton title="#{msg['btn.supprimer']}" update="@form:ppp" action="#{primeBean.deleteSinistre()}" class="btn-sm btn-danger danger" icon="fa fa-remove" >
+                                                                                    <f:setPropertyActionListener value="#{sinistregc}" target="#{primeBean.sinistreGarantieCompagnieSelected}" />
+                                                                                </p:commandButton>
+                                                                            </p:column>
+
+                                                                        </p:dataTable>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+
+                                                                        <div class="col-md-12 col col-lg-12">
+
+                                                                            <div class="col-md-4 col col-lg-2 pull-left">
+                                                                                <p:commandButton value="#{msg['btn.annuller']}" oncomplete="PF('sinistre').hide()" actionListener="#{primeBean.annulerSinistre()}" class="btn btn-danger danger form-control"/>
+                                                                            </div>
+
+                                                                            <div class="col-md-4 col col-lg-2 pull-right">
+                                                                                <p:commandButton value="Enregistrer" oncomplete="PF('sinistre').hide()" action="#{primeBean.updateSinistreBase()}"  class="btn btn-success form-control success "/>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </p:panel>
+                                                            </p:dialog>
+
+                                                            <p:dialog widgetVar="sinistreg" id="sdialogG" minHeight="100" >
+                                                                <p:panel id="pppg">
+                                                                    <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                        <h:outputLabel for="catg" value="#{msg['vehicule.categorie']}"   class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                                                        <h:selectOneMenu id="catg" value="#{primeBean.categorie}" class="form-control" converter="omnifaces.SelectItemsConverter"
+
+                                                                                         >
+                                                                            <f:selectItem itemLabel="#{msg['vehicule.categorie']}" itemValue=""/>
+                                                                            <f:selectItems var="categorie" itemLabel="#{categorie.libelle}" value="#{primeBean.allCategories}"/> 
+
+                                                                        </h:selectOneMenu>
+
+                                                                    </div>
+
+                                                                    <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                        <h:outputLabel for="garantieg" value="#{msg['vehicule.garantie']}"   class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                                                        <h:selectOneMenu  id="garantieg" value="#{primeBean.garantie}"  converter="omnifaces.SelectItemsConverter"  class="police_label form-control">
+                                                                            <f:selectItem itemLabel="#{msg['garantie.titre']}" itemValue=""/>
+                                                                            <f:selectItems var="garantie" itemLabel="#{garantie.symbole}" value="#{primeBean.allGuarantiesByC}"/>
+
+                                                                        </h:selectOneMenu>
+                                                                    </div>
+
+                                                                    <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                        <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                            <p:selectCheckboxMenu label="Selectionner Sinistres" value="#{primeBean.sinistreListSelected}" converter="entityConverter"  >                  
+                                                                                <f:selectItems  value="#{primeBean.sinistreList}"  var="sinistre"
+                                                                                                itemLabel="#{sinistre.designation}" itemValue="#{sinistre}" />
+
+                                                                            </p:selectCheckboxMenu>
+                                                                        </div>
+                                                                        <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                            <p:commandButton value="ok" update="sinistremg" action="#{primeBean.updateTable()}"  />
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                        <p:dataTable var="sinistregc" editMode="cell" editable="true" value="#{primeBean.sinistreGarantieCompagnieList}" id="sinistremg" >
+                                                                            <p:column headerText="Sinistre">
+                                                                                <p:outputLabel value="#{sinistregc.sinistre.designation}" />
+
+                                                                            </p:column>
+                                                                            <p:column headerText="Activé" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="a6mg" value="#{sinistregc.active}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:selectBooleanCheckbox value="#{sinistregc.active}">
+                                                                                            <p:ajax update="a6mg"/>
+                                                                                        </p:selectBooleanCheckbox>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+
+                                                                            <p:column headerText="Illimité" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="a5mg" value="#{sinistregc.illimite}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:selectBooleanCheckbox value="#{sinistregc.illimite}">
+                                                                                            <p:ajax update="a5mg"/>
+                                                                                        </p:selectBooleanCheckbox>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column headerText="valeur à neuf" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="a3mg" value="#{sinistregc.valeurNeuf}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:selectBooleanCheckbox value="#{sinistregc.valeurNeuf}">
+                                                                                            <p:ajax update="a3mg"/>
+                                                                                        </p:selectBooleanCheckbox>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column headerText="valeur Venale" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="a2mg" value="#{sinistregc.valeurVenale}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:selectBooleanCheckbox value="#{sinistregc.valeurVenale}">
+                                                                                            <p:ajax update="a2mg"/>
+                                                                                        </p:selectBooleanCheckbox>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column  >
+                                                                            <p:column headerText="valeur de remplacement" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="a2xc" value="#{sinistregc.valeurDeRemplacement}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:selectBooleanCheckbox value="#{sinistregc.valeurDeRemplacement}">
+                                                                                            <p:ajax update="a2xc"/>
+                                                                                        </p:selectBooleanCheckbox>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column  >
+                                                                            <p:column headerText="Montant " >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="sss1mg" value="#{sinistregc.valeurNumerique}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:inputText value="#{sinistregc.valeurNumerique}">
+                                                                                            <p:ajax event="keyup" update="sss1mg"   />
+                                                                                            <pe:keyFilter  mask="num" />
+                                                                                        </p:inputText>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column  headerText="activé option/tranche">
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="a1mg" value="#{sinistregc.optionOuTrancheactive}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:selectBooleanCheckbox value="#{sinistregc.optionOuTrancheactive}">
+                                                                                            <p:ajax update="a1mg"/>
+                                                                                        </p:selectBooleanCheckbox>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column headerText="Montant op1/trch1" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="ss1mg" value="#{sinistregc.optionOuTranche1}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:inputText value="#{sinistregc.optionOuTranche1}">
+                                                                                            <p:ajax event="keyup" update="ss1mg"   />
+                                                                                            <pe:keyFilter  mask="num" />
+                                                                                        </p:inputText>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column headerText="Montant op2/trch2" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="ss2mg" value="#{sinistregc.optionOuTranche2}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:inputText value="#{sinistregc.optionOuTranche2}">
+                                                                                            <p:ajax event="keyup" update="ss2mg"   />
+                                                                                            <pe:keyFilter  mask="num" />
+                                                                                        </p:inputText>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column headerText="Montant op3/trch3" >
+                                                                                <p:cellEditor>
+                                                                                    <f:facet name="output">
+                                                                                        <p:outputLabel id="ss3mg" value="#{sinistregc.optionOuTranche3}" />
+                                                                                    </f:facet>
+                                                                                    <f:facet name="input">
+                                                                                        <p:inputText value="#{sinistregc.optionOuTranche3}">
+                                                                                            <p:ajax event="keyup" update="ss3mg"   />
+                                                                                            <pe:keyFilter  mask="num" />
+                                                                                        </p:inputText>
+                                                                                    </f:facet>
+                                                                                </p:cellEditor>
+                                                                            </p:column>
+                                                                            <p:column headerText="Action">
+                                                                                <p:commandButton title="#{msg['btn.supprimer']}" update="@form:pppg" action="#{primeBean.deleteSinistrelist()}" class="btn-sm btn-danger danger" icon="fa fa-remove" >
+                                                                                    <f:setPropertyActionListener value="#{sinistregc}" target="#{primeBean.sinistreGarantieCompagnieSelected}" />
+                                                                                </p:commandButton>
+                                                                            </p:column>
+
+                                                                        </p:dataTable>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+
+                                                                        <div class="col-md-12 col col-lg-12">
+
+                                                                            <div class="col-md-4 col col-lg-2 pull-left">
+                                                                                <p:commandButton value="#{msg['btn.annuller']}" oncomplete="PF('sinistre').hide()" actionListener="#{primeBean.annulerSinistre()}" class="btn btn-danger danger form-control"/>
+                                                                            </div>
+
+                                                                            <div class="col-md-4 col col-lg-2 pull-right">
+                                                                                <p:commandButton value="Enregistrer"  action="#{primeBean.saveGroupeSinistre()}"  class="btn btn-success form-control success " update="@form:pppg"/>
+                                                                            </div>
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                </p:panel>
+                                                            </p:dialog>
+                                                            <p:dialog widgetVar="updateFranchise" id="franchise">
+                                                                <p:panel>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <h:outputLabel for="t6"  value="Franchise :"  class="pull-left"/>
+                                                                            </div>
+                                                                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                                                                <pe:inputNumber id="t6"  value="#{primeBean.franchise}" title="Franchise" class="pull-left" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <p:commandButton value="ajouterFranchise" oncomplete="PF('updateFranchise').hide()" actionListener="#{primeBean.saveListFranchise()}"   class="btn btn-success form-control success " />
+                                                                        </div>
+                                                                    </div>
+                                                                </p:panel>
+                                                            </p:dialog>
+                                                            <div class="form-inline">
+                                                                <div class="form-group">
+                                                                    <p:commandButton title="Enregistrer les modifications de  la selection" value="#{msg['btn.enregistrer']}"  action="#{primeBean.updateSlection1()}" icon="fa fa-save"   class="btn btn-primary primary"  update="@form" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <p:commandButton value="ajouterSinistre" oncomplete="PF('sinistreg').show()" action="#{primeBean.trierCG()}"  class="btn btn-success form-control success " update="sdialogG"/>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <p:commandButton value="ajouterFranchise" oncomplete="PF('updateFranchise').show()"   class="btn btn-success form-control success " />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <p:commandButton title="supprimer la selection" value="#{msg['btn.supprimer']}" action="#{primeBean.deleteSlection1()}"   class="btn btn-danger danger" icon="fa fa-remove" update="@form" />
+                                                                </div>
+
+                                                            </div>
+                                                        </p:outputPanel>
+
+                                                    </div>
+                                                </div>
+                                            </p:fieldset>
+
+                                            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                                <h:graphicImage library="images" name="ajax-loader.gif" />
+                                            </p:dialog>
+                                        </p:outputPanel>
+
+
+                                        <p:growl id="msgs3" showDetail="false" />
+                                        <p:confirmDialog id="confirmation" message="#{msg['supprimer.message']}"
+                                                         header="#{msg['titre.operation.suppression']}" severity="alert" 
+                                                         widgetVar="supprimer">
+
+
+                                            <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                                            <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste2" action="#{primeBean.delete()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+                                        </p:confirmDialog>
+                                    </h:form>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tabMass2">
+
+                    <ui:include src="prime_courtier.xhtml"/>
+
+                </div>
+            </div>
+        </div>
+
+    </ui:composition> 
+
+</html>
+

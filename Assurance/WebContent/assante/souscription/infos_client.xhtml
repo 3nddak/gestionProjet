@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition>
+        <p:panel header="#{msg['message.client.titre']}"  toggleable="true"  collapsed="false">
+            <p:panelGrid class="table" columns="4">
+                <p:outputLabel for="nom2iii" value="Souscripteur :"/>
+                <h:outputText id="nom2iii" value="#{souscriptionAsSanteBean.clientToSave.nom} #{souscriptionAsSanteBean.clientToSave.prenom} #{souscriptionAsSanteBean.clientSelected.nom} #{souscriptionAsSanteBean.clientSelected.prenom} "/>
+                <p:outputLabel for="tel2iii" value="Téléphone :"/>
+                <h:outputText id="tel2iii" value="#{souscriptionAsSanteBean.clientToSave.telephoneMobile} #{souscriptionAsSanteBean.clientSelected.telephoneMobile}"/>
+                <p:outputLabel for="addresse2iii" value="Adresse :"/>
+                <h:outputText id="addresse2iii" value="#{souscriptionAsSanteBean.clientToSave.adresse} #{souscriptionAsSanteBean.clientSelected.adresse}"/>
+                <p:outputLabel for="daten2iii" value="Date de naissance :"/>
+                <h:outputText id="daten2iii" value="#{souscriptionAsSanteBean.clientToSave.dateNaissance} #{souscriptionAsSanteBean.clientSelected.dateNaissance}"/>
+            </p:panelGrid>
+        </p:panel>
+    </ui:composition> 
+</html>
+

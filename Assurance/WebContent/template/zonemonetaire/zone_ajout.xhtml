@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:outputPanel id="ajout" style="text-align:center;">
+                    <h:form class="form-horizontal text-capitalize" id="zone-ajout"> 
+                        <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                        <!--p:messages id="msg" globalOnly="true" closable="true" showDetail="false" autoUpdate="true">
+                            <p:effect type="pulsate" event="load" delay="20" speed="300">
+                                <f:param name="mode" value="show" />
+                            </p:effect>
+                        </p:messages-->
+
+                        <div class="form-group">
+                            <div class="col-md-4 col-lg-6 col-sm-4 col-xs-4">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="des" value="#{msg['zone.designation']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:inputText id="des" required="true" value="#{zonesMonetaireBean.designation}" styleClass="form-control"  title="#{msg['zone.designation']}" a:placeholder="#{msg['zone.designation']}"
+                                                 requiredMessage="#{msg['zone.designation.requireMessage']}"   
+                                                 >
+
+                                        <f:ajax event="keyup" render="desMessage"/>
+                                    </p:inputText>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:message for="des"  id="desMessage" class="errorClass" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-4 col-sm-4">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="devise" value="#{msg['titre.devise']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:selectOneMenu id="devise" required="true" class="form-control" value="#{zonesMonetaireBean.iddevise}"
+                                                     requiredMessage="#{msg['zone.devise.requireMessage']}" 
+                                                     >
+                                        <f:selectItem itemLabel="#{msg['titre.devise']}" itemValue="" itemDisabled="true"/>
+                                        <f:selectItems value="#{zonesMonetaireBean.deviseItems}"/>
+                                        <f:ajax event="click" render="deviseMessage"/>
+                                    </h:selectOneMenu>
+                                    
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:message for="devise"  id="deviseMessage" class="errorClass" />
+                                </div>
+                            </div>
+                            <!--div class="col-md-4 col col-lg-4">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="deviseI" value="#{msg['zone.deviseinter']}" class="pull-left text-left"/>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:selectOneMenu  class="form-control"  value="#{zonesMonetaireBean.iddeviseintermediaire}" title="#{msg['zone.deviseinter']}">
+                                        <f:selectItem itemLabel="#{msg['zone.deviseinter']}" itemValue=""/>
+                                        <f:selectItems value="#{zonesMonetaireBean.deviseItems}"/>
+                                    </h:selectOneMenu> 
+                                </div>
+                            </div-->
+
+                        </div>
+                        <!--div class="form-group">
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for ="plafondActifs" value="#{msg['plafond.actifs']}" class="text-left pull-left"/> 
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <div class="input-group">
+                                        <p:outputLabel for ="plafondActifs" class="form-control text-left"  value="#{msg['plafond.actifs']}"/>
+                                        <span class="input-group-addon">
+                                            <h:selectBooleanCheckbox  id="plafondActifs" value="#{zonesMonetaireBean.plafondsActifs}"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for ="plafondTaxe" value="#{msg['plafond.taxe']}" class="text-left pull-left"/> 
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <div class="input-group">
+                                        <h:outputLabel  class="form-control text-left" for ="plafondTaxe" value="#{msg['plafond.taxe']}"/>
+                                        <span class="input-group-addon">
+                                            <h:selectBooleanCheckbox id="plafondTaxe" value="#{zonesMonetaireBean.plafondTaxe}"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col col-lg-4">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="montantLHZ" value="#{msg['zone.mlhz']}" class="pull-left"/> 
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <pe:inputNumber id="montantLHZ" value="#{zonesMonetaireBean.montantLimiteHorsZone}" class="pull-left" decimalPlaces="0" a:placeholder="#{msg['zone.mlhz']}" title="#{msg['zone.mlhz']}"
+                                                    converterMessage="#{msg['format.integer.converterMessage']}"
+                                                    validatorMessage="#{msg['zone.montantLHZ.validatorMessage']}"    
+                                                    >
+                                        <f:validateLongRange minimum="0" />
+                                        <f:ajax event="keyup" render="mlhzMessage"/>
+                                    </pe:inputNumber>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:message for="montantLHZ"  id="mlhzMessage" class="errorClass" />
+                                </div>
+                            </div>
+                        </div-->
+                        <!--div class="form-group">  
+
+                            <div class="col-md-4 col-lg-4 col-sm-4">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:outputLabel for="montantLZ" value="#{msg['zone.mlz']}" class="text-left pull-left"/> 
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <pe:inputNumber id="montantLZ" value="#{zonesMonetaireBean.montantLimiteZone}" class="pull-left" decimalPlaces="0" a:placeholder="#{msg['zone.mlz']}" 
+                                                    title= "#{msg['zone.mlz']}"
+                                                    converterMessage="#{msg['format.integer.converterMessage']}"
+                                                    validatorMessage="#{msg['zone.montantLZ.validatorMessage']}"
+                                                    >
+                                        <f:validateLongRange minimum="0" />
+                                        <f:ajax event="keyup" render="mlzMessage"/>
+                                    </pe:inputNumber>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <h:message for="montantLZ"  id="mlzMessage" class="errorClass" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6 hidden">  
+                                <h:outputLabel for="code-zone" value="#{msg['zone.code']}" class="text-left pull-left"/> 
+                                <h:inputText id="code-zone" value="#{zonesMonetaireBean.codeZone}" class="form-control" a:placeholder="#{msg['zone.code']}" title="#{msg['zone.code']}"/>
+                            </div> 
+                        </div-->
+
+                        <div class="form-group">
+
+                            <div class="col-md-6 col col-lg-6  pull-left">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" type="reset" id="annuler" class="btn-xs btn-danger danger pull-left col-md-4">
+                                        <p:ajax update="desMessage"/>
+                                        <p:ajax update="deviseMessage"/>
+                                        
+                                    </p:commandButton>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col col-lg-6  pull-left">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <p:commandButton  value="#{msg['btn.enregistrer']}" title="#{msg['btn.enregistrer']}" update="msgs,formliste,zone-ajout,annuler" action="#{zonesMonetaireBean.ajouter()}"  class="btn-xs btn-success success pull-right col-md-4">
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+
+                </p:outputPanel>
+            </div>
+        </div>
+    </ui:composition> 
+
+</html>
+

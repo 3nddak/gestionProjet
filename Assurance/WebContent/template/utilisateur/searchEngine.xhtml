@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui" >
+
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu id="pays" value="#{gestionUtilisateurBean.paysSelect}" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                <f:selectItems value="#{gestionUtilisateurBean.listpays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                <p:ajax listener="#{gestionUtilisateurBean.trierPrametresByPays()}" update="comp,court,pdv" />
+                            </h:selectOneMenu> 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="comp" value="Compagnie" class="pull-left text-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="comp" value="#{gestionUtilisateurBean.compagnieSelected}"  >
+                                <f:selectItem noSelectionOption="true" itemLabel="Choisir compagnie" /> 
+                                <f:selectItems value="#{gestionUtilisateurBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="court" value="Courtier" class="pull-left text-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="court" value="#{gestionUtilisateurBean.courtierSelected}"  >
+                                <f:selectItem noSelectionOption="true" itemLabel="Choisir le courtier" /> 
+                                <f:selectItems value="#{gestionUtilisateurBean.listCourtier}" var="court" itemLabel="#{court.abbreviation}" itemValue="#{court}"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="pdv" value="Point de vente" class="pull-left text-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="pdv" value="#{gestionUtilisateurBean.pointsVenteSelected}"  >
+                                <f:selectItem noSelectionOption="true" itemLabel="Choisir le point de vente" /> 
+                                <f:selectItems value="#{gestionUtilisateurBean.listPointsVente}" var="pdv" itemLabel="#{pdv.designation}" itemValue="#{pdv}"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="ncp" value="Société" class="pull-left text-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  class="form-control"  id="ncp" converter="omnifaces.SelectItemsConverter" value="#{gestionUtilisateurBean.societeSelected}"  >
+                                <f:selectItem noSelectionOption="true" itemLabel="Choisir" /> 
+                                <f:selectItems value="#{gestionUtilisateurBean.allSociete}" var="soc" itemLabel="#{soc.designation}" itemValue="#{soc}"  /> 
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="pdr" value="Point de Retrait" class="pull-left text-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  class="form-control"  id="pdr" converter="omnifaces.SelectItemsConverter" value="#{gestionUtilisateurBean.pointDeRetraitSelected}"  >
+                                <f:selectItem noSelectionOption="true" itemLabel="Choisir" /> 
+                                <f:selectItems value="#{gestionUtilisateurBean.allPointDeRetrait}" var="pd" itemLabel="#{pd.libelle}" itemValue="#{pd}"  /> 
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <h:outputLabel for="tout" value="Afficher Tout" class="pull-left text-left" />
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <p:selectBooleanCheckbox value="#{gestionUtilisateurBean.afficherTout}" >
+                                <p:ajax update="@form" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" listener="#{gestionUtilisateurBean.showAllUser()}" />
+                            </p:selectBooleanCheckbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <div class="col-lg-12  col-md-12 col-xs-12 col-sm-12">
+                        <div class="col-lg-2 col-md-12 pull-right col-xs-12 col-sm-12">
+                            <p:commandButton rendered="#{!gestionUtilisateurBean.afficherTout}" id="search" action="#{gestionUtilisateurBean.searchMethod()}" update="@form" value="Rechercher" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" class="btn-success success form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

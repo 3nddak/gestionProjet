@@ -1,0 +1,94 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 11 mai 2015, 19:20:26
+    Author     : folo
+*/
+body{
+    background-color: #2D2D2D;
+}
+.form-login,.form-passwordchange{
+    max-width:330px;
+    margin:150px auto 0;
+    background:#fff;
+    border-radius:5px;
+    -webkit-border-radius:5px
+}
+.errorClass{
+    text-align: center;
+    text-decoration: none;
+    color: #d33724 !important;
+    font-size: 15px;
+    animation: alternate 25s;
+}
+/*.form-passwordchange{
+    max-width:400px;
+    min-height: 400px;
+    margin:100px auto 0;
+    background:#fff;
+    border-radius:5px;
+    -webkit-border-radius:5px
+}*/
+
+.form-login-heading-Password{
+    margin:0;
+    padding:25px 20px;
+    text-align:center;
+    background:#673AB7;
+    border-radius:5px 5px 0 0;
+    -webkit-border-radius:5px 5px 0 0;
+    color:#fff;
+    font-size:20px;
+    text-transform:uppercase;
+    font-weight:300
+}
+.form-login-heading{
+    margin:0;
+    padding:25px 20px;
+    text-align:center;
+    background:#673AB7;
+    border-radius:5px 5px 0 0;
+    -webkit-border-radius:5px 5px 0 0;
+    color:#fff;
+    font-size:20px;
+    text-transform:uppercase;
+    font-weight:300
+}
+.login-wrap{padding:20px;}
+.login-wrap .registration{text-align:center}
+.registration{text-align:center}
+
+.btn-connexion{
+    background:#311B92;
+    border-color: #673AB7;
+    border-radius : 5px 5px 5px 5px;
+    -webkit-border-radius:5px 5px 5px 5px;
+    color:#fff;
+    font-size:15px;
+}
+
+.btn-connexion:hover,
+.btn-connexion:focus,
+.btn-connexion.focus,
+.btn-connexion:active,
+.btn-connexion.active,
+.open > .dropdown-toggle.btn-connexion {
+    color: #fff;
+    background: #673AB7;
+    border-color: #311B92;
+} 
+.btn-danger {
+    color: #fff;
+    background: #d9534f;
+    border-color: #d43f3a;
+}
+
+.lien-image1{
+    background-image:url(../../img/assoto.png);
+    width: 100px;
+    height: 30px
+}
+

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div class="panel-heading"> 
+                <fieldset>
+                    <legend class="text-center"><p:outputLabel value="RENOUVELLEMENT"></p:outputLabel></legend>
+                </fieldset>
+            </div>
+            <ui:include src="rechercheRenouvellementAsCompte.xhtml" />
+            <ui:include src="listAsCompte.xhtml" />
+            <ui:include src="referenceClientAsCompte.xhtml" />
+            <ui:include src="detailAsCompte.xhtml" />   
+            <ui:include src="validationAsCompte.xhtml" />   
+        </div>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <h:graphicImage library="images" name="ajax-loader.gif" />
+        </p:dialog>
+    </ui:composition>
+</html>

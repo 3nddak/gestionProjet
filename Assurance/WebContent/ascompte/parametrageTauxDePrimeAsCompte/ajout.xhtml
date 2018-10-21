@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+        <h:form class="form-horizontal">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.pays']}"  for="pays" class="" /><h:outputLabel for="pays" value="*"  class="etoile_rouge" />
+                    <!--h:message for="pays"  id="paysMessage" class="errorClass pull-right" /-->
+                    <h:selectOneMenu required="true" requiredMessage="Veuillez choisir le pays" converter="entityConverter"  id="pays" value="#{primeAssuraceCompteBean.paysSelected}"   class="form-control" >
+                        <f:selectItem  itemLabel="Pays" noSelectionOption="true"/>
+                        <f:selectItems  value="#{primeAssuraceCompteBean.listPays}" var="pays" itemValue="#{pays}" itemLabel="#{pays.designationPays}" /> 
+                        <f:ajax event="click" render="paysMessage" />
+                        <p:ajax  listener="#{primeAssuraceCompteBean.initCompagnieByPays()}"  update="compagnie" />
+                    </h:selectOneMenu>
+                    <h:message for="pays"  id="paysMessage" class="errorClass form-control" />
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.compagnie']}"  for="compagnie" /><h:outputLabel  value="*"  for="compagnie" class="etoile_rouge" />
+                    <h:selectOneMenu converter="entityConverter" required="true" requiredMessage="Veuillez choisir la compagnie"  id="compagnie" value="#{primeAssuraceCompteBean.compagnieSelected}"   class="form-control" >
+                        <f:selectItem  itemLabel="#{msg['titre.compagnie']}" noSelectionOption="true"/>
+                        <f:selectItems  value="#{primeAssuraceCompteBean.listCompagnies}" var="compagnie" itemValue="#{compagnie}" itemLabel="#{compagnie.abbreviation}" /> 
+                        <f:ajax event="click" render="compagnieMessage" />
+                        <p:ajax listener="#{primeAssuraceCompteBean.initCourtierByCompagnie()}" update="courtier"/>
+                    </h:selectOneMenu>
+                    <h:message for="compagnie"  id="compagnieMessage" class="errorClass form-control" />
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel  value="#{msg['titre.courtier']}"   for="courtier" /><h:outputLabel  value="*"  for="courtier" class="etoile_rouge" />
+                    <h:selectOneMenu converter="entityConverter" required="true" requiredMessage="Veuillez choisir le courtier" id="courtier" value="#{primeAssuraceCompteBean.courtierSelected}"   class="form-control" >
+                        <f:selectItem  itemLabel="#{msg['titre.courtier']}" noSelectionOption="true"/>
+                        <f:selectItems  value="#{primeAssuraceCompteBean.listCourtiers}" var="courtier" itemValue="#{courtier}" itemLabel="#{courtier.abbreviation}" /> 
+                        <f:ajax event="click" render="courtierMessage" />
+                        
+                    </h:selectOneMenu>
+                    <h:message for="courtier"  id="courtierMessage" class="errorClass form-control" />
+                </div>
+               
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel  value="taux de la prime annuelle"  for="tdc" class="pull-left" /><h:outputLabel  value="*"  for="tdc" class="etoile_rouge" />
+                    <p:inputText class="form-control" validatorMessage="Erreur de validation" converterMessage="Format incorrect" required="true" requiredMessage="Veuillez renseigner le taux" value="#{primeAssuraceCompteBean.primeAssuraceCompte.tauxPrimeAnnuelle}" id="tdc">
+                            <f:ajax event="blur" render="tdcMessage" />
+                    </p:inputText>
+                    <!--pe:keyFilter for="tdc"  mask="num" /-->
+                    <h:message for="tdc"  id="tdcMessage" class="errorClass form-control" />
+                </div>
+                
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel  value="Prime mensuelle"  for="tdca" class="pull-left" /><h:outputLabel  value="*"  for="tdca" class="etoile_rouge" />
+                    <p:inputText class="form-control" validatorMessage="Erreur de validation" converterMessage="Format incorrect" required="true" requiredMessage="Veuillez renseigner la prime" value="#{primeAssuraceCompteBean.primeAssuraceCompte.primeMensuelle}" id="tdca">
+                            <f:ajax event="blur" render="tdcMessagea" />
+                    </p:inputText>
+                    <!--pe:keyFilter for="tdc"  mask="num" /-->
+                    <h:message for="tdca"  id="tdcMessagea" class="errorClass form-control" />
+                </div>
+                
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h:outputLabel  value="Capitaux garantis"  for="tdcg" class="pull-left" /><h:outputLabel  value="*"  for="tdcg" class="etoile_rouge" />
+                    <p:inputText class="form-control" validatorMessage="Erreur de validation" converterMessage="Format incorrect" required="true" requiredMessage="Veuillez renseigner le  capital garanti" value="#{primeAssuraceCompteBean.primeAssuraceCompte.capitalAssure}" id="tdcg">
+                            <f:ajax event="blur" render="tdcMessageg" />
+                    </p:inputText>
+                    <!--pe:keyFilter for="tdc"  mask="num" /-->
+                    <h:message for="tdcg"  id="tdcMessageg" class="errorClass form-control" />
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="btn-toolbar">
+                        <p:commandButton value="Annuler" class="btn btn-danger" actionListener="#{primeAssuraceCompteBean.annuler()}" update="@form" />
+
+                        <p:commandButton value="Enregistrer" class="btn btn-purple pull-right" actionListener="#{primeAssuraceCompteBean.saveOnePrimeAssuraceCompte()}" update="@form,listtaux" />
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:composition>
+
+</html>

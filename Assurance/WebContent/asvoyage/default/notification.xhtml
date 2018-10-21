@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="sms1" class="">
+        <div class="navbar-custom-menu">
+            <div class="navbar bg-under-head">
+                <sec:authorize ifAllGranted="NOTIFICATION"> 
+                    <ul class="nav navbar-nav">
+                        <sec:authorize ifAnyGranted="USER_GUICHET">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.enCoursDeValidation']}"  style="color:#ffffff" /> <sup><h:outputLabel class="badge small" value="#{notificationAsVoyageBean.demandeTraitee}"  style="background-color:red" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  action="#{notificationAsVoyageBean.getPagesDemandeTraitee()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}" > 
+                                            <h:outputLabel value="#{notificationAsVoyageBean.demandeTraitee}" style="background-color:#ec971f" class="pull-right badge" />                                           
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAnyGranted="USER_GUICHET,USER_PVT,USER_CRT">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle" title="#{msg['notification.de']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                    <h:outputLabel value="#{msg['notification.de']}"  style="color:#ffffff" /><sup><h:outputLabel class="badge small" value="#{notificationAsVoyageBean.nouvelleDemande}" style="background-color:#ec971f" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  value="#{msg['notification.menu.sousrenouv']}" action="#{notificationAsVoyageBean.getPagesNouvelleD()}"  title="#{msg['notification.de']}"  >
+                                            <h:outputLabel value="#{notificationAsVoyageBean.nouvelleDemande}" style="background-color: #ec971f" class="pull-right badge" />                
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAnyGranted="USER_GUICHET,USER_PVT,USER_CRT,USER_CMP">
+                            <li class="">
+
+                                <a href="#" class="dropdown-toggle" title="#{msg['notification.demandeValidee']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                                    <h:outputLabel value="#{msg['notification.demandeValidee']}"  style="color:#ffffff" /><sup><h:outputLabel class="badge small" value="#{notificationAsVoyageBean.demandeValidee}" style="background-color:#FFE495" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+
+
+                                    <li>
+                                        <h:commandLink  value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.de']}"  action="#{notificationAsVoyageBean.getPagesDemandeValideParClient()}" >
+                                            <h:outputLabel value="#{notificationAsVoyageBean.demandeValidee}" style="background-color: #ec971f" class="pull-right badge" />                
+                                           
+                                        </h:commandLink>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAllGranted="USER_CMP ">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.nouvelleDemande']}"  style="color:#ffffff" /> <sup><h:outputLabel class="badge small" value="#{notificationAsVoyageBean.nouvelleDemande}" style="background-color:red" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  action="#{notificationAsVoyageBean.getPagesNouvelleD()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}" > 
+                                            <h:outputLabel value="#{notificationAsVoyageBean.nouvelleDemande}" style="background-color:#ec971f" class="pull-right badge" />                                           
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAllGranted="USER_CMP ">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.demandeTraitee']}"  style="color:#ffffff" /> <sup><h:outputLabel class="badge small" value="#{notificationAsVoyageBean.demandeTraitee}" style="background-color: #00733e"  /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  action="#{notificationAsVoyageBean.getPagesDemandeTraitee()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}" > 
+                                            <h:outputLabel value="#{notificationAsVoyageBean.demandeTraitee}" style="background-color:#ec971f" class="pull-right badge" />                                           
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAnyGranted="USER_CMP, USER_GUICHET,USER_PVT,USER_CRT">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.rp']}"  style="color:#ffffff" /> <sup><h:outputLabel class="badge small" value="#{notificationAsVoyageBean.souscriptioneffective}" style="background-color:lawngreen"  /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  action="#{notificationAsVoyageBean.getPagesSouscriptionEffective()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}" > 
+                                            <h:outputLabel value="#{notificationAsVoyageBean.souscriptioneffective}" style="background-color:#ec971f" class="pull-right badge" />                                           
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize ifAnyGranted="USER_CMP,USER_GUICHET,USER_PVT,USER_CRT">
+                            <li class="">
+                                <a href="#" class="dropdown-toggle"  title="#{msg['notification.ev']}"   data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                    <h:outputLabel  value="#{msg['notification.demandeRejete']}"  style="color:#ffffff" /> <sup><h:outputLabel class="badge small" value="#{notificationAsVoyageBean.demandeRejetee}" style="background-color: slategrey" /></sup></a>
+                                <ul class="dropdown-menu animated fadeInDown pull-right">
+                                    <li>
+                                        <h:commandLink  action="#{notificationAsVoyageBean.getPagesDemandeRejete()}"   value="#{msg['notification.menu.sousrenouv']}"  title="#{msg['notification.ev']}" > 
+                                            <h:outputLabel value="#{notificationAsVoyageBean.demandeRejetee}" style="background-color:#ec971f" class="pull-right badge" />                                           
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+                    </ul>
+                </sec:authorize>   
+            </div>
+        </div>
+    </h:form>
+    <h:form>
+        <p:remoteCommand name="newSms" process="@this" partialSubmit="true"  action="#{notificationAsVoyageBean.init()}" update="sms1" autoRun="false"/>
+    </h:form>
+</ui:composition>

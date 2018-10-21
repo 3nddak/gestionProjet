@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <h:form id="listcourtier" class="form-horizontal">
+            <div class="table-responsive">
+                <div class="form-group">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h:commandLink   target="_blank"  value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn btn-imprimer" actionListener="#{courtierStatistique.doGetA()}"   > 
+                            <i class=" glyphicon glyphicon-print"></i>
+                        </h:commandLink>  
+                        <p:dataTable sortOrder="descending"  class="table table-bordered" var="courtier" reflow="true"  rows="15"   value="#{courtierStatistique.listCourtiers}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" scrollWidth="50%" scrollHeight="150"  editable="true" editMode="cell"
+                                     rowsPerPageTemplate="15,25,50,100,150,200,250,300" 
+                                     >
+
+                            <p:column headerText="#{msg['titre.pays']}">
+                                <p:outputLabel value="#{courtier.pays.designationPays}"/>
+                            </p:column>
+
+                            <p:column headerText="#{msg['courtier.abbreviation']}">
+                                <p:outputLabel value="#{courtier.abbreviation}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['courtier.designation']}">
+                                <p:outputLabel value="#{courtier.designation}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['courtier.adresse']}">
+                                <p:outputLabel value="#{courtier.adresse}"/>
+                            </p:column>
+                            <p:column headerText="#{msg['courtier.telephone']}">
+                                <p:outputLabel value="#{courtier.telephones}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:composition>
+</html>

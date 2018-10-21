@@ -1,0 +1,60 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <div id="liste">
+
+            <h:form  id="formliste3" class="form-horizontal">
+
+                <p:panel header ="Tratement de la demande" toggleable="true">
+                    <div class="form-group">
+
+
+                        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
+                                <h:outputLabel rendered="#{annulationCompagnieBean.demandeAnnulationAsAuto.isExist}"  value="Etat de la demande: "  for="motifrff" class=" pull-left" />
+                            </div>
+                            <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
+                                <h:outputLabel rendered="#{annulationCompagnieBean.demandeAnnulationAsAuto.isExist}"  value="#{annulationCompagnieBean.demandeAnnulationAsAuto.libelleEtaDemandeNCP}"  id="motifrff" class=" pull-left" />
+                            </div>
+                            <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                <p:panel id="motif" header ="Motif de la demande" toggleable="true">
+                                    <p jsf:id="sta" title="motif de la demande" >
+                                        #{annulationCompagnieBean.demandeAnnulationAsAuto.motifDemandePV}
+                                    </p>
+
+                                </p:panel>
+
+                            </div> 
+                            
+                        </div>
+                        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <p:panel id="motifg" header ="Motif du refus" toggleable="true" rendered="#{annulationCompagnieBean.demandeAnnulationAsAuto.refuser()}">
+                                <p jsf:id="stag" title="motif du refus" >
+                                    #{annulationCompagnieBean.demandeAnnulationAsAuto.motifRefusNCP}
+                                </p>
+
+                            </p:panel>
+
+                        </div> 
+                    </div>
+                    
+                </p:panel>
+
+
+            </h:form>
+
+
+        </div>
+    </ui:composition>
+
+
+</html>
+

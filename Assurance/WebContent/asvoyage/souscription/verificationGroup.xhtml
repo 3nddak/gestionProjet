@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+    <ui:composition>
+        <div id="liste" class="row">
+            <ui:include src="infos_question.xhtml"/>
+            <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4 well-lg">
+                <p:growl globalOnly="true" showDetail="false"/>
+                <p:panel  class="form-horizontal well-sm" id="message1">
+                    <div class="panel-heading bg-primary"> 
+                        <p:outputLabel class="police_label" value="#{msg['titre.compagnie']} - #{msg['titre.courtier']}"></p:outputLabel>
+                    </div>
+                    <p:dataTable class="table_label table-responsive" var="asv" rows="5" value="#{souscriptionAsVoyageBean.allAssuranceVoyage}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" 
+                                 rowsPerPageTemplate="5,10,15,20,25"  emptyMessage="#{msg[tableau.vide]}"  
+                                 >  
+                        <p:column >
+                            <h:outputText value="#{asv.compagnie.abbreviation} - #{asv.courtier.abbreviation}"  />
+                        </p:column>
+                        <p:column width="100">
+                            <p:commandLink  class="btn btn-purple fa fa-search"  title="#{msg['tableaux.detail']}" action="#{souscriptionAsVoyageBean.onRowSelectGroup()}" update="formliste:detail" >
+                                <f:setPropertyActionListener value="#{asv}" target="#{souscriptionAsVoyageBean.assuranceVoyageByCompagnieSelected}" />
+                            </p:commandLink>
+                        </p:column>
+                        <p:column width="100">
+                            <p:commandLink  class="btn btn-purple fa fa-send-o " title="#{msg['btn.enregistrer']}" action="#{souscriptionAsVoyageBean.saveGroupByCompagnie()}" update="@form,formliste:msgsAux" >
+                                <f:setPropertyActionListener value="#{asv}" target="#{souscriptionAsVoyageBean.assuranceVoyageByCompagnieSelected}" />
+                            </p:commandLink>
+                            <p:commandLink class="btn btn-danger fa fa-send-o" title="#{msg['titre.forcerLEnregistrement']}" rendered="#{!souscriptionAsVoyageBean.forceSaveGroupe(asv.compagnie.idCompagnie)}"  action="#{souscriptionAsVoyageBean.souscrireAssuranceGroupNonvalide()}" update="@form" >
+
+                                <f:setPropertyActionListener value="#{asv}" target="#{souscriptionAsVoyageBean.assuranceVoyageByCompagnieToForce}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                            <p:commandButton class="btn btn-success" value="#{msg['titre.quitter']}" action="#{souscriptionAsVoyageBean.terminer()}" update="msgsAux,formliste" >
+                                <p:confirm header="#{msg['btn.confirmation']}" message="#{msg['question.etesVousSur']}" icon="ui-icon-check"  />
+                            </p:commandButton>
+                            <p:commandButton rendered="#{souscriptionAsVoyageBean.allAssuranceVoyage.size() le 0 ?false:true}" value="#{msg['btn.enregistrerTous']}" update="detail,msgsAux,formliste" action="#{souscriptionAsVoyageBean.saveGroup()}" class="btn btn-success btn-xs pull-right">
+
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </p:panel>
+            </div>
+            <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8 well-lg">
+                <div class="panel">
+                    <p:panel  class="form-horizontal well-sm" id="detail">
+                        <div class="panel-heading bg-primary">  
+                            <h:outputLabel value="#{msg['titre.verificationPour']}" class="text-uppercase" >
+                                <h:outputText value="#{souscriptionAsVoyageBean.assuranceVoyageByCompagnieSelected.compagnie.abbreviation} - #{souscriptionAsVoyageBean.assuranceVoyageByCompagnieSelected.courtier.abbreviation}" />
+                            </h:outputLabel>
+                        </div>
+                        <div class="panel-body"> 
+                            <div class="row">
+                                <fieldset><legend class="titre_entete text-left text-capitalize small" >
+                                    </legend>
+                                    <p:dataTable class="table_label table-responsive" var="compcour" id="veri" reflow="true" rows="5" value="#{souscriptionAsVoyageBean.listAssuranceVoyageTosaveByCompagnie}"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                 rowsPerPageTemplate="10,20,25,50,100"  emptyMessage="#{msg[tableau.vide]}" >  
+
+                                        <p:column headerText="#{msg['client.title']}">
+                                            <h:outputText value="#{compcour.client.nom}#{compcour.client.prenom}" />
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.primenette']}">
+                                            <h:outputText value="#{compcour.prixNette}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.reduction']}">
+                                            <h:outputText value="#{compcour.valeurReduction()}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.majoration']}">
+                                            <h:outputText value="#{compcour.valeurMajoration()}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                        <p:column headerText="#{msg['tableau.montantttc']}">
+                                            <h:outputText value="#{compcour.primeTTC}" >
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </h:outputText>
+                                        </p:column >
+                                    </p:dataTable>
+                                </fieldset>
+                            </div> 
+                        </div>
+                    </p:panel>
+                </div>
+            </div>
+        </div>
+        <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade">
+            <h:form>
+                <p:commandButton value="#{msg['supprimer.oui']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="#{msg['supprimer.non']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </h:form>
+        </p:confirmDialog>
+        <pe:blockUI widgetVar="simulation">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                <h:outputText value="#{msg['titre.simulationEnCours']}" />  
+            </h:panelGrid>  
+        </pe:blockUI> 
+    </ui:composition> 
+</html>
+

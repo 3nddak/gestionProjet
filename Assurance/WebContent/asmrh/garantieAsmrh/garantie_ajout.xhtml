@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+        <h:form class="form-horizontal">
+            <p:growl id="msg2" globalOnly="true" showDetail="false"/>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pays" value="#{msg['titre.pays']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu id="pays" value="#{garantieAsmrhBean.pays}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                 requiredMessage="#{msg['compagnie.pays.requireMessage']}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemValue=""/>
+                                    <f:selectItems value="#{garantieAsmrhBean.listPays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                    <f:ajax event="click" render="paysMessage" />
+                                    <p:ajax update="pss" listener="#{garantieAsmrhBean.categorieByPays()}"/>
+                                </h:selectOneMenu> 
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pays"  id="paysMessage" class="errorClass" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12" >
+                        <div class="form-group" >
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel for="pss" value="#{msg['titre.categorie']}"/><h:outputLabel value="*" class="etoile_rouge"/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  class="form-control" required="true" requiredMessage="#{msg['categorie.requireMessage']}" converter="entityConverter"  id="pss" value="#{garantieAsmrhBean.garantieAsmrh.categorieAsMrh}"  >
+                                    <f:selectItem itemDisabled="true" itemLabel="#{msg['titre.categorie']}" /> 
+                                    <f:selectItems value="#{garantieAsmrhBean.listCategorie}" var="categorie"
+                                                   itemLabel="#{categorie.designation}" itemValue="#{categorie}"/>
+                                    <f:ajax event="click" render="pssMessage" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pss"  id="pssMessage" class="errorClass" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                        <h:outputLabel for="symbole" value="#{msg['titre.designation']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                        <p:inputText id="symbole" required="true" value="#{garantieAsmrhBean.garantieAsmrh.designation}" styleClass="form-control" placeholder="designation"
+                                     requiredMessage="#{msg['titre.designation.requiredMessage']}"     
+                                     >
+                            <f:ajax event="blur" render="symboleMessage"/>
+                        </p:inputText>
+                        <h:message for="symbole" id="symboleMessage" class="errorClass"/>
+                    </div> 
+                    <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                        <h:outputLabel for="libelle" value="#{msg['titre.Description']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                        <p:inputText id="libelle" required="true" value="#{garantieAsmrhBean.garantieAsmrh.description}" styleClass="form-control" placeholder="description"
+                                     requiredMessage="#{msg['titre.description.requiredMessage']}"
+                                     >
+                            <f:ajax event="blur" render="libelleMessage"/>
+                        </p:inputText>
+                        <h:message for="libelle" id="libelleMessage" class="errorClass" />
+                    </div> 
+
+
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="btn-toolbar">
+                        <p:commandButton value="#{msg['btn.annuller']}" class="btn btn-danger" actionListener="#{garantieAsmrhBean.annuler()}" update="@form" />
+
+                        <p:commandButton value="#{msg['btn.enregistrer']}" class="btn btn-purple pull-right" actionListener="#{garantieAsmrhBean.saveOneGarantie()}" update="@form,listtaux,msg2" />
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:composition>
+
+</html>

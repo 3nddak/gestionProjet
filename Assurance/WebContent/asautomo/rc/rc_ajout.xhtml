@@ -1,0 +1,571 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:composition>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <p:outputPanel id="ajout" style="text-align:center;" class="panel">
+                    <h:form class="form-horizontal" id="zone-ajout"> 
+                        <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+
+                        <div class="row">
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu id="pays" value="#{tableauRCBean.tableauRCToSave.pays}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                         requiredMessage="#{msg['compagnie.pays.requireMessage']}"
+                                                         >
+                                            <f:selectItem itemLabel="#{msg['compagnie.pays']}" itemDisabled="true"/>
+                                            <f:selectItems value="#{tableauRCBean.paysList}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" /> 
+                                            <f:ajax event="click" render="paysMessage" />
+                                            <p:ajax event="click" listener="#{tableauRCBean.listCategorieByPays()}" update="categorie" />
+                                        </h:selectOneMenu> 
+                                    </div> 
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="pays"  id="paysMessage" class="errorClass" />
+                                    </div> 
+                                </div>
+                            </div> 
+
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="categorie" value="#{msg['vehicule.categorie']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu id="categorie" value="#{tableauRCBean.tableauRCToSave.categorie}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                         requiredMessage="#{msg['vehicule.categorie.requiredMessage']}"
+                                                         >
+                                            <f:selectItem itemLabel="#{msg['vehicule.categorie']}" itemDisabled="true"/>
+                                            <f:selectItems value="#{tableauRCBean.listCategorie}" var="cat" itemLabel="#{cat.libelle}" itemValue="#{cat}" /> 
+                                            <p:ajax listener="#{tableauRCBean.garantieByCategorie()}" update="garantie,zone-ajout" />
+                                            <f:ajax event="click" render="categorieMessage" />
+                                        </h:selectOneMenu> 
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="categorie"  id="categorieMessage" class="errorClass" />
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="garantie" value="Garanties" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                        <h:selectOneMenu  id="garantie" value="#{tableauRCBean.tableauRCToSave.garantie}"  converter="omnifaces.SelectItemsConverter"  class="police_label form-control">
+                                            <f:selectItem itemLabel="#{msg['garantie.titre']}" itemDisabled="true"/>
+                                            <f:selectItems var="garantie" itemLabel="#{garantie.libelle}" value="#{tableauRCBean.guarantieList}"/>
+                                            <p:ajax listener="#{tableauRCBean.parametres()}"  update="zone-ajout,zone-ajout:poids"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="garantie"  id="garantieMessage" class="errorClass" />
+                                    </div> 
+                                </div>
+                            </div>  
+                                                   <div class="col-md-4 col-lg-4 col-sm-12">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <h:outputLabel for="t5"  value="Prime mensuelle" class="pull-left" />
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <p:selectBooleanCheckbox id="t5"  value="#{tableauRCBean.tableauRCToSave.estMensuelle}"  class="pull-left" />
+                                </div>
+                            </div> 
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                                <div class="form-group">     
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="prime" value="#{msg['garantie.prime']}" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText id="prime" required="true" converterMessage="#{msg['format.integer.converterMessage']}"  requiredMessage="#{msg['garantie.prime.requiredMessage']}" value="#{tableauRCBean.tableauRCToSave.prime}" styleClass="form-control"  title="Prime" a:placeholder="Prime RC" >
+                                            <f:ajax event="keyup" render="primeMessage"/>
+                                            <f:convertNumber pattern="###,##0" type="number" />
+                                            <p:ajax event="blur" update="@this" />
+                                        </p:inputText>
+                                        <pe:keyFilter for="prime" mask="int"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="prime"  id="primeMessage" class="errorClass" />
+                                    </div>  
+                                </div> 
+                            </div>
+                         
+                            <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" jsf:rendered="#{(tableauRCBean.puissance eq 1) ?true:false }" >
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="puissance" value="Puissance" rendered="#{(tableauRCBean.puissance eq 1) ?true:false }" class="pull-left text-left"/><h:outputLabel value="*" rendered="#{(tableauRCBean.puissance eq 1) ?true:false }" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+                                        <div class="input-group">
+                                            <p:inputText id="puissance" required="true" rendered="#{(tableauRCBean.puissance eq 1) ?true:false }" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{tableauRCBean.puissanceIn.inf}" requiredMessage="#{msg['vehicule.puissance.requiredMessage']}" class="form-control"  title="Puissance" a:placeholder="Puissance inf" >
+                                                <f:passThroughAttribute name="aria-describedby" value="puiinf" />
+                                                <f:ajax event="keyup" render="desMessagePui"/>
+                                            </p:inputText>
+                                            <span class="input-group-addon text-lowercase label-primary" id="puiinf" jsf:rendered="#{(tableauRCBean.puissance eq 1) ?true:false }">t</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+                                        <div class="input-group">
+                                            <p:inputText id="puissanceU"  rendered="#{(tableauRCBean.puissance eq 1) ?true:false }" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{tableauRCBean.puissanceIn.sup}"  styleClass="form-control"  title="Poids" a:placeholder="Puissance sup" >
+                                                <f:passThroughAttribute name="aria-describedby" value="puisup" />
+
+                                            </p:inputText>
+                                            <span class="input-group-addon text-lowercase label-primary" id="puisup" jsf:rendered="#{(tableauRCBean.puissance eq 1) ?true:false }">t</span>
+                                        </div>
+                                    </div>
+
+                                    <pe:keyFilter for="puissanceU" mask="int"/>
+
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="puissance"  id="desMessagePui" class="errorClass" />
+                                    </div>                        
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4" jsf:rendered="#{(tableauRCBean.energie eq 1) ?true:false }">
+                                <div class="form-group">  
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  value="#{msg['vehicule.energie']}"  rendered="#{(tableauRCBean.energie eq 1) ?true:false }" for="energie" class=" pull-left" />
+                                        <h:outputLabel value="*" class="etoile_rouge pull-left" rendered="#{(tableauRCBean.energie eq 1) ?true:false }" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  id="energie" rendered="#{(tableauRCBean.energie eq 1) ?true:false }" value="#{tableauRCBean.tableauRCToSave.energie}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                          requiredMessage="#{msg['vehicule.energie.requireMessage']}"
+                                                          >
+                                            <f:selectItem itemLabel="#{msg['vehicule.energie']}" itemDisabled="true"/>
+                                            <f:selectItems value="#{tableauRCBean.energieList}" var="en" itemLabel="#{en.libelleFr}" itemValue="#{en}" /> 
+                                            <f:ajax event="click" render="energieMessage" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="energie" id="energieMessage" class="errorClass" />
+                                    </div>                          
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4" jsf:rendered="#{(tableauRCBean.nbrPlace eq 1) ?true:false }">
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="nplc" value="#{msg['vehicule.nombreplace']}" rendered="#{(tableauRCBean.nbrPlace eq 1) ?true:false }" class="pull-left text-left"/><h:outputLabel rendered="#{(tableauRCBean.nbrPlace eq 1) ?true:false }" value="*" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText id="nplc" required="true" rendered="#{(tableauRCBean.nbrPlace eq 1) ?true:false }" converterMessage="#{msg['format.integer.converterMessage']}"  requiredMessage="#{msg['vehicule.nombredeplace.requiredMessage']}" value="#{tableauRCBean.tableauRCToSave.nombreDePlace}" styleClass="form-control"  title="Nbr places" a:placeholder="Nbr places" >
+                                            <f:ajax event="keyup" render="nplcMessage"/>
+                                        </p:inputText>
+                                        <pe:keyFilter for="nplc" mask="int"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="nplc"  id="nplcMessage" class="errorClass" />
+                                    </div>                        
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4" jsf:rendered="#{(tableauRCBean.surprime eq 1) ?true:false }">
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="nplcr" value="Surprime par passager" rendered="#{(tableauRCBean.surprime eq 1) ?true:false }" class="pull-left text-left"/><h:outputLabel rendered="#{(tableauRCBean.nbrPlace eq 1) ?true:false }" value="*" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText id="nplcr" required="true" rendered="#{(tableauRCBean.surprime eq 1) ?true:false }" converterMessage="#{msg['format.integer.converterMessage']}"  requiredMessage="#{msg['vehicule.nombredeplace.requiredMessage']}" value="#{tableauRCBean.tableauRCToSave.surprimeParPassager}" styleClass="form-control"  title="Surprime par passager" a:placeholder="Surprime par passager" >
+                                            <f:ajax event="keyup" render="nplcMessagea"/>
+                                        </p:inputText>
+                                        <pe:keyFilter for="nplcr" mask="int"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="nplcr"  id="nplcMessagea" class="errorClass" />
+                                    </div>                        
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4" jsf:rendered="#{(tableauRCBean.surprime eq 1) ?true:false }">
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="nplcre" value="Passager min" rendered="#{(tableauRCBean.surprime eq 1) ?true:false }" class="pull-left text-left"/><h:outputLabel rendered="#{(tableauRCBean.nbrPlace eq 1) ?true:false }" value="*" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText id="nplcre" required="true" rendered="#{(tableauRCBean.surprime eq 1) ?true:false }" converterMessage="#{msg['format.integer.converterMessage']}"  requiredMessage="#{msg['vehicule.nombredeplace.requiredMessage']}" value="#{tableauRCBean.tableauRCToSave.surprimeParPassager}" styleClass="form-control"  title="Nombre de passager minimum pour la surprime"  >
+                                            <f:ajax event="keyup" render="nplcMessages"/>
+                                        </p:inputText>
+                                        <pe:keyFilter for="nplcre" mask="int"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="nplcre"  id="nplcMessages" class="errorClass" />
+                                    </div>                        
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" jsf:rendered="#{(tableauRCBean.poids eq 1) ?true:false }" >
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="poids" value="Poids" rendered="#{(tableauRCBean.poids eq 1) ?true:false }" class="pull-left text-left"/><h:outputLabel value="*" rendered="#{(tableauRCBean.poids eq 1) ?true:false }" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+                                        <div class="input-group">
+                                            <p:inputText id="poids" required="true" rendered="#{(tableauRCBean.poids eq 1) ?true:false }" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{tableauRCBean.poidsIn.inf}" requiredMessage="#{msg['vehicule.puissance.requiredMessage']}" class="form-control"  title="Poids" a:placeholder="Poids inf" >
+                                                <f:passThroughAttribute name="aria-describedby" value="pinf" />
+                                                <f:ajax event="keyup" render="desMessageP"/>
+                                            </p:inputText>
+                                            <span class="input-group-addon text-lowercase label-primary" id="pinf" jsf:rendered="#{(tableauRCBean.poids eq 1) ?true:false }">t</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+                                        <div class="input-group">
+                                            <p:inputText id="poidsU"  rendered="#{(tableauRCBean.poids eq 1) ?true:false }" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{tableauRCBean.poidsIn.sup}"  styleClass="form-control"  title="Poids" a:placeholder="Poids sup" >
+                                                <f:passThroughAttribute name="aria-describedby" value="psup" />
+
+                                            </p:inputText>
+                                            <span class="input-group-addon text-lowercase label-primary" id="psup" jsf:rendered="#{(tableauRCBean.poids eq 1) ?true:false }">t</span>
+                                        </div>
+                                    </div>
+
+                                    <pe:keyFilter for="poids" mask="num"/>
+                                    <pe:keyFilter for="poidsU" mask="num"/>
+
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="poids"  id="desMessageP" class="errorClass" />
+                                    </div>                        
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4" jsf:rendered="#{(tableauRCBean.carrosserie eq 1) ?true:false }">
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="carosserie" value="Carrosserie" rendered="#{(tableauRCBean.carrosserie eq 1) ?true:false }"  class="pull-left text-left"/><h:outputLabel value="*" rendered="#{(tableauRCBean.carrosserie eq 1) ?true:false }" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <p:inputText id="carrosserie" required="true" rendered="#{(tableauRCBean.carrosserie eq 1) ?true:false }" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{tableauRCBean.tableauRCToSave.carrosserie}" requiredMessage="#{msg['vehicule.puissance.requiredMessage']}" styleClass="form-control"  title="Carrosserie" a:placeholder="Carrosserie" >
+                                            <f:ajax event="keyup" render="desMessageC"/>
+                                        </p:inputText>
+                                        <pe:keyFilter for="carrosserie" mask="int"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="carrosserie"  id="desMessageC" class="errorClass" />
+                                    </div>                        
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" jsf:rendered="#{(tableauRCBean.typeVitre eq 1) ?true:false }">
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="typeVitre" value="Type de vitres" rendered="#{(tableauRCBean.typeVitre eq 1) ?true:false }" class="pull-left text-left"/><h:outputLabel rendered="#{(tableauRCBean.typeVitre eq 1) ?true:false }"  value="*" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu id="typevitre" value="#{tableauRCBean.tableauRCToSave.typeVitres}" rendered="#{(tableauRCBean.typeVitre eq 1) ?true:false }" required="true" class="form-control" converter="omnifaces.SelectItemsConverter"
+                                                         requiredMessage="#{msg['vehicule.typevitre.requireMessage']}"
+                                                         >
+                                            <f:selectItem itemLabel="#{msg['vehicule.typeVitre']}" itemDisabled="true"/>
+                                            <f:selectItems value="#{genreAndTypeVitreBean.allTypeVitre}" var="typ" itemLabel="#{typ.typeVitre}" itemValue="#{typ}"/> 
+                                            <f:ajax event="keyup" render="desMessageT"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="typeVitre"  id="desMessageT" class="errorClass" />
+                                    </div>  
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4" jsf:rendered="#{(tableauRCBean.typeCylindre eq 1) ?true:false }">
+                                <div class="form-group">  
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel  value="Type de cylindre"  rendered="#{(tableauRCBean.typeCylindre eq 1) ?true:false }" for="typescylindre" class=" pull-left" />
+                                        <h:outputLabel value="*" class="etoile_rouge pull-left" rendered="#{(tableauRCBean.typeCylindre eq 1) ?true:false }" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu  id="typescylindre" rendered="#{(tableauRCBean.typeCylindre eq 1) ?true:false }" value="#{tableauRCBean.tableauRCToSave.typeCylindre}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                          requiredMessage="#{msg['vehicule.energie.requireMessage']}"
+                                                          >
+                                            <f:selectItem itemLabel="type cylindre" itemDisabled="true"/>
+                                            <f:selectItems value="#{tableauRCBean.typeCylindreList}" var="tcy" itemLabel="#{tcy.designation}" itemValue="#{tcy}" /> 
+                                            <f:ajax event="click" render="typescylindreMessage" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="typescylindre" id="typescylindreMessage" class="errorClass" />
+                                    </div>                          
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" jsf:rendered="#{(tableauRCBean.cylindre eq 1) ?true:false }" >
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="cylindre" value="cylindre" rendered="#{(tableauRCBean.cylindre eq 1) ?true:false }" class="pull-left text-left"/><h:outputLabel value="*" rendered="#{(tableauRCBean.cylindre eq 1) ?true:false }" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+                                        <div class="input-group">
+                                            <p:inputText id="cylindre" required="true" rendered="#{(tableauRCBean.cylindre eq 1) ?true:false }" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{tableauRCBean.cylindreIn.inf}" requiredMessage="#{msg['vehicule.puissance.requiredMessage']}" class="form-control"  title="Cylindre" a:placeholder="Cylindre inf" >
+                                                <f:passThroughAttribute name="aria-describedby" value="cinf" />
+                                                <f:ajax event="keyup" render="desMessageCC"/>
+                                            </p:inputText>
+                                            <span class="input-group-addon text-lowercase label-primary" id="cinf" jsf:rendered="#{(tableauRCBean.cylindre eq 1) ?true:false }">t</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+                                        <div class="input-group">
+                                            <p:inputText id="cylindreU"  rendered="#{(tableauRCBean.cylindre eq 1) ?true:false }" converterMessage="#{msg['format.integer.converterMessage']}"  value="#{tableauRCBean.cylindreIn.sup}"  styleClass="form-control"  title="Cylindre" a:placeholder="Cylindre sup" >
+                                                <f:passThroughAttribute name="aria-describedby" value="csup" />
+
+                                            </p:inputText>
+                                            <span class="input-group-addon text-lowercase label-primary" id="csup" jsf:rendered="#{(tableauRCBean.cylindre eq 1) ?true:false }">t</span>
+                                        </div>
+                                    </div>
+
+                                    <pe:keyFilter for="cylindre" mask="num"/>
+                                    <pe:keyFilter for="cylindreU" mask="num"/>
+
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="cylindre"  id="desMessageCC" class="errorClass" />
+                                    </div>                        
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel rendered="#{tableauRCBean.hidePreliste}" for="ligne" value="Nombre de ligne" class="pull-left text-left"/><h:outputLabel rendered="#{tableauRCBean.hidePreliste}" value="*" class="etoile_rouge pull-left text-left"/>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">  
+                                        <p:inputText rendered="#{tableauRCBean.hidePreliste}" id="ligne" value="#{tableauRCBean.nombreLigne}" class="form-control" maxlength="2" required="true" requiredMessage="Veuillez saisir le nombre de ligne" 
+                                                     validatorMessage="Veuillez saisir un nombre entre 0 et 10"  >
+                                            <f:ajax event="keyup" render="ligneMessage"/>
+                                            <f:validateLongRange minimum="1" maximum="10" />
+                                        </p:inputText>
+                                    </div>
+                                    <pe:keyFilter for="ligne" mask="int"/>
+
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">  
+                                        <h:message for="ligne"  id="ligneMessage" class="errorClass" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                                        <p:commandButton value="Affecter" rendered="#{tableauRCBean.hidePreliste}" action="#{tableauRCBean.createTemporalList()}" update="trclist1,garantie,zone-ajout"  class="btn btn-primary pull-right primary" >
+                                            <p:ajax listener="#{tableauRCBean.hideTable()}"  update="trclist1"/>
+                                        </p:commandButton> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" jsf:rendered="#{tableauRCBean.hidePrelisteTable}">
+                            <div class="form-group"> 
+                                <p:dataTable rendered="#{tableauRCBean.hidePrelisteTable}" id="trclist1" value="#{tableauRCBean.temporalList}" rows="8" var="trc1"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             paginator="true" paginatorPosition="bottom" emptyMessage="#{msg['tableau.vide']}" sortOrder="descending"
+                                             editable="true" editMode="cell"
+                                             rowsPerPageTemplate="8,15,20"
+                                             >
+
+                                    <p:column headerText="#{msg['vehicule.categorie']}" >
+                                        <h:outputText value="#{trc1.categorie.libelle}" />
+                                    </p:column>
+
+                                    <p:column headerText="#{msg['vehicule.garantie']}" >
+                                        <h:outputText value="#{trc1.garantie.libelle}" />
+                                    </p:column>
+
+                                    <p:column  headerText="Puissance Inf" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="Gk" value="#{trc1.puissance.inf}" /></f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{trc1.poids.inf}" rendered="#{(trc1.puissance.inf eq null) ?false:true }" >
+                                                    <p:ajax event="keyup" update="Gk"  /> 
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Puissance Sup" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="Hk" value="#{trc1.puissance.sup}" /></f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{trc1.puissance.sup}" rendered="#{(trc1.puissance.sup eq null) ?false:true }" >
+                                                    <p:ajax event="keyup" update="Hk"  /> 
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg['vehicule.energie']}" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="D" value="#{trc1.energie.libelleFr}" /></f:facet>
+                                            <f:facet name="input">
+                                                <h:selectOneMenu  id="energie" value="#{trc1.energie}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control"
+                                                                  requiredMessage="#{msg['vehicule.energie.requireMessage']}" rendered="#{(trc1.energie.libelleFr eq null) ?false:true }"
+                                                                  >
+                                                    <f:selectItem itemLabel="#{msg['vehicule.energie']}" itemValue=""/>
+                                                    <f:selectItems value="#{tableauRCBean.energieList}" var="en" itemLabel="#{en.libelleFr}" itemValue="#{en}" /> 
+                                                    <p:ajax event="keyup" update="D"  /> 
+                                                </h:selectOneMenu>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column  headerText="#{msg['vehicule.nombreplace']}" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="E" value="#{trc1.nombreDePlace}" /></f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{trc1.nombreDePlace}" rendered="#{(trc1.nombreDePlace eq null) ?false:true }" >
+                                                    <p:ajax event="keyup" update="E"  /> 
+                                                </p:inputText></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Poids Inf" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="G" value="#{trc1.poids.inf}" /></f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{trc1.poids.inf}" rendered="#{(trc1.poids.inf eq null) ?false:true }" >
+                                                    <p:ajax event="keyup" update="G"  /> 
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Poids Sup" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="H" value="#{trc1.poids.sup}" /></f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{trc1.poids.sup}" rendered="#{(trc1.poids.sup eq null) ?false:true }" >
+                                                    <p:ajax event="keyup" update="H"  /> 
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Cylindre Inf" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="Gc" value="#{trc1.cylindre.inf}" /></f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{trc1.cylindre.inf}" rendered="#{(trc1.cylindre.inf eq null) ?false:true }" >
+                                                    <p:ajax event="keyup" update="Gc"  /> 
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Cylindre Sup" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="Hc" value="#{trc1.cylindre.sup}" /></f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{trc1.cylindre.sup}" rendered="#{(trc1.cylindre.sup eq null) ?false:true }" >
+                                                    <p:ajax event="keyup" update="Hc"  /> 
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg['vehicule.carrosserie']}" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="I" value="#{trc1.carrosserie}" /></f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{trc1.carrosserie}" rendered="#{(trc1.carrosserie eq null) ?false:true }" >
+                                                    <p:ajax event="keyup" update="I"   /> 
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column> 
+                                    <p:column headerText="Type Cylindre" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="Ic" value="#{trc1.typeCylindre.designation}" /></f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{trc1.typeCylindre}" rendered="#{(trc1.typeCylindre eq null) ?false:true }" >
+                                                    <p:ajax event="keyup" update="Ic"   /> 
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column> 
+
+                                    <p:column headerText="#{msg['vehicule.typeVitre']}" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="J" value="#{trc1.typeVitres.typeVitre}" /></f:facet>
+                                            <f:facet name="input">
+                                                <h:selectOneMenu  id="typeVitres" value="#{trc1.typeVitres}" converter="omnifaces.SelectItemsConverter"  class="form-control"
+                                                                  requiredMessage="#{msg['vehicule.energie.requireMessage']}" 
+                                                                  >
+                                                    <f:selectItem itemLabel="#{msg['vehicule.energie']}" itemValue=""/>
+                                                    <f:selectItems value="#{tableauRCBean.typeVitreList}" var="typeVitre" itemLabel="#{typeVitre.typeVitre}" itemValue="#{typeVitre}" /> 
+                                                    <p:ajax  update="J"  /> 
+                                                </h:selectOneMenu>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    
+                                    
+                                    
+                                    <p:column headerText="Prime mensuelle ?" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="Jx" value="#{trc1.estMensuelle}" /></f:facet>
+                                            <f:facet name="input">
+                                                <p:selectBooleanCheckbox   value="#{tableauRCBean.tableauRCToSave.estMensuelle}"  class="pull-left" >
+                                                    <p:ajax update="Jx" />
+                                                </p:selectBooleanCheckbox>7
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg['garantie.prime']}" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="K" value="#{trc1.prime}" /></f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{trc1.prime}" rendered="#{(trc1.prime eq null) ?false:true }" >
+                                                    <p:ajax event="keyup" update="K"  /> 
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Actions"> 
+
+                                        <p:commandButton  update="trclist1" icon="fa fa-trash" action="#{tableauRCBean.removeOneLigneTableauRC()}" title="#{msg['btn.supprimer']}" class="btn-danger danger btn-sm">
+                                            <f:setPropertyActionListener value="#{trc1}" target="#{tableauRCBean.temporalLigneTableauRCToRemove}" />
+                                        </p:commandButton>
+
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="col-lg-2 col-md-4 pull-left">
+                                    <p:commandButton value="#{msg['btn.annuller']}" ajax="true" action="#{tableauRCBean.annuler()}" update="zone-ajout,formliste,"  class="btn btn-danger danger form-control" >
+                                    </p:commandButton> 
+                                </div>
+                                <div class="col-md-4 col-lg-2 pull-right">
+                                    <p:commandButton rendered="#{tableauRCBean.hideSaveButton}"  value="#{msg['btn.enregistrer']}" action="#{tableauRCBean.ajout2()}" update="zone-ajout,formliste"  class="btn btn-success success form-control">
+                                    </p:commandButton>
+                                </div>
+                                <div class="col-md-4 col-lg-2 pull-right">
+                                    <p:commandButton rendered="#{tableauRCBean.hideUpdateButton}" value="#{msg['btn.modifier']}" action="#{tableauRCBean.modifier()}" update="zone-ajout,formliste"  class="btn btn-success success form-control">
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+
+                </p:outputPanel>
+            </div>
+        </div>
+    </ui:composition> 
+
+</html>
+

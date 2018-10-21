@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+
+        <div id="liste" class="row">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+                <div class="panel">
+                    <h:form  id="formliste" class="form-horizontal">
+                        <div class="panel-heading"> 
+                            <p:fieldset  legend="Effectuer une opération : #{opDivBean.ajoutModif}" toggleable="true" collapsed="false" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <div class="row">
+                                    <div class="col-md-19 col-lg-12 col-sm-12">
+                                        <p:outputPanel id="ajout" style="text-align:center;">
+                                            <p:growl id="msgs" showDetail="false" globalOnly="true" />
+                                            <div class="form-group">
+                                                <div class=" col-lg-6 ">
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <h:outputLabel  value="Reference"  class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" /> 
+                                                    </div>
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <p:inputText  required="true" value="#{opDivBean.reference}" class="form-control" >
+
+                                                        </p:inputText>
+                                                    </div> 
+                                                </div>
+                                                <div class=" col-lg-6 ">
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <h:outputLabel  value="Description" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" /> 
+                                                    </div>
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <p:inputText  required="true" value="#{opDivBean.description}" class="form-control" >
+
+                                                        </p:inputText>
+                                                    </div> 
+
+                                                </div>
+
+
+                                            </div> 
+                                            <div class="form-group">
+                                                <div class=" col-lg-6 ">
+                                                    <h:outputLabel for="facAtt" value="type de Payement"   class=" pull-left" />
+                                                    <h:selectOneMenu  id="facAtt" value="#{opDivBean.typePayement}" class="form-control"
+                                                                      >
+                                                        <f:selectItem itemLabel="par Cheque " itemValue="1"/>
+                                                        <f:selectItem itemLabel="par Banque" itemValue="2"/>
+                                                        <f:selectItem itemLabel="espèce" itemValue="3"/>
+                                                        <f:selectItem itemLabel="autres" itemValue="4"/>
+                                                    </h:selectOneMenu>
+
+                                                </div>
+                                                <div class=" col-lg-6 ">
+                                                    <h:outputLabel  value="Document justificatif" for="fileUpload" class=" pull-left" />
+                                                    <p:fileUpload id="fileUpload" required="true" fileUploadListener ="#{opDivBean.handleFileUpload}"
+                                                                  mode="advanced"
+
+                                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|bmp)$/"        
+                                                                  label="choisir le document" uploadLabel="#{msg['btn.telecharger']}" cancelLabel="#{msg['btn.annuller']}"       
+                                                                  validatorMessage="#{msg['fichier.invalide']}"      
+                                                                  dragDropSupport="true"      
+                                                                  multiple="true"  
+                                                                  disabled="false"
+                                                                  update="messages"
+                                                                  requiredMessage="#{msg['fichier.requiredMessage']}"
+                                                                  >
+                                                        <!--f:ajax event="blur" render="imageMessage"/-->
+                                                    </p:fileUpload>
+                                                    <p:message for="fileUpload" id="imageMessage" class="errorClass"/>
+                                                    <p:growl id="messages" showDetail="false" globalOnly="true"/>
+
+                                                </div>
+
+
+                                            </div> 
+                                            <div class="form-group">
+
+                                                <div class="col-lg-6">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                                        <h:outputLabel class="police_label pull-left" value="Numero de Compte"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                                                        <p:inputText class="form-control" value="#{opDivBean.selectedObjet}" required="true" >
+                                                            <p:ajax event="keyup" listener="#{opDivBean.selectNumCompte}" update="formliste:strc"  />
+                                                        </p:inputText>
+
+                                                    </div>
+                                                    <div class="col-lg-6  col-md-6 col-xs-12 col-sm-12">
+                                                        <h:outputText class="text-primary" id="strc" value="#{opDivBean.structure}" />
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                            <div class="form-group">
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12">
+                                                        <h:outputLabel  value="Sens" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                                    </div>
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12">
+                                                        <h:selectOneRadio  class="police_label form-control" id="typeCourtier" value="#{opDivBean.sens}"
+                                                                           required="true"           
+                                                                           >
+                                                            <f:selectItem  itemLabel="débit" itemValue="debit" />
+                                                            <f:selectItem itemLabel="crédit" itemValue="credit" />
+                                                        </h:selectOneRadio>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                                        <h:outputLabel class="police_label pull-left" value="Valeur"/><h:outputLabel class="etoile_rouge pull-left" value="*"/>
+                                                    </div>
+                                                    <div class=" col-lg-12 col-md-12 col-sm-12"> 
+                                                        <p:inputText  required="true" value="#{opDivBean.valeur}" class="form-control" >
+                                                            <f:convertNumber pattern="###,##0" type="number" />
+                                                            <p:ajax event="blur" update="@this"  />
+                                                        </p:inputText>
+                                                    </div> 
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+
+                                                <div class="col-md-12 col col-lg-12">
+                                                    <div class="col-md-4 col col-lg-2 pull-left">
+                                                        <p:commandButton value="#{msg['btn.annuller']}" actionListener="#{opDivBean.annuler()}" update="formliste" class="btn btn-danger danger form-control"/>
+                                                    </div>
+
+                                                    <div class="col-md-4 col col-lg-2 pull-right">
+                                                        <p:commandButton value="affecter" update="formliste,display,courtier" action="#{opDivBean.affecter}" class="btn btn-success form-control success "/>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+
+                                        </p:outputPanel>
+                                    </div>
+                                </div>
+
+                            </p:fieldset>
+                        </div>
+                    </h:form>
+
+                    <div class="panel panel-body">
+
+                        <p:outputPanel id="courtier">
+
+                            <p:fieldset rendered="#{opDivBean.showPages}" legend="collections des operations" style="margin-bottom:20px">   
+
+                                <div class="form-group">
+                                    <div class="col-md-4  col-lg-2">
+                                        <p:commandButton value="#{msg['btn.enregistrer']}"  oncomplete="PF('enregistrer').show()" class="btn btn-success success form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <p:outputPanel id="display22">
+                                            <p:dataTable class="table_label table-responsive" var="journal" id="display" reflow="true" rows="5" value="#{opDivBean.journalCollection}"
+                                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                                         rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg[tableau.vide]}" >                      
+
+                                                <f:facet name="header">
+                                                    <h:outputLabel  value="Date Operation:"/>
+                                                    <h:outputText value="#{opDivBean.dateOperation}" />
+                                                </f:facet>
+                                                <p:columnGroup type="header">
+                                                    <p:row>
+                                                        <p:column colspan="5" headerText="Reference:  #{opDivBean.reference} " />
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column colspan="5" headerText="Type de payement:  #{opDivBean.typePayementnom(opDivBean.typePayement)} " />
+                                                    </p:row>
+
+                                                    <p:row>
+                                                        <p:column headerText="Description" />
+                                                        <p:column headerText="Comptes" />
+                                                        <p:column headerText="Libelle" />
+                                                        <p:column headerText="Debit" />
+                                                        <p:column headerText="Credit" />
+                                                        <p:column headerText="Actions" />
+                                                    </p:row>
+                                                </p:columnGroup>
+                                                <p:column >
+                                                    <h:outputText value="#{journal.description}" />
+                                                </p:column>
+
+                                                <p:column headerText="Comptes">
+                                                    <h:outputText value="#{journal.compte.numCompte}" > 
+                                                    </h:outputText>
+                                                </p:column >
+
+                                                <p:column headerText="Libelle">
+                                                    <h:outputText value=" #{journal.compte.typeCompte.description} #{journal.compte.compagnie.abbreviation} #{journal.compte.courtier.abbreviation} #{journal.compte.pointsVente.designation} #{journal.compte.societe.designation}" > 
+                                                    </h:outputText>
+                                                </p:column >
+                                                <p:column headerText="Debit">
+                                                    <h:outputText value="#{opDivBean.sensDebit(journal)}" > 
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </p:column >
+                                                <p:column headerText="Credit">
+                                                    <h:outputText value="#{opDivBean.sensCredit(journal)}" > 
+                                                        <f:convertNumber pattern="###,##0" type="number" />
+                                                    </h:outputText>
+                                                </p:column >
+
+                                                <p:column >
+
+                                                    <p:commandButton class="btn-primary primary form-control"  action="#{opDivBean.modifier()}" update="formliste"  icon="fa fa-edit" title="modifier">
+                                                        <f:setPropertyActionListener value="#{journal}"  target="#{opDivBean.journalSelected}" />
+                                                    </p:commandButton>
+
+                                                    <p:commandButton  class="btn-danger danger form-control" icon="fa fa-trash" update="display" action="#{opDivBean.supprimer()}" title="supprimer">
+                                                        <f:setPropertyActionListener value="#{journal}" target="#{opDivBean.journalSelected}" />
+                                                    </p:commandButton>
+                                                </p:column>
+                                                <p:columnGroup type="footer">
+                                                    <p:row>
+                                                        <p:column footerText="Totaux " colspan="3" style="text-align:right"/>
+                                                        <p:column >
+                                                            <f:facet name="footer">
+                                                                <h:outputText value="#{opDivBean.totalDebit()}">
+                                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                                </h:outputText>
+                                                            </f:facet>
+                                                        </p:column>
+                                                        <p:column >
+                                                            <f:facet name="footer">
+                                                                <h:outputText value="#{opDivBean.totalCredit()}">
+                                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                                </h:outputText>
+                                                            </f:facet>
+                                                        </p:column>
+
+                                                    </p:row>
+                                                </p:columnGroup>
+                                            </p:dataTable>
+
+                                        </p:outputPanel>
+
+                                    </div>
+                                </div>
+                            </p:fieldset>
+                            <h:form>
+                                <p:growl id="msgs3" showDetail="false" globalOnly="true" />
+                                <p:confirmDialog id="confirmation" message="Voulez vous enregistrer?"
+                                                 header="Enregistrer" severity="alert" 
+                                                 widgetVar="enregistrer">
+
+                                    <p:commandButton value="Non" onclick="PF('enregistrer').hide();" type="button" class="btn-danger danger"  />
+                                    <p:commandButton value="Oui"  onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" update="formliste,display,msgs3" action="#{opDivBean.enregistrerOperation()}" class="btn-primary primary" oncomplete="PF('enregistrer').hide()" styleClass="ui-priority-primary"/>
+                                </p:confirmDialog>
+                            </h:form>
+                            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                <h:graphicImage library="images" name="ajax-loader.gif" />
+                            </p:dialog>
+                        </p:outputPanel>
+
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </ui:composition> 
+</html>
+

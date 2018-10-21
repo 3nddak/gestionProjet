@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['compagnie.entete']}"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row">
+
+                <div class="panel">
+                    <div class="panel-heading"> 
+                        <sec:authorize ifAllGranted="ADD_COMPAGNIE">
+                            <p:fieldset legend="#{msg['compagnie.titre.ajouter']}" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <ui:include src="compagnie_ajout.xhtml"/>
+                            </p:fieldset>
+                        </sec:authorize>
+                    </div>
+                    <h:form  id="formliste">
+                        <p:growl id="msgs"  globalOnly="true"/>
+                        <div class="panel panel-body">
+
+                            <p:outputPanel id="devise">
+                                <sec:authorize ifAllGranted="COMPAGNIE">
+                                    <p:fieldset style="margin-bottom:20px" legend="#{msg['compagnie.liste']}">
+                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                            <div class="form-group">
+                                                <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class="btn btn-imprimer btn-xs" actionListener="#{compagnieBean.doGetB()}"   > 
+                                                    <i class=" glyphicon glyphicon-print"></i>
+                                                </h:commandLink>
+                                                <!--p:commandButton value="sauvegarder" onstart="PF('saveProcess').block()" oncomplete="PF('saveProcess').unblock()" update="msgs" action="#{compagnieBean.getFile()}" class="btn-primary primary"/-->
+                                                <p:commandButton value="Export" ajax="false"  icon="ui-icon-arrowthick-1-s">
+                                                    <p:fileDownload value="#{compagnieBean.getFile()}" />
+                                                </p:commandButton>
+                                            </div>
+                                            <div class="form-group table-responsive">
+                                                <p:dataTable sortOrder="descending" sortBy="#{compagnie.idCompagnie}" class="table table-bordered"  var="compagnie" rowExpandMode="single" rowKey="#{compagnie.idCompagnie}" selection="#{compagnieBean.triCompagnieList}" id="compagnieliste" rows="5" value="#{compagnieBean.compagnieList}" 
+                                                             emptyMessage="#{msg['tableau.vide']}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" > 
+                                                    <f:facet name="{Exporters}">
+                                                        <h:commandLink>
+                                                            <p:graphicImage library="img" name="/excel.png" width="24"/>
+                                                            <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                                        </h:commandLink>
+
+                                                        <h:commandLink>
+                                                            <p:graphicImage library="img" name="/pdf.png" width="24"/>
+                                                            <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                                        </h:commandLink>
+
+                                                        <h:commandLink>
+                                                            <p:graphicImage library="img" name="/csv2.png" width="24"/>
+                                                            <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                                                        </h:commandLink>
+
+                                                        <h:commandLink>
+                                                            <p:graphicImage library="img" name="/xml.png" width="24"/>
+                                                            <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                                                        </h:commandLink>
+                                                    </f:facet>
+
+                                                   
+
+                                                    <p:column headerText="#{msg['compagnie.abbreviation']}" filterBy="#{compagnie.abbreviation}" >
+                                                        <h:outputText value="#{compagnie.abbreviation}" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['compagnie.designation']}" filterBy="#{compagnie.designation}">
+                                                        <h:outputText value="#{compagnie.designation}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="#{msg['compagnie.adresse']}" filterBy="#{compagnie.adresse}">
+                                                        <h:outputText value="#{compagnie.adresse}" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['compagnie.tel']}" filterBy="#{compagnie.telephones}">
+                                                        <h:outputText value="#{compagnie.telephones}" />
+                                                    </p:column>
+                                                    <p:column headerText="#{msg['compagnie.pays']}" filterBy="#{compagnie.pays.designationPays}">
+                                                        <h:outputText value="#{compagnie.pays.designationPays}"  />
+                                                    </p:column>
+                                                    <p:column headerText="Actions">
+
+                                                        <p:commandButton rendered="#{sec:areAllGranted('MOD_COMPAGNIE')}" update="modification" oncomplete="PF('modifier').show()" icon="fa fa-edit" title="#{msg['btn.modifier']}" action="#{compagnieBean.modif()}" class="btn btn-primary btn-xs">
+                                                            <f:setPropertyActionListener value="#{compagnie}" target="#{compagnieBean.compagnieSelected}" />
+                                                        </p:commandButton>
+                                                        <p:commandButton rendered="#{sec:areAllGranted('DEL_COMPAGNIE')}" oncomplete="PF('supprimer').show()" icon="fa fa-trash" title="#{msg['btn.supprimer']}" class="btn btn-danger btn-xs">
+                                                            <f:setPropertyActionListener value="#{compagnie}" target="#{compagnieBean.compagnieSelected}" />
+                                                        </p:commandButton>
+                                                        <p:commandLink   title="Charger le contrat" oncomplete="PF('contrat').show()" class="btn btn-xs btn-primary fa fa-upload " >
+                                                            <f:setPropertyActionListener value="#{compagnie}" target="#{compagnieBean.compagnieSelected}" />
+                                                        </p:commandLink>
+                                                        <p:commandLink rendered="#{compagnie.contratIsUpload}" title="Telecharger le contrat"  class="btn-xs btn-imprimer  fa fa-download" target="/" action="#{compagnieBean.doGetAB()}"  ajax="false" >
+                                                            <f:setPropertyActionListener value="#{compagnie}" target="#{compagnieBean.compagnieSelected}" />
+                                                        </p:commandLink>
+                                                    </p:column>
+
+
+
+                                                </p:dataTable>
+                                            </div>
+                                        </div>
+                                    </p:fieldset>
+                                </sec:authorize>
+                            </p:outputPanel>
+                        </div>
+                    </h:form>
+                    <p:dialog widgetVar="contrat" modal="true" draggable="false" closable="true" resizable="true" showHeader="false" >
+                        <h:form enctype="multipart/form-data" >
+                            <p:fileUpload   allowTypes="/(\.|\/)(doc|odt|ott|docx|docm|dotx|dotm|pdf)$/"  fileUploadListener="#{compagnieBean.handleFileUploadEx}" mode="advanced"   multiple="false" update="formliste"  >
+
+                            </p:fileUpload>
+                            <p:commandButton value="quitter"   oncomplete="PF('contrat').hide()"   />
+                        </h:form>
+                    </p:dialog>
+
+                    <p:dialog  class="police_label" header="#{msg['compagnie.titre.modifier']}" showEffect="fade"  widgetVar="modifier" modal="true" width="900" height="450" resizable="false" >
+                        <ui:include src="compagnie_modifier.xhtml"/>
+                    </p:dialog>
+                    <h:form>
+                        <p:growl id="msgs3" showDetail="false" globalOnly="true" />
+                        <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                                         header="#{msg['titre.operation.suppression']}" severity="alert" 
+                                         widgetVar="supprimer">
+
+
+                            <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-danger danger" />
+                            <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste" action="#{compagnieBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn-primary primary"/>
+                        </p:confirmDialog>
+                    </h:form>
+
+                  
+                    <!--div class="panel-footer"> 
+
+                    </div--> 
+                </div>
+
+            </div>
+        </div>
+        <pe:blockUI widgetVar="saveProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif"  
+                                style="margin: auto;"/>  
+                <h:outputText value="Sauvegarde en cours..." style="white-space: nowrap;"/>  
+            </h:panelGrid>  
+        </pe:blockUI>  
+    </ui:composition> 
+
+</html>
+

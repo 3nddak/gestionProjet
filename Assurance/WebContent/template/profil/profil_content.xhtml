@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags" 
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      >
+
+
+    <ui:composition>
+    
+            <div id="liste">
+                  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <fieldset> <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['profile.entete']}"></p:outputLabel></legend>
+
+                </fieldset>
+              
+                    <div class="panel">
+                        <div class="panel-heading"> 
+                            <p:fieldset  legend="Ajouter un profil" toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <ui:include src="profil-ajout.xhtml"/>
+                            </p:fieldset>
+                        </div>
+                        <h:form id="formliste">
+                            <p:ajaxStatus style="width:220px;height:19px; margin: auto">
+                                <f:facet name="start">
+                                    <h:graphicImage library="images" name="ajax-loading-bar.gif"/>
+                                </f:facet>
+
+                                <!--<f:facet name="complete">
+                                    <h:outputText value="Chargement Terminé!" />
+                                </f:facet>-->
+                            </p:ajaxStatus>
+                            <div class="panel-heading"> 
+
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                    <p:commandButton value="#{msg['supprimer.oui']}"  class="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="#{msg['supprimer.non']}" type="button" class="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
+                            </div> 
+                            <div class="panel panel-body">
+                                <p:outputPanel id="profil">
+                                    <p:fieldset  legend="Liste des Profils" style="margin-bottom:20px">                                  
+                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                            <p:dataTable sortOrder="descending" sortBy="#{profil.idProfil}" class="table-responsive table-bordered table" var="profil" reflow="true" rows="20" value="#{profilBean.allProfils}"
+                                                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                         paginator="true" emptyMessage="#{msg['tableau.vide']}" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd">
+                                                <!--f:facet name="header">
+                                                    <p:outputPanel >
+                                                        <p:outputLabel  value="Rechercher : " />
+                                                        <p:inputText id="globalFilter" onkeyup="PF('ddd').filter()" style="width:150px" placeholder="Rechercher"/>
+                                                    </p:outputPanel>
+                                                </f:facet-->
+
+                                                <p:column headerText="#{msg['profile.code']}" filterBy="#{profil.code}">
+                                                    <h:outputText value="#{profil.code}" />
+                                                </p:column>
+                                                <p:column headerText="#{msg['profile.libelle']}" filterBy="#{profil.libelle}" >
+                                                    <h:outputText value="#{profil.libelle}" />
+                                                </p:column>
+                                                <p:column headerText="Actions">
+
+                                                    <p:commandButton rendered="#{sec:areAllGranted('MOD_PROFIL')}" update="modification" action="#{profilBean.modificationSelection()}" onstart="PF('loadProcess').block()" oncomplete="PF('loadProcess').unblock(),PF('modifier').show()" icon="fa fa-edit" title="#{msg['btn.modifier']}" class="btn btn-primary" style="background: #337ab7;color:#fff;border-color: #337ab7;">
+                                                        <f:setPropertyActionListener value="#{profil}" target="#{profilBean.profilSelected}"  />
+
+                                                    </p:commandButton>
+
+                                                    <p:commandButton rendered="#{sec:areAllGranted('DEL_PROFIL')}"  oncomplete="PF('supprimer').show()" icon="fa fa-trash" title="#{msg['btn.supprimer']}" class="btn btn-danger" style="background: #d9534f;color:#fff;border-color: #d43f3a;">
+                                                        <f:setPropertyActionListener value="#{profil}" target="#{profilBean.profilSelected}" />
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </p:fieldset>
+                                </p:outputPanel>
+                            </div>
+                            <!--div class="panel-footer"> 
+
+                            </div--> 
+
+                            
+                        </h:form> 
+                    </div>
+                </div>
+            </div>
+        
+        <!--p:dialog id="add" header="PROFIL" widgetVar="ajouter" showEffect="fade" modal="true"  width="800"  minHeight="700" resizable="false" >
+            <ui:include src="profil-ajout.xhtml"/>
+        </p:dialog-->
+        <p:dialog header="PROFIL" widgetVar="modifier" showEffect="fade" modal="true"  width="950"  minHeight="700" resizable="false" >
+            <ui:include src="profil-modifier.xhtml"/>
+        </p:dialog>
+
+        <h:form>
+            <p:growl id="msgs3" showDetail="false"  />
+            <p:confirmDialog class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                             header="#{msg['btn.supprimer']}" severity="alert" 
+                             widgetVar="supprimer">
+
+
+                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn btn-primary" style="background: #337ab7;color:#fff;border-color: #337ab7;"  />
+                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste" action="#{profilBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn btn-danger" style="background: #d9534f;color:#fff;border-color: #d43f3a;" />
+            </p:confirmDialog>
+        </h:form>
+        <pe:blockUI widgetVar="loadProcess">  
+            <h:panelGrid columns="2">  
+                <h:graphicImage library="images" name="ajax-loading-bar.gif" style="margin: auto;"/>  
+                <h:outputText value="Chargement en cours...." />  
+            </h:panelGrid>  
+        </pe:blockUI> 
+        
+    </ui:composition> 
+
+</html>
+

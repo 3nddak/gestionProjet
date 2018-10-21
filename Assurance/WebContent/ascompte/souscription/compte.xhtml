@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+    <ui:composition>
+        <div class="panel">
+            <fieldset><legend class="text-uppercase" ><h:outputLabel  value="#{msg['titre.infoCompte']}"/></legend>
+                <p:growl id="msgsl" globalOnly="true" showDetail="false"/>
+
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.typecompte']}"  for="typC" class=" " /><h:outputLabel value="*" class="etoile_rouge "  />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                <h:selectOneMenu id="typC" value="#{souscriptionAsCompteBean.assuranceCompte.typeCompte}"  class="form-control"
+                                                 requiredMessage="Veuillez entrer le type de compte">
+                                    <f:selectItem itemLabel="#{msg['titre.typecompte']}"/> 
+                                    <f:selectItems value="#{souscriptionAsCompteBean.typeCompte}" /> 
+                                    <p:ajax event="click" update="typCMessagect"/> 
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="typC" id="typCMessagect"/>
+                            </div>
+                        </div> 
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['compte.intitule']}"  for="inCo" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionAsCompteBean.assuranceCompte.intituleCompte}"  id="inCo" styleClass="form-control" placeholder="#{msg['compte.intitule']}"
+                                             required="true"  requiredMessage="#{msg['compte.intitule.requiredMessage']}"  
+                                             >
+
+                                    <p:ajax event="keyup" update="inCoMessage"/>
+
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="inCo" id="inCoMessage"/>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['compte.dateOuverture']}"  for="datepret" class=""  /> <h:outputLabel value="*"  class="etoile_rouge "/>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:calendar  value="#{souscriptionAsCompteBean.assuranceCompte.dateOuvertureCompte}"  class="form-control" navigator="true" readonlyInput="true"   required="true" requiredMessage="#{msg['compte.dateOuverture.requiredMessage']}"   id="datepret"  pattern="dd/MM/yyyy" mask="true" placeholder="#{msg['compte.dateOuverture']}" >
+                                    <p:ajax event="dateSelect" update="datepretMessage"/>
+                                </p:calendar>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="datepret" id="datepretMessage"/> 
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['compte.solde']}"  for="soldC" class=" " /><h:outputLabel value="*" class="etoile_rouge " />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionAsCompteBean.assuranceCompte.soldeCompte}"  id="soldC" styleClass="form-control" placeholder="#{msg['compte.solde']}"
+                                             required="true"  requiredMessage="#{msg['compte.solde.requiredMessage']}"  
+                                             >
+                                    <pe:keyFilter for="soldC" mask="num"/>
+                                    <p:ajax event="keyup" update="soldCMessage"/>
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="soldC" id="soldCMessage"/>
+                            </div>
+                        </div>
+
+
+                    </div> 
+                    <hr/> 
+                    <div class="form-group">
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">  
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['contrat.datedebut']}"  for="dated" class=""  /><h:outputLabel value="*" class="etoile_rouge " />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:calendar  value="#{souscriptionAsCompteBean.assuranceCompte.dateDebutContrat}"  class="form-control" navigator="true" readonlyInput="true"  id="dated"  pattern="dd/MM/yyyy" mask="true" placeholder="date debut du contrat"
+                                             required="true"  requiredMessage="#{msg['contrat.datedebut.requiredMessage']}"
+                                             mindate="#{souscriptionAsCompteBean.datemax}">
+                                    <p:ajax event="dateSelect" update="datedMessage"/>
+                                </p:calendar>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="dated" id="datedMessage"/> 
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['contrat.periode']}"  for="pero" class=" " /><h:outputLabel value="*" class="etoile_rouge " />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionAsCompteBean.assuranceCompte.periode}"  id="pero" styleClass="form-control" placeholder="#{msg['contrat.periode']}"
+                                             required="true"  requiredMessage="#{msg['contrat.periode.requiredMessage']}"  
+                                             >
+                                    <pe:keyFilter for="pero" mask="num"/>
+                                    <p:ajax event="keyup" update="peroMessage"/>
+                                    <f:convertNumber pattern="###,##0" type="number" />
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="pero" id="peroMessage"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.compte']}"  for="dureepretnem" class=" pull-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionAsCompteBean.assuranceCompte.compte}"  id="dureepretnem" styleClass="form-control" placeholder="#{msg['titre.compte']}"
+                                             required="true"  requiredMessage="Veuillez preciser le compte"  
+                                             >
+
+                                    <p:ajax event="keyup" update="dureepretMessagenem"/>
+
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="dureepretnem" id="dureepretMessagenem"/>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['banque.code']}"  for="codeA" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionAsCompteBean.assuranceCompte.code}"  id="codeA" styleClass="form-control" placeholder="#{msg['banque.code']}"
+
+                                             >
+
+                                    <p:ajax event="keyup" update="codeAMessage"/>
+
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="codeA" id="codeAMessage"/>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12"> 
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.Codeagence']}"  for="nodureepret" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionAsCompteBean.assuranceCompte.agence}"  id="nodureepret" styleClass="form-control" placeholder="#{msg['titre.Codeagence']}"
+                                               requiredMessage="Veuillez precider l'agence"  
+                                             >
+
+                                    <p:ajax event="keyup" update="nodureepretMessage"/>
+
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="nodureepret" id="nodureepretMessage"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['titre.Codeguichet']}"  for="codG" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionAsCompteBean.assuranceCompte.codeGuichet}"  id="codG" styleClass="form-control" placeholder="#{msg['titre.Codeguichet']}"
+
+                                             >
+
+                                    <p:ajax event="keyup" update="codGMessagenem"/>
+
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="codG" id="codGMessagenem"/>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">  
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:outputLabel  value="#{msg['banque.rib']}"  for="rib" class=" pull-left" />
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:inputText value="#{souscriptionAsCompteBean.assuranceCompte.rib}"  id="rib" styleClass="form-control" placeholder="#{msg['banque.rib']}"
+
+                                             >
+
+                                    <p:ajax event="keyup" update="ribMessagenem"/>
+
+                                </p:inputText>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:message for="rib" id="ribMessagenem"/>
+                            </div>
+                        </div>
+
+                    </div> 
+                </div>
+            </fieldset> 
+
+            <fieldset><legend class="text-uppercase" ><h:outputLabel  value="#{msg['liste.compagnie']}"/></legend>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <p:outputPanel id="tt">
+                                    <h:outputLabel for="pss" value="#{msg['titre.compagnie']}"/><h:outputLabel id="etoile" rendered="#{souscriptionAsCompteBean.req}" value="*" class="etoile_rouge"/>
+                                </p:outputPanel>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:selectOneMenu  class="form-control" required="#{souscriptionAsCompteBean.req}" requiredMessage="#{msg['courtier.compagnie.requireMessage']}" converter="entityConverter"  id="pss" value="#{souscriptionAsCompteBean.compagnie}"  >
+                                    <f:selectItem noSelectionOption="true" itemLabel="#{msg['titre.compagnie']}" /> 
+                                    <f:selectItems value="#{souscriptionAsCompteBean.listCompagnie}" var="compagnie"
+                                                   itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                    <f:ajax event="click" render="pssMessage" />
+                                    <p:ajax   listener="#{souscriptionAsCompteBean.listCourtierByCompagnie()}"  update="formliste:display2,formliste:courtierp"/>
+
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <h:message for="pss"  id="pssMessage" class="errorClass" />
+                            </div>  
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                        <p:outputPanel id="display22" >
+                            <div class="table-responsive">
+                                <p:dataTable class="table table-striped table-bordered table-condensed " var="compcour" id="display2" reflow="true" rows="5" value="#{souscriptionAsCompteBean.listAssuranceCompte}"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd" 
+                                             rowsPerPageTemplate="2,3,4,5,6,7"  emptyMessage="#{msg[tableau.vide]}" rowKey="#{compcour.compagnie.idCompagnie}"  >                                                    
+                                    <p:column headerText="#{msg['titre.compagnie']}">
+                                        <h:outputText value="#{compcour.compagnie.abbreviation}" />
+                                    </p:column>
+
+                                    <p:column headerText="#{msg['titre.courtier']}">
+                                        <h:outputText value="#{compcour.courtier.abbreviation}" />
+                                    </p:column >
+
+                                    <p:column headerText="#{msg['titre.actions']}">
+
+                                        <p:commandButton icon="fa fa-trash" update="display2,formliste:pss,formliste:tt" action="#{souscriptionAsCompteBean.removeCompagnieCourtierFromList()}" title="#{msg['btn.supprimer']}" class="btn btn-danger">
+                                            <f:setPropertyActionListener value="#{compcour}" target="#{souscriptionAsCompteBean.assuranceCompteSelected}" />
+                                        </p:commandButton>
+
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:outputPanel>
+
+                    </div>
+                </div>
+            </fieldset>
+
+            <p:dialog   id="courtierp" header="Choix du courtier" showEffect="fade"  widgetVar="courtier" modal="true" width="625" minHeight="800" resizable="false">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label >#{msg['titre.courtier']}</label><h:outputLabel value="*" class="etoile_rouge  text-left"/>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h:selectOneMenu  required="true" id="courtier"  value="#{souscriptionAsCompteBean.courtier}" converter="omnifaces.SelectItemsConverter"
+                                              requiredMessage="#{msg['pv.courtier.requireMessage']}"  class="form-control" >
+                                <f:selectItem itemLabel="#{msg['titre.courtier']}" itemValue=""/>
+                                <f:selectItems itemLabel="#{courtier.designation}" var="courtier"  itemValue="#{courtier}" value="#{souscriptionAsCompteBean.listCourtier}"  />
+                                <p:ajax event="click" update="courtierMessage"/>
+                            </h:selectOneMenu>
+                            <h:message for="courtier"  id="courtierMessage" class="errorClass" />
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                            <h:message id="courMessage" for="courtier"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="btn-toolbar">
+                        <p:commandButton value="#{msg['btn.valider']}" class="btn-purple btn pull-right" action="#{souscriptionAsCompteBean.addCompagnieCourtierToList()}" oncomplete="PF('courtier').hide()" update="formliste:display2,pss,tt" />
+                    </div>
+                </div>
+
+
+            </p:dialog>
+
+
+
+        </div>
+    </ui:composition>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      >
+
+
+    <ui:composition>
+
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <fieldset> 
+                <legend class="text-center text-uppercase"> <p:outputLabel value="#{msg['zone.entete']}"></p:outputLabel></legend>
+            </fieldset>
+            <div id="liste" class="row">
+               
+
+                    <div class="panel">
+                        <div class="panel-heading"> 
+                            <p:fieldset legend="#{msg['zone.titre.ajouter']}"  toggleable="true" collapsed="true" toggleSpeed="500"  style="margin-bottom:20px">                          
+                                <ui:include src="zone_ajout.xhtml"/>
+                            </p:fieldset>
+                        </div>
+                        <h:form  id="formliste">
+                            <div class="panel panel-body">
+                                <p:outputPanel id="devise">                                
+                                    <p:fieldset legend="#{msg['zone.liste']}" style="margin-bottom:20px">
+                                        <div class="form-horizontal">
+                                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                                <div>
+                                                    <h:commandLink   target="_blank" value="#{msg['btn.imprimer']}" title="#{msg['btn.imprimer']}" class=" btn btn-imprimer" actionListener="#{zonesMonetaireBean.doGetA()}"   > 
+                                                        <i class=" glyphicon glyphicon-print"></i>
+                                                    </h:commandLink>  
+                                                </div>
+                                                <p:dataTable sortOrder="descending" sortBy="#{zone.idZone}" class="table table-responsive table-bordered" var="zone" id="zoneliste" reflow="true" rows="5" value="#{zonesMonetaireBean.zoneMonetaireList}" 
+                                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150" widgetVar="ddd"
+                                                             emptyMessage="#{msg['tableau.vide']}"> 
+
+                                                    <!--f:facet name="header">
+                                                        <p:outputPanel >
+                                                            <p:outputLabel  value="Rechercher : " />
+                                                            <p:inputText id="globalFilter" onkeyup="ddd.filter()" style="width:150px" placeholder="Rechercher"/>
+                                                        </p:outputPanel>
+                                                    </f:facet-->
+                                                    <f:facet name="{Exporters}">
+                                                        <h:commandLink>
+                                                            <p:graphicImage library="img" name="/excel.png" width="24"/>
+                                                            <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                                        </h:commandLink>
+
+                                                        <h:commandLink>
+                                                            <p:graphicImage library="img" name="/pdf.png" width="24"/>
+                                                            <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                                        </h:commandLink>
+
+                                                        <h:commandLink>
+                                                            <p:graphicImage library="img" name="/csv2.png" width="24"/>
+                                                            <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                                                        </h:commandLink>
+
+                                                        <h:commandLink>
+                                                            <p:graphicImage library="img" name="/xml.png" width="24"/>
+                                                            <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                                                        </h:commandLink>
+                                                    </f:facet>
+                                                    <!--p:column headerText="codeZone">
+                                                        <h:outputText value="#{zone.codeZone}" />
+                                                    </p:column-->
+
+                                                    <p:column headerText="#{msg['zone.designation']}" filterBy="#{zone.designation}">
+                                                        <h:outputText value="#{zone.designation}" />
+                                                    </p:column>
+
+
+                                                    <p:column headerText="#{msg['titre.devise']}" filterBy="#{zone.devise.libelle}">
+                                                        <h:outputText value="#{zone.devise.libelle}" />
+                                                    </p:column>
+
+                                                    <!--p:column headerText="#{msg['zone.deviseinter']}" filterBy="#{zone.deviseIntermediaire.libelle}">
+                                                        <h:outputText value="#{zone.deviseIntermediaire.libelle}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="#{msg['zone.mlhz']}" filterBy="#{zone.montantLimiteHorsZone}">
+                                                        <h:outputText value="#{zone.montantLimiteHorsZone}" >
+                                                            <f:convertNumber pattern="#,##0"  type="currency"/>
+                                                        </h:outputText>
+                                                    </p:column>
+
+                                                    <p:column headerText="#{msg['zone.mlz']}" filterBy="#{zone.montantLimiteZone}">
+                                                        <h:outputText value="#{zone.montantLimiteZone}" >
+                                                            <f:convertNumber pattern="#,##0"  type="currency"/>
+                                                        </h:outputText>
+                                                    </p:column-->
+                                                    <p:column headerText="Actions">
+
+                                                        <p:commandButton rendered="#{sec:areAllGranted('MOD_ZONE')}" action="#{zonesMonetaireBean.test()}" update="modification" class="btn-primary primary btn-xs" oncomplete="PF('modifier').show()" icon="fa fa-edit" title="#{msg['btn.modifier']}" >
+                                                            <f:setPropertyActionListener value="#{zone}" target="#{zonesMonetaireBean.zonemonetaireSelected}" />
+                                                        </p:commandButton>
+                                                        <p:commandButton rendered="#{sec:areAllGranted('DEL_ZONE')}" class="btn-danger danger btn-xs" oncomplete="PF('supprimer').show()" icon="fa fa-trash" title="#{msg['btn.supprimer']}">
+                                                            <f:setPropertyActionListener value="#{zone}" target="#{zonesMonetaireBean.zonemonetaireSelected}" />
+                                                        </p:commandButton>
+                                                    </p:column>
+
+                                                </p:dataTable>
+                                            </div>
+                                        </div>
+                                    </p:fieldset>
+                                </p:outputPanel>
+                            </div>
+                        </h:form>
+                        <!--p:dialog  header="#{msg['zone.titre.ajouter']}" class="police_label text-uppercase"  showEffect="fade"  widgetVar="ajouter" modal="true" width="700" minHeight="450" resizable="false">
+                            <ui:include src="zone_ajout.xhtml"/>
+                            <p:ajax update="zone-ajout:desMessage"/>
+                            <p:ajax update="zone-ajout:deviseMessage"/>
+                            <p:ajax update="zone-ajout:mlzMessage"/>
+                            <p:ajax update="zone-ajout:mlhzMessage"/>
+                        </p:dialog-->
+                        <p:dialog  class="police_label" header="#{msg['zone.titre.modifier']}" showEffect="fade"  widgetVar="modifier" modal="true" width="950" minHeight="450" resizable="false">
+                            <ui:include src="zone_modifier.xhtml"/>
+                        </p:dialog>
+
+                        <h:form>
+                            <p:growl id="msgs3" showDetail="false" globalOnly="true" life="3000" />
+                            <p:confirmDialog  class="police_label" id="confirmation" message="#{msg['supprimer.message']}"
+                                              header="#{msg['btn.supprimer']}" severity="alert" 
+                                              widgetVar="supprimer">
+
+
+                                <p:commandButton value="#{msg['supprimer.non']}" onclick="PF('supprimer').hide();" type="button" class="btn-sm btn-primary primary" />
+                                <p:commandButton value="#{msg['supprimer.oui']}" update="msgs3,formliste" action="#{zonesMonetaireBean.supprimer()}"  oncomplete="PF('supprimer').hide()" class="btn-xs btn-danger danger" />
+                            </p:confirmDialog>
+                        </h:form>
+                        <!--div class="panel-footer"> 
+
+                        </div--> 
+                    </div>
+
+
+                </div>
+            </div>
+     
+    </ui:composition> 
+
+</html>
+

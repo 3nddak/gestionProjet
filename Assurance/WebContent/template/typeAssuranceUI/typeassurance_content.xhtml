@@ -1,0 +1,889 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <ui:composition>
+        <p:tabView id="typeAssurance">
+            <p:ajax event="tabChange" />
+            <p:tab title="Type d'assurance">
+                <div class="panel">
+                    <h:form id="typeAssuranceCreateForm" class="form-horizontal">
+                        <p:panel header=" Enregistrer un type d'assurance" toggleable="true" id="p1" collapsed="false" class="dataTable_Margin_Bottom">
+                            <div class="row">
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="designationCG" value="Désignation" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText value="#{typeAssuranceBean.typeAssurance.designation}" id="designationCG" class="form-control" required="true" requiredMessage="Veuillez entrer la description"></p:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="description" value="Description" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText value="#{typeAssuranceBean.typeAssurance.description}"  id="description" class="form-control" required="true" requiredMessage="Veuillez entrer la designation"></p:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="reference" value="Réference" class="pull-left text-left"/><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText value="#{typeAssuranceBean.typeAssurance.reference}" id="reference" class="form-control" required="true" requiredMessage="Veuillez entrer la reference"></p:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="active" value="Active" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:selectBooleanCheckbox id="active" value="#{typeAssuranceBean.typeAssurance.active}">
+                                            </p:selectBooleanCheckbox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col col-lg-6">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                                            <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" type="reset"  class="btn-sm btn-danger danger col-md-3 pull-left">
+                                            </p:commandButton>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col col-lg-6">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                                            <p:commandButton value="#{msg['btn.enregistrer']}" title="#{msg['btn.enregistrer']}" update="@form,typeAssurance:listassurance" action="#{typeAssuranceBean.saveOne()}"  class="btn-sm btn-success success pull-right danger col-md-3" >
+                                            </p:commandButton>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </h:form>
+                </div>
+                <div class="panel">
+                    <h:form id="listassurance" class="form-horizontal">
+                        <p:panel header=" Liste des types d'assurances" toggleable="true" id="p2" collapsed="false">
+                            <p:dataTable value="#{typeAssuranceBean.listTypeAssurance}" var="typeAssurance" 
+                                         class="table_label table table-responsive"  editable="true" editMode="cell"  rows="25" 
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginator="true" paginatorPosition="bottom"  scrollWidth="50%" scrollHeight="150"   
+                                         rowsPerPageTemplate="25,50,100,200,250"  emptyMessage="#{msg['tableau.vide']}"
+                                         selection="#{typeAssuranceBean.listTypeAssuranceSelected}"
+                                         rowKey="#{typeAssurance.idTypeAssurance}"
+                                         >                      
+                                <p:column headerText="Reference">
+                                    <p:outputLabel value="#{typeAssurance.reference}" />
+                                </p:column>
+                                <p:column headerText="Designation">
+                                    <p:outputLabel value="#{typeAssurance.designation}" />
+                                </p:column>
+                                <p:column headerText="Description">
+                                    <p:outputLabel value="#{typeAssurance.description}" />
+                                </p:column>
+                                <p:column headerText="Activé" width="10%" style="width:36px;text-align:center" >
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <p:outputLabel  id="TA" class="#{typeAssurance.active}"> <i class="icon-default  text-green fa fa-check " /></p:outputLabel>
+                                            <p:outputLabel  id="TB" class="#{!typeAssurance.active}"> <i class="icon-default  text-red fa fa-close " /></p:outputLabel>
+                                        </f:facet>
+                                        <f:facet name="input"> 
+                                            <p:selectBooleanCheckbox value="#{typeAssurance.active}" >
+                                                <p:ajax update="TA,TB" />
+                                            </p:selectBooleanCheckbox>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Selection" width="6%" selectionMode="multiple" style="width:36px;text-align:center"/>
+                            </p:dataTable>
+                            <p:growl id="glo" globalOnly="true" showDetail="false"  life="3000"/>
+                            <p:commandButton update="@form,glo" value="Modifier" title="Modifier" action="#{typeAssuranceBean.updateSelectedTypeAssurance()}" icon="fa fa-save" class="btn btn-xs btn-primary" />
+                        </p:panel>
+                    </h:form>
+                </div>
+            </p:tab>
+            <p:tab title="Type d'assurance Compagnie">
+                <div class="panel">
+                    <h:form id="typeAssuranceCompagnieCreateForm" class="form-horizontal">
+                        <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                        <p:panel header=" Enregistrer un type d'assurance compagnie" toggleable="true" id="p3" collapsed="false"  >
+                            <div class="row">
+
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="pays1" value="Pays" class="pull-left text-left"/>
+                                        <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu id="pays1" value="#{typeAssuranceBean.selectedPays}" required="false" requiredMessage="Champ Obligatoire" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                            <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                            <f:selectItems value="#{typeAssuranceBean.listPays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                            <p:ajax listener="#{typeAssuranceBean.initCompagnieByPays()}" update="comp" />
+                                            <f:ajax event="click" render="pays1Message" />
+                                        </h:selectOneMenu> 
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="pays1"  id="pays1Message" class="errorClass" />
+                                    </div> 
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="comp" value="Compagnie" class="pull-left text-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="comp" required="false" requiredMessage="Veuillez choisir la compagnie" value="#{typeAssuranceBean.typeAssuranceCompagnieToSave.compagnie}"  >
+                                                <f:selectItem noSelectionOption="true" itemLabel="Choisir compagnie" /> 
+                                                <f:selectItems value="#{typeAssuranceBean.listCompagnie2}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                                <f:ajax event="keyup" render="compMessage"/> 
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <h:message for="comp"  id="compMessage" class="errorClass" />    
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="typeAssurance" value="TypeAssurance" class="pull-left text-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="typeAss" required="true" requiredMessage="Veuillez choisir le type d'assurance" value="#{typeAssuranceBean.typeAssuranceCompagnieToSave.typeAssurance}"  >
+                                                <f:selectItem noSelectionOption="true" itemLabel="Choisir le type d'assurance" /> 
+                                                <f:selectItems value="#{typeAssuranceBean.listTypeAssurance}" var="tas" itemLabel="#{tas.designation}" itemValue="#{tas}"/>
+                                                <f:ajax event="keyup" render="typeAssMessage"/> 
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <h:message for="typeAss"  id="typeAssMessage" class="errorClass" />    
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:outputLabel class="pull-left text-left" value=" Taxe:" for="tes"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText id="tes" class="text-right form-control" value="#{typeAssuranceBean.typeAssuranceCompagnieToSave.taxe}">
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="active" value="Active" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:selectBooleanCheckbox id="active" value="#{typeAssuranceBean.typeAssuranceCompagnieToSave.active}">
+                                            </p:selectBooleanCheckbox>
+                                        </div>
+                                </div>
+                                
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="groupQ" value="Groupe de question" class="pull-left text-left" /><h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu  class="form-control"  id="groupQ" required="true" requiredMessage="Veuillez choisir le groupe" value="#{typeAssuranceBean.typeAssuranceCompagnieToSave.groupeDeQuestion}"  >
+                                                <f:selectItem noSelectionOption="true" itemLabel="Choisir le groupe" /> 
+                                                <f:selectItems value="#{typeAssuranceBean.groupeDeQuestion}" />
+                                                <f:ajax event="keyup" render="groupQMessage"/> 
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <h:message for="groupQ"  id="groupQMessage" class="errorClass" />    
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:outputLabel class="pull-left text-left" value=" Pieds de Pages Etat:" for="pieds"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputTextarea id="pieds" class="text-center form-control" value="#{typeAssuranceBean.typeAssuranceCompagnieToSave.piedsDePageTypeAssuranceCompagnie}">
+
+                                            </p:inputTextarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col col-lg-3" >
+                                <div class="  col-lg-12">
+                                    <p:fileUpload id="fileUpload2" fileUploadListener ="#{typeAssuranceBean.handleSignatureElectronique}" mode="advanced"
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|bmp)$/"        
+                                                  label="Signature électronique" uploadLabel="#{msg['btn.telecharger']}" cancelLabel="#{msg['btn.annuller']}"        
+                                                  validatorMessage="#{msg['fichier.invalide']}"      
+                                                  dragDropSupport="true"      
+                                                  multiple="false"  
+                                                  disabled="false"
+                                                  update="messages2"/>
+                                    <p:growl id="messages2" showDetail="false" globalOnly="true"/>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6 col col-lg-6">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                                        <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" action="#{typeAssuranceBean.cancel()}" update="@form"  class="btn-sm btn-danger danger col-md-3 pull-left">
+                                            <p:ajax update="@form"/>
+                                        </p:commandButton>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col col-lg-6">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                                        <p:commandButton value="#{msg['btn.enregistrer']}" title="#{msg['btn.enregistrer']}" id="ajouter" rendered="#{typeAssuranceBean.displaySaveButton}" update="@form,typeAssurance:listassuranceCompagnie,typeAssurance:typeAssuranceCompagnieCreateForm:msgs" action="#{typeAssuranceBean.saveOneAssuranceCompagnie()}"  class="btn-sm btn-success success pull-right danger col-md-3" />
+
+                                        <p:commandButton value="#{msg['btn.modifier']}" title="#{msg['btn.modifier']}" id="modifier" rendered="#{typeAssuranceBean.displayUpdateButton}" action="#{typeAssuranceBean.updateTypeAssuranceCompagnie()}"   update="@form,typeAssurance:listassuranceCompagnie,typeAssurance:typeAssuranceCompagnieCreateForm:msgs"  class="btn-sm btn-success success pull-right danger col-md-3" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </h:form>
+                </div>
+                <div class="panel">
+                    <h:form id="listassuranceCompagnie" class="form-horizontal">
+                        <p:panel header=" Liste des assurances compagnie" toggleable="true" id="p4" collapsed="false" class="dataTable_Margin_Bottom">
+                            <p:dataTable value="#{typeAssuranceBean.listTypeAssuranceCompagnie}" var="typeAssuranceCompagnie" 
+                                         class="table_label table table-responsive"  editable="true" editMode="cell"  rows="25" 
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150"  
+                                         rowsPerPageTemplate="25,50,100,150,200"  emptyMessage="#{msg['tableau.vide']}" 
+                                         >                      
+                                <p:column headerText="Compagnie" filterBy="#{typeAssuranceCompagnie.compagnie.abbreviation}">
+                                    <p:outputLabel value="#{typeAssuranceCompagnie.compagnie.abbreviation}" />
+                                </p:column>
+                                <p:column headerText="Type Assurance" filterBy="#{typeAssuranceCompagnie.typeAssurance.designation}" >
+                                    <p:outputLabel value="#{typeAssuranceCompagnie.typeAssurance.designation}" />
+                                </p:column>
+                                <p:column headerText="Référence type assurance" filterBy="#{typeAssuranceCompagnie.typeAssurance.reference}" >
+                                    <p:outputLabel value="#{typeAssuranceCompagnie.typeAssurance.reference}" />
+                                </p:column>
+                                <p:column headerText="Taxe">
+                                    <p:outputLabel value="#{typeAssuranceCompagnie.taxe}" />
+                                </p:column>
+                                <p:column headerText="Groupe de Question">
+                                    <p:outputLabel value="#{typeAssuranceCompagnie.groupeDeQuestion}" />
+                                </p:column>
+                                <p:column headerText="Active" class="text-center">
+                                    <p:outputLabel  />
+                                    <i class="text-green icon-default fa fa-check #{typeAssuranceCompagnie.active}" />
+                                    <i  class=" icon-default  text-red fa fa-close #{!typeAssuranceCompagnie.active}" />                                              
+
+                                </p:column>
+                                <p:column headerText="Options">
+                                    <p:commandButton  update="typeAssurance:typeAssuranceCompagnieCreateForm" action="#{typeAssuranceBean.editTypeAssuranceCompagnie()}" icon="fa fa-edit" class="btn btn-xs btn-primary" >
+                                        <f:setPropertyActionListener value="#{typeAssuranceCompagnie}" target="#{typeAssuranceBean.typeAssuranceCompagnieToEdit}" />
+                                    </p:commandButton>
+                                    <p:commandButton update="typeAssurance:typeAssuranceCompagnieCreateForm,typeAssurance:listassuranceCompagnie,typeAssurance:typeAssuranceCompagnieCreateForm:msgs"  action="#{typeAssuranceBean.deleteTypeAssuranceCompagnie()}" icon="fa fa-trash" class="btn btn-danger btn-xs">
+                                        <f:setPropertyActionListener value="#{typeAssuranceCompagnie}" target="#{typeAssuranceBean.typeAssuranceCompagnieToDelete}" />
+                                        <p:confirm icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </h:form>
+                </div>
+            </p:tab>
+            <p:tab title="Type d'assurance Compagnie Courtier">
+                <div class="panel">
+                    <p:panel header=" Enregistrer un type d'assurance compagnie courtier" toggleable="true" id="p5" collapsed="false" class="dataTable_Margin_Bottom" >
+                        <h:form id="typeAssuranceCompagnieCourtierCreateForm" class="form-horizontal">
+                            <p:growl id="msgs" globalOnly="true" showDetail="false"  life="3000"/>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:outputLabel for="pays" value="Pays" class="pull-left text-left"/>
+                                        <h:outputLabel value="*" class="etoile_rouge pull-left" />
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:selectOneMenu id="pays" value="#{typeAssuranceBean.selectedPays}" required="true" requiredMessage="Champ Obligatoire" converter="omnifaces.SelectItemsConverter" class="form-control" >
+                                            <f:selectItem itemLabel="#{msg['compagnie.pays']}" noSelectionOption="true" />
+                                            <f:selectItems value="#{typeAssuranceBean.listPays}" var="pays" itemLabel="#{pays.designationPays}" itemValue="#{pays}" />
+                                            <p:ajax listener="#{typeAssuranceBean.initCompagnieByPaysAndBranche()}" update="compC,court" />
+                                            <f:ajax event="click" render="paysMessage" />
+                                        </h:selectOneMenu> 
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <h:message for="pays"  id="paysMessage" class="errorClass" />
+                                    </div> 
+                                </div>
+
+
+                                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="typeAssurance" value="Type Assurance" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="typeAssF" required="true" requiredMessage="Veuillez choisir le type d'assurance" value="#{typeAssuranceBean.typeAss}"  >
+                                                <f:selectItem noSelectionOption="true" itemLabel="Choisir le type d'assurance" /> 
+                                                <f:selectItems value="#{typeAssuranceBean.listTypeAssurance}" var="tas" itemLabel="#{tas.designation}" itemValue="#{tas}"/>
+                                                <f:ajax event="keyup" render="typeAssuranceMessage"/> 
+                                                <p:ajax listener="#{typeAssuranceBean.initCompagnieByPaysAndBranche()}" update="compC,court" />
+                                            </h:selectOneMenu>    
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <h:message for="typeAssF"  id="typeAssuranceMessage" class="errorClass" />    
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="compC" value="Compagnie" class="pull-left text-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="compC" required="true" value="#{typeAssuranceBean.selectedCompagnie}"  >
+                                                <f:selectItem noSelectionOption="true" itemLabel="Choisir compagnie" /> 
+                                                <f:selectItems value="#{typeAssuranceBean.listCompagnie}" var="compagnie" itemLabel="#{compagnie.abbreviation}" itemValue="#{compagnie}"/>
+                                                <p:ajax listener="#{typeAssuranceBean.feshCourtierByCompagnie()}" update="court" />
+
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>    
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="court" value="Courtier" class="pull-left text-left" />
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="court" value="#{typeAssuranceBean.typeAssuranceCompagnieCourtierToSave.courtier}"  >
+                                                <f:selectItem noSelectionOption="true" itemLabel="Choisir le courtier" /> 
+                                                <f:selectItems value="#{typeAssuranceBean.listCourtier}" var="court" itemLabel="#{court.abbreviation}" itemValue="#{court}"/>
+                                                <f:ajax event="keyup" render="courtMessage"/> 
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <h:message for="court"  id="courtMessage" class="errorClass" />    
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="active" value="Active" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:selectBooleanCheckbox id="active" value="#{typeAssuranceBean.typeAssuranceCompagnieCourtierToSave.active}">
+                                            </p:selectBooleanCheckbox>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:outputLabel  class="pull-left text-left" value="Taxe RBS:" for="redt"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText id="redt" value="#{typeAssuranceBean.typeAssuranceCompagnieCourtierToSave.tauxTaxeRBS}" >
+                                                <p:ajax event="keyup" />
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:outputLabel  class="pull-left text-left" value="Reduction:" for="red"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText id="red" value="#{typeAssuranceBean.typeAssuranceCompagnieCourtierToSave.reduction}" >
+                                                <p:ajax event="keyup" />
+                                                <pe:keyFilter  mask="num" />
+                                            </p:inputText>
+                                            <p:selectBooleanCheckbox itemLabel="en %" value="#{typeAssuranceBean.typeAssuranceCompagnieCourtierToSave.reductionEnPourcentage}" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:outputLabel  class="pull-left text-left" value="Majoration:" for="mal"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText id="mal" value="#{typeAssuranceBean.typeAssuranceCompagnieCourtierToSave.majoration}">
+                                                <p:ajax event="keyup" />
+                                                <pe:keyFilter  mask="num" />
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:inputText>
+                                            <p:selectBooleanCheckbox id="pmal" itemLabel="en %" value="#{typeAssuranceBean.typeAssuranceCompagnieCourtierToSave.majorationEnPourcentage}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:outputLabel  class="pull-left text-left" value="Code de la compagnie:" for="malcode"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:inputText id="malcode" value="#{typeAssuranceBean.typeAssuranceCompagnieCourtierToSave.codeCompagnieCourtier}">
+                                            </p:inputText>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="active2" value="Autonomme par rapport au Prime" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:selectBooleanCheckbox id="active2" value="#{typeAssuranceBean.typeAssuranceCompagnieCourtierToSave.estAutonomeParRapportAuPrimes}">
+                                            </p:selectBooleanCheckbox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="active3" value="Autonomme par rapport à la Police" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:selectBooleanCheckbox id="active3" value="#{typeAssuranceBean.typeAssuranceCompagnieCourtierToSave.estAutonomeParRapportAuPolice}">
+                                            </p:selectBooleanCheckbox>
+                                        </div>
+                                    </div>
+                                </div>   
+                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+                                    <div class="form-group" >
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <h:outputLabel for="active4" value="Autonomme par rapport au Attestation" class="pull-left text-left"/>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <p:selectBooleanCheckbox id="active4" value="#{typeAssuranceBean.typeAssuranceCompagnieCourtierToSave.estAutonomeParRapportAuAttestation}">
+                                            </p:selectBooleanCheckbox>
+                                        </div>
+                                    </div>
+                                </div>   
+
+
+
+                                <div class="col-md-6 col col-lg-6">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col col-lg-6">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xm-12">
+                                        <p:commandButton value="Affecter" title="affecter" id="affecter" update="@form,typeAssurance:temporalListCompagnieCourtier:temporalListCompagnieCourtierData" action="#{typeAssuranceBean.feshTypeAssuranceCompagnieByCompagnie()}"  class="btn-sm btn-success success pull-right danger col-md-3" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </h:form>
+                        <div class="table-responsive">
+                            <h:form id="temporalListCompagnieCourtier" class="form-horizontal" >
+                                <p:dataTable id="temporalListCompagnieCourtierData" value="#{typeAssuranceBean.firstTemporalListTypeAssuranceCompagnieCourtier}" var="tAssuranceCompagnieCourtier" 
+                                             class="table table-striped"  editable="true" editMode="cell"  rows="25" 
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             paginator="true" paginatorPosition="bottom" style="margin-bottom:20px" scrollWidth="50%" scrollHeight="150"  
+                                             rowsPerPageTemplate="25,50,100,150,200"  emptyMessage="#{msg['tableau.vide']}" 
+                                             selection="#{typeAssuranceBean.secondTemporalListTypeAssuranceCompagnieCourtier}"
+                                             rowKey="#{tAssuranceCompagnieCourtier.hashCode()}"
+                                             >                      
+                                    <p:column headerText="Compagnie">
+                                        <p:outputLabel value="#{tAssuranceCompagnieCourtier.typeAssuranceCompagnie.compagnie.abbreviation}" />
+                                    </p:column>
+                                    <p:column headerText="Type d'assurance">
+                                        <p:outputLabel value="#{tAssuranceCompagnieCourtier.typeAssuranceCompagnie.typeAssurance.designation}" />
+                                    </p:column>
+                                    <p:column headerText="Courtier">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="A" value="#{tAssuranceCompagnieCourtier.courtier.abbreviation}" /></f:facet>
+                                            <f:facet name="input">
+                                                <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="courti" value="#{tAssuranceCompagnieCourtier.courtier}"  >
+                                                    <f:selectItem noSelectionOption="true" itemLabel="Choisir le courtier" /> 
+                                                    <f:selectItems value="#{typeAssuranceBean.listCourtier}" var="courti" itemLabel="#{courti.abbreviation}" itemValue="#{courti}"/>
+                                                    <p:ajax event="keyup" update="A"  /> 
+                                                </h:selectOneMenu>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Autonome par rapport au prime"   class="text-center" >
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <!--p:outputLabel id="M"  /-->
+                                                <i jsf:id="Mt" class="text-green icon-default fa fa-check #{tAssuranceCompagnieCourtier.estAutonomeParRapportAuPrimes}" />
+                                                <i jsf:id="Mf" class=" icon-default  text-red fa fa-close #{!tAssuranceCompagnieCourtier.estAutonomeParRapportAuPrimes}" />
+                                            </f:facet>
+                                            <f:facet name="input"> 
+                                                <p:selectBooleanCheckbox value="#{tAssuranceCompagnieCourtier.estAutonomeParRapportAuPrimes}" >
+                                                    <!--p:ajax update="M" /-->
+                                                    <p:ajax update="Mt,Mf" />
+                                                </p:selectBooleanCheckbox>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Autonome par rapport à la police" class="text-center" >
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <!--p:outputLabel id="N" /-->
+                                                <i jsf:id="Nt" class="text-green icon-default fa fa-check #{tAssuranceCompagnieCourtier.estAutonomeParRapportAuPolice}" />
+                                                <i jsf:id="Nf" class=" icon-default  text-red fa fa-close #{!tAssuranceCompagnieCourtier.estAutonomeParRapportAuPolice}" />
+
+                                            </f:facet>
+                                            <f:facet name="input"> 
+                                                <p:selectBooleanCheckbox value="#{tAssuranceCompagnieCourtier.estAutonomeParRapportAuPolice}" >
+                                                    <p:ajax update="Nt,Nf" />
+                                                </p:selectBooleanCheckbox>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Autonome par rapport à l'attestation" width="10%" style="width:36px;text-align:center" >
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <i jsf:id="Lt" class="text-green icon-default fa fa-check #{tAssuranceCompagnieCourtier.estAutonomeParRapportAuAttestation}" />
+                                                <i jsf:id="Lf" class=" icon-default  text-red fa fa-close #{!tAssuranceCompagnieCourtier.estAutonomeParRapportAuAttestation}" />
+                                                <!--p:outputLabel id="L" /-->
+                                            </f:facet>
+                                            <f:facet name="input"> 
+                                                <p:selectBooleanCheckbox value="#{tAssuranceCompagnieCourtier.estAutonomeParRapportAuAttestation}" >
+                                                    <p:ajax update="Lt,Lf" />
+                                                </p:selectBooleanCheckbox>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Majoration" class="text-right" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="Maj" value="#{tAssuranceCompagnieCourtier.majoration}" /></f:facet>
+                                            <f:facet name="input"> 
+                                                <p:inputText value="#{tAssuranceCompagnieCourtier.majoration}">
+                                                    <p:ajax update="Maj"/>
+                                                    <pe:keyFilter  mask="num" />
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="%" width="7%" class="text-center" >
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <!--p:outputLabel id="Ma"  /-->
+                                                <i jsf:id="MaT" class="text-green icon-default fa fa-check #{tAssuranceCompagnieCourtier.majorationEnPourcentage}" />
+                                                <i jsf:id="MaF" class=" icon-default  text-red fa fa-close #{!tAssuranceCompagnieCourtier.majorationEnPourcentage}" />
+                                            </f:facet>
+                                            <f:facet name="input"> 
+                                                <p:selectBooleanCheckbox value="#{tAssuranceCompagnieCourtier.majorationEnPourcentage}" >
+                                                    <p:ajax update="MaT,MaF" />
+                                                </p:selectBooleanCheckbox>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Reduction" class="text-right" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="Red" value="#{tAssuranceCompagnieCourtier.reduction}" /></f:facet>
+                                            <f:facet name="input"> 
+                                                <p:inputText value="#{tAssuranceCompagnieCourtier.reduction}">
+                                                    <p:ajax update="Red"/>
+                                                    <pe:keyFilter  mask="num" />
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Taxe RBS" class="text-right" >
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel id="Redt" value="#{tAssuranceCompagnieCourtier.tauxTaxeRBS}" /></f:facet>
+                                            <f:facet name="input"> 
+                                                <p:inputText value="#{tAssuranceCompagnieCourtier.tauxTaxeRBS}">
+                                                    <p:ajax update="Redt"/>
+                                                    <pe:keyFilter  mask="num" />
+                                                    <f:convertNumber pattern="###,##0" type="number" />
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="%" width="7%"  class="text-center" >
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <i jsf:id="ReT" class="text-green icon-default fa fa-check #{tAssuranceCompagnieCourtier.reductionEnPourcentage}" />
+                                                <i jsf:id="ReF" class=" icon-default  text-red fa fa-close #{!tAssuranceCompagnieCourtier.reductionEnPourcentage}" />
+                                                <!--p:outputLabel id="Re" /-->
+                                            </f:facet>
+                                            <f:facet name="input"> 
+                                                <p:selectBooleanCheckbox value="#{tAssuranceCompagnieCourtier.reductionEnPourcentage}" >
+                                                    <p:ajax update="ReT,ReF" />
+                                                </p:selectBooleanCheckbox>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Activer" class="text-center" >
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <i jsf:id="BT" class="text-green icon-default fa fa-check #{tAssuranceCompagnieCourtier.active}" />
+                                                <i jsf:id="BF" class=" icon-default  text-red fa fa-close #{!tAssuranceCompagnieCourtier.active}" />
+                                                <!--p:outputLabel id="B" value="#{tAssuranceCompagnieCourtier.active}" /-->
+                                            </f:facet>
+                                            <f:facet name="input"> 
+                                                <p:selectBooleanCheckbox value="#{tAssuranceCompagnieCourtier.active}" >
+                                                    <p:ajax update="BT,BF" />
+                                                </p:selectBooleanCheckbox>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Code Compagnie" width="7%" class="text-center" >
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+
+                                                <p:outputLabel id="Majcode" value="#{tAssuranceCompagnieCourtier.codeCompagnieCourtier}" />
+                                            </f:facet>
+                                            <f:facet name="input"> 
+                                                <p:inputText value="#{tAssuranceCompagnieCourtier.codeCompagnieCourtier}">
+                                                    <p:ajax update="Majcode"/>
+
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Selection" width="6%" selectionMode="multiple" class="text-center"/>
+                                    <p:column headerText="Action" width="10%">
+                                        <p:commandButton title="supprimer"  update="typeAssurance:temporalListCompagnieCourtier"   icon="fa fa-remove" action="#{typeAssuranceBean.removeOneLineFromTemporalList()}"  class="btn btn-danger danger" >
+                                            <f:setPropertyActionListener value="#{tAssuranceCompagnieCourtier}" target="#{typeAssuranceBean.temporalLineToRemove}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                                <div class="btn-toolbar">
+                                    <p:commandButton value="#{msg['btn.annuller']}" title="#{msg['btn.annuller']}" action="#{typeAssuranceBean.cancelList()}" update="@form,typeAssurance:typeAssuranceCompagnieCourtierCreateForm"  class="btn btn-danger pull-left">
+                                        <p:ajax update="@form"/>
+                                    </p:commandButton>
+
+                                    <p:commandButton value="#{msg['btn.enregistrer']}" title="#{msg['btn.enregistrer']}" id="ajouter" update="@form,typeAssurance:listassuranceCompagnie,typeAssurance:listassuranceCompagnieCourtier,typeAssurance:typeAssuranceCompagnieCreateForm:msgs" action="#{typeAssuranceBean.saveOneAssuranceCompagnieList()}"  class="btn btn-success pull-right" />
+
+                                </div>
+
+                            </h:form>
+                        </div>
+                    </p:panel>
+                </div>
+                <div class="panel">
+                    <p:panel header=" Liste des assurances compagnie courtier" toggleable="true" id="p7" collapsed="false" class="dataTable_Margin_Bottom">
+                        <h:form id="listassuranceCompagnieCourtier" class="form-horizontal">
+                            <p:dataTable id="listTypeAssuranceCompagnieCourtier" value="#{typeAssuranceBean.listTypeAssuranceCompagnieCourtier}" var="tACompagnieCourtier" 
+                                         class="table_label table table-responsive"  editable="true" editMode="cell"  rows="25" 
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         paginator="true" paginatorPosition="bottom"  scrollWidth="50%" scrollHeight="150"  
+                                         rowsPerPageTemplate="25,50,100,150,200"  emptyMessage="#{msg['tableau.vide']}" 
+                                         selection="#{typeAssuranceBean.listTypeAssuranceCompagnieCourtierSelected}"
+                                         rowKey="#{tACompagnieCourtier.idTypeAssuranceCompagnieCourtier}"
+                                         >                      
+                                <p:column headerText="Compagnie" filterBy="#{tACompagnieCourtier.typeAssuranceCompagnie.compagnie.abbreviation}" >
+                                    <p:outputLabel value="#{tACompagnieCourtier.typeAssuranceCompagnie.compagnie.abbreviation}" />
+                                </p:column>
+                                <p:column headerText="Type d'assurance" filterBy="#{tACompagnieCourtier.typeAssuranceCompagnie.typeAssurance.designation}">
+                                    <p:outputLabel value="#{tACompagnieCourtier.typeAssuranceCompagnie.typeAssurance.designation}" />
+                                </p:column>
+                                <p:column headerText="Courtier" filterBy="#{tACompagnieCourtier.courtier.abbreviation}">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:outputLabel id="A" value="#{tACompagnieCourtier.courtier.abbreviation}" /></f:facet>
+                                        <f:facet name="input">
+                                            <h:selectOneMenu  class="form-control" converter="omnifaces.SelectItemsConverter"  id="courti" value="#{tACompagnieCourtier.courtier}"  >
+                                                <f:selectItem noSelectionOption="true" itemLabel="Choisir le courtier" /> 
+                                                <f:selectItems value="#{typeAssuranceBean.listCourtier}" var="courti" itemLabel="#{courti.abbreviation}" itemValue="#{courti}"/>
+                                                <p:ajax event="keyup" update="A"  /> 
+                                            </h:selectOneMenu>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Autonome par rapport au prime" width="10%" style="width:36px;text-align:center" >
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <!--p:outputLabel id="MM" value="" /-->
+                                            <p:outputLabel  id="MMT" class="#{tACompagnieCourtier.estAutonomeParRapportAuPrimes}"> <i class="icon-default  text-green fa fa-check " /></p:outputLabel>
+                                            <p:outputLabel  id="MMF" class="#{!tACompagnieCourtier.estAutonomeParRapportAuPrimes}"> <i class="icon-default  text-red fa fa-close " /></p:outputLabel>
+                                        </f:facet>
+                                        <f:facet name="input"> 
+                                            <p:selectBooleanCheckbox value="#{tACompagnieCourtier.estAutonomeParRapportAuPrimes}" >
+                                                <p:ajax update="MMT,MMF" />
+                                            </p:selectBooleanCheckbox>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Autonome par rapport à la police" width="10%" style="width:36px;text-align:center" >
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <p:outputLabel  id="NNT" class="#{tACompagnieCourtier.estAutonomeParRapportAuPolice}"> <i class="icon-default  text-green fa fa-check " /></p:outputLabel>
+                                            <p:outputLabel  id="NNF" class="#{!tACompagnieCourtier.estAutonomeParRapportAuPolice}"> <i class="icon-default  text-red fa fa-close " /></p:outputLabel>
+
+                                        </f:facet>
+                                        <f:facet name="input"> 
+                                            <p:selectBooleanCheckbox value="#{tACompagnieCourtier.estAutonomeParRapportAuPolice}" >
+                                                <p:ajax update="NNT,NNF" />
+                                            </p:selectBooleanCheckbox>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+
+                                <p:column headerText="Majoration" width="8%" style="width:36px;text-align:center" >
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:outputLabel id="Majo" value="#{tACompagnieCourtier.majoration}" /></f:facet>
+                                        <f:facet name="input"> 
+                                            <p:inputText value="#{tACompagnieCourtier.majoration}">
+                                                <p:ajax update="Majo"/>
+                                                <pe:keyFilter  mask="num" />
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="%" width="3%" style="width:36px;text-align:center" >
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <p:outputLabel  id="MagT" class="#{tACompagnieCourtier.majorationEnPourcentage}"> <i class="icon-default  text-green fa fa-check " /></p:outputLabel>
+                                            <p:outputLabel  id="MagF" class="#{!tACompagnieCourtier.majorationEnPourcentage}"> <i class="icon-default  text-red fa fa-close " /></p:outputLabel>
+
+                                        </f:facet>
+                                        <f:facet name="input"> 
+                                            <p:selectBooleanCheckbox value="#{tACompagnieCourtier.majorationEnPourcentage}" >
+                                                <p:ajax update="MagT,MagF" />
+                                            </p:selectBooleanCheckbox>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Reduction" width="8%"   style="width:36px;text-align:center" >
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:outputLabel id="Redu" value="#{tACompagnieCourtier.reduction}" /></f:facet>
+                                        <f:facet name="input"> 
+                                            <p:inputText value="#{tACompagnieCourtier.reduction}">
+                                                <p:ajax update="Redu"/>
+                                                <pe:keyFilter  mask="num" />
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="taxe RBS" width="8%"   style="width:36px;text-align:center" >
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:outputLabel id="Redut" value="#{tACompagnieCourtier.tauxTaxeRBS}" /></f:facet>
+                                        <f:facet name="input"> 
+                                            <p:inputText value="#{tACompagnieCourtier.tauxTaxeRBS}">
+                                                <p:ajax update="Redut"/>
+                                                <pe:keyFilter  mask="num" />
+                                                <f:convertNumber pattern="###,##0" type="number" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="%" width="3%" style="width:36px;text-align:center" >
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <!--i jsf:id="ReducT" class="text-green icon-default fa fa-check" />
+                                            <i jsf:id="ReducF" class=" icon-default  text-red fa fa-close " /-->
+                                            <p:outputLabel  id="ReducT" class="#{tACompagnieCourtier.reductionEnPourcentage}"> <i class="icon-default  text-green fa fa-check " /></p:outputLabel>
+                                            <p:outputLabel  id="ReducF" class="#{!tACompagnieCourtier.reductionEnPourcentage}"> <i class="icon-default  text-red fa fa-close " /></p:outputLabel>
+
+                                        </f:facet>
+                                        <f:facet name="input"> 
+                                            <p:selectBooleanCheckbox value="#{tACompagnieCourtier.reductionEnPourcentage}" >
+                                                <p:ajax update="ReducT,ReducF" />
+                                            </p:selectBooleanCheckbox>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Autonome par rapport à l'attestation" width="10%" style="width:36px;text-align:center" >
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <!--i jsf:id="LLT" class="text-green icon-default fa fa-check " />
+                                            <i jsf:id="LLF" class=" icon-default  text-red fa fa-close " /-->
+                                            <p:outputLabel  id="LLT" class="#{tACompagnieCourtier.estAutonomeParRapportAuAttestation}"> <i class="icon-default  text-green fa fa-check " /></p:outputLabel>
+                                            <p:outputLabel   id="LLF" class="#{!tACompagnieCourtier.estAutonomeParRapportAuAttestation}"> <i class="icon-default  text-red fa fa-close " /></p:outputLabel>
+                                        </f:facet>
+                                        <f:facet name="input"> 
+                                            <p:selectBooleanCheckbox value="#{tACompagnieCourtier.estAutonomeParRapportAuAttestation}" >
+                                                <p:ajax update="LLT,LLF" />
+                                            </p:selectBooleanCheckbox>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Activer" width="10%" style="width:36px;text-align:center" >
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <p:outputLabel  id="BT" class="#{tACompagnieCourtier.active}"> <i class="icon-default  text-green fa fa-check " /></p:outputLabel>
+                                            <p:outputLabel  id="BF" class="#{!tACompagnieCourtier.active}"> <i class="icon-default  text-red fa fa-close " /></p:outputLabel>
+
+                                        </f:facet>
+                                        <f:facet name="input"> 
+                                            <p:selectBooleanCheckbox value="#{tACompagnieCourtier.active}" >
+                                                <p:ajax update="BT,BF" />
+                                            </p:selectBooleanCheckbox>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Code compagnie:" width="5%" style="width:36px;text-align:center" >
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:outputLabel id="Majc" value="#{tACompagnieCourtier.codeCompagnieCourtier}" /></f:facet>
+                                        <f:facet name="input"> 
+                                            <p:inputText value="#{tACompagnieCourtier.codeCompagnieCourtier}">
+                                                <p:ajax update="Majc"/>
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="Selection" width="6%" selectionMode="multiple" style="width:36px;text-align:center"/>
+                            </p:dataTable>    
+
+                            <p:growl id="gl" globalOnly="true" showDetail="false"  life="3000"/>
+                            <p:commandButton update="@form,gl" value="Modifier" title="Modifier" action="#{typeAssuranceBean.updateSelectionList()}" icon="fa fa-save" class="btn btn-xs btn-primary" />
+                            <p:commandButton  update="@form,gl" value="Supprimer" title="Supprimer"  action="#{typeAssuranceBean.deleteSelection()}" icon="fa fa-trash" class="btn btn-danger btn-xs" >
+                                <p:confirm icon="ui-icon-alert"/>
+                            </p:commandButton> 
+                        </h:form>
+                    </p:panel>
+                </div>
+            </p:tab>
+        </p:tabView>
+    </ui:composition>
+</html>
